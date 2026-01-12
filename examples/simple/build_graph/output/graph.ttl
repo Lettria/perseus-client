@@ -2,18 +2,22 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix data: <http://example.org/data/> .
-data:6e814d9c-20dd-4361-9939-0bddefae3ebb pizza:hasTopping data:87c82ecd-6e62-4110-bcd3-b63f77447101 .
-data:99654f86-66f3-4f96-a2f6-00a2e12c7620 pizza:hasName "thin crust base" .
-data:6e814d9c-20dd-4361-9939-0bddefae3ebb rdfs:label "Margherita Delight" ;
-	pizza:hasBase data:99654f86-66f3-4f96-a2f6-00a2e12c7620 .
-data:99654f86-66f3-4f96-a2f6-00a2e12c7620 rdfs:label "thin crust base" .
-data:87c82ecd-6e62-4110-bcd3-b63f77447101 pizza:hasName "fresh tomato sauce" .
-data:6e814d9c-20dd-4361-9939-0bddefae3ebb pizza:hasName "Margherita Delight" .
-data:9ba74887-5338-4d8e-aa55-35d04e0bcd9a pizza:hasName "mozzarella cheese" ;
-	rdfs:label "mozzarella cheese" .
-data:87c82ecd-6e62-4110-bcd3-b63f77447101 rdfs:label "fresh tomato sauce" .
-data:6e814d9c-20dd-4361-9939-0bddefae3ebb pizza:hasTopping data:9ba74887-5338-4d8e-aa55-35d04e0bcd9a .
-data:99654f86-66f3-4f96-a2f6-00a2e12c7620 a pizza:PizzaBase .
-data:87c82ecd-6e62-4110-bcd3-b63f77447101 a pizza:Topping .
-data:9ba74887-5338-4d8e-aa55-35d04e0bcd9a a pizza:CheeseTopping .
-data:6e814d9c-20dd-4361-9939-0bddefae3ebb a pizza:MargheritaPizza .
+data:5761e74c-f9c5-4378-ae15-18eb48e50487 pizza:hasName "fresh tomato sauce" .
+data:bc64aa88-e5ed-49c5-8e50-da7d9e0de92f pizza:hasName "creamy mozzarella cheese" .
+data:64c420b9-ece5-4423-88c0-281c79c66fdb pizza:hasIngredient data:bc64aa88-e5ed-49c5-8e50-da7d9e0de92f .
+data:bc64aa88-e5ed-49c5-8e50-da7d9e0de92f pizza:isToppingOf data:64c420b9-ece5-4423-88c0-281c79c66fdb .
+data:64c420b9-ece5-4423-88c0-281c79c66fdb pizza:hasTopping data:5761e74c-f9c5-4378-ae15-18eb48e50487 .
+data:1a5ed55f-b893-4a91-9c60-dbdd0b2609ae pizza:hasName "thin crust base" .
+data:64c420b9-ece5-4423-88c0-281c79c66fdb pizza:hasName "Margherita Delight" .
+data:bc64aa88-e5ed-49c5-8e50-da7d9e0de92f rdfs:label "creamy mozzarella cheese" .
+data:64c420b9-ece5-4423-88c0-281c79c66fdb rdfs:label "Margherita Delight" .
+data:1a5ed55f-b893-4a91-9c60-dbdd0b2609ae rdfs:label "thin crust base" .
+data:64c420b9-ece5-4423-88c0-281c79c66fdb pizza:hasBase data:1a5ed55f-b893-4a91-9c60-dbdd0b2609ae .
+data:5761e74c-f9c5-4378-ae15-18eb48e50487 pizza:isToppingOf data:64c420b9-ece5-4423-88c0-281c79c66fdb .
+data:64c420b9-ece5-4423-88c0-281c79c66fdb pizza:hasTopping data:bc64aa88-e5ed-49c5-8e50-da7d9e0de92f .
+data:5761e74c-f9c5-4378-ae15-18eb48e50487 rdfs:label "fresh tomato sauce" .
+data:64c420b9-ece5-4423-88c0-281c79c66fdb pizza:hasIngredient data:5761e74c-f9c5-4378-ae15-18eb48e50487 .
+data:bc64aa88-e5ed-49c5-8e50-da7d9e0de92f a pizza:CheeseTopping .
+data:1a5ed55f-b893-4a91-9c60-dbdd0b2609ae a pizza:PizzaBase .
+data:64c420b9-ece5-4423-88c0-281c79c66fdb a pizza:MargheritaPizza .
+data:5761e74c-f9c5-4378-ae15-18eb48e50487 a pizza:Topping .
