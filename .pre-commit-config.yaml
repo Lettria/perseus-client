@@ -1,0 +1,6 @@
+repos:
+-   repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.92.4
+    hooks:
+    -   id: trufflehog
+        stages: [pre-push, pre-commit]

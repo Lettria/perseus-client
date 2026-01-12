@@ -1,0 +1,3 @@
+# This ontology will be deleted.
+@prefix : <http://example.com/ontology#> .
+:TempClass a <http://www.w3.org/2002/07/owl#Class> .

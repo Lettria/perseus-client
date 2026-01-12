@@ -1,0 +1,103 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pizza: <http://www.example.org/ontologies/pizza/pizza.owl#> .
+
+<http://www.example.org/ontologies/pizza/pizza.owl#> rdf:type owl:Ontology ;
+    rdfs:label "Pizza Ontology" ;
+    rdfs:comment "A comprehensive ontology for describing pizzas, covering all supported features." .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+pizza:hasIngredient rdf:type owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:domain pizza:FoodItem ;
+    rdfs:range pizza:FoodItem .
+
+pizza:hasTopping rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf pizza:hasIngredient ;
+    owl:inverseOf pizza:isToppingOf ;
+    owl:propertyDisjointWith pizza:hasBase ;
+    rdfs:domain pizza:Pizza ;
+    rdfs:range pizza:Topping ;
+    rdfs:comment "Relates a pizza to its topping." .
+
+pizza:isToppingOf rdf:type owl:ObjectProperty ;
+    rdfs:domain pizza:Topping ;
+    rdfs:range pizza:Pizza .
+
+pizza:hasBase rdf:type owl:ObjectProperty ;
+    rdfs:domain pizza:Pizza ;
+    rdfs:range pizza:PizzaBase .
+
+pizza:isSimilarTo rdf:type owl:ObjectProperty , owl:SymmetricProperty , owl:ReflexiveProperty ;
+    rdfs:domain pizza:Pizza ;
+    rdfs:range pizza:Pizza .
+
+pizza:isHeavierThan rdf:type owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:domain pizza:Pizza ;
+    rdfs:range pizza:Pizza .
+
+pizza:hasDesignatedOven rdf:type owl:ObjectProperty , owl:FunctionalProperty, owl:InverseFunctionalProperty ;
+    rdfs:domain pizza:Pizza ;
+    rdfs:range owl:Thing .
+
+
+#################################################################
+#    Data Properties
+#################################################################
+
+pizza:hasName rdf:type owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The name of the food item." ;
+    rdfs:domain pizza:FoodItem ;
+    rdfs:range xsd:string .
+
+pizza:hasSpicinessLevel rdf:type owl:DatatypeProperty ;
+    rdfs:domain pizza:Topping ;
+    rdfs:range xsd:integer .
+
+pizza:hasScovilleRating rdf:type owl:DatatypeProperty ;
+    rdfs:subPropertyOf pizza:hasSpicinessLevel ;
+    rdfs:domain pizza:SpicyTopping ;
+    rdfs:range xsd:integer .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+pizza:FoodItem rdf:type owl:Class ;
+    rdfs:subClassOf owl:Thing .
+
+pizza:Pizza rdf:type owl:Class ;
+    rdfs:subClassOf pizza:FoodItem ;
+    rdfs:comment "A delicious food item." .
+
+pizza:Topping rdf:type owl:Class ;
+    rdfs:subClassOf pizza:FoodItem .
+
+pizza:PizzaBase rdf:type owl:Class ;
+    rdfs:subClassOf pizza:FoodItem .
+
+pizza:MargheritaPizza rdf:type owl:Class ;
+    rdfs:subClassOf pizza:Pizza ;
+    owl:equivalentClass pizza:PlainCheesePizza .
+
+pizza:PlainCheesePizza rdf:type owl:Class ;
+    rdfs:subClassOf pizza:Pizza .
+
+pizza:VegetarianPizza rdf:type owl:Class ;
+    rdfs:subClassOf pizza:Pizza ;
+    owl:disjointWith pizza:MeatyPizza .
+
+pizza:MeatyPizza rdf:type owl:Class ;
+    rdfs:subClassOf pizza:Pizza .
+
+pizza:CheeseTopping rdf:type owl:Class ;
+    rdfs:subClassOf pizza:Topping ;
+    owl:disjointWith pizza:SpicyTopping .
+
+pizza:SpicyTopping rdf:type owl:Class ;
+    rdfs:subClassOf pizza:Topping .

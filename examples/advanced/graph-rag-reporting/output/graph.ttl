@@ -1,0 +1,188 @@
+@prefix mykg: <http://example.org/my-knowledge-graph#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix data: <http://example.org/data/> .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasOperatingProfit "8,69 milliards d’euros" ;
+	mykg:hasEmployeeCount "+ de 90 000" .
+data:b557f7eb-3637-4f93-a071-bcfea1cdd1a3 rdfs:label "Amérique du Nord" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasFacility data:c55d50db-ec04-4e6a-bfcd-e9424ce4eb40 .
+data:f72a45fe-1752-4125-ba26-5883e2120ce4 rdfs:label "Vichy" .
+data:d847b703-07f5-48bc-b2a9-0dea14e58856 mykg:hasYear "2024"^^xsd:gYear .
+data:53c78eff-9617-4500-954a-a84003eb38b1 mykg:hasGoal "pour la décarbonation des fournisseurs" .
+data:f0493395-ff53-4971-8aaa-3fd71904ac81 rdfs:label "Amérique latine" .
+data:1d2f19da-5fcd-4f2b-8e9b-9aaac8e10fdb mykg:isMemberOf data:5a9b7bb9-a5c2-4812-b384-d27384a5e532 .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasDivision data:3c946de0-5039-4c3d-81ca-8df8c9e7006b ;
+	mykg:receivedAwardFrom data:ad569744-d19d-448d-b1ff-44dc82e5fb2f .
+data:f0493395-ff53-4971-8aaa-3fd71904ac81 mykg:hasRevenueShare "8 %" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasRecoveredIndustrialWaste "76 %" .
+data:768bad6a-7676-4857-ae9d-b7fd995b14b4 rdfs:label "Matrix" .
+data:84eeb263-36af-4d03-ab49-ae75b135b732 rdfs:label "La Roche-Posay" .
+data:2798cdcf-6daf-4e70-8910-6b9637aec793 mykg:allocationSince "2020"^^xsd:gYear .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasProgram data:dda3bb87-0e1f-4386-8ec8-cae54f561c51 .
+data:1d93e7e1-b253-41b1-9bad-f661e8f7abaa rdfs:label "Ethisphere" .
+data:3c946de0-5039-4c3d-81ca-8df8c9e7006b rdfs:label "Produits Professionnels" .
+data:f5d91a19-3d71-43be-9ff4-af6871e3c083 rdfs:label "EcoVadis" .
+data:4102380e-b6ed-4b9e-a3cb-67e5af8a59a0 mykg:hasBrand data:678a5257-0a2b-46fd-b8ea-6e6bacc187e2 .
+data:fd405433-80b9-4996-9618-ffa519c7f8bd rdfs:label "Giorgio Armani" .
+data:d847b703-07f5-48bc-b2a9-0dea14e58856 rdfs:label "RAPPORT ANNUEL 2024" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasMotto "Créer la beauté qui fait avancer le monde" .
+data:1d2f19da-5fcd-4f2b-8e9b-9aaac8e10fdb rdfs:label "Nicolas Hieronimus" .
+data:4102380e-b6ed-4b9e-a3cb-67e5af8a59a0 mykg:hasBrand data:03a34b14-a246-4c04-8929-f242585568b7 .
+data:492baa8c-3439-4af2-89d7-2a406e2be6dd mykg:hasBrand data:f72a45fe-1752-4125-ba26-5883e2120ce4 .
+data:d847b703-07f5-48bc-b2a9-0dea14e58856 mykg:isAbout data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasProposedDividend "7,00 €" .
+data:5a9b7bb9-a5c2-4812-b384-d27384a5e532 mykg:hasAverageDirectorAge "58,5 ans" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasRank "Nº 1 mondial de la beauté" ;
+	mykg:hasResearcherCount 4000 .
+data:492baa8c-3439-4af2-89d7-2a406e2be6dd rdfs:label "Beauté Dermatologique" .
+data:4102380e-b6ed-4b9e-a3cb-67e5af8a59a0 mykg:hasBrand data:eeb03195-0e1d-45bf-aca0-6c28a47a274c .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasProgram data:0efb05df-8d02-486c-a096-f08c7607d681 .
+data:c55d50db-ec04-4e6a-bfcd-e9424ce4eb40 rdfs:label "Suzhou Fulfilment Centre" .
+data:4ce268b4-01d0-415a-9a02-559f6db2f56d mykg:hasMemberCount 19 .
+data:492baa8c-3439-4af2-89d7-2a406e2be6dd mykg:hasRevenueShare "16 %" .
+data:2798cdcf-6daf-4e70-8910-6b9637aec793 mykg:hasAllocation "70 M€" .
+data:eeb03195-0e1d-45bf-aca0-6c28a47a274c rdfs:label "L’Oréal Paris" .
+data:53c78eff-9617-4500-954a-a84003eb38b1 rdfs:label "Solstice" .
+data:5a9b7bb9-a5c2-4812-b384-d27384a5e532 mykg:hasFemaleDirectorPercentage "43 %" .
+data:678a5257-0a2b-46fd-b8ea-6e6bacc187e2 rdfs:label "Garnier" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasRevenueFrom data:b557f7eb-3637-4f93-a071-bcfea1cdd1a3 ;
+	mykg:usesTechnology data:a67c005a-2ad1-4f26-9c25-9f45a3b6f529 .
+data:4102380e-b6ed-4b9e-a3cb-67e5af8a59a0 mykg:hasRevenueShare "37 %" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:acquired data:e37a421f-59bf-49d5-8e59-64dd32566c4b .
+data:5a9b7bb9-a5c2-4812-b384-d27384a5e532 rdfs:label "Conseil d’Administration" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 rdfs:label "L’Oréal" ;
+	mykg:hasDivision data:4102380e-b6ed-4b9e-a3cb-67e5af8a59a0 .
+data:4102380e-b6ed-4b9e-a3cb-67e5af8a59a0 rdfs:label "Produits Grand Public" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasEthisphereRecognition "15e fois" ;
+	mykg:hasOperatingProfitGrowth "+6,7 %" ;
+	mykg:hasSocialProgramBeneficiaries "4,5 millions" .
+data:fe568dc8-1e7b-4521-ad7c-e1b02e4fbc8f rdfs:label "Asie du Nord" .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db mykg:hasBrand data:fb450d8b-1b6d-4cf6-88f6-d32b7122e195 .
+data:492baa8c-3439-4af2-89d7-2a406e2be6dd mykg:hasBrand data:be351b54-d35b-42b6-8e39-5e03482ecc04 .
+data:3c946de0-5039-4c3d-81ca-8df8c9e7006b mykg:hasBrand data:b8af29c7-4a94-4212-a54e-a32ce4c99a23 .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:acquired data:fb73d418-6a06-46d2-b2a1-0e896145f456 .
+data:e37a421f-59bf-49d5-8e59-64dd32566c4b mykg:hasYear "2024"^^xsd:gYear .
+data:dda3bb87-0e1f-4386-8ec8-cae54f561c51 mykg:hasResult "4,5 millions" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:receivedAwardFrom data:1d93e7e1-b253-41b1-9bad-f661e8f7abaa .
+data:4102380e-b6ed-4b9e-a3cb-67e5af8a59a0 mykg:hasBrand data:5e56277e-eb99-4b76-a30c-ccce708e6d5f .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db rdfs:label "Luxe" .
+data:dda3bb87-0e1f-4386-8ec8-cae54f561c51 mykg:hasResult "76 %" .
+data:3c946de0-5039-4c3d-81ca-8df8c9e7006b mykg:hasBrand data:768bad6a-7676-4857-ae9d-b7fd995b14b4 , data:e35872da-fc71-488f-ae57-bbdea4beac8b .
+data:2dc1461b-6bb8-4905-b84a-b1449bc4e6b1 rdfs:label "SAPMENA-SSA" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasDivision data:556dc569-7da0-4eed-ae7c-9fdbeff217db .
+data:4ce268b4-01d0-415a-9a02-559f6db2f56d rdfs:label "Comité Exécutif" .
+data:2798cdcf-6daf-4e70-8910-6b9637aec793 rdfs:label "Fonds L’Oréal pour les Femmes" .
+data:b557f7eb-3637-4f93-a071-bcfea1cdd1a3 mykg:hasRevenueShare "27 %" .
+data:e37a421f-59bf-49d5-8e59-64dd32566c4b mykg:isForBrand data:fb73d418-6a06-46d2-b2a1-0e896145f456 .
+data:dda3bb87-0e1f-4386-8ec8-cae54f561c51 rdfs:label "L'Oréal pour le Futur" .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db mykg:hasRevenueShare "36 %" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasComparableRevenueGrowth "+5,1 %" ;
+	mykg:hasEcovadisMedal "Platinum" ;
+	mykg:hasDivision data:492baa8c-3439-4af2-89d7-2a406e2be6dd ;
+	mykg:hasRecycledWaterUsage "53 %" ;
+	mykg:hasProposedDividendGrowth "+6,1 %" .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db mykg:hasBrand data:33efcbeb-a3b8-4588-aebc-c579275c0071 .
+data:c55d50db-ec04-4e6a-bfcd-e9424ce4eb40 mykg:locatedIn "Chine" .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db mykg:hasBrand data:6e167d36-71e7-45a0-ae20-0c45b1cb2170 .
+data:03a34b14-a246-4c04-8929-f242585568b7 rdfs:label "Maybelline New York" .
+data:3c946de0-5039-4c3d-81ca-8df8c9e7006b mykg:hasRevenueShare "11 %" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasRenewableEnergyUsage "97 %" .
+data:dda3bb87-0e1f-4386-8ec8-cae54f561c51 mykg:hasResult "53 %" .
+data:4ce268b4-01d0-415a-9a02-559f6db2f56d mykg:isGoverningBodyOf data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 .
+data:81266d02-e52d-4237-91d5-610637973313 rdfs:label "SkinCeuticals" .
+data:e37a421f-59bf-49d5-8e59-64dd32566c4b rdfs:label "Licence Miu Miu" .
+data:34849001-636e-467a-aa21-4d997ede7add mykg:isPresidentOf data:5a9b7bb9-a5c2-4812-b384-d27384a5e532 .
+data:dda3bb87-0e1f-4386-8ec8-cae54f561c51 mykg:hasResult "97 %" .
+data:86cfeeec-a4e1-4e63-b6ef-7b26fb6d8eb5 rdfs:label "Europe" .
+data:be351b54-d35b-42b6-8e39-5e03482ecc04 rdfs:label "CeraVe" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasOperatingMargin "20 %" .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db mykg:hasBrand data:c8abb65a-ea36-4b37-815a-7c4d301931ca .
+data:c8abb65a-ea36-4b37-815a-7c4d301931ca rdfs:label "Aesop" .
+data:33efcbeb-a3b8-4588-aebc-c579275c0071 rdfs:label "Yves Saint Laurent" .
+data:39b8ba53-cb46-47ff-b54b-d560a002d7a6 rdfs:label "Lancôme" .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db mykg:hasBrand data:fd405433-80b9-4996-9618-ffa519c7f8bd .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasResearchInvestment "1,3 Md €" ;
+	mykg:hasPatentsFiled 694 .
+data:e35872da-fc71-488f-ae57-bbdea4beac8b rdfs:label "Redken" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasFund data:53c78eff-9617-4500-954a-a84003eb38b1 .
+data:5a9b7bb9-a5c2-4812-b384-d27384a5e532 mykg:hasIndependentDirectorPercentage "50 %" .
+data:ad569744-d19d-448d-b1ff-44dc82e5fb2f rdfs:label "CDP" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasRevenueFrom data:2dc1461b-6bb8-4905-b84a-b1449bc4e6b1 ;
+	mykg:hasNetEarningsPerShare "12,66 €" .
+data:c55d50db-ec04-4e6a-bfcd-e9424ce4eb40 mykg:hasFeature "haute technologie" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasCdpScore "AAA" .
+data:492baa8c-3439-4af2-89d7-2a406e2be6dd mykg:hasBrand data:81266d02-e52d-4237-91d5-610637973313 .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:operatesInCountries "+ de 150" ;
+	mykg:hasEcommerceRevenueShare "28,2 %" ;
+	mykg:hasFund data:2798cdcf-6daf-4e70-8910-6b9637aec793 .
+data:fe568dc8-1e7b-4521-ad7c-e1b02e4fbc8f mykg:hasRevenueShare "24 %" .
+data:a67c005a-2ad1-4f26-9c25-9f45a3b6f529 mykg:isInstanceOf "IA générative" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasEcommerceRevenue "12,3 Mds €" .
+data:0efb05df-8d02-486c-a096-f08c7607d681 mykg:hasGoal "pour tous les types de peaux et carnations" .
+data:3c946de0-5039-4c3d-81ca-8df8c9e7006b mykg:hasBrand data:3f13b57e-3945-487f-95a6-c936ae3a067a .
+data:2dc1461b-6bb8-4905-b84a-b1449bc4e6b1 mykg:hasRevenueShare "9 %" .
+data:34849001-636e-467a-aa21-4d997ede7add rdfs:label "Jean-Paul Agon" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasBrandCount 37 .
+data:6e167d36-71e7-45a0-ae20-0c45b1cb2170 rdfs:label "Prada" .
+data:0efb05df-8d02-486c-a096-f08c7607d681 rdfs:label "Universal Dermatology" .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasRevenueFrom data:f0493395-ff53-4971-8aaa-3fd71904ac81 .
+data:1d2f19da-5fcd-4f2b-8e9b-9aaac8e10fdb mykg:isCEOOf data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:receivedAwardFrom data:f5d91a19-3d71-43be-9ff4-af6871e3c083 .
+data:a67c005a-2ad1-4f26-9c25-9f45a3b6f529 rdfs:label "CreAItech" .
+data:fb450d8b-1b6d-4cf6-88f6-d32b7122e195 rdfs:label "Kiehl’s" .
+data:5a9b7bb9-a5c2-4812-b384-d27384a5e532 mykg:isGoverningBodyOf data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 .
+data:492baa8c-3439-4af2-89d7-2a406e2be6dd mykg:hasBrand data:84eeb263-36af-4d03-ab49-ae75b135b732 .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasRevenueFrom data:fe568dc8-1e7b-4521-ad7c-e1b02e4fbc8f ;
+	mykg:hasNetEarningsPerShareGrowth "+4,8 %" ;
+	mykg:hasRevenue "43,48 milliards d’euros" .
+data:fb73d418-6a06-46d2-b2a1-0e896145f456 rdfs:label "Miu Miu" .
+data:3f13b57e-3945-487f-95a6-c936ae3a067a rdfs:label "L’Oréal Professionnel" .
+data:86cfeeec-a4e1-4e63-b6ef-7b26fb6d8eb5 mykg:hasRevenueShare "33 %" .
+data:5e56277e-eb99-4b76-a30c-ccce708e6d5f rdfs:label "NYX" .
+data:b8af29c7-4a94-4212-a54e-a32ce4c99a23 rdfs:label "Kérastase" .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db mykg:hasBrand data:39b8ba53-cb46-47ff-b54b-d560a002d7a6 .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 mykg:hasRevenueFrom data:86cfeeec-a4e1-4e63-b6ef-7b26fb6d8eb5 .
+data:f0493395-ff53-4971-8aaa-3fd71904ac81 a mykg:GeographicRegion .
+data:18c74964-bf5c-4e62-a1d7-af3fd8c83a90 a mykg:Company .
+data:33efcbeb-a3b8-4588-aebc-c579275c0071 a mykg:Brand .
+data:c8abb65a-ea36-4b37-815a-7c4d301931ca a mykg:Brand .
+data:5e56277e-eb99-4b76-a30c-ccce708e6d5f a mykg:Brand .
+data:c55d50db-ec04-4e6a-bfcd-e9424ce4eb40 a mykg:Facility .
+data:492baa8c-3439-4af2-89d7-2a406e2be6dd a mykg:BusinessDivision .
+data:f72a45fe-1752-4125-ba26-5883e2120ce4 a mykg:Brand .
+data:b8af29c7-4a94-4212-a54e-a32ce4c99a23 a mykg:Brand .
+data:4102380e-b6ed-4b9e-a3cb-67e5af8a59a0 a mykg:BusinessDivision .
+data:5a9b7bb9-a5c2-4812-b384-d27384a5e532 a mykg:GoverningBody .
+data:f5d91a19-3d71-43be-9ff4-af6871e3c083 a mykg:Organization .
+data:34849001-636e-467a-aa21-4d997ede7add a mykg:Person .
+data:2798cdcf-6daf-4e70-8910-6b9637aec793 a mykg:Fund .
+data:3f13b57e-3945-487f-95a6-c936ae3a067a a mykg:Brand .
+data:be351b54-d35b-42b6-8e39-5e03482ecc04 a mykg:Brand .
+data:768bad6a-7676-4857-ae9d-b7fd995b14b4 a mykg:Brand .
+data:3c946de0-5039-4c3d-81ca-8df8c9e7006b a mykg:BusinessDivision .
+data:86cfeeec-a4e1-4e63-b6ef-7b26fb6d8eb5 a mykg:GeographicRegion .
+data:eeb03195-0e1d-45bf-aca0-6c28a47a274c a mykg:Brand .
+data:b557f7eb-3637-4f93-a071-bcfea1cdd1a3 a mykg:GeographicRegion .
+data:39b8ba53-cb46-47ff-b54b-d560a002d7a6 a mykg:Brand .
+data:ad569744-d19d-448d-b1ff-44dc82e5fb2f a mykg:Organization .
+data:fb450d8b-1b6d-4cf6-88f6-d32b7122e195 a mykg:Brand .
+data:03a34b14-a246-4c04-8929-f242585568b7 a mykg:Brand .
+data:556dc569-7da0-4eed-ae7c-9fdbeff217db a mykg:BusinessDivision .
+data:1d2f19da-5fcd-4f2b-8e9b-9aaac8e10fdb a mykg:Person .
+data:84eeb263-36af-4d03-ab49-ae75b135b732 a mykg:Brand .
+data:fe568dc8-1e7b-4521-ad7c-e1b02e4fbc8f a mykg:GeographicRegion .
+data:81266d02-e52d-4237-91d5-610637973313 a mykg:Brand .
+data:4ce268b4-01d0-415a-9a02-559f6db2f56d a mykg:GoverningBody .
+data:678a5257-0a2b-46fd-b8ea-6e6bacc187e2 a mykg:Brand .
+data:fb73d418-6a06-46d2-b2a1-0e896145f456 a mykg:Brand .
+data:a67c005a-2ad1-4f26-9c25-9f45a3b6f529 a mykg:TechnologyPlatform .
+data:dda3bb87-0e1f-4386-8ec8-cae54f561c51 a mykg:Program .
+data:1d93e7e1-b253-41b1-9bad-f661e8f7abaa a mykg:Organization .
+data:e37a421f-59bf-49d5-8e59-64dd32566c4b a mykg:LicenseAgreement .
+data:53c78eff-9617-4500-954a-a84003eb38b1 a mykg:Fund .
+data:2dc1461b-6bb8-4905-b84a-b1449bc4e6b1 a mykg:GeographicRegion .
+data:d847b703-07f5-48bc-b2a9-0dea14e58856 a mykg:Document .
+data:6e167d36-71e7-45a0-ae20-0c45b1cb2170 a mykg:Brand .
+data:fd405433-80b9-4996-9618-ffa519c7f8bd a mykg:Brand .
+data:e35872da-fc71-488f-ae57-bbdea4beac8b a mykg:Brand .
+data:0efb05df-8d02-486c-a096-f08c7607d681 a mykg:Program .

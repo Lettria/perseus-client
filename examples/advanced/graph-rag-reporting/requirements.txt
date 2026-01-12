@@ -1,0 +1,6 @@
+perseus-client==1.0.0rc1
+simple_graph_retriever==1.0.0-rc10
+google-genai==1.41.0
+python-dotenv
+httpx
+neo4j

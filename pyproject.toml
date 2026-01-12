@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "perseus-client"
+version = "1.0.0rc15"
+authors = [
+  { name="Victor de La Salmonière", email="victor@lettria.com" },
+]
+description = "A Python client for Perseus API"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "aiohttp",
+    "neo4j",
+    "pydantic",
+    "pydantic-settings",
+    "certifi"
+]
+
+
+[project.urls]
+"Homepage" = "https://github.com/pypa/sampleproject"
+"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
