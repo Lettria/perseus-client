@@ -1,4 +1,4 @@
-# Perseus Client 🚀
+# Perseus Text-to-Graph 🚀
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -36,8 +36,6 @@ pip install perseus-client==1.0.0-rc1
 To start using the SDK, you will need an API key from Lettria.
 
 To create an API key, please visit our app [here](https://app.perseus.lettria.net/).
-
-Access to the API is managed by whitelisting. If you require access, please contact us at [hello@lettria.com](mailto:hello@lettria.com) to request whitelisting.
 
 ### Configuration
 
