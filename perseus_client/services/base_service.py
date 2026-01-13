@@ -17,9 +17,11 @@ class BaseService:
         self,
         session: aiohttp.ClientSession,
         api_host: str,
+        loop: asyncio.AbstractEventLoop,
     ):
         self._session = session
         self.api_host = api_host
+        self._loop = loop
 
     async def _request(
         self,

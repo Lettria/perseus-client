@@ -5,3 +5,6 @@ dist/
 examples/advanced/graph-enhanced-search
 __pycache__/
 poetry.lock
+build_graph_sync*
+build_graph_async*
+find_files

@@ -4,6 +4,7 @@ import hashlib
 from typing import Dict, List, Optional
 from datetime import datetime
 import aiohttp
+import asyncio
 
 
 from .base_service import BaseService
@@ -15,7 +16,41 @@ logger = logging.getLogger(__name__)
 
 
 class OntologyService(BaseService):
-    async def create_ontology(self, name: str, source_hash: str) -> Dict:
+    def __init__(self, session, api_host, loop):
+        super().__init__(session, api_host, loop)
+
+    def create_ontology(self, name: str, source_hash: str) -> Dict:
+        return self._loop.run_until_complete(
+            self.create_ontology_async(name, source_hash)
+        )
+
+    def find_ontologies(
+        self, ids: Optional[list[str]] = None, source_hashes: Optional[list[str]] = None
+    ) -> list[Ontology]:
+        return self._loop.run_until_complete(
+            self.find_ontologies_async(ids, source_hashes)
+        )
+
+    def find_ontology(self, id: str) -> Optional[Ontology]:
+        return self._loop.run_until_complete(self.find_ontology_async(id))
+
+    def delete_ontology(self, ontology_id: str) -> None:
+        return self._loop.run_until_complete(self.delete_ontology_async(ontology_id))
+
+    def upload_ontology(self, ontology_path: str) -> Ontology:
+        return self._loop.run_until_complete(self.upload_ontology_async(ontology_path))
+
+    def wait_for_ontology_upload(
+        self,
+        ontology_id: str,
+        polling_interval: float = 0.5,
+        timeout: int = 3600,
+    ) -> Ontology:
+        return self._loop.run_until_complete(
+            self.wait_for_ontology_upload_async(ontology_id, polling_interval, timeout)
+        )
+
+    async def create_ontology_async(self, name: str, source_hash: str) -> Dict:
         """
         Asynchronously creates a ontology and returns a presigned URL for uploading.
         """
@@ -38,7 +73,7 @@ class OntologyService(BaseService):
         upload_url = response.get("uploadUrl", "")
         return {"ontology": ontology, "upload_url": upload_url}
 
-    async def find_ontologies(
+    async def find_ontologies_async(
         self, ids: Optional[list[str]] = None, source_hashes: Optional[list[str]] = None
     ) -> list[Ontology]:
         """
@@ -65,16 +100,16 @@ class OntologyService(BaseService):
             ontologies.append(ontology)
         return ontologies
 
-    async def find_ontology(self, id: str) -> Optional[Ontology]:
+    async def find_ontology_async(self, id: str) -> Optional[Ontology]:
         """
         Asynchronously finds an ontology by its ID.
         """
-        ontologies = await self.find_ontologies(ids=[id])
+        ontologies = await self.find_ontologies_async(ids=[id])
         if not ontologies:
             return None
         return ontologies[0]
 
-    async def delete_ontology(self, ontology_id: str) -> None:
+    async def delete_ontology_async(self, ontology_id: str) -> None:
         """
         Asynchronously deletes an ontology by its ID.
         """
@@ -85,7 +120,7 @@ class OntologyService(BaseService):
         )
         logger.info(f"Successfully deleted ontology with id: {ontology_id}")
 
-    async def upload_ontology(self, ontology_path: str) -> Ontology:
+    async def upload_ontology_async(self, ontology_path: str) -> Ontology:
         """
         Asynchronously creates a ontology record and uploads the ontology content.
         If a ontology with the same content already exists, it will be returned.
@@ -96,7 +131,7 @@ class OntologyService(BaseService):
             source_hash = hashlib.sha256(ontology_content).hexdigest()
 
         try:
-            response = await self.create_ontology(ontology_name, source_hash)
+            response = await self.create_ontology_async(ontology_name, source_hash)
             ontology_obj = response["ontology"]
             upload_url = response["upload_url"]
             if not upload_url:
@@ -104,7 +139,9 @@ class OntologyService(BaseService):
                 raise PerseusException("Failed to get upload URL for the new ontology.")
         except APIException as e:
             if e.status_code == 409:
-                ontologies = await self.find_ontologies(source_hashes=[source_hash])
+                ontologies = await self.find_ontologies_async(
+                    source_hashes=[source_hash]
+                )
                 if not ontologies:
                     raise PerseusException(e) from e
                 return ontologies[0]
@@ -128,7 +165,7 @@ class OntologyService(BaseService):
             ) from e
         return ontology_obj
 
-    async def wait_for_ontology_upload(
+    async def wait_for_ontology_upload_async(
         self,
         ontology_id: str,
         polling_interval: float = 0.5,
@@ -139,7 +176,7 @@ class OntologyService(BaseService):
         """
         ontology = await self._wait_with_spinner(
             wait_message=f"Waiting for ontology upload {ontology_id}...",
-            polling_fct=self.find_ontology,
+            polling_fct=self.find_ontology_async,
             polling_fct_args=[ontology_id],
             status_attribute="status",
             end_statuses=[OntologyStatus.UPLOADED, OntologyStatus.FAILED],

@@ -1,5 +1,6 @@
 from neo4j import GraphDatabase
 import logging
+import asyncio
 from perseus_client.config import settings
 from perseus_client.exceptions import ConfigurationException
 
@@ -9,8 +10,16 @@ logger = logging.getLogger(__name__)
 
 
 class Neo4jService:
+    def __init__(self, loop: asyncio.AbstractEventLoop):
+        self._loop = loop
+
+    def save_output_to_neo4j(self, file_path: str):
+        return self._loop.run_until_complete(
+            self.save_output_to_neo4j_async(file_path)
+        )
+
     @staticmethod
-    async def save_output_to_neo4j(file_path: str):
+    async def save_output_to_neo4j_async(file_path: str):
         """
         Reads a file containing Cypher queries and executes them against a Neo4j database.
 

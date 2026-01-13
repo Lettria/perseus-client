@@ -4,7 +4,6 @@ load_dotenv()
 import logging
 
 logging.getLogger("google_genai").setLevel(logging.ERROR)
-import asyncio
 import sys
 from simple_graph_retriever.client import GraphRetrievalClient
 from simple_graph_retriever.models import RetrievalConfig
@@ -13,9 +12,9 @@ from google.genai import types as genai_types
 from utils import wait_for_embedder, wait_for_neo4j
 
 
-async def main(script_input: str):
-    await wait_for_neo4j()
-    await wait_for_embedder()
+def main(script_input: str):
+    wait_for_neo4j()
+    wait_for_embedder()
     genai_client = genai.Client()
     retrieval_client = GraphRetrievalClient()
     data = retrieval_client.retrieve_graph(
@@ -65,4 +64,4 @@ async def main(script_input: str):
 
 if __name__ == "__main__":
     script_input = sys.argv[1] if len(sys.argv) > 1 else "Money KPIs"
-    asyncio.run(main(script_input))
+    main(script_input)
