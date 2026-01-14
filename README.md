@@ -1,6 +1,13 @@
-# Perseus Text-to-Graph 🚀
+<div align="center">
+
+# Perseus Text-to-Graph
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation](https://img.shields.io/badge/docs-available-blue.svg)](https://docs.perseus.lettria.net/)
+
+[Documentation](https://docs.perseus.lettria.net/)
+
+</div>
 
 In today's world, a vast amount of valuable information is locked away in unstructured text—documents, articles, emails, and more. While AI and analytics tools are incredibly powerful, they struggle to make sense of this chaotic data. They need structured, connected information to reason effectively.
 
