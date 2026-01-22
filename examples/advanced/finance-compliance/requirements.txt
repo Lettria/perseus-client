@@ -1,0 +1,4 @@
+perseus-client
+python-dotenv
+neo4j
+rdflib
