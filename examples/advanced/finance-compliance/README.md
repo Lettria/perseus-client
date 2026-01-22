@@ -134,6 +134,40 @@ This command-line application replicates the process from the original notebook:
     RETURN count(pillar) > 0 AS present
     ```
 
+## Compliance Results
+
+The verification shows that **EcoSteel Industries meets all 5 ESRS E1 indicators (100%)** while **TechGreen Solutions meets 3 out of 5 indicators (60%)**.
+
+**EcoSteel Industries**
+
+```yaml
+  Quantitative (structured numbers):
+    ✓ E1-6: GHG emissions disclosed
+    ✓ E1-5: Carbon intensity disclosed
+    ✓ E1-4: Net-Zero target set
+  Narrative (contextual information):
+    ✓ Strategic program with pillars
+    ✓ Climate risks with description
+
+  5/5 indicators (100%)
+```
+
+**TechGreen Solutions**
+
+```yaml
+  Quantitative (structured numbers):
+    ✗ E1-6: GHG emissions disclosed
+    ✗ E1-5: Carbon intensity disclosed
+    ✓ E1-4: Net-Zero target set
+  Narrative (contextual information):
+    ✓ Strategic program with pillars
+    ✓ Climate risks with description
+
+  3/5 indicators (60%)
+```
+
+This demonstrates that Perseus successfully extracted and structured the available key climate data required by ESRS E1, enabling automated verification that would otherwise require manual review of lengthy reports. The difference in compliance scores reflects the varying levels of detail present in different document types (annual report vs. press release), highlighting that not all documents provide the same depth of quantitative disclosure.
+
 ---
 
 ## Visualize in the Perseus Interface
@@ -205,27 +239,3 @@ When you're done, stop and remove the Docker services:
 ```bash
 docker compose down
 ```
-
-### Compliance Results
-
-The verification shows that **EcoSteel Industries meets all 5 ESRS E1 indicators (100%)** while **TechGreen Solutions meets 3 out of 5 indicators (60%)**.
-
-**EcoSteel Industries**
-Quantitative (structured numbers):
-✓ E1-6: GHG emissions disclosed
-✓ E1-5: Carbon intensity disclosed
-✓ E1-4: Net-Zero target set
-Narrative (contextual information):
-✓ Strategic program with pillars
-✓ Climate risks with description
-
-**TechGreen Solutions**
-Quantitative (structured numbers):
-✗ E1-6: GHG emissions disclosed (This was not found in the press release, as confirmed by the exploration output showing "No GHG Emissions Metrics samples found" for TechGreen.)
-✗ E1-5: Carbon intensity disclosed (This was also not present in the press release, consistent with the lack of detailed quantitative metrics.)
-✓ E1-4: Net-Zero target set
-Narrative (contextual information):
-✓ Strategic program with pillars
-✓ Climate risks with description
-
-This demonstrates that Perseus successfully extracted and structured the available key climate data required by ESRS E1, enabling automated verification that would otherwise require manual review of lengthy reports. The difference in compliance scores reflects the varying levels of detail present in different document types (annual report vs. press release), highlighting that not all documents provide the same depth of quantitative disclosure.
