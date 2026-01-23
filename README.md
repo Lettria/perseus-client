@@ -35,7 +35,7 @@ Lettria's Perseus service is designed to solve this problem. It transforms your 
 ## 📦 Installation
 
 ```bash
-pip install perseus-client==1.0.0-rc.2
+pip install perseus-client==1.0.0-rc.3
 ```
 
 ## 🚀 Quick Start
