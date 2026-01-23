@@ -98,6 +98,14 @@ docker compose up -d
       python report.py "Money KPIs"
       ```
 
+### 4. Cleaning Up 🧹
+
+When you're done, stop and remove the Docker containers:
+
+```bash
+docker compose down
+```
+
 ---
 
 ## Generated Report Example
@@ -182,13 +190,3 @@ The knowledge graph outputs are accessible both locally (`.ttl` files) and in th
 - **Turtle and Cypher tab**: View the Turtle (.ttl) and Cypher (.cql) files.
 
 ![Perseus interface - Jobs view with extracted climate entities](assets/perseus_output.png)
-
----
-
-## Cleaning Up 🧹
-
-When you're done, stop and remove the Docker containers:
-
-```bash
-docker compose down
-```

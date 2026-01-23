@@ -159,6 +159,14 @@ docker compose up -d
     RETURN count(pillar) > 0 AS present
     ```
 
+### 4. Cleaning Up 🧹
+
+When you're done, stop and remove the Docker services:
+
+```bash
+docker compose down
+```
+
 ---
 
 ## Compliance Results
@@ -206,13 +214,3 @@ The outputs are accessible both locally (`.ttl` files) and in the **[Perseus web
 - **Turtle and Cypher tab**: View the Turtle (.ttl) and Cypher (.cql) files
 
 ![Perseus interface - Jobs view with extracted climate entities](assets/perseus_output.png)
-
----
-
-## Cleaning Up 🧹
-
-When you're done, stop and remove the Docker services:
-
-```bash
-docker compose down
-```
