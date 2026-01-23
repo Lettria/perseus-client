@@ -8,3 +8,4 @@ poetry.lock
 build_graph_sync*
 build_graph_async*
 find_files
+examples/advanced/finance-compliance/*.ipynb

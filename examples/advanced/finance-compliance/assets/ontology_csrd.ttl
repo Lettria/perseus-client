@@ -1,0 +1,4091 @@
+
+@base <http://example.org/ontology> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ont: <#> .
+
+#################################################################
+#    Ontology Metadata
+#################################################################
+
+ont:
+    a owl:Ontology ;
+    rdfs:comment "Ontology for the use case: Organize CSRD reports into structured data (metrics, yearly results, governance, risks, targets, KPI's, etc.) to support expert analysis and regulatory compliance." .
+
+#################################################################
+#    Annotation Properties
+#################################################################
+
+rdfs:comment a owl:AnnotationProperty .
+
+#################################################################
+#    Top-Level Classes (Corrected)
+#################################################################
+
+ont:AbstractConcept
+    a owl:Class ;
+    rdfs:label "Abstract Concept" ;
+    rdfs:comment "Non-physical, conceptual entities such as ideas, theories, plans, information, qualities, attributes, processes, and situations." .
+
+ont:Agent
+    a owl:Class ;
+    rdfs:label "Agent" ;
+    rdfs:comment "Entities capable of acting or exercising power, such as people, organizations, software agents, or intelligent systems." .
+
+ont:ConcreteEntity
+    a owl:Class ;
+    rdfs:label "Concrete Entity" ;
+    rdfs:comment "Physical, tangible objects, including artifacts, natural objects, locations, and materials." .
+
+ont:TemporalEntity
+    a owl:Class ;
+    rdfs:label "Temporal Entity" ;
+    rdfs:comment "Entities that happen in time and have temporal parts, such as events, processes, states, or periods. Also known as perdurants or occurrents." .
+
+#################################################################
+#    Object Properties (Corrected and Refactored)
+#################################################################
+
+ont:adheresTo
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an agent's behavior is governed by or follows a specific rule, standard, or policy." ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:AbstractConcept ;
+    owl:inverseOf ont:isAdheredToBy .
+
+ont:adoptsStandard
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an organization officially adopts or uses a specific external standard for its operations or reporting." ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:Standard .
+
+ont:advises
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of providing expert recommendations or guidance to an organization on its strategy or policies." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:GovernanceBody )
+    ] ;
+    owl:propertyDisjointWith ont:oversees .
+
+ont:addressesIssue
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a specific plan or action is designed to mitigate or manage a particular environmental or sustainability topic." ;
+    rdfs:domain ont:ActionPlan ;
+    rdfs:range ont:SustainabilityTopic .
+
+ont:affects
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a corporate action or reorganization has a direct impact on a specific business area." ;
+    rdfs:domain ont:Reorganization ;
+    rdfs:range ont:BusinessSegment .
+
+ont:approves
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies the act of giving official sanction or formal consent to a document, plan, or body." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:GovernanceBody ont:Report )
+    ] .
+
+ont:authored
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of isAuthoredBy." ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:AbstractConcept ;
+    owl:inverseOf ont:isAuthoredBy .
+
+ont:collaboratesWith
+    a owl:ObjectProperty , owl:SymmetricProperty ;
+    rdfs:comment "Indicates a working partnership between distinct internal departments to achieve shared compliance and sustainability objectives." ;
+    rdfs:domain ont:OrganizationalUnit ;
+    rdfs:range ont:OrganizationalUnit .
+
+ont:conductsAnalysis
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the action of performing a systematic examination of a subject, such as a materiality assessment." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Analysis .
+
+ont:conductsTraining
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of delivering or administering an educational program to enhance employee knowledge on sustainability and compliance topics." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:TrainingProgram .
+
+ont:consolidates
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the accounting practice where a parent company combines the financial statements of a subsidiary for reporting purposes. Inverse of isConsolidatedBy." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Company ;
+    owl:inverseOf ont:isConsolidatedBy .
+
+ont:definesAndExecutes
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the dual responsibility of creating the plan for and carrying out the activities of a strategic initiative or governing body." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range ont:GovernanceBody .
+
+ont:deploys
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies the act of implementing or rolling out a strategic program or policy across an organization." ;
+    rdfs:domain ont:OrganizationalUnit ;
+    rdfs:range ont:StrategicProgram .
+
+ont:deploysTraining
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of making an educational module or program available to employees." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:TrainingProgram ;
+    rdfs:subPropertyOf ont:conductsTraining .
+
+ont:designates
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Represents the formal act of establishing or appointing a subcommittee or group from a parent governing body." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range ont:GovernanceBody .
+
+ont:develops
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Signifies the creation or formulation of a specific standard, methodology, or framework." ;
+    rdfs:domain ont:Agent ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:AbstractConcept ont:Initiative ont:IntangibleProduct ont:TangibleProduct )
+    ] .
+
+ont:employs
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies the relationship where an organization has an individual working for it." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Person ;
+    owl:inverseOf ont:isEmployedBy .
+
+ont:hasAcquiredEntity
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the company or asset that was purchased in an acquisition event." ;
+    rdfs:domain ont:Acquisition ;
+    rdfs:range ont:Company .
+
+ont:hasAcquirer
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the company that performed the act of purchasing another entity." ;
+    rdfs:domain ont:Acquisition ;
+    rdfs:range ont:Company .
+
+ont:hasAcquisitionEvent
+    a owl:ObjectProperty ;
+    rdfs:comment "A fact stating the specific transaction through which one company took control of another." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Acquisition .
+
+ont:hasActionPlan
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a strategic program is composed of several detailed plans focused on specific environmental pillars." ;
+    rdfs:domain ont:StrategicProgram ;
+    rdfs:range ont:ActionPlan .
+
+ont:hasAppointee
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the individual who is the subject of an appointment to a role." ;
+    rdfs:domain ont:Appointment ;
+    rdfs:range ont:Person .
+
+ont:hasAppointment
+    a owl:ObjectProperty ;
+    rdfs:comment "A fact stating the formal engagement of an entity for a specific corporate governance role." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Appointment .
+
+ont:hasAssuranceFrom
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an external, independent entity has provided a formal opinion on the reliability and accuracy of reported information." ;
+    rdfs:domain ont:Report ;
+    rdfs:range ont:Company .
+
+ont:hasAuditor
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the formal engagement of an external entity to perform an audit." ;
+    rdfs:domain ont:Group ;
+    rdfs:range ont:Auditor .
+
+ont:hasAuthor
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Identifies the organization responsible for creating, preparing, and publishing a report. A report may have multiple authors." ;
+    rdfs:domain ont:Report ;
+    rdfs:range ont:Company .
+
+ont:hasBusinessSegment
+    a owl:ObjectProperty ;
+    rdfs:comment "Denotes the inclusion of a distinct operational division within a larger corporate structure." ;
+    rdfs:domain ont:Group ;
+    rdfs:range ont:BusinessSegment .
+
+ont:hasCapitalStructure
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "The association of a specific equity and debt configuration with an entity at a point in time." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:CapitalStructure .
+
+ont:hasCeo
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the individual holding the Chief Executive Officer position." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Person ;
+    rdfs:subPropertyOf ont:employs .
+
+ont:hasChairman
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the individual holding the Chairman of the Board position." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Person ;
+    rdfs:subPropertyOf ont:employs .
+
+ont:hasCommittee
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the existence of a specialized subgroup established to handle specific governance tasks." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:BoardCommittee ont:GovernanceCommittee )
+    ] .
+
+ont:hasCommitment
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies that an organization has formally adopted a specific pledge or undertaking related to sustainability." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Commitment .
+
+ont:hasComponent
+    a owl:ObjectProperty , owl:IrreflexiveProperty , owl:TransitiveProperty ;
+    rdfs:comment "Represents the inclusion of a sub-part within a larger, composite measure." ;
+    rdfs:domain ont:Metric ;
+    rdfs:range ont:Metric .
+
+ont:hasDepartment
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the existence of a specific operational unit within an organization's structure." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:OrganizationalUnit .
+
+ont:hasDeputyCeo
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies an individual holding a Deputy Chief Executive Officer position." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Person ;
+    rdfs:subPropertyOf ont:employs .
+
+ont:hasDividend
+    a owl:ObjectProperty ;
+    rdfs:comment "The association of a specific per-share profit distribution with a company for a given period." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Dividend .
+
+ont:hasExecutive
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies a person holding a key management position within an organization." ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:Person .
+
+ont:hasFinancialReporting
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Associates an entity with its formal statement of financial performance and position." ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:FinancialReporting .
+
+ont:hasFinancialStatement
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the existence of a formal record of financial activities for a specific reporting period." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:FinancialStatement .
+
+ont:hasFoundation
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an entity has established or is associated with a specific philanthropic foundation." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Foundation .
+
+ont:hasFounder
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies the individual who established an organization." ;
+    rdfs:domain ont:Founding ;
+    rdfs:range ont:Person .
+
+ont:hasFoundingEvent
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "A fact stating the specific event that created an organization." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Group )
+    ] ;
+    rdfs:range ont:Founding .
+
+ont:hasFramework
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the adoption, use, or implementation of a specific structured set of guidelines or rules." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Framework .
+
+ont:hasGovernanceBody
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Associates an organization with a formal committee or group responsible for oversight." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Group ont:Organization )
+    ] ;
+    rdfs:range ont:GovernanceBody .
+
+ont:hasGuidance
+    a owl:ObjectProperty ;
+    rdfs:comment "The issuance of a forward-looking statement about expected future performance." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Guidance .
+
+ont:hasHeadquartersIn
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Specifies the primary legal and administrative location of an organization." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:City .
+
+ont:hasHolder
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the individual currently occupying a formal position." ;
+    rdfs:domain ont:Position ;
+    rdfs:range ont:Person .
+
+ont:hasInitiative
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an organization has established a specific program to meet a goal." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Organization )
+    ] ;
+    rdfs:range ont:Initiative .
+
+ont:hasInvestee
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the entity that received capital in an investment event." ;
+    rdfs:domain ont:Investment ;
+    rdfs:range ont:Company .
+
+ont:hasInvestmentEvent
+    a owl:ObjectProperty ;
+    rdfs:comment "A fact stating the specific event of allocating capital into an entity." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Investment .
+
+ont:hasInvestor
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies the entity that provided capital in an investment event." ;
+    rdfs:domain ont:Investment ;
+    rdfs:range ont:Company .
+
+ont:hasManagementSystem
+    a owl:ObjectProperty ;
+    rdfs:comment "The existence of a formal set of processes and procedures used by an organization to achieve its objectives in a specific area, like compliance." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:ManagementSystem .
+
+ont:hasMeasurement
+    a owl:ObjectProperty ;
+    rdfs:comment "Associates a specific recorded result or data point with its corresponding performance indicator." ;
+    rdfs:domain ont:KeyPerformanceIndicator ;
+    rdfs:range ont:MetricResult .
+
+ont:hasMember
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies an individual's participation in a formal group or committee." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:GovernanceBody ont:GovernanceEntity )
+    ] ;
+    rdfs:range ont:Person ;
+    owl:inverseOf ont:isMemberOf .
+
+ont:hasMetric
+    a owl:ObjectProperty ;
+    rdfs:comment "Associates an organization or initiative with a specific, reported performance indicator (KPI), financial or non-financial." ;
+    rdfs:domain ont:Organization ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:Metric ont:MetricReport ont:KeyPerformanceIndicator )
+    ] .
+
+ont:hasOffer
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a company provides a specific product or service to the market." ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:Offer .
+
+ont:hasOffice
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the existence of a regional or specialized operational unit." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Company .
+
+ont:hasOrganizationalUnit
+    a owl:ObjectProperty ;
+    rdfs:comment "Associates an organization with a specific internal department or functional team." ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:OrganizationalUnit .
+
+ont:hasOwnershipStructure
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "A fact stating the formal arrangement of shareholdings for an entity." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:OwnershipStructure .
+
+ont:hasParentCompany
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:FunctionalProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Identifies the controlling entity in a corporate hierarchy." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Company ;
+    owl:inverseOf ont:hasSubsidiary .
+
+ont:hasParticipant
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of participatesIn." ;
+    rdfs:domain ont:TemporalEntity ;
+    rdfs:range ont:Agent ;
+    owl:inverseOf ont:participatesIn .
+
+ont:hasPillar
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the thematic subdivision of a strategic program into key areas of focus." ;
+    rdfs:domain ont:StrategicProgram ;
+    rdfs:range ont:StrategicPillar .
+
+ont:hasPlan
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the adoption or use of a specific detailed proposal for action, such as a due diligence plan." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Plan .
+
+ont:hasPolicy
+    a owl:ObjectProperty ;
+    rdfs:comment "Associates an organization with a formal guiding principle or rule it has adopted." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Organization )
+    ] ;
+    rdfs:range ont:Policy .
+
+ont:hasProgram
+    a owl:ObjectProperty ;
+    rdfs:comment "Associates an organization with a structured initiative or strategic program designed to meet a sustainability goal." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Program .
+
+ont:hasRating
+    a owl:ObjectProperty ;
+    rdfs:comment "Associates an entity with an external evaluation or score of its performance." ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:Rating .
+
+ont:hasReorganization
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an organization is undergoing a significant structural change." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Reorganization .
+
+ont:hasResult
+    a owl:ObjectProperty ;
+    rdfs:comment "Links a strategic target to its corresponding measured outcome for a specific reporting period." ;
+    rdfs:domain ont:Target ;
+    rdfs:range ont:MetricResult .
+
+ont:hasRisk
+    a owl:ObjectProperty ;
+    rdfs:comment "The identification of a potential adverse event or condition relevant to an organization's objectives and compliance." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Group )
+    ] ;
+    rdfs:range ont:Risk .
+
+ont:hasRole
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Specifies the official capacity, position, or function performed during an event or within an organization." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Agent ont:Appointment ont:Person ont:Position )
+    ] ;
+    rdfs:range ont:Role .
+
+ont:hasSection
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Denotes the structural composition of a report, indicating its constituent parts." ;
+    rdfs:domain ont:Report ;
+    rdfs:range ont:ReportSection .
+
+ont:hasShareholder
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies an entity or individual that owns shares in a corporation." ;
+    rdfs:domain ont:OwnershipStructure ;
+    rdfs:range ont:Company .
+
+ont:hasShareholderType
+    a owl:ObjectProperty ;
+    rdfs:comment "Classifies a group of owners, such as employees or institutional investors." ;
+    rdfs:domain ont:OwnershipStructure ;
+    rdfs:range ont:EmployeeRepresentativeBody .
+
+ont:hasShareholding
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an entity possesses an ownership stake in a company." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:ShareholderGroup )
+    ] ;
+    rdfs:range ont:Shareholding ;
+    owl:inverseOf ont:isShareholdingIn .
+
+ont:hasSharePrice
+    a owl:ObjectProperty ;
+    rdfs:comment "The association of a specific market valuation per share with a company at a point in time." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:SharePrice .
+
+ont:hasSolution
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a company has developed or offers a specific technical or commercial solution." ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:Solution .
+
+ont:hasStrategy
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Associates an organization with its overarching plan for achieving long-term sustainability goals." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Organization )
+    ] ;
+    rdfs:range ont:StrategicPlan .
+
+ont:hasSubKpi
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty , owl:TransitiveProperty ;
+    rdfs:comment "Signifies that a primary performance indicator is broken down into more detailed, component metrics." ;
+    rdfs:domain ont:KeyPerformanceIndicator ;
+    rdfs:range ont:KeyPerformanceIndicator ;
+    rdfs:subPropertyOf ont:isBasedOn ;
+    owl:inverseOf ont:isSubKpiOf .
+
+ont:hasSubcommittee
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty , owl:TransitiveProperty ;
+    rdfs:comment "Indicates that a governance body has a more specialized committee reporting to it." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range ont:GovernanceBody .
+
+ont:hasSubscriptionEvent
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a corporate plan or program includes a specific offering for purchasing shares." ;
+    rdfs:domain ont:EmployeeShareholderPlan ;
+    rdfs:range ont:Subscription .
+
+ont:hasSubsidiary
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Identifies a company that is controlled by a higher-level parent company." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Company ;
+    owl:inverseOf ont:hasParentCompany .
+
+ont:hasTarget
+    a owl:ObjectProperty ;
+    rdfs:comment "Links a strategic plan or organization to a specific, measurable goal it aims to achieve." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Organization ont:StrategicPillar ont:StrategicProgram ont:StrategicPlan )
+    ] ;
+    rdfs:range ont:Target .
+
+ont:hasWhistleblowingSystem
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Associates an organization with a formal channel for reporting misconduct." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:WhistleblowingSystem .
+
+ont:heads
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Indicates leadership of a specific organizational unit. Inverse of isHeadedBy." ;
+    rdfs:domain ont:Role ;
+    rdfs:range ont:OrganizationalUnit ;
+    owl:inverseOf ont:isHeadedBy .
+
+ont:identifiedIssue
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the outcome of an analysis that flagged a specific topic as being significant or material." ;
+    rdfs:domain ont:Analysis ;
+    rdfs:range ont:SustainabilityTopic .
+
+ont:identifiesRisk
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a document or report section formally acknowledges a specific category of sustainability-related risk." ;
+    rdfs:domain ont:ReportSection ;
+    rdfs:range ont:RiskCategory .
+
+ont:implements
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of putting a decision, plan, or strategy into effect." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:GovernanceBody )
+    ] ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:ActionPlan ont:StrategicPlan )
+    ] .
+
+ont:includes
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:TransitiveProperty ;
+    rdfs:comment "Signifies that a larger whole contains a smaller part, such as a report containing sections, policies, or metrics." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:FinancialStatement ont:IncentivePlan ont:Policy ont:RegulatoryFiling ont:ReportSection )
+    ] ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:CapitalIncrease ont:EsgKeyPerformanceIndicator ont:FinancialStatement ont:FinancialMetric ont:Policy ont:ShareSale ont:Subscription ont:KeyPerformanceIndicator )
+    ] .
+
+ont:involves
+    a owl:ObjectProperty ;
+    rdfs:comment "Connects a temporal entity to a physical object that is central to it, but is not an agent." ;
+    rdfs:domain ont:TemporalEntity ;
+    rdfs:range ont:ConcreteEntity ;
+    owl:inverseOf ont:wasInvolvedIn .
+
+ont:isAdheredToBy
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of adheresTo." ;
+    rdfs:domain ont:AbstractConcept ;
+    rdfs:range ont:Agent ;
+    owl:inverseOf ont:adheresTo .
+
+ont:isAlignedWith
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies that a corporate strategy or target conforms to the principles or recommendations of an external framework or scientific body." ;
+    rdfs:domain ont:Plan ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:ExpertGroup ont:InternationalAgreement )
+    ] .
+
+ont:isAlumnusOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an individual has graduated from or formerly attended an educational institution." ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:University .
+
+ont:isAppendixOf
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Signifies that a document serves as a supplementary section to a larger report." ;
+    rdfs:domain ont:Document ;
+    rdfs:range ont:Report ;
+    rdfs:subPropertyOf ont:isPartOf .
+
+ont:isAppointmentBy
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the entity responsible for making a formal appointment." ;
+    rdfs:domain ont:Appointment ;
+    rdfs:range ont:Company .
+
+ont:isAttachedTo
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents a direct reporting or organizational link to a specific senior executive or board member." ;
+    rdfs:domain ont:OrganizationalUnit ;
+    rdfs:range ont:Person .
+
+ont:isAuditOf
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:FunctionalProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Specifies that an assurance engagement was conducted on a particular report or set of disclosures." ;
+    rdfs:domain ont:Audit ;
+    rdfs:range ont:Report .
+
+ont:isAuditedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the engagement of an external firm to formally verify corporate reporting." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Group )
+    ] ;
+    rdfs:range ont:Auditor .
+
+ont:isAuthoredBy
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies the agent responsible for creating or defining an abstract concept like a plan, policy, or methodology." ;
+    rdfs:domain ont:AbstractConcept ;
+    rdfs:range ont:Agent ;
+    owl:inverseOf ont:authored .
+
+ont:isBasedOn
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Indicates that the calculation or assessment of one metric is dependent on the value or outcome of another." ;
+    rdfs:domain ont:KeyPerformanceIndicator ;
+    rdfs:range ont:KeyPerformanceIndicator .
+
+ont:isComposedOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies the constituent member departments or units that form a committee or governance body." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range ont:OrganizationalUnit .
+
+ont:isConsolidatedBy
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:FunctionalProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Represents the accounting practice where the financial statements of a subsidiary are combined with those of its parent company for reporting purposes." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Company ;
+    owl:inverseOf ont:consolidates .
+
+ont:isControlledBy
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies that a majority of voting rights or decisive influence is held by a specific shareholder or group, a key governance disclosure." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:ShareholderGroup .
+
+ont:isEmployedBy
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Indicates the employment relationship from the perspective of the person. Inverse of employs." ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Company ;
+    owl:inverseOf ont:employs .
+
+ont:isEnvironmentalStrategyOf
+    a owl:InverseFunctionalProperty , owl:ObjectProperty ;
+    rdfs:comment "Designates a specific plan or program as the official approach for managing environmental impacts and goals. Note: this implies a company can have only one such program designated as its environmental strategy." ;
+    rdfs:domain ont:Program ;
+    rdfs:range ont:Company .
+
+ont:isFoundingMemberOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies a principal role in the establishment of a multi-stakeholder organization or initiative." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:MultiStakeholderInitiative ;
+    rdfs:subPropertyOf ont:participatesIn .
+
+ont:isGovernedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an entity's actions and reporting are subject to the rules and requirements of a specific law or code." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Legislation .
+
+ont:isHeadedBy
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the individual or role that has primary leadership and responsibility for an organizational unit." ;
+    rdfs:domain ont:OrganizationalUnit ;
+    rdfs:range ont:Role ;
+    owl:inverseOf ont:heads .
+
+ont:isInAccordanceWith
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies that a report or action has been prepared or conducted following the rules and principles of a specific law or standard." ;
+    rdfs:domain ont:Report ;
+    rdfs:range ont:Legislation ;
+    rdfs:subPropertyOf ont:references .
+
+ont:isInitiatorOf
+    a owl:ObjectProperty ;
+    rdfs:comment "A more specific relationship indicating the agent that caused or started the event." ;
+    rdfs:subPropertyOf ont:participatesIn ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:Event ;
+    owl:inverseOf ont:wasInitiatedBy .
+
+ont:isListedOn
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a company's shares are officially registered and can be traded on a particular financial market." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:StockExchange .
+
+ont:isLocationOf
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of occursAt." ;
+    rdfs:domain ont:Place ;
+    rdfs:range ont:Event ;
+    owl:inverseOf ont:occursAt .
+
+ont:isManagedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of managesAsset, linking a concrete entity to the agent managing it." ;
+    rdfs:domain ont:ConcreteEntity ;
+    rdfs:range ont:Agent ;
+    owl:inverseOf ont:managesAsset .
+
+ont:isMemberOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an individual serves on a specific board or committee." ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:GovernanceBody ;
+    owl:inverseOf ont:hasMember .
+
+ont:isMergerOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a new entity was formed by the combination of pre-existing ones." ;
+    rdfs:domain ont:Founding ;
+    rdfs:range ont:Company .
+
+ont:isOverseenBy
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of oversees, indicating that an entity is subject to supervision from a governance body." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:OrganizationalUnit ont:Report )
+    ] ;
+    rdfs:range ont:GovernanceBody ;
+    owl:inverseOf ont:oversees .
+
+ont:isOwnedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of owns." ;
+    rdfs:domain ont:ConcreteEntity ;
+    rdfs:range ont:Agent ;
+    owl:inverseOf ont:owns .
+
+ont:isPartOf
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty , owl:TransitiveProperty ;
+    rdfs:comment "Signifies that a specific plan or initiative is a component of a larger strategic program." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:OrganizationalUnit ont:StrategicPlan ont:Target )
+    ] ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:Initiative ont:OrganizationalUnit ont:StrategicProgram )
+    ] .
+
+ont:isPerformedBy
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the entity that conducted a formal examination or audit." ;
+    rdfs:domain ont:Audit ;
+    rdfs:range ont:Auditor .
+
+ont:isPositionAt
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:comment "Identifies the organization where a formal position is held." ;
+    rdfs:domain ont:Position ;
+    rdfs:range ont:Company .
+
+ont:isRatedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an entity's performance or financial stability is assessed by a specific rating agency." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:RatingAgency .
+
+ont:isRealizedAs
+    a owl:ObjectProperty ;
+    rdfs:comment "Connects an abstract idea, plan, or design to the temporal event or physical object that makes it concrete." ;
+    rdfs:domain ont:AbstractConcept ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:ConcreteEntity ont:TemporalEntity )
+    ] ;
+    owl:inverseOf ont:realizes .
+
+ont:isRelatedTo
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents a thematic association, linking a specific metric to a broader sustainability reporting category." ;
+    rdfs:domain ont:KeyPerformanceIndicator ;
+    rdfs:range ont:Topic .
+
+ont:isShareholdingIn
+    a owl:ObjectProperty ;
+    rdfs:comment "Specifies the company in which shares are owned." ;
+    rdfs:domain ont:Shareholding ;
+    rdfs:range ont:Company ;
+    owl:inverseOf ont:hasShareholding .
+
+ont:isSubKpiOf
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of hasSubKpi, indicating that a KPI is a component of a larger, primary KPI." ;
+    rdfs:domain ont:KeyPerformanceIndicator ;
+    rdfs:range ont:KeyPerformanceIndicator ;
+    owl:inverseOf ont:hasSubKpi .
+
+ont:isSubjectOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies the primary entity that a regulatory document or report is about." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:RegulatoryFiling .
+
+ont:isSubjectTo
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an entity must comply with the requirements of a specific regulation or directive." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Regulation .
+
+ont:isSubsidiaryOf
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty , owl:TransitiveProperty ;
+    rdfs:comment "Indicates that a company is owned or controlled by a parent corporation." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Company .
+
+ont:isSubmittedTo
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of formally sending a plan or commitment to an external body for validation or approval." ;
+    rdfs:domain ont:Commitment ;
+    rdfs:range ont:Organization .
+
+ont:isSupportedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the reception of aid, funding, or mentorship from an organization." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Person ont:Plan )
+    ] ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:Directive ont:Foundation ont:Initiative )
+    ] .
+
+ont:isValidatedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the formal approval or confirmation of a corporate target, commitment, or report by an authoritative third-party organization." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Commitment ont:Report ont:Target )
+    ] ;
+    rdfs:range ont:Organization .
+
+ont:launches
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of formally starting or introducing a new initiative, product, or entity." ;
+    rdfs:domain ont:Company ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:EmployeeShareholderPlan ont:Initiative ont:InnovationHub )
+    ] .
+
+ont:manages
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates direct operational control and coordination over a network or program." ;
+    rdfs:domain ont:OrganizationalUnit ;
+    rdfs:range ont:GovernanceBody .
+
+ont:managesAsset
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents operational control over a physical asset, which may be different from ownership (e.g., a leased facility)." ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:ConcreteEntity ;
+    owl:inverseOf ont:isManagedBy .
+
+ont:measuresProgressTowards
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the function of a metric to track advancement toward a stated goal." ;
+    rdfs:domain ont:KeyPerformanceIndicator ;
+    rdfs:range ont:Target .
+
+ont:meetsMilestone
+    a owl:ObjectProperty ;
+    rdfs:comment "Signifies the achievement of a key interim goal on the path to a larger objective." ;
+    rdfs:domain ont:KeyPerformanceIndicator ;
+    rdfs:range ont:Milestone .
+
+ont:occursAt
+    a owl:ObjectProperty ;
+    rdfs:comment "Specifies the physical location where an event takes place." ;
+    rdfs:domain ont:Event ;
+    rdfs:range ont:Place ;
+    owl:inverseOf ont:isLocationOf .
+
+ont:organizesEvent
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of planning and holding a specific gathering for compliance or sustainability purposes." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Event .
+
+ont:oversees
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates a relationship of supervision, control, and strategic guidance over a department, function, or entity." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:OrganizationalUnit ont:Report )
+    ] ;
+    owl:inverseOf ont:isOverseenBy .
+
+ont:overseesAccuracyOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the specific responsibility of supervising and ensuring the correctness and reliability of reported information." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range ont:Report ;
+    rdfs:subPropertyOf ont:oversees .
+
+ont:overseesImplementationOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Denotes the responsibility of a governing body to supervise the execution of a strategic program." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range ont:StrategicProgram .
+
+ont:owns
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the relationship of legal ownership between an agent and a physical asset." ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:ConcreteEntity ;
+    owl:inverseOf ont:isOwnedBy .
+
+ont:participatesIn
+    a owl:ObjectProperty ;
+    rdfs:comment "A general property to state that an agent (person, company) is involved in an event." ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:TemporalEntity ;
+    owl:inverseOf ont:hasParticipant .
+
+ont:partnersWith
+    a owl:ObjectProperty , owl:SymmetricProperty ;
+    rdfs:comment "Represents a formal collaborative relationship with another organization to achieve a common goal." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Organization .
+
+ont:performedAssuranceOn
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the act of an independent third-party review and verification of reported data or performance indicators." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:KeyPerformanceIndicator .
+
+ont:posesRisk
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an act of wrongdoing creates a specific type of risk for an organization." ;
+    rdfs:domain ont:Wrongdoing ;
+    rdfs:range ont:Risk .
+
+ont:presides
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates leadership or chairmanship over a committee, think tank, or formal group." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:ThinkTank .
+
+ont:publishes
+    a owl:ObjectProperty , owl:AsymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:comment "Represents the act of making a formal document, like a report, publicly available." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Report .
+
+ont:realizes
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of isRealizedAs." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:ConcreteEntity ont:TemporalEntity )
+    ] ;
+    rdfs:range ont:AbstractConcept ;
+    owl:inverseOf ont:isRealizedAs .
+
+ont:references
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a document cites or is prepared with consideration for a specific standard, framework, or directive." ;
+    rdfs:domain ont:Report ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:Directive ont:Framework ont:Legislation ont:Organization ont:ReportingStandard )
+    ] .
+
+ont:referencesStandard
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that a report or index aligns with or uses a specific external reporting framework." ;
+    rdfs:domain ont:ReportSection ;
+    rdfs:range ont:Standard .
+
+ont:reportsTo
+    a owl:ObjectProperty ;
+    rdfs:comment "Defines the formal reporting line and accountability structure between corporate bodies or departments." ;
+    rdfs:domain ont:OrganizationalUnit ;
+    rdfs:range ont:GovernanceBody .
+
+ont:sets
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of establishing or defining a target, metric, or policy." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range ont:EsgKeyPerformanceIndicator .
+
+ont:supportedCreationOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the provision of resources or backing for the establishment of an external entity, like a research center." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:ResearchCenter .
+
+ont:supports
+    a owl:ObjectProperty ;
+    rdfs:comment "Represents the act of providing assistance, funding, or resources to an entity or cause." ;
+    rdfs:domain ont:Company ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( ont:Framework ont:Park )
+    ] .
+
+ont:usesMethodology
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the application of a specific systematic procedure for analysis or assessment." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Organization )
+    ] ;
+    rdfs:range ont:Methodology .
+
+ont:usesModel
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the application of a specific conceptual plan for business operations." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:BusinessModel .
+
+ont:usesPlatform
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates the utilization of a specific digital service or system for a business process, such as supplier evaluation." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Platform .
+
+ont:wasConductedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies the entity that performed or carried out a specific process or assessment." ;
+    rdfs:domain ont:Assessment ;
+    rdfs:range ont:Company .
+
+ont:wasInitiatedBy
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of isInitiatorOf." ;
+    rdfs:domain ont:Event ;
+    rdfs:range ont:Agent ;
+    owl:inverseOf ont:isInitiatorOf .
+
+ont:wasInvolvedIn
+    a owl:ObjectProperty ;
+    rdfs:comment "The inverse of involves." ;
+    rdfs:domain ont:ConcreteEntity ;
+    rdfs:range ont:TemporalEntity ;
+    owl:inverseOf ont:involves .
+
+ont:wasSubjectOf
+    a owl:ObjectProperty ;
+    rdfs:comment "Indicates that an entity was the focus of a specific legal or administrative action." ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:LegalProceeding .
+
+#################################################################
+#    Datatype Properties (Corrected and Refactored)
+#################################################################
+
+ont:hasAchievementYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which a specific target or milestone was successfully met." ;
+    rdfs:domain ont:Target ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasActionCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of specific enforcement or corrective actions taken during a reporting period." ;
+    rdfs:domain ont:MetricReport ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasAdditionalMemberCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The number of supplementary members in a network or group who are not part of the core team." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasAddress
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The specific street and city location of a company's registered office, required for regulatory identification." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:string .
+
+ont:hasAffordableMicronutrientFortifiedServings
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of individual servings of products enriched with essential vitamins and minerals that are priced to be accessible to lower-income consumers." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasAnnouncementDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The date on which a program or initiative was formally announced to the public or stakeholders." ;
+    rdfs:domain ont:Program ;
+    rdfs:range xsd:string .
+
+ont:hasAnnualRAndDInvestment
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total amount of money invested in research and development activities within a single year." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasApprovalDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The specific calendar date on which a governing body formally approved a report or statement." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range xsd:date .
+
+ont:hasAsOfDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The specific date at which a reported number or status is valid." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range xsd:date .
+
+ont:hasAudienceShare
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of the total television viewing audience watching a particular channel or group of channels during a specific period." ;
+    rdfs:domain ont:FinancialReporting ;
+    rdfs:range xsd:decimal .
+
+ont:hasAwsCertifiedSites
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of company facilities that have been officially certified against the Alliance for Water Stewardship (AWS) Standard for responsible water use." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasBaselineYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The reference year against which progress for a target or KPI is measured." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:KeyPerformanceIndicator ont:Target )
+    ] ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasCageFreeEggsSourced
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of all eggs and egg products sourced by the company that come from hens not housed in cages." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasCapitalPercentage
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of a company's total share capital owned by a shareholder, expressed as a percentage." ;
+    rdfs:domain ont:Shareholding ;
+    rdfs:range xsd:decimal .
+
+ont:hasCarbonRemovals
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total amount of carbon dioxide equivalent (tCO2e) removed from the atmosphere, typically through insetting activities or nature-based solutions, and used to neutralize residual emissions." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasCasesSubstantiated
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The number of reports received through a grievance mechanism that were investigated and found to be valid or have merit." ;
+    rdfs:domain ont:GrievanceMechanism ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasChemicalOxygenDemandConcentration
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The average concentration of pollutants in discharged water, measured as the amount of oxygen required to break down organic matter, expressed in milligrams per liter (mgO2/l)." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasChemicalOxygenDemandOutput
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total mass of pollutants discharged in water, measured as the amount of oxygen required to break down organic matter, expressed in tonnes." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasClmrsCoveredHouseholds
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of households participating in a Child Labor Monitoring and Remediation System (CLMRS)." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasClmrsRemediatedChildren
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The number of children who were identified as being in child labor and have since received sufficient support to be considered successfully remediated." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasClmrsSupportedChildren
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of children identified by a Child Labor Monitoring and Remediation System (CLMRS) who are receiving support to prevent or address child labor." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasCommunityGivingInvestment
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total financial value (in CHF) of cash and in-kind donations made by the company to support community projects and initiatives." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasCreationYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which a document or policy was first established." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasCriticalityLevel
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A classification of the severity or importance of a risk, used for prioritization in management and reporting." ;
+    rdfs:domain ont:Risk ;
+    rdfs:range xsd:positiveInteger .
+
+ont:hasCumulativeValue
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total accumulated value of a metric over multiple reporting periods." ;
+    rdfs:domain ont:MetricReport ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasCurrency
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The monetary unit (e.g., EUR) in which a financial value is expressed." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:CapitalIncrease ont:CapitalStructure ont:Company ont:Dividend ont:FinancialMetric ont:FinancialReporting ont:SharePrice ont:ShareSale ont:Subscription ont:Target )
+    ] ;
+    rdfs:range xsd:token .
+
+ont:hasCustomerBase
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of individuals or accounts subscribed to a service." ;
+    rdfs:domain ont:FinancialReporting ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasDataBreachesNotified
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The number of incidents involving the unauthorized access or disclosure of personal data that required notification to regulatory authorities or affected individuals." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The specific calendar day, month, and year of an occurrence." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Acquisition ont:Audit ont:CapitalStructure ont:OwnershipMetric ont:SharePrice ont:Shareholding ont:Subscription ont:TemporalEntity )
+    ] ;
+    rdfs:range xsd:date .
+
+ont:hasDateString
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A textual representation of a date or time period, such as a specific month or quarter." ;
+    rdfs:domain ont:TrainingProgram ;
+    rdfs:range xsd:string .
+
+ont:hasDeforestationFreeAchievement
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's key agricultural commodity volumes that are verified as not originating from land deforested after a specific cut-off date." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasDeploymentDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The time frame during which a program or tool was rolled out across the organization." ;
+    rdfs:domain ont:TrainingProgram ;
+    rdfs:range xsd:string .
+
+ont:hasDescription
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A textual explanation detailing the specifics of a target or objective." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Risk ont:Target )
+    ] ;
+    rdfs:range xsd:string .
+
+ont:hasDevelopmentYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which a standard or policy was created." ;
+    rdfs:domain ont:Standard ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasDiscount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage reduction from the market price offered for shares in a subscription plan." ;
+    rdfs:domain ont:Subscription ;
+    rdfs:range xsd:decimal .
+
+ont:hasDraftingStartDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The date when the process of creating a formal document, like a policy, began." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:gYearMonth .
+
+ont:hasEffectiveYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which a change or reorganization is scheduled to take effect." ;
+    rdfs:domain ont:Reorganization ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasEmployeesInCollectiveBargaining
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's total workforce whose terms of employment are covered by a collective bargaining agreement." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasEndDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar date on which an event, process, or period is scheduled to conclude." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Report ont:TemporalEntity )
+    ] ;
+    rdfs:range xsd:date .
+
+ont:hasEndYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The final calendar year of a strategic program or target period." ;
+    rdfs:domain ont:StrategicProgram ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasEnergyIndustryGhgReductionTarget
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A specific percentage reduction goal for greenhouse gas emissions from the use of sold products in the energy and industry sectors." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasEsgWeighting
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of an incentive plan's total value that is determined by performance against specific ESG (Environmental, Social, and Governance) metrics." ;
+    rdfs:domain ont:IncentivePlan ;
+    rdfs:range xsd:decimal .
+
+ont:hasExposureLevel
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A qualitative assessment of the extent to which an organization is subject to a particular risk." ;
+    rdfs:domain ont:Risk ;
+    rdfs:range xsd:token .
+
+ont:hasFirstPublicationYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which a policy or code of conduct was initially published." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasPublicationYear .
+
+ont:hasFossilFuelPercentage
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of total energy consumed that is derived from non-renewable fossil fuel sources." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasFossilFuelShare
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of total energy consumed derived from fossil-based sources." ;
+    rdfs:domain ont:EnergyConsumptionMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:subPropertyOf ont:hasProportion .
+
+ont:hasFsscCertifiedUnits
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's operational sites (e.g., factories) that are certified against the FSSC 22000 food safety management system standard." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasGhgNetReduction
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage decrease in net greenhouse gas emissions (gross emissions minus removals) compared to a baseline year." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasGhgReduction
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage decrease in gross greenhouse gas emissions compared to a baseline year, before accounting for any removals or offsets." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasGhgReductionTarget
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A specific percentage reduction goal for greenhouse gas emissions, typically for Scope 1 and 2, to be achieved by a target year." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasGraduationYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which an individual completed their studies at an educational institution." ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasHrRelatedPercentage
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of reported alerts or cases that pertain to human resources issues." ;
+    rdfs:domain ont:MetricReport ;
+    rdfs:range xsd:decimal .
+
+ont:hasImpactLevel
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A qualitative assessment of the potential severity or significance of a risk's consequences." ;
+    rdfs:domain ont:Risk ;
+    rdfs:range xsd:normalizedString .
+
+ont:hasInternallyTreatedEffluentWater
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of total wastewater discharged from operations that was treated in the company's own facilities before release." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasInterviewCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of formal interviews conducted as part of an analysis or study." ;
+    rdfs:domain ont:Analysis ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasIssueDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar date on which a report or official document was published or released." ;
+    rdfs:domain ont:Report ;
+    rdfs:range xsd:date .
+
+ont:hasLanguageCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The number of different languages in which a document or training module is available." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasLaunchYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which a program or initiative was officially started." ;
+    rdfs:domain ont:EmployeeShareholderPlan ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasLocation
+    a owl:DatatypeProperty ;
+    rdfs:comment "The city or geographical place where an event is held." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:TemporalEntity ont:TrainingProgram )
+    ] ;
+    rdfs:range xsd:normalizedString .
+
+ont:hasLowerEmissionVehicleFleet
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's corporate vehicle fleet that consists of hybrid, electric, or other low-emission models." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasMarketingToChildrenComplianceRate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of company marketing communications that were assessed and found to be in compliance with its policy on marketing to children." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasMeetingCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The number of times a specific committee or governing body convened during a reporting period." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasMemberCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of individuals who are formal members of a committee, network, or group." ;
+    rdfs:domain ont:GovernanceBody ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasMessagesReceived
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of reports, complaints, or inquiries received through a specific channel, such as a grievance mechanism." ;
+    rdfs:domain ont:GrievanceMechanism ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasMicronutrientFortifiedServings
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of individual servings of products sold that have been enriched with essential vitamins and minerals like iron, iodine, vitamin A, or zinc." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasNetDebt
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total amount of a company's debt minus its cash and cash equivalents, indicating its financial leverage." ;
+    rdfs:domain ont:FinancialReporting ;
+    rdfs:range xsd:decimal .
+
+ont:hasNetGhgEmissions
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total greenhouse gas emissions after accounting for carbon removals, expressed in million tonnes of CO2 equivalent." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasNetIncome
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total profit of a company after all expenses and taxes have been deducted from total revenue." ;
+    rdfs:domain ont:FinancialReporting ;
+    rdfs:range xsd:decimal .
+
+ont:hasNuclearEnergyShare
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of total energy consumption derived from nuclear power." ;
+    rdfs:domain ont:EnergyConsumptionMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:subPropertyOf ont:hasProportion .
+
+ont:hasNumberOfCountriesOfOperation
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total count of distinct countries in which a company conducts business." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasNumberOfEmployees
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of individuals employed by a company." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasOperatingIncome
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A measure of profit realized from a business's core operations, before interest and taxes." ;
+    rdfs:domain ont:FinancialReporting ;
+    rdfs:range xsd:decimal .
+
+ont:hasOrderBookValue
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total value of confirmed, outstanding orders from customers for future work." ;
+    rdfs:domain ont:FinancialReporting ;
+    rdfs:range xsd:decimal .
+
+ont:hasOutlook
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A forecast of future prospects or trends, typically associated with a financial or ESG rating (e.g., stable, negative)." ;
+    rdfs:domain ont:Rating ;
+    rdfs:range xsd:token .
+
+ont:hasParticipantCount
+    a owl:DatatypeProperty ;
+    rdfs:comment "The number of individuals who attended or took part in an event or training session." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Analysis ont:TemporalEntity )
+    ] ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasPilotFarmEstablishmentYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The year in which a test or model farm was established to pilot new sustainability standards." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasPlasticPackagingDesignedForRecycling
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's plastic packaging, by weight, that is technically designed and configured to be compatible with existing recycling infrastructure." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasPolicyStartYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The year in which a company first began implementing policies related to a specific sustainability topic." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasStartYear .
+
+ont:hasPoliticalContributionsInSwitzerland
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total amount of money (in CHF) contributed to political parties or campaigns within the jurisdiction of Switzerland." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasPrice
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The specific monetary value set for the purchase of an item, such as a share in a subscription." ;
+    rdfs:domain ont:Subscription ;
+    rdfs:range xsd:decimal .
+
+ont:hasProportion
+    a owl:DatatypeProperty ;
+    rdfs:comment "The percentage share that a sub-component contributes to a larger whole." ;
+    rdfs:domain ont:Metric ;
+    rdfs:range xsd:decimal .
+
+ont:hasPublicationDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The date or month and year when a document, such as a code of conduct, was officially released or updated." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:string .
+
+ont:hasPublicationYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which a set of principles or a charter was officially published." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasRatingValue
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The specific score, grade, or level assigned by a rating agency (e.g., A3, AA, 61)." ;
+    rdfs:domain ont:Rating ;
+    rdfs:range [
+        a rdfs:Datatype ;
+        owl:unionOf ( xsd:decimal xsd:token )
+    ] .
+
+ont:hasRawGenderPayGap
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage difference between the average gross hourly earnings of all male and female employees, without adjusting for role, seniority, or other factors." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasRecordableIllnessRate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The frequency of new, work-related illnesses per a standard number of hours worked (e.g., per 200,000 hours)." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasRecordableInjuryRate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The frequency of work-related injuries that require medical treatment beyond first aid, per a standard number of hours worked (e.g., per 200,000 hours)." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasRecyclableReusableCompostablePackaging
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's total packaging, by weight, that is designed to be either recycled, reused, or composted." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasReductionValue
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage or absolute amount by which a metric is targeted to be decreased." ;
+    rdfs:domain ont:Target ;
+    rdfs:range [
+        a rdfs:Datatype ;
+        owl:unionOf ( xsd:decimal xsd:nonNegativeInteger )
+    ] .
+
+ont:hasRegenerativeAgricultureSourcing
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's key raw material volumes that are sourced from farms adopting regenerative agriculture practices." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasRemovedContentCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of online listings or pieces of content taken down as part of anti-counterfeiting efforts." ;
+    rdfs:domain ont:MetricReport ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasRenewableElectricityAchievement
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of electricity consumed across all company sites that was generated from renewable sources." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasRenewableElectricityTarget
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The company's goal for the percentage of its electricity consumption to be sourced from renewable energy by a specific year." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasRenewableEnergyConsumption
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total amount of energy consumed from renewable sources, such as solar, wind, and hydropower, measured in Gigajoules." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasRenewableEnergyShare
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of total energy consumption derived from renewable sources." ;
+    rdfs:domain ont:EnergyConsumptionMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:subPropertyOf ont:hasProportion .
+
+ont:hasRenewableEnergyShareValue
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of total energy consumed that is derived from renewable sources, expressed as a literal value." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasReportDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The date on which an audit or verification report was issued." ;
+    rdfs:domain ont:Auditor ;
+    rdfs:range xsd:date .
+
+ont:hasReportedValue
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The specific quantitative or qualitative value of a KPI as disclosed in a report for a given period." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:FinancialMetric ont:KeyPerformanceIndicator )
+    ] ;
+    rdfs:range [
+        a rdfs:Datatype ;
+        owl:unionOf ( xsd:decimal xsd:nonNegativeInteger )
+    ] ;
+    rdfs:subPropertyOf ont:hasValue .
+
+ont:hasReportingFrequency
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The number of times per year that a committee or department formally reports its findings to a higher governing body." ;
+    rdfs:domain ont:OrganizationalUnit ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasReportingYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year to which the data and information in a report pertains." ;
+    rdfs:domain ont:Report ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasResponsiblySourcedIngredients
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's key raw material volumes that are sourced in compliance with its specific responsible sourcing standards." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasResponsiblySourcedRawMaterialsPercentage
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of a company's raw materials that are procured in accordance with its defined sustainability and ethical standards." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasSalesFromNutritiousProducts
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of total revenue generated from the sale of products that meet a specific internal or external standard for being 'nutritious'." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasScope
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of items or products to which a specific percentage-based metric applies." ;
+    rdfs:domain ont:MetricResult ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasScopeThreeFlagGhgReductionTarget
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A specific percentage reduction goal for greenhouse gas emissions from Forest, Land and Agriculture (FLAG) activities within the value chain." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasSeizedProductsCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of counterfeit items confiscated through enforcement actions." ;
+    rdfs:domain ont:MetricReport ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasShareCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of issued shares corresponding to a company's capital or a specific shareholding." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:CapitalStructure ont:Shareholding )
+    ] ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasStance
+    a owl:DatatypeProperty ;
+    rdfs:comment "The official position or principle adopted within a policy, such as a commitment to zero tolerance." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:token .
+
+ont:hasStartDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar date on which an event, process, or period is scheduled to begin." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Appointment ont:Report ont:TemporalEntity )
+    ] ;
+    rdfs:range xsd:date ;
+    rdfs:subPropertyOf ont:hasDate .
+
+ont:hasStartYear
+    a owl:DatatypeProperty ;
+    rdfs:comment "The calendar year in which an initiative or program was launched." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:KeyPerformanceIndicator ont:MultiStakeholderInitiative ont:StrategicProgram ont:TemporalEntity )
+    ] ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasStatus
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "A descriptor indicating the current state or condition of an item, such as a proposed dividend." ;
+    rdfs:domain ont:FinancialMetric ;
+    rdfs:range xsd:normalizedString .
+
+ont:hasTargetValue
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The desired or goal value for a specific KPI, often expressed as a percentage, that the company aims to achieve." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Guidance ont:MetricReport ont:Target )
+    ] ;
+    rdfs:range [
+        a rdfs:Datatype ;
+        owl:unionOf ( xsd:decimal xsd:nonNegativeInteger xsd:normalizedString )
+    ] .
+
+ont:hasTargetYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year by which a specific sustainability or compliance target is intended to be met." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Company ont:Target )
+    ] ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasTitle
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The formal name of a person's professional position or role." ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:normalizedString .
+
+ont:hasTotalEmployees
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total number of individuals employed by the company at the end of the reporting period." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasTotalEnergyConsumption
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total amount of energy consumed from all sources (renewable and non-renewable) within the company's operational boundary, measured in Gigajoules." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasTotalGhgEmissions
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total gross greenhouse gas emissions across all scopes (1, 2, and 3) before accounting for any carbon removals, expressed in million tonnes of CO2 equivalent." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasTotalIllnessFatalities
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The absolute number of deaths resulting from work-related illnesses during the reporting period." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasTotalInjuryFatalities
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The absolute number of deaths resulting from work-related injuries during the reporting period." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasTotalIrreversibleIllnesses
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The absolute number of new, work-related illnesses diagnosed during the reporting period that are considered permanent or incurable." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasTotalIrreversibleInjuries
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The absolute number of work-related injuries sustained during the reporting period that resulted in permanent disability or impairment." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasTotalWasteGenerated
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total weight of all waste materials produced by the company's operations, measured in tonnes." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasTotalWaterConsumed
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total volume of water that is withdrawn and not returned to the original water source, calculated as total withdrawal minus total discharge." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasTotalWaterDischarged
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total volume of water released from the company's facilities back into the environment." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasTotalWaterWithdrawn
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total volume of water taken from all sources (surface, ground, third-party) for use in the company's operations." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasTrajectory
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The climate scenario or pathway (e.g., 1.5°C) that a decarbonization target is aligned with." ;
+    rdfs:domain ont:Target ;
+    rdfs:range xsd:token .
+
+ont:hasTurnover
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total sales revenue generated by a company over a specific period." ;
+    rdfs:domain ont:FinancialReporting ;
+    rdfs:range xsd:decimal .
+
+ont:hasUnit
+    a owl:DatatypeProperty ;
+    rdfs:comment "The standard of measurement for a quantitative value, such as 'Million tonnes CO2e' or 'Percentage'." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:EnvironmentalMetric ont:Metric ont:MetricResult ont:Target )
+    ] ;
+    rdfs:range xsd:token .
+
+ont:hasUpdateDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The date on which a policy or document was most recently revised." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:string .
+
+ont:hasUpdateYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year in which a document or policy was most recently revised." ;
+    rdfs:domain ont:Policy ;
+    rdfs:range xsd:gYear ;
+    rdfs:subPropertyOf ont:hasYear .
+
+ont:hasValue
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The quantitative or numerical amount of a specific measurement, metric, or target." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:CapitalIncrease ont:CapitalStructure ont:Dividend ont:FinancialMetric ont:Metric ont:MetricReport ont:MetricResult ont:SharePrice ont:ShareSale ont:Target )
+    ] ;
+    rdfs:range [
+        a rdfs:Datatype ;
+        owl:unionOf ( xsd:decimal xsd:integer xsd:nonNegativeInteger )
+    ] .
+
+ont:hasVirginPlasticReduction
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage reduction in the use of newly manufactured plastic compared to a baseline year." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasVoluntaryProductRecalls
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The number of instances where a company voluntarily removed a product from the market due to safety, quality, or compliance concerns." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasVotingRightsPercentage
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The proportion of total voting power held by a shareholder, a critical metric for assessing corporate control and governance." ;
+    rdfs:domain ont:Shareholding ;
+    rdfs:range xsd:decimal .
+
+ont:hasWaterConsumedInHighStressRegions
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's total water consumption that occurs in regions identified as having high or extremely high baseline water stress." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasWaterConsumptionInWaterRiskAreas
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The total volume of water consumed by facilities located in areas identified as having significant water-related risks." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasWaterUseReduction
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The reduction in water withdrawal per tonne of product, expressed in million cubic meters, compared to a baseline." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasWaterWithdrawnInHighStressRegions
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of a company's total water withdrawal that occurs in regions identified as having high or extremely high baseline water stress." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasWomenInManagement
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The percentage of managerial positions within the company that are held by women." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:decimal .
+
+ont:hasYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The calendar year to which a specific set of data, metrics, or events pertains." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Acquisition ont:Analysis ont:Appointment ont:Dividend ont:FinancialMetric ont:KeyPerformanceIndicator ont:Metric ont:MetricResult ont:OrganizationalUnit ont:Report ont:TemporalEntity ont:TrainingProgram )
+    ] ;
+    rdfs:range xsd:gYear .
+
+ont:hasYearMonth
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The specific month and year of an occurrence." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf ( ont:Acquisition ont:Founding )
+    ] ;
+    rdfs:range xsd:gYearMonth .
+
+ont:hasYouthEconomicOpportunitiesCumulative
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:comment "The cumulative number of young people who have been provided with apprenticeships, traineeships, or other job opportunities since the start of a specific initiative." ;
+    rdfs:domain ont:Company ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasInterviewee
+    a owl:ObjectProperty ;
+    rdfs:comment "Identifies a person who was formally interviewed for a report or analysis." ;
+    rdfs:domain ont:Report ;
+    rdfs:range ont:Person .
+
+#################################################################
+#    Classes (Corrected and Restructured)
+#################################################################
+
+ont:AcademicInstitution
+    a owl:Class ;
+    rdfs:comment "An institution dedicated to higher education and research, relevant in the context of providing risk modeling or sustainability expertise." ;
+    rdfs:subClassOf ont:Organization .
+
+ont:AccessibleProduct
+    a owl:Class ;
+    rdfs:comment "A product that is readily available and affordable to consumers, particularly those with lower incomes." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:AccountingStandard
+    a owl:Class ;
+    rdfs:comment "A common set of principles, standards, and procedures that define the basis of financial accounting policies and practices." ;
+    rdfs:subClassOf ont:Standard .
+
+ont:Acquisition
+    a owl:Class ;
+    rdfs:comment "An event where one company purchases most or all of another company's shares to gain control, relevant for tracking corporate structure changes under CSRD." ;
+    rdfs:subClassOf ont:Event ;
+    owl:disjointWith ont:Appointment , ont:Founding , ont:Investment .
+
+ont:ActionPlan
+    a owl:Class ;
+    rdfs:comment "A detailed proposal or set of steps for achieving a specific objective related to corporate social responsibility, particularly in response to identified risks or compliance issues." ;
+    rdfs:subClassOf ont:Plan .
+
+ont:AdministrativeSite
+    a owl:Class ;
+    rdfs:comment "A facility dedicated to administrative functions." ;
+    rdfs:subClassOf ont:Facility .
+
+ont:Advertisement
+    a owl:Class ;
+    rdfs:comment "A notice or announcement in a public medium promoting a product, service, or event." ;
+    rdfs:subClassOf ont:MediaContent .
+
+ont:AdvertisingSpace
+    a owl:Class ;
+    rdfs:comment "A physical or digital location where advertisements can be placed." ;
+    rdfs:subClassOf ont:Content ;
+    owl:disjointWith ont:AudiovisualContent .
+
+ont:AdvisoryBody
+    a owl:Class ;
+    rdfs:comment "A group of experts or stakeholders that provides strategic advice and guidance on sustainability matters to a company's leadership." ;
+    rdfs:subClassOf ont:GovernanceBody .
+
+ont:AffectedCommunityRisk
+    a owl:Class ;
+    rdfs:comment "A potential adverse impact on the rights, well-being, or environment of local populations due to a company's operations." ;
+    rdfs:subClassOf ont:StakeholderRisk .
+
+ont:Agreement
+    a owl:Class ;
+    rdfs:comment "A formal understanding or arrangement between parties." ;
+    rdfs:subClassOf ont:Document .
+
+ont:Analysis
+    a owl:Class ;
+    rdfs:comment "A systematic examination of data or content, such as a Double Materiality Analysis, which is a core requirement for CSRD reporting to identify significant sustainability impacts, risks, and opportunities." ;
+    rdfs:subClassOf ont:Report ;
+    owl:disjointWith ont:Framework , ont:OwnershipStructure .
+
+ont:AnimalRisk
+    a owl:Class ;
+    rdfs:comment "A potential adverse impact on animal welfare resulting from a company's operations or supply chain." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:AnimalWelfare
+    a owl:Class ;
+    rdfs:comment "The physical and mental state of animals in the supply chain." ;
+    rdfs:subClassOf ont:SustainabilityTopic .
+
+ont:AnimalWelfareControversy
+    a owl:Class ;
+    rdfs:comment "A public dispute or disagreement concerning the ethical treatment of animals within a company's value chain." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:Appointment
+    a owl:Class ;
+    rdfs:comment "An event marking the assignment of a person to a specific role or position, crucial for understanding corporate governance structures as required by CSRD." ;
+    rdfs:subClassOf ont:Event ;
+    owl:disjointWith ont:Acquisition , ont:Founding , ont:Investment , ont:Milestone , ont:Reorganization , ont:Transaction .
+
+ont:Assessment
+    a owl:Class ;
+    rdfs:comment "A formal evaluation process, such as determining the material impacts, risks, and opportunities related to sustainability." ;
+    rdfs:subClassOf ont:Process .
+
+ont:AssetProtection
+    a owl:Class ;
+    rdfs:comment "A category of risk related to safeguarding a company's tangible and intangible assets from loss, theft, or damage." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:Association
+    a owl:Class ;
+    rdfs:comment "A legally constituted organization of people with a common purpose, particularly in the context of environmental preservation and education." ;
+    rdfs:subClassOf ont:Organization .
+
+ont:Audit
+    a owl:Class ;
+    rdfs:comment "A formal, independent examination of sustainability information to provide assurance on its accuracy and adherence to reporting standards." ;
+    rdfs:subClassOf ont:Event .
+
+ont:AuditCommittee
+    a owl:Class ;
+    rdfs:comment "A committee of a company's board of directors which is responsible for oversight of the financial reporting process, selection of the independent auditor, and receipt of audit results." ;
+    rdfs:subClassOf ont:GovernanceBody ;
+    owl:disjointWith ont:EmployeeRepresentativeBody , ont:ExecutiveCommittee .
+
+ont:Auditor
+    a owl:Class ;
+    rdfs:comment "An independent professional entity responsible for examining and providing an opinion on the fairness and accuracy of a company's financial and sustainability reports." ;
+    rdfs:subClassOf ont:Company , ont:ProfessionalServicesFirm .
+
+ont:AudiovisualContent
+    a owl:Class ;
+    rdfs:comment "Content that has both a sound and a visual component, such as films, television programs, and online videos." ;
+    rdfs:subClassOf ont:Content .
+
+ont:AudiovisualProduction
+    a owl:Class ;
+    rdfs:comment "The process of creating audiovisual content." ;
+    rdfs:subClassOf ont:MediaContent .
+
+ont:Award
+    a owl:Class ;
+    rdfs:comment "A formal recognition granted by an external body for excellence in a specific area of corporate responsibility or sustainability." ;
+    rdfs:subClassOf ont:Event .
+
+ont:Binder
+    a owl:Class ;
+    rdfs:comment "A substance that causes other materials to cohere." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:BiodiversityRestorationInitiative
+    a owl:Class ;
+    rdfs:comment "A corporate program or venture specifically aimed at restoring ecosystems and biodiversity, often as part of a CSR strategy." ;
+    rdfs:subClassOf ont:Initiative .
+
+ont:Biofuel
+    a owl:Class ;
+    rdfs:comment "Fuel that is produced through contemporary biological processes, such as agriculture and anaerobic digestion, rather than a fuel produced by geological processes." ;
+    rdfs:subClassOf ont:RenewableEnergy .
+
+ont:BiosourcedBinder
+    a owl:Class ;
+    rdfs:comment "A binder derived from biological materials (biomass)." ;
+    rdfs:subClassOf ont:Binder , ont:BiosourcedMaterial .
+
+ont:BiosourcedMaterial
+    a owl:Class ;
+    rdfs:comment "Material derived from biomass (plants, animals, etc.)." ;
+    rdfs:subClassOf ont:Material .
+
+ont:Bitumen
+    a owl:Class ;
+    rdfs:comment "A black viscous mixture of hydrocarbons obtained naturally or as a residue from petroleum distillation, used for road surfacing and roofing." ;
+    rdfs:subClassOf ont:Material .
+
+ont:BoardCommittee
+    a owl:Class ;
+    rdfs:comment "A specialized subgroup of a Board of Directors, established to focus on specific areas of corporate governance and oversight, such as audit, compensation, or sustainability, in line with regulatory requirements." ;
+    rdfs:subClassOf ont:GovernanceBody .
+
+ont:Boutique
+    a owl:Class ;
+    rdfs:comment "A retail store, especially one selling fashionable clothes or accessories, relevant in the context of energy consumption and operational footprint." ;
+    rdfs:subClassOf ont:Facility .
+
+ont:Building
+    a owl:Class ;
+    rdfs:comment "A structure with a roof and walls, such as a house or factory." ;
+    rdfs:subClassOf ont:Infrastructure .
+
+ont:BuildingMaterial
+    a owl:Class ;
+    rdfs:comment "Material used for construction." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:BusinessApproach
+    a owl:Class ;
+    rdfs:comment "A strategic methodology or philosophy that guides a company's operations and decision-making, such as Creating Shared Value." ;
+    rdfs:subClassOf ont:BusinessConcept ;
+    owl:disjointWith ont:BusinessModel , ont:Framework , ont:Initiative , ont:Program , ont:Target .
+
+ont:BusinessConcept
+    a owl:Class ;
+    rdfs:comment "An abstract idea or plan related to the operation and strategy of a business." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Metric , ont:Opportunity , ont:Role .
+
+ont:BusinessModel
+    a owl:Class ;
+    rdfs:comment "The fundamental plan for how a company creates, delivers, and captures value, often represented by a core concept like the Virtuous Circle." ;
+    rdfs:subClassOf ont:BusinessConcept ;
+    owl:disjointWith ont:Framework , ont:Initiative , ont:Program , ont:Target .
+
+ont:BusinessSector
+    a owl:Class ;
+    rdfs:comment "A specific segment of economic activity." ;
+    rdfs:subClassOf ont:Service ;
+    owl:disjointWith ont:Engineering , ont:Maintenance .
+
+ont:BusinessSegment
+    a owl:Class ;
+    rdfs:comment "A distinct, self-contained division of a company that operates as a separate entity with its own specific focus, revenue, and operational metrics. Merges concepts of Business Unit and Operating Segment." ;
+    rdfs:subClassOf ont:OrganizationalUnit .
+
+ont:CSRD
+    a owl:Class ;
+    rdfs:comment "The Corporate Sustainability Reporting Directive, a type of report mandated by the EU." ;
+    rdfs:subClassOf ont:Report ;
+    owl:disjointWith ont:UniversalRegistrationDocument .
+
+ont:CapitalExpenditure
+    a owl:Class ;
+    rdfs:comment "Funds used to acquire, upgrade, and maintain physical assets." ;
+    rdfs:subClassOf ont:FinancialMetric .
+
+ont:CapitalIncrease
+    a owl:Class ;
+    rdfs:comment "A corporate action that results in an increase in a company's share capital, often as part of an employee share plan, impacting the overall capital structure." ;
+    rdfs:subClassOf ont:Transaction ;
+    owl:disjointWith ont:Dividend , ont:ShareSale , ont:Subscription .
+
+ont:CapitalStructure
+    a owl:Class ;
+    rdfs:comment "The particular combination of debt and equity used by a company to finance its overall operations and growth, tracked year-over-year for compliance and analysis." ;
+    rdfs:subClassOf ont:Situation ;
+    owl:disjointWith ont:Shareholding .
+
+ont:CarbonCredit
+    a owl:Class ;
+    rdfs:comment "A tradable certificate or permit representing the right to emit a set amount of carbon dioxide or an equivalent amount of a different greenhouse gas, used for offsetting emissions." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:CarbonIntensityMetric
+    a owl:Class ;
+    rdfs:comment "A key performance indicator that measures greenhouse gas emissions relative to a unit of economic output, used to track decarbonization efficiency." ;
+    rdfs:subClassOf ont:EnvironmentalMetric .
+
+ont:CarbonSink
+    a owl:Class ;
+    rdfs:comment "A natural or artificial reservoir that accumulates and stores some carbon-containing chemical compound for an indefinite period." ;
+    rdfs:subClassOf ont:Resource .
+
+ont:Category
+    a owl:Class ;
+    rdfs:comment "A class or division of people or things regarded as having particular shared characteristics." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Goal , ont:Metric , ont:Plan , ont:Rule .
+
+ont:Channel
+    a owl:Class ;
+    rdfs:comment "A medium through which a message is transmitted to its intended audience, such as print media or broadcast media." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:ChemicalSubstance
+    a owl:Class ;
+    rdfs:comment "A form of matter having constant chemical composition and characteristic properties." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:ChildLabor
+    a owl:Class ;
+    rdfs:comment "The employment of children in any work that deprives them of their childhood, interferes with their ability to attend regular school, and is mentally, physically, socially or morally dangerous and harmful." ;
+    rdfs:subClassOf ont:HumanRightsImpact .
+
+ont:City
+    a owl:Class ;
+    rdfs:comment "A major urban center that serves as the legal or operational headquarters for a corporate entity, relevant for jurisdictional and regulatory purposes." ;
+    rdfs:subClassOf ont:Place .
+
+ont:ClimateEngineering
+    a owl:Class ;
+    rdfs:comment "The branch of engineering dealing with large-scale intervention in the Earth's climate system, such as with cooling systems or heat pumps." ;
+    rdfs:subClassOf ont:Engineering ;
+    owl:disjointWith ont:DigitalAndIct , ont:ElectricalEngineering , ont:FireSafety , ont:MechanicsAndRobotics , ont:Refrigeration .
+
+ont:ClimateOpportunity
+    a owl:Class ;
+    rdfs:comment "A potential positive effect or business advantage arising from climate change or the transition to a low-carbon economy." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:ClimateRisk
+    a owl:Class ;
+    rdfs:comment "A potential negative impact on a company's operations, financial performance, or reputation resulting from climate change, categorized as either physical or transition risks." ;
+    rdfs:subClassOf ont:EnvironmentalRisk .
+
+ont:ClimateTransitionPlan
+    a owl:Class ;
+    rdfs:comment "A forward-looking strategic document detailing a company's plan to decarbonize its business model in line with climate science." ;
+    rdfs:subClassOf ont:Document .
+
+ont:CommercialInvestment
+    a owl:Class ;
+    rdfs:comment "Investment in commercial (rather than residential or industrial) property or ventures." ;
+    rdfs:subClassOf ont:FinancialResource ;
+    owl:disjointWith ont:StructuralCost .
+
+ont:Commitment
+    a owl:Class ;
+    rdfs:comment "A formal pledge or undertaking made by an organization to achieve a specific long-term sustainability goal, such as net-zero emissions." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:Company
+    a owl:Class ;
+    rdfs:comment "A commercial business entity, potentially part of a larger group, subject to Corporate Sustainability Reporting Directive (CSRD) regulations and analysis. It may act as a parent, subsidiary, or partner." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:EducationalInstitution , ont:Foundation , ont:GovernanceBody , ont:Group , ont:Initiative , ont:InnovationHub , ont:OrganizationalUnit , ont:ShareholderGroup , ont:ThinkTank .
+
+ont:ComplianceRisk
+    a owl:Class ;
+    rdfs:comment "Risks associated with the failure to comply with laws, regulations, or internal policies, including financial crimes and corruption." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:Construction
+    a owl:Class ;
+    rdfs:comment "The business sector involved in the building of infrastructure." ;
+    rdfs:subClassOf ont:BusinessSector ;
+    owl:disjointWith ont:EnergyAndServices , ont:Media , ont:Telecom .
+
+ont:ConstructionEquipment
+    a owl:Class ;
+    rdfs:comment "Heavy-duty vehicles, specially designed for executing construction tasks." ;
+    rdfs:subClassOf ont:Equipment .
+
+ont:ConstructionMaterial
+    a owl:Class ;
+    rdfs:subClassOf ont:PhysicalAsset ;
+    owl:disjointWith ont:Building , ont:Infrastructure .
+
+ont:ConsumerRisk
+    a owl:Class ;
+    rdfs:comment "A potential adverse impact on the health, safety, or rights of consumers using a company's products or services." ;
+    rdfs:subClassOf ont:StakeholderRisk .
+
+ont:ConsumptionMetric
+    a owl:Class ;
+    rdfs:comment "A metric that measures the use of a resource, such as energy or water." ;
+    rdfs:subClassOf ont:Metric .
+
+ont:Content
+    a owl:Class ;
+    rdfs:comment "Information and experiences that are directed towards an end-user or audience." ;
+    rdfs:subClassOf ont:IntangibleProduct ;
+    owl:disjointWith ont:Platform .
+
+ont:CoolingSystem
+    a owl:Class ;
+    rdfs:comment "A system that removes heat from a space, substance, or system to lower its temperature." ;
+    rdfs:subClassOf ont:ClimateEngineering , ont:Device ;
+    owl:disjointWith ont:HeatPump .
+
+ont:CorporateCulture
+    a owl:Class ;
+    rdfs:comment "The shared values, beliefs, standards, and behaviors that characterize an organization and guide its actions and decisions regarding business conduct and ethics." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:Corruption
+    a owl:Class ;
+    rdfs:comment "A category of risk involving dishonest or fraudulent conduct by those in power, typically involving bribery, which is a key focus of CSRD compliance." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:CostSavingsProgram
+    a owl:Class ;
+    rdfs:comment "A program specifically designed to reduce expenses and improve financial efficiency." ;
+    rdfs:subClassOf ont:Program .
+
+ont:CounterfeitGoods
+    a owl:Class ;
+    rdfs:comment "A category of risk related to the production and distribution of fraudulent imitations of a company's products, impacting brand value and intellectual property." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:Country
+    a owl:Class ;
+    rdfs:comment "A sovereign nation-state, relevant as the legal jurisdiction for corporate reporting obligations." ;
+    rdfs:subClassOf ont:GeopoliticalEntity .
+
+ont:CreativeCircularity
+    a owl:Class ;
+    rdfs:comment "A corporate strategy pillar focused on extending product life and minimizing waste through innovative design, repair, and recycling." ;
+    rdfs:subClassOf ont:SustainabilityTopic .
+
+ont:Customer
+    a owl:Class ;
+    rdfs:comment "An individual or entity that purchases goods or services, considered a key stakeholder for environmental information and product transparency." ;
+    rdfs:subClassOf ont:Stakeholder .
+
+ont:CustomsLegislation
+    a owl:Class ;
+    rdfs:comment "A category of risk associated with non-compliance with laws and regulations governing the import and export of goods." ;
+    rdfs:subClassOf ont:Rule .
+
+ont:Data
+    a owl:Class ;
+    rdfs:comment "Facts and statistics collected together for reference or analysis." ;
+    rdfs:subClassOf ont:InformationContentEntity .
+
+ont:DataCenter
+    a owl:Class ;
+    rdfs:subClassOf ont:Infrastructure ;
+    owl:disjointWith ont:Network , ont:PowerGenerationFacility , ont:Railway , ont:Road .
+
+ont:DataPrivacy
+    a owl:Class ;
+    rdfs:comment "A category of risk concerning the improper handling, processing, or protection of personal data, relevant to governance and compliance." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:Database
+    a owl:Class ;
+    rdfs:comment "A structured collection of data, often from a public or intergovernmental body, used as a source for environmental metrics like water availability." ;
+    rdfs:subClassOf ont:InformationContentEntity .
+
+ont:DecarbonizationOffer
+    a owl:Class ;
+    rdfs:comment "A service or product line offered to customers with the explicit goal of helping them reduce their carbon footprint." ;
+    rdfs:subClassOf ont:Offer .
+
+ont:DecarbonizedEnergyPlant
+    a owl:Class ;
+    rdfs:comment "An energy-generating facility that has been modified or designed to produce little to no carbon emissions." ;
+    rdfs:subClassOf ont:Infrastructure .
+
+ont:Deconstruction
+    a owl:Class ;
+    rdfs:comment "The selective dismantlement of building components, specifically for re-use, recycling, and waste management." ;
+    rdfs:subClassOf ont:Process .
+
+ont:DeforestationFreePrimarySupplyChain
+    a owl:Class ;
+    rdfs:comment "A supply chain for a specific commodity where sourcing activities do not cause the conversion of forests to other land uses." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:Depollution
+    a owl:Class ;
+    rdfs:comment "The process of removing contaminants from a specific environment, such as soil, water, or air." ;
+    rdfs:subClassOf ont:Process .
+
+ont:Device
+    a owl:Class ;
+    rdfs:comment "A machine or piece of equipment designed to serve a specific purpose." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:DigitalAndIct
+    a owl:Class ;
+    rdfs:comment "The branch of engineering focused on digital technologies, information systems, and communication technologies (ICT)." ;
+    rdfs:subClassOf ont:Engineering ;
+    owl:disjointWith ont:ClimateEngineering , ont:ElectricalEngineering , ont:FireSafety , ont:MechanicsAndRobotics .
+
+ont:DigitalService
+    a owl:Class ;
+    rdfs:comment "A service that is delivered via the internet or an electronic network." ;
+    rdfs:subClassOf ont:Service .
+
+ont:Directive
+    a owl:Class ;
+    rdfs:comment "A legislative act, particularly from the European Union, that sets out a goal that all EU countries must achieve through their own national laws, such as the CSRD." ;
+    rdfs:subClassOf ont:LegalDocument .
+
+ont:Discrimination
+    a owl:Class ;
+    rdfs:comment "The unjust or prejudicial treatment of different categories of people, especially on the grounds of race, age, sex, or disability, within the workplace." ;
+    rdfs:subClassOf ont:HumanRightsImpact .
+
+ont:Dividend
+    a owl:Class ;
+    rdfs:comment "A distribution of a portion of a company's earnings, decided by the board of directors, to a class of its shareholders, reported as a key performance indicator." ;
+    rdfs:subClassOf ont:Transaction ;
+    owl:disjointWith ont:CapitalIncrease , ont:ShareSale , ont:Subscription .
+
+ont:Document
+    a owl:Class ;
+    rdfs:comment "A formal written text that provides detailed information on a specific subject, such as ESG KPI methodology." ;
+    rdfs:subClassOf ont:InformationContentEntity .
+
+ont:DocumentPart
+    a owl:Class ;
+    rdfs:comment "A distinct section, chapter, or component of a larger document or report." ;
+    rdfs:subClassOf ont:Document ;
+    owl:disjointWith ont:Report .
+
+ont:Donation
+    a owl:Class ;
+    rdfs:comment "A category of risk related to charitable contributions, which could be misused for influence peddling or bribery." ;
+    rdfs:subClassOf ont:Transaction .
+
+ont:EcologicalEngineering
+    a owl:Class ;
+    rdfs:comment "A field of engineering that designs, monitors and constructs ecosystems." ;
+    rdfs:subClassOf ont:Engineering .
+
+ont:EconomicOpportunity
+    a owl:Class ;
+    rdfs:comment "A chance for an individual, particularly youth, to gain employment or develop professional skills." ;
+    rdfs:subClassOf ont:Opportunity ;
+    owl:disjointWith ont:PartnershipOpportunity .
+
+ont:EconomicSanctionsViolation
+    a owl:Class ;
+    rdfs:comment "A category of risk involving the breach of trade penalties and commercial restrictions imposed by one or more countries against a targeted state, group, or individual." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:EducationalCampus
+    a owl:Class ;
+    rdfs:comment "A physical site dedicated to environmental awareness, training, and education for stakeholders." ;
+    rdfs:subClassOf ont:Facility .
+
+ont:EducationalInitiative
+    a owl:Class ;
+    rdfs:comment "A structured program designed to build environmental skills and knowledge within an organization's workforce." ;
+    rdfs:subClassOf ont:Initiative .
+
+ont:EducationalInstitution
+    a owl:Class ;
+    rdfs:comment "An organization dedicated to providing education." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:Company , ont:Foundation , ont:Initiative , ont:InnovationHub , ont:RatingAgency , ont:ThinkTank .
+
+ont:ElectricalEngineering
+    a owl:Class ;
+    rdfs:comment "The branch of engineering that deals with the technology of electricity." ;
+    rdfs:subClassOf ont:Engineering ;
+    owl:disjointWith ont:ClimateEngineering , ont:DigitalAndIct , ont:FireSafety , ont:MechanicsAndRobotics , ont:Refrigeration .
+
+ont:Employee
+    a owl:Class ;
+    rdfs:comment "An individual working for the company, who is a key participant in and target of sustainability training and initiatives." ;
+    rdfs:subClassOf ont:Stakeholder .
+
+ont:EmployeeCount
+    a owl:Class ;
+    rdfs:comment "A key performance indicator representing the total number of individuals employed by an organization, used for workforce analysis and regulatory reporting." ;
+    rdfs:subClassOf ont:Metric .
+
+ont:EmployeeRepresentativeBody
+    a owl:Class ;
+    rdfs:comment "A body which represents the employees in a company, such as a works council." ;
+    rdfs:subClassOf ont:GovernanceBody ;
+    owl:disjointWith ont:AuditCommittee , ont:ExecutiveCommittee .
+
+ont:EmployeeShareholderPlan
+    a owl:Class ;
+    rdfs:comment "A formal, company-sponsored program that gives employees the opportunity to acquire ownership interest in the company, often as part of a governance and compensation strategy." ;
+    rdfs:subClassOf ont:Plan .
+
+ont:Energy
+    a owl:Class ;
+    rdfs:comment "Power derived from the utilization of physical or chemical resources, especially to provide light and heat or to work machines." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:EnergyAndServices
+    a owl:Class ;
+    rdfs:comment "A business sector focused on the generation, distribution, and management of energy, as well as related services." ;
+    rdfs:subClassOf ont:BusinessSector ;
+    owl:disjointWith ont:Construction , ont:Media , ont:Telecom .
+
+ont:EnergyConsumptionMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure of the total energy used by an entity, often broken down by source (fossil, renewable, nuclear) for CSRD reporting." ;
+    rdfs:subClassOf ont:ConsumptionMetric .
+
+ont:Engineering
+    a owl:Class ;
+    rdfs:comment "The branch of science and technology concerned with the design, building, and use of engines, machines, and structures." ;
+    rdfs:subClassOf ont:Service ;
+    owl:disjointWith ont:BusinessSector , ont:Maintenance .
+
+ont:EnvironmentalMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure used to track and assess an organization's environmental performance, such as energy consumption or low-carbon energy share, essential for CSRD compliance." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:FinancialMetric , ont:HrMetric , ont:OwnershipMetric , ont:Rating , ont:SafetyMetric , ont:SupplyChainMetric .
+
+ont:EnvironmentalPolicy
+    a owl:Class ;
+    rdfs:comment "A formal statement of an organization's principles and intentions for managing its environmental impacts." ;
+    rdfs:subClassOf ont:Policy .
+
+ont:EnvironmentalRisk
+    a owl:Class ;
+    rdfs:comment "A potential negative impact on a company's operations or finances arising from environmental factors such as pollution, resource depletion, or ecosystem degradation." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:Equipment
+    a owl:Class ;
+    rdfs:comment "The necessary items for a particular purpose." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:EsgKeyPerformanceIndicator
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure used to track performance on specific environmental, social, and governance objectives, often linked to executive compensation." ;
+    rdfs:subClassOf ont:KeyPerformanceIndicator .
+
+ont:EuropeanWorksCouncil
+    a owl:Class ;
+    rdfs:comment "A works council for a company with operations across the European Union, established to facilitate information and consultation between management and workers." ;
+    rdfs:subClassOf ont:EmployeeRepresentativeBody .
+
+ont:Event
+    a owl:Class ;
+    rdfs:comment "A temporal entity representing an instantaneous or point-in-time occurrence, such as a transaction, an appointment, or the achievement of a milestone." ;
+    rdfs:subClassOf ont:TemporalEntity .
+
+ont:ExecutiveCommittee
+    a owl:Class ;
+    rdfs:comment "A committee consisting of the senior executives of a company, responsible for top-level operational decisions." ;
+    rdfs:subClassOf ont:GovernanceBody ;
+    owl:disjointWith ont:AuditCommittee , ont:EmployeeRepresentativeBody .
+
+ont:ExpertGroup
+    a owl:Class ;
+    rdfs:comment "An authoritative body of scientists and specialists, such as the IPCC (GIEC), whose findings inform climate-related strategies and risk assessments." ;
+    rdfs:subClassOf ont:Organization .
+
+ont:FacilitationPayment
+    a owl:Class ;
+    rdfs:comment "A category of risk involving small, unofficial payments made to secure or expedite a routine government action, often considered a form of bribery." ;
+    rdfs:subClassOf ont:Corruption .
+
+ont:Facility
+    a owl:Class ;
+    rdfs:comment "A place, amenity, or piece of equipment provided for a particular purpose." ;
+    rdfs:subClassOf ont:Place .
+
+ont:FiberOpticNetwork
+    a owl:Class ;
+    rdfs:comment "A network infrastructure that uses fiber-optic cables to transmit data as pulses of light." ;
+    rdfs:subClassOf ont:FixedNetwork .
+
+ont:Fiction
+    a owl:Class ;
+    rdfs:comment "A literary genre consisting of stories, events, and people that are imaginary." ;
+    rdfs:subClassOf ont:Genre .
+
+ont:FinancialDocument
+    a owl:Class ;
+    rdfs:comment "A formal record of the financial activities of a business, person, or other entity." ;
+    rdfs:subClassOf ont:Document .
+
+ont:FinancialMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure used to track, monitor, and assess the financial health, performance, and status of an organization or its segments. It is disjoint from operational and share price metrics." ;
+    rdfs:subClassOf ont:KeyPerformanceIndicator ;
+    owl:disjointWith ont:EnvironmentalMetric , ont:HrMetric , ont:OperationalMetric , ont:OwnershipMetric , ont:Rating , ont:SafetyMetric , ont:ServingOfAffordableNutrition , ont:SharePrice , ont:SupplyChainMetric .
+
+ont:FinancialReporting
+    a owl:Class ;
+    rdfs:comment "A structured presentation of an entity's financial performance and position, including key figures like turnover, income, and order book value." ;
+    rdfs:subClassOf ont:Document .
+
+ont:FinancialResource
+    a owl:Class ;
+    rdfs:comment "Assets of a business that are in the form of money or can be easily converted into money." ;
+    rdfs:subClassOf ont:Resource ;
+    owl:disjointWith ont:RawMaterial .
+
+ont:FinancialRisk
+    a owl:Class ;
+    rdfs:comment "The potential for monetary loss or negative financial impact on an organization, as identified and managed within a risk framework." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:FinancialStatement
+    a owl:Class ;
+    rdfs:comment "A formal, structured record of the financial activities and position of a business, such as an income statement or balance sheet, used for regulatory reporting and analysis." ;
+    rdfs:subClassOf ont:FinancialDocument ;
+    owl:disjointWith ont:RegulatoryFiling .
+
+ont:FireSafety
+    a owl:Class ;
+    rdfs:comment "The set of practices intended to reduce the destruction caused by fire, including related engineering services." ;
+    rdfs:subClassOf ont:Engineering ;
+    owl:disjointWith ont:ClimateEngineering , ont:DigitalAndIct , ont:ElectricalEngineering , ont:MechanicsAndRobotics , ont:Refrigeration .
+
+ont:FixedNetwork
+    a owl:Class ;
+    rdfs:comment "A telecommunications network where the connection to the end-user is through a physical line, like a cable or fiber." ;
+    rdfs:subClassOf ont:Network ;
+    owl:disjointWith ont:MobileNetwork .
+
+ont:FoodSecurity
+    a owl:Class ;
+    rdfs:comment "The state of having reliable access to a sufficient quantity of affordable, nutritious food." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:FoodWaste
+    a owl:Class ;
+    rdfs:comment "Food intended for human consumption that is lost or discarded along the food supply chain, from production to the consumer." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:ForcedLabor
+    a owl:Class ;
+    rdfs:comment "Any work or service which people are forced to do against their will, under threat of punishment." ;
+    rdfs:subClassOf ont:HumanRightsImpact .
+
+ont:FossilFuel
+    a owl:Class ;
+    rdfs:comment "A natural fuel such as coal or gas, formed in the geological past from the remains of living organisms." ;
+    rdfs:subClassOf ont:Energy .
+
+ont:Foundation
+    a owl:Class ;
+    rdfs:comment "A non-profit organization established and funded by a corporate entity to support charitable activities, relevant for assessing social impact and community engagement under CSRD." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:Company , ont:EducationalInstitution , ont:Initiative , ont:InnovationHub , ont:RatingAgency , ont:ThinkTank .
+
+ont:Founding
+    a owl:Class ;
+    rdfs:comment "The event that marks the establishment of an organization, providing historical context for its governance and strategic evolution." ;
+    rdfs:subClassOf ont:Event ;
+    owl:disjointWith ont:Acquisition , ont:Appointment , ont:Investment .
+
+ont:Framework
+    a owl:Class ;
+    rdfs:comment "A structured set of guidelines, principles, or processes used to manage and report on specific areas, such as climate-related financial disclosures or enterprise risk." ;
+    rdfs:subClassOf ont:BusinessConcept ;
+    owl:disjointWith ont:Analysis , ont:BusinessApproach , ont:BusinessModel , ont:Initiative , ont:Methodology , ont:OwnershipStructure , ont:Plan , ont:Program , ont:PropertyRight , ont:Report , ont:Risk , ont:Rule , ont:System , ont:Target , ont:TrainingProgram .
+
+ont:FrameworkAgreement
+    a owl:Class ;
+    rdfs:comment "An agreement between one or more businesses or organizations, the purpose of which is to establish the terms governing contracts to be awarded during a given period." ;
+    rdfs:subClassOf ont:Agreement .
+
+ont:GHGEmissionsMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure of greenhouse gases emitted into the atmosphere, categorized by scope (1, 2, 3) as required for climate-related disclosures." ;
+    rdfs:subClassOf ont:EnvironmentalMetric .
+
+ont:Genre
+    a owl:Class ;
+    rdfs:comment "A category of artistic composition, as in music or literature, characterized by similarities in form, style, or subject matter." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:GeographicArea
+    a owl:Class ;
+    rdfs:comment "A region or area defined by its geographical features." ;
+    rdfs:subClassOf ont:Place .
+
+ont:GeopoliticalEntity
+    a owl:Class ;
+    rdfs:comment "A politically defined geographical region, such as a country or a union of countries." ;
+    rdfs:subClassOf ont:Place .
+
+ont:GeosourcedMaterial
+    a owl:Class ;
+    rdfs:comment "Material sourced from the earth, such as minerals or aggregates." ;
+    rdfs:subClassOf ont:Material .
+
+ont:GhgEmissions
+    a owl:Class ;
+    rdfs:comment "The release of greenhouse gases into the atmosphere, a key metric for measuring climate impact under various scopes." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:Goal
+    a owl:Class ;
+    rdfs:comment "An aim or desired result." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Category , ont:GovernanceBody , ont:Metric , ont:Plan , ont:Policy , ont:Program , ont:Role , ont:Rule , ont:StrategicPlan , ont:SustainabilityTopic .
+
+ont:GovernanceBody
+    a owl:Class ;
+    rdfs:comment "A formal group or committee, such as a Board of Directors, responsible for the oversight, strategic direction, and accountability of an organization." ;
+    rdfs:subClassOf ont:GovernanceEntity , ont:Organization ;
+    owl:disjointWith ont:Company , ont:Goal , ont:Group , ont:Metric , ont:Plan , ont:Policy , ont:Program , ont:Role , ont:StrategicPlan , ont:SustainabilityTopic .
+
+ont:GovernanceCommittee
+    a owl:Class ;
+    rdfs:comment "A formal subgroup of a board of directors tasked with specific oversight responsibilities related to corporate governance." ;
+    rdfs:subClassOf ont:GovernanceEntity .
+
+ont:GovernanceEntity
+    a owl:Class ;
+    rdfs:comment "A body or committee responsible for the oversight and management of an organization." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:GrievanceMechanism
+    a owl:Class ;
+    rdfs:comment "A formal, systematic process designed to receive, investigate, and resolve complaints or concerns raised by stakeholders, such as employees or community members." ;
+    rdfs:subClassOf ont:Process .
+
+ont:Group
+    a owl:Class ;
+    rdfs:comment "The parent corporate entity that encompasses multiple companies, brands, and business segments. Replaces CompanyGroup." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:Company , ont:GovernanceBody .
+
+ont:Guidance
+    a owl:Class ;
+    rdfs:comment "A forward-looking statement or projection issued by a company regarding its expected future performance on specific metrics, such as sales growth or profit margins." ;
+    rdfs:subClassOf ont:Plan .
+
+ont:Harassment
+    a owl:Class ;
+    rdfs:comment "Unwelcome conduct that is based on protected characteristics, which becomes a condition of continued employment or creates a hostile work environment." ;
+    rdfs:subClassOf ont:HumanRightsImpact .
+
+ont:HealthAndSafetyRisk
+    a owl:Class ;
+    rdfs:comment "A potential adverse impact on the physical and mental well-being of individuals, particularly workers, within a company's operations or value chain." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:Healthcare
+    a owl:Class ;
+    rdfs:comment "The organized provision of medical care to individuals or a community." ;
+    rdfs:subClassOf ont:Service .
+
+ont:HeatPump
+    a owl:Class ;
+    rdfs:comment "A device that transfers heat from a colder area to a hotter area by using mechanical energy, as in a refrigerator." ;
+    rdfs:subClassOf ont:ClimateEngineering , ont:Device ;
+    owl:disjointWith ont:CoolingSystem .
+
+ont:Hotel
+    a owl:Class ;
+    rdfs:comment "A commercial establishment providing lodging, meals, and other services for travelers, relevant in the context of operational environmental footprint." ;
+    rdfs:subClassOf ont:Building , ont:Facility .
+
+ont:Housing
+    a owl:Class ;
+    rdfs:subClassOf ont:Building ;
+    owl:disjointWith ont:Office .
+
+ont:HrMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure used to track and assess human resources and workforce characteristics, such as employee count or diversity ratios, which are key social indicators for CSRD." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:EnvironmentalMetric , ont:FinancialMetric , ont:OwnershipMetric , ont:Rating , ont:SafetyMetric , ont:SupplyChainMetric .
+
+ont:HumanRightsImpact
+    a owl:Class ;
+    rdfs:comment "A change in the human rights enjoyment of an individual or group resulting from a company's operations, products, or business relationships." ;
+    rdfs:subClassOf ont:SocialIssue .
+
+ont:HumanRightsRisk
+    a owl:Class ;
+    rdfs:comment "A potential adverse impact on the fundamental rights and freedoms of individuals, as defined by international declarations, within a company's sphere of influence." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:HydraulicBinder
+    a owl:Class ;
+    rdfs:comment "A type of binder that hardens by reacting with water (hydration)." ;
+    rdfs:subClassOf ont:Binder .
+
+ont:IfrsAccountingStandard
+    a owl:Class ;
+    rdfs:comment "A set of globally recognized accounting rules and principles (International Financial Reporting Standards) used for preparing and presenting financial statements to ensure consistency and transparency." ;
+    rdfs:subClassOf ont:AccountingStandard .
+
+ont:IncentivePlan
+    a owl:Class ;
+    rdfs:comment "A formal program designed to motivate and reward employees, particularly executives, for achieving specific performance targets, which may include ESG metrics." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:Index
+    a owl:Class ;
+    rdfs:comment "A curated list or benchmark, compiled by a third party, that rates or ranks companies based on their ESG or sustainability performance." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:IndigenousPeoplesLandRight
+    a owl:Class ;
+    rdfs:comment "The rights of Indigenous peoples to own, use, and control the lands, territories, and resources that they have traditionally occupied or otherwise used." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:Industry
+    a owl:Class ;
+    rdfs:comment "A group of companies or organizations that are related based on their primary business activities." ;
+    rdfs:subClassOf ont:Organization .
+
+ont:InfluencePeddling
+    a owl:Class ;
+    rdfs:comment "A category of risk involving the illegal practice of using one's influence in government or connections with persons in authority to obtain favors or preferential treatment for another, usually in return for payment." ;
+    rdfs:subClassOf ont:Corruption .
+
+ont:InformationBearingObject
+    a owl:Class ;
+    rdfs:comment "An object, physical or digital, whose primary purpose is to contain and convey information." ;
+    rdfs:subClassOf ont:InformationContentEntity .
+
+ont:InformationContentEntity
+    a owl:Class ;
+    rdfs:comment "A class for concepts that primarily exist to contain and convey information, whether in physical or digital form." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:InformationSystem
+    a owl:Class ;
+    rdfs:comment "A software platform or digital tool used to collect, manage, and analyze specific performance data, such as greenhouse gas emissions." ;
+    rdfs:subClassOf ont:System .
+
+ont:Infrastructure
+    a owl:Class ;
+    rdfs:comment "The basic physical and organizational structures and facilities needed for the operation of a society or enterprise." ;
+    rdfs:subClassOf ont:ConcreteEntity ;
+    owl:disjointWith ont:ConstructionMaterial .
+
+ont:Initiative
+    a owl:Class ;
+    rdfs:comment "A specific project, program, or formal third-party framework (like SBTi) undertaken to achieve a particular social or environmental goal." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:BusinessApproach , ont:BusinessModel , ont:Company , ont:EducationalInstitution , ont:Foundation , ont:Framework , ont:InnovationHub , ont:Program , ont:RatingAgency , ont:Target , ont:ThinkTank .
+
+ont:InnovationHub
+    a owl:Class ;
+    rdfs:comment "A collaborative entity or space designed to foster innovation, often through partnerships, which can be a source of sustainable solutions relevant to CSRD reporting." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:Company , ont:EducationalInstitution , ont:Foundation , ont:Initiative , ont:RatingAgency , ont:ThinkTank .
+
+ont:InnovativeProduct
+    a owl:Class ;
+    rdfs:comment "A product that introduces new ideas or methods." ;
+    rdfs:subClassOf ont:Solution .
+
+ont:InsiderTrading
+    a owl:Class ;
+    rdfs:comment "A category of risk related to the illegal practice of trading on the stock exchange to one's own advantage through having access to confidential information." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:IntangibleProduct
+    a owl:Class ;
+    rdfs:comment "Products that are not physical in nature, such as services, content, and digital platforms." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:IntellectualProperty
+    a owl:Class ;
+    rdfs:comment "Creations of the mind, such as inventions, literary and artistic works, designs, and symbols, names and images used in commerce." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:IntellectualPropertyRight
+    a owl:Class ;
+    rdfs:comment "A category of risk concerning the infringement or protection of creations of the mind, such as inventions, literary and artistic works, designs, and symbols." ;
+    rdfs:subClassOf ont:PropertyRight .
+
+ont:IntensiveFarming
+    a owl:Class ;
+    rdfs:comment "An agricultural production system characterized by high inputs of capital, labor, or heavy use of technologies like pesticides and chemical fertilizers relative to land area." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:InternalControlFramework
+    a owl:Class ;
+    rdfs:comment "A systematic process and set of controls implemented by a company to manage risks, ensure the reliability of reporting, and comply with laws and regulations." ;
+    rdfs:subClassOf ont:Framework .
+
+ont:InternationalAgreement
+    a owl:Class ;
+    rdfs:comment "A formal treaty or accord between nations, such as the Paris Agreement, which sets goals that influence corporate climate strategy." ;
+    rdfs:subClassOf ont:Agreement .
+
+ont:InternetBox
+    a owl:Class ;
+    rdfs:comment "A device that provides internet connectivity to other devices in a local network." ;
+    rdfs:subClassOf ont:Device .
+
+ont:InvasiveSpecies
+    a owl:Class ;
+    rdfs:comment "A species that is not native to a specific location, and that has a tendency to spread to a degree believed to cause damage to the environment, economy, or human health." ;
+    rdfs:subClassOf ont:Species .
+
+ont:Investment
+    a owl:Class ;
+    rdfs:comment "The strategic allocation of capital into an asset or company, relevant for understanding corporate influence and structure." ;
+    rdfs:subClassOf ont:Event ;
+    owl:disjointWith ont:Acquisition , ont:Appointment , ont:Founding .
+
+ont:KeyPerformanceIndicator
+    a owl:Class ;
+    rdfs:comment "A measurable value that demonstrates how effectively a company is achieving key business and sustainability objectives." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:MetricResult , ont:Topic .
+
+ont:LaborUnion
+    a owl:Class ;
+    rdfs:comment "An organized association of workers formed to protect and further their rights and interests, with whom a company may have formal agreements." ;
+    rdfs:subClassOf ont:OrganizationalUnit .
+
+ont:LegalDocument
+    a owl:Class ;
+    rdfs:comment "A document that states some contractual relationship or grants some right." ;
+    rdfs:subClassOf ont:Document .
+
+ont:LegalProceeding
+    a owl:Class ;
+    rdfs:comment "A formal action or process conducted in a court of law, such as a judicial administration, relevant to a company's compliance and legal risks." ;
+    rdfs:subClassOf ont:Process ;
+    owl:disjointWith ont:Transaction .
+
+ont:Legislation
+    a owl:Class ;
+    rdfs:comment "A law or set of laws enacted by a government that establishes legal requirements for corporate reporting and conduct, such as on non-financial or climate matters." ;
+    rdfs:subClassOf ont:Document .
+
+ont:LightVehicle
+    a owl:Class ;
+    rdfs:comment "A motor vehicle with a gross vehicle weight rating of under 10,000 pounds (4,500 kg)." ;
+    rdfs:subClassOf ont:Vehicle .
+
+ont:LivingWage
+    a owl:Class ;
+    rdfs:comment "Remuneration received for a standard work week by a worker in a particular place sufficient to afford a decent standard of living for the worker and her or his family." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:LogisticsCenter
+    a owl:Class ;
+    rdfs:comment "A facility where the distribution and transportation of goods are managed, representing a key point in the supply chain for emissions and efficiency." ;
+    rdfs:subClassOf ont:Facility .
+
+ont:LowCarbonCommercialSolution
+    a owl:Class ;
+    rdfs:comment "A commercial solution designed to have a lower carbon footprint than traditional alternatives." ;
+    rdfs:subClassOf ont:Solution .
+
+ont:LowCarbonConcrete
+    a owl:Class ;
+    rdfs:comment "Concrete produced with a lower carbon footprint than traditional concrete, typically through the use of supplementary cementitious materials or carbon capture." ;
+    rdfs:subClassOf ont:BuildingMaterial .
+
+ont:LowCarbonSolution
+    a owl:Class ;
+    rdfs:comment "A product, technology, or process specifically developed to have a lower carbon footprint than conventional alternatives." ;
+    rdfs:subClassOf ont:Solution .
+
+ont:LowCarbonSteel
+    a owl:Class ;
+    rdfs:comment "Steel manufactured using methods that significantly reduce greenhouse gas emissions compared to conventional blast furnace production." ;
+    rdfs:subClassOf ont:BuildingMaterial .
+
+ont:Maintenance
+    a owl:Class ;
+    rdfs:comment "The process of preserving a condition or situation or the state of being preserved." ;
+    rdfs:subClassOf ont:Service ;
+    owl:disjointWith ont:BusinessSector , ont:Engineering .
+
+ont:Maison
+    a owl:Class ;
+    rdfs:comment "A specific brand or house within a larger luxury group, often with its own distinct heritage and operational footprint." ;
+    rdfs:subClassOf ont:Company .
+
+ont:ManagementPosition
+    a owl:Class ;
+    rdfs:comment "A role within a company's organizational structure that holds leadership and decision-making responsibilities." ;
+    rdfs:subClassOf ont:Role .
+
+ont:ManagementSystem
+    a owl:Class ;
+    rdfs:comment "A set of policies, processes, and procedures used by an organization to ensure it can fulfill all tasks required to achieve its objectives, such as compliance." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:Material
+    a owl:Class ;
+    rdfs:comment "The matter from which a thing is or can be made." ;
+    rdfs:subClassOf ont:Resource .
+
+ont:MechanicsAndRobotics
+    a owl:Class ;
+    rdfs:comment "The branch of engineering dealing with the design, construction, operation, and use of robots, as well as the computer systems for their control." ;
+    rdfs:subClassOf ont:Engineering ;
+    owl:disjointWith ont:ClimateEngineering , ont:DigitalAndIct , ont:ElectricalEngineering , ont:FireSafety , ont:Refrigeration .
+
+ont:Media
+    a owl:Class ;
+    rdfs:comment "The main means of mass communication (broadcasting, publishing, and the internet) regarded collectively." ;
+    rdfs:subClassOf ont:BusinessSector ;
+    owl:disjointWith ont:Construction , ont:EnergyAndServices , ont:Telecom .
+
+ont:MediaContent
+    a owl:Class ;
+    rdfs:comment "Any content, such as text, audio, video, and graphics, that is published on any media platform." ;
+    rdfs:subClassOf ont:IntangibleProduct .
+
+ont:MediaProgram
+    a owl:Class ;
+    rdfs:comment "A scheduled broadcast or a piece of recorded media content." ;
+    rdfs:subClassOf ont:MediaContent .
+
+ont:Methodology
+    a owl:Class ;
+    rdfs:comment "A standardized system of methods and principles used for measurement and reporting, such as the GHG Protocol for emissions accounting or risk assessment." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Framework , ont:Plan , ont:Program , ont:PropertyRight , ont:Risk , ont:Rule , ont:System , ont:TrainingProgram .
+
+ont:Metric
+    a owl:Class ;
+    rdfs:comment "A standard of measurement or a quantitative assessment of a particular characteristic." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:BusinessConcept , ont:Category , ont:Goal , ont:GovernanceBody , ont:Opportunity , ont:Plan , ont:Policy , ont:Program , ont:Role , ont:Rule .
+
+ont:MetricReport
+    a owl:Class ;
+    rdfs:comment "A specific, quantifiable data point or key performance indicator (KPI) reported for a given period, used to measure progress against sustainability and compliance targets." ;
+    rdfs:subClassOf ont:Report .
+
+ont:MetricResult
+    a owl:Class ;
+    rdfs:comment "The specific, recorded quantitative or qualitative value of a Key Performance Indicator for a given reporting period." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:KeyPerformanceIndicator .
+
+ont:Milestone
+    a owl:Class ;
+    rdfs:comment "A significant point or achievement in the progress toward a long-term goal, such as meeting an SBTi-validated target." ;
+    rdfs:subClassOf ont:Event ;
+    owl:disjointWith ont:Appointment , ont:Reorganization .
+
+ont:MobileNetwork
+    a owl:Class ;
+    rdfs:comment "A wireless network distributed over land areas called cells, each served by at least one fixed-location transceiver." ;
+    rdfs:subClassOf ont:Network ;
+    owl:disjointWith ont:FixedNetwork .
+
+ont:MobilePhone
+    a owl:Class ;
+    rdfs:comment "A portable telephone that can make and receive calls over a radio frequency link while the user is moving within a telephone service area." ;
+    rdfs:subClassOf ont:Device .
+
+ont:MoneyLaundering
+    a owl:Class ;
+    rdfs:comment "A category of risk involving the concealment of the origins of illegally obtained money, a critical compliance area under CSRD." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:MultiStakeholderInitiative
+    a owl:Class ;
+    rdfs:comment "A collaborative effort involving various groups, such as corporations, governments, and civil society, to address complex sustainability challenges and develop standards." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:OrganizationalUnit .
+
+ont:NaturalResource
+    a owl:Class ;
+    rdfs:comment "Materials or substances such as minerals, forests, water, and fertile land that occur in nature and can be used for economic gain." ;
+    rdfs:subClassOf ont:Resource .
+
+ont:Neighborhood
+    a owl:Class ;
+    rdfs:comment "A district, especially one forming a community within a town or city." ;
+    rdfs:subClassOf ont:Building .
+
+ont:Network
+    a owl:Class ;
+    rdfs:comment "A system of interconnected lines, channels, or systems." ;
+    rdfs:subClassOf ont:Infrastructure ;
+    owl:disjointWith ont:DataCenter , ont:PowerGenerationFacility , ont:Railway , ont:Road .
+
+ont:NonFinancialMatter
+    a owl:Class ;
+    rdfs:comment "A topic related to environmental, social, employee, human rights, anti-corruption, or bribery issues that is subject to mandatory corporate disclosure." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:NonIfrsFinancialPerformanceMeasure
+    a owl:Class ;
+    rdfs:comment "An alternative performance measure (APM) that adjusts official IFRS figures to provide a different perspective on a company's performance, such as 'Underlying Trading Operating Profit'." ;
+    rdfs:subClassOf ont:Metric .
+
+ont:NuclearEnergy
+    a owl:Class ;
+    rdfs:comment "Energy released during nuclear fission or fusion, especially when used to generate electricity." ;
+    rdfs:subClassOf ont:Energy .
+
+ont:Offer
+    a owl:Class ;
+    rdfs:comment "A product or service made available for purchase or use." ;
+    rdfs:subClassOf ont:IntangibleProduct .
+
+ont:Office
+    a owl:Class ;
+    rdfs:comment "A room, set of rooms, or building used as a place for commercial, professional, or bureaucratic work." ;
+    rdfs:subClassOf ont:Building ;
+    owl:disjointWith ont:Housing .
+
+ont:OfficeBuilding
+    a owl:Class ;
+    rdfs:comment "A building containing offices." ;
+    rdfs:subClassOf ont:Building .
+
+ont:OffshoreWind
+    a owl:Class ;
+    rdfs:comment "Wind power generated from turbines located in bodies of water, usually the ocean." ;
+    rdfs:subClassOf ont:RenewableEnergy .
+
+ont:OperationalMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure used to track non-financial aspects of a company's operations, such as the number of physical locations." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:FinancialMetric .
+
+ont:Opportunity
+    a owl:Class ;
+    rdfs:comment "A set of circumstances that makes it possible to do something, offering potential positive impacts or advantages." ;
+    rdfs:subClassOf ont:Topic ;
+    owl:disjointWith ont:BusinessConcept , ont:Metric , ont:Role .
+
+ont:Organization
+    a owl:Class ;
+    rdfs:comment "A formally constituted group or institution, such as a company, standard-setter, non-profit, or intergovernmental body, that plays a role in the corporate sustainability ecosystem." ;
+    rdfs:subClassOf ont:Agent ;
+    owl:disjointWith ont:Person , ont:Species .
+
+ont:OrganizationalUnit
+    a owl:Class ;
+    rdfs:comment "A specific department, division, or functional team within a company that has defined responsibilities related to sustainability, ethics, compliance, or operations." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:Company , ont:GovernanceBody , ont:MultiStakeholderInitiative , ont:ResearchCenter , ont:Supplier .
+
+ont:OwnershipMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure describing the distribution of a company's equity, such as the percentage held by employees or major shareholders." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:EnvironmentalMetric , ont:FinancialMetric , ont:HrMetric , ont:Rating , ont:SafetyMetric , ont:SupplyChainMetric .
+
+ont:OwnershipStructure
+    a owl:Class ;
+    rdfs:comment "The formal arrangement of shareholdings that defines the ownership of a company, a key element of corporate governance reporting." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Analysis , ont:Framework .
+
+ont:Packaging
+    a owl:Class ;
+    rdfs:comment "Materials used to wrap or protect goods, which is a key area of focus for environmental impact reduction and circular economy strategies." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:ParallelDistribution
+    a owl:Class ;
+    rdfs:comment "A category of risk related to the unauthorized trade of non-counterfeit products outside of official distribution channels." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:Park
+    a owl:Class ;
+    rdfs:comment "A designated area of land, often for conservation or recreation, which can be the subject of a company's biodiversity or community support initiatives." ;
+    rdfs:subClassOf ont:Place .
+
+ont:PartnershipOpportunity
+    a owl:Class ;
+    rdfs:comment "An opportunity arising from collaboration with other entities." ;
+    rdfs:subClassOf ont:Opportunity ;
+    owl:disjointWith ont:EconomicOpportunity .
+
+ont:Person
+    a owl:Class ;
+    rdfs:comment "An individual, typically holding a key position of responsibility or oversight within a company's governance structure related to sustainability and compliance." ;
+    rdfs:subClassOf ont:Agent ;
+    owl:disjointWith ont:Organization , ont:Species .
+
+ont:PersonalData
+    a owl:Class ;
+    rdfs:comment "Any information that relates to an identified or identifiable individual, the protection of which is a key corporate responsibility." ;
+    rdfs:subClassOf ont:Data .
+
+ont:Pesticide
+    a owl:Class ;
+    rdfs:comment "A substance used for destroying insects or other organisms harmful to cultivated plants or to animals, the use of which is a material sustainability topic in agriculture." ;
+    rdfs:subClassOf ont:ChemicalSubstance .
+
+ont:PhotovoltaicCyclePath
+    a owl:Class ;
+    rdfs:comment "A road or path for cyclists that incorporates photovoltaic (solar) panels to generate electricity." ;
+    rdfs:subClassOf ont:Road .
+
+ont:PhysicalAsset
+    a owl:Class ;
+    rdfs:comment "A tangible object or structure, such as a building, infrastructure, or material." ;
+    rdfs:subClassOf ont:ConcreteEntity .
+
+ont:PhysicalRisk
+    a owl:Class ;
+    rdfs:comment "A risk to a company's operations, supply chain, or assets resulting from the physical impacts of climate change, such as extreme weather events." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:Place
+    a owl:Class ;
+    rdfs:comment "A particular position, point, or area in space; a location." ;
+    rdfs:subClassOf ont:ConcreteEntity .
+
+ont:Plan
+    a owl:Class ;
+    rdfs:comment "A detailed proposal for doing or achieving something, such as a Vigilance Plan, which outlines due diligence processes." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Category , ont:Framework , ont:Goal , ont:GovernanceBody , ont:Methodology , ont:Metric , ont:Policy , ont:Program , ont:PropertyRight , ont:Risk , ont:Role , ont:Rule , ont:System , ont:TrainingProgram .
+
+ont:Platform
+    a owl:Class ;
+    rdfs:comment "A digital service or system that facilitates interactions or provides data, such as a sustainability rating platform (EcoVadis) or a media streaming service (TF1+)." ;
+    rdfs:subClassOf ont:IntangibleProduct ;
+    owl:disjointWith ont:Content .
+
+ont:Policy
+    a owl:Class ;
+    rdfs:comment "A formal statement of principles, rules, and guidelines adopted by an organization to guide its decisions and achieve specific outcomes in areas like sustainability, human rights, or business conduct." ;
+    rdfs:subClassOf ont:Document , ont:Rule ;
+    owl:disjointWith ont:Goal , ont:GovernanceBody , ont:Metric , ont:Plan , ont:Program , ont:Role , ont:Standard , ont:StrategicPlan , ont:SustainabilityTopic .
+
+ont:PoliticalEntity
+    a owl:Class ;
+    rdfs:comment "A geopolitical unit, such as the European Union, that has the authority to create and enforce laws and directives impacting corporate reporting." ;
+    rdfs:subClassOf ont:GeopoliticalEntity .
+
+
+ont:Position
+    a owl:Class ;
+    rdfs:comment "A specific job or role within an organization's hierarchy, such as the Global Head of Human Resources." ;
+    rdfs:subClassOf ont:Role , ont:Situation .
+
+ont:PowerGenerationFacility
+    a owl:Class ;
+    rdfs:comment "A facility designed to produce electrical energy from other forms of energy." ;
+    rdfs:subClassOf ont:Infrastructure ;
+    owl:disjointWith ont:DataCenter , ont:Network , ont:Railway , ont:Road .
+
+ont:PowerPurchaseAgreement
+    a owl:Class ;
+    rdfs:comment "A contract between two parties, one which generates electricity (the seller) and one which is looking to purchase electricity (the buyer)." ;
+    rdfs:subClassOf ont:Agreement .
+
+ont:PrimarySupplyChain
+    a owl:Class ;
+    rdfs:comment "The network of suppliers providing the main raw materials essential for a company's production processes." ;
+    rdfs:subClassOf ont:SupplyChain .
+
+ont:Process
+    a owl:Class ;
+    rdfs:comment "A temporal entity representing a series of actions or steps that unfold over a duration, such as a manufacturing process, an assessment, or a legal proceeding." ;
+    rdfs:subClassOf ont:TemporalEntity .
+
+ont:Procurement
+    a owl:Class ;
+    rdfs:subClassOf ont:Process ;
+    owl:disjointWith ont:SupplyChain .
+
+ont:ProductCategory
+    a owl:Class ;
+    rdfs:comment "A classification for a particular type of product." ;
+    rdfs:subClassOf ont:Category .
+
+ont:ProductionSite
+    a owl:Class ;
+    rdfs:comment "A facility where goods are manufactured or processed, representing a primary source of direct environmental impacts like emissions and water use." ;
+    rdfs:subClassOf ont:Facility .
+
+ont:ProfessionalServicesFirm
+    a owl:Class ;
+    rdfs:comment "A company that provides professional services to other businesses or individuals, such as auditing, consulting, or legal advice." ;
+    rdfs:subClassOf ont:Company .
+
+ont:Program
+    a owl:Class ;
+    rdfs:comment "A structured initiative or plan of action designed to achieve a long-term sustainability or compliance goal, often involving multiple projects and stakeholders." ;
+    rdfs:subClassOf ont:Plan ;
+    owl:disjointWith ont:BusinessApproach , ont:BusinessModel , ont:Framework , ont:Goal , ont:GovernanceBody , ont:Initiative , ont:Methodology , ont:Metric , ont:Plan , ont:Policy , ont:PropertyRight , ont:Risk , ont:Role , ont:Rule , ont:StrategicPlan , ont:SustainabilityTopic , ont:System , ont:Target , ont:TrainingProgram .
+
+ont:PropertyRight
+    a owl:Class ;
+    rdfs:comment "A legally recognized and protected interest in a thing, tangible or intangible." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Framework , ont:Methodology , ont:Plan , ont:Program , ont:Risk , ont:Rule , ont:System , ont:TrainingProgram .
+
+ont:PublicWorks
+    a owl:Class ;
+    rdfs:comment "The work of building such things as roads, schools, and reservoirs, carried out by the government for the community." ;
+    rdfs:subClassOf ont:Process .
+
+ont:QualityProduct
+    a owl:Class ;
+    rdfs:comment "A product that meets or exceeds established standards for safety, performance, and consumer expectations." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:Quarry
+    a owl:Class ;
+    rdfs:comment "A place, typically a large, deep pit, from which stone or other materials are or have been extracted." ;
+    rdfs:subClassOf ont:Site .
+
+ont:Railway
+    a owl:Class ;
+    rdfs:comment "A line of track providing a runway for wheels, forming a railroad." ;
+    rdfs:subClassOf ont:Infrastructure ;
+    owl:disjointWith ont:DataCenter , ont:Network , ont:PowerGenerationFacility , ont:Road .
+
+ont:Rating
+    a owl:Class ;
+    rdfs:comment "An external assessment or score, such as a CDP Climate Score, that evaluates a company's performance on specific ESG criteria." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:EnvironmentalMetric , ont:FinancialMetric , ont:HrMetric , ont:OwnershipMetric , ont:SafetyMetric , ont:SupplyChainMetric .
+
+ont:RatingAgency
+    a owl:Class ;
+    rdfs:comment "A company that assesses and scores other companies on their ESG performance, risk management, and sustainability practices." ;
+    rdfs:subClassOf ont:Company .
+
+ont:RawMaterial
+    a owl:Class ;
+    rdfs:subClassOf ont:Resource ;
+    owl:disjointWith ont:FinancialResource .
+
+ont:RecycledMaterial
+    a owl:Class ;
+    rdfs:comment "Waste materials that have been converted into reusable material." ;
+    rdfs:subClassOf ont:Material .
+
+ont:RecycledSteel
+    a owl:Class ;
+    rdfs:comment "Steel produced from recycled ferrous scrap, rather than from iron ore." ;
+    rdfs:subClassOf ont:RecycledMaterial .
+
+ont:RecyclingMetric
+    a owl:Class ;
+    rdfs:comment "A key performance indicator that measures the extent to which waste materials are reprocessed into new products, such as the rate of recycled asphalt aggregates." ;
+    rdfs:subClassOf ont:EnvironmentalMetric .
+
+ont:ReductionTarget
+    a owl:Class ;
+    rdfs:comment "A specific, quantified goal to decrease a particular metric, such as GHG emissions, by a certain amount within a defined timeframe." ;
+    rdfs:subClassOf ont:Target .
+
+ont:Refrigeration
+    a owl:Class ;
+    rdfs:comment "The process of removing heat from an enclosed space, or from a substance, to lower its temperature." ;
+    rdfs:subClassOf ont:Engineering ;
+    owl:disjointWith ont:ClimateEngineering , ont:DigitalAndIct , ont:ElectricalEngineering , ont:FireSafety , ont:MechanicsAndRobotics .
+
+ont:RegenerativeAgriculture
+    a owl:Class ;
+    rdfs:comment "A system of farming principles and practices that seeks to rehabilitate and enhance the entire ecosystem of the farm, a key strategy for biodiversity and soil health." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:RegenerativeAgriculturePractice
+    a owl:Class ;
+    rdfs:comment "A farming method that aims to improve soil health, biodiversity, and ecosystem services, contributing to climate resilience and carbon sequestration." ;
+    rdfs:subClassOf ont:Process .
+
+ont:RegenerativeFoodSystem
+    a owl:Class ;
+    rdfs:comment "A holistic approach to food production that aims to restore and enhance environmental resources, support farmer livelihoods, and ensure community well-being." ;
+    rdfs:subClassOf ont:System .
+
+ont:Regulation
+    a owl:Class ;
+    rdfs:comment "A rule or directive made and maintained by an authority, such as the CSRD or EU Taxonomy, that mandates specific corporate sustainability disclosures." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:RegulatoryFiling
+    a owl:Class ;
+    rdfs:comment "An official document, such as a Universal Registration Document, submitted by a company to a regulatory authority to comply with public disclosure requirements." ;
+    rdfs:subClassOf ont:FinancialDocument ;
+    owl:disjointWith ont:FinancialStatement .
+
+ont:RehabilitatedHousing
+    a owl:Class ;
+    rdfs:comment "Housing units that have been renovated or restored to a good condition." ;
+    rdfs:subClassOf ont:Housing .
+
+ont:Remedy
+    a owl:Class ;
+    rdfs:comment "The means by which the remediation or resolution of an adverse impact, such as a human rights violation, is achieved." ;
+    rdfs:subClassOf ont:Process .
+
+ont:RenewableElectricity
+    a owl:Class ;
+    rdfs:comment "Electricity generated from sources that are naturally replenished, such as wind, solar, hydro, and geothermal power." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:RenewableEnergy
+    a owl:Class ;
+    rdfs:comment "Energy from a source that is not depleted when used, such as wind or solar power." ;
+    rdfs:subClassOf ont:Energy .
+
+ont:Reorganization
+    a owl:Class ;
+    rdfs:comment "A significant, planned change in the structure, operations, or focus of a business unit or the company as a whole." ;
+    rdfs:subClassOf ont:Event ;
+    owl:disjointWith ont:Appointment , ont:Milestone .
+
+ont:Report
+    a owl:Class ;
+    rdfs:comment "A formal document, such as an Integrated Report or Non-Financial Statement, that presents an organization's sustainability-related information, performance, and governance." ;
+    rdfs:subClassOf ont:Document ;
+    owl:disjointWith ont:Framework , ont:OwnershipStructure .
+
+ont:ReportSection
+    a owl:Class ;
+    rdfs:comment "A distinct, labeled part or appendix within a sustainability report that organizes specific types of information, such as KPIs, policy lists, or assurance statements." ;
+    rdfs:subClassOf ont:DocumentPart .
+
+ont:ReportingStandard
+    a owl:Class ;
+    rdfs:comment "A prescribed set of rules and guidelines that define the content and format of sustainability disclosures to ensure consistency and comparability." ;
+    rdfs:subClassOf ont:Standard .
+
+ont:ResearchCenter
+    a owl:Class ;
+    rdfs:comment "An institution dedicated to scientific or academic research, often supported by a company to advance knowledge in a specific sustainability field like animal welfare." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:OrganizationalUnit .
+
+ont:ResearchFirm
+    a owl:Class ;
+    rdfs:comment "A company that conducts in-depth analysis and provides data and ratings on corporate ESG performance to investors and other stakeholders." ;
+    rdfs:subClassOf ont:Company .
+
+ont:Researcher
+    a owl:Class ;
+    rdfs:comment "An individual engaged in systematic investigation to establish facts or principles, often providing data for sustainability assessments." ;
+    rdfs:subClassOf ont:Stakeholder .
+
+ont:Resource
+    a owl:Class ;
+    rdfs:comment "A stock or supply of money, materials, staff, and other assets that can be drawn on by a person or organization in order to function effectively." ;
+    rdfs:subClassOf ont:ConcreteEntity .
+
+ont:ResponsibleMarketing
+    a owl:Class ;
+    rdfs:comment "The practice of marketing products and services in a manner that is truthful, ethical, and does not target vulnerable populations inappropriately." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:ResponsibleProduct
+    a owl:Class ;
+    rdfs:comment "A product designed, produced, and marketed with consideration for its environmental, social, and ethical impacts throughout its lifecycle." ;
+    rdfs:subClassOf ont:Solution .
+
+ont:Risk
+    a owl:Class ;
+    rdfs:comment "A potential event or condition, whether financial, environmental, or social, that could negatively impact an organization's ability to achieve its objectives, as identified for analysis and mitigation." ;
+    rdfs:subClassOf ont:Situation ;
+    owl:disjointWith ont:Framework , ont:Methodology , ont:Plan , ont:Program , ont:PropertyRight , ont:Rule , ont:System , ont:TrainingProgram .
+
+ont:RiskCategory
+    a owl:Class ;
+    rdfs:comment "A classification for potential adverse impacts or uncertainties related to sustainability matters, such as climate change, that could affect the organization." ;
+    rdfs:subClassOf ont:Category .
+
+ont:Road
+    a owl:Class ;
+    rdfs:subClassOf ont:Infrastructure ;
+    owl:disjointWith ont:DataCenter , ont:Network , ont:PowerGenerationFacility , ont:Railway .
+
+ont:Role
+    a owl:Class ;
+    rdfs:comment "A specific function or title within a corporate structure, such as 'CEO' or 'Chairman', held by a person, defining their responsibilities and authority." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:BusinessConcept , ont:Goal , ont:GovernanceBody , ont:Metric , ont:Opportunity , ont:Plan , ont:Policy , ont:Program , ont:StrategicPlan , ont:SustainabilityTopic .
+
+ont:Rule
+    a owl:Class ;
+    rdfs:comment "An explicit or understood regulation or principle governing conduct or procedure within a particular area of activity." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Category , ont:Framework , ont:Goal , ont:Methodology , ont:Metric , ont:Plan , ont:Program , ont:PropertyRight , ont:Risk , ont:System , ont:TrainingProgram .
+
+ont:SafeProduct
+    a owl:Class ;
+    rdfs:comment "A product that does not pose an unacceptable risk of harm to consumers when used as intended or in a reasonably foreseeable manner." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:SafetyMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure used to track and assess workplace health and safety performance, such as accident frequency rates, a critical social indicator for CSRD." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:EnvironmentalMetric , ont:FinancialMetric , ont:HrMetric , ont:OwnershipMetric , ont:Rating , ont:SupplyChainMetric .
+
+ont:Service
+    a owl:Class ;
+    rdfs:comment "A system supplying a public need such as transport, communications, or utilities, or a commercial enterprise providing work or help." ;
+    rdfs:subClassOf ont:IntangibleProduct .
+
+ont:ServiceVehicle
+    a owl:Class ;
+    rdfs:comment "A vehicle equipped to provide a service, such as repairs or maintenance." ;
+    rdfs:subClassOf ont:Vehicle .
+
+ont:ServingOfAffordableNutrition
+    a owl:Class ;
+    rdfs:comment "A single portion of a food product that is both economically accessible and enhanced with essential micronutrients." ;
+    rdfs:subClassOf ont:KeyPerformanceIndicator ;
+    owl:disjointWith ont:FinancialMetric .
+
+ont:SharePrice
+    a owl:Class ;
+    rdfs:comment "The market price of a single share of a company's stock at a specific point in time, used as a key performance indicator for investors and analysts." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:FinancialMetric .
+
+ont:ShareSale
+    a owl:Class ;
+    rdfs:comment "The act of selling existing shares, such as treasury shares, often as part of a structured offering like an employee shareholder plan." ;
+    rdfs:subClassOf ont:Transaction ;
+    owl:disjointWith ont:CapitalIncrease , ont:Dividend , ont:Subscription .
+
+ont:Shareholder
+    a owl:Class ;
+    rdfs:comment "An owner of shares in a company, considered a key stakeholder for whom CSRD and financial-sustainability reporting is prepared." ;
+    rdfs:subClassOf ont:Stakeholder .
+
+ont:ShareholderGroup
+    a owl:Class ;
+    rdfs:comment "A collection of individuals or entities, such as a family, that acts as a single unit in its ownership and control of a company." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:Company .
+
+ont:Shareholding
+    a owl:Class ;
+    rdfs:comment "The ownership of shares in a company by an individual or group, detailing the percentage of capital and voting rights held, which is a key aspect of corporate governance." ;
+    rdfs:subClassOf ont:Situation ;
+    owl:disjointWith ont:CapitalStructure .
+
+ont:Site
+    a owl:Class ;
+    rdfs:comment "A specific area or location where something is, was, or will be built or situated." ;
+    rdfs:subClassOf ont:Place .
+
+ont:Situation
+    a owl:Class ;
+    rdfs:comment "A set of circumstances or a state of affairs, often involving relationships between entities over a period of time." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:SocialIssue
+    a owl:Class ;
+    rdfs:comment "A problem that influences a considerable number of the individuals within a society." ;
+    rdfs:subClassOf ont:Situation .
+
+ont:SolarFarm
+    a owl:Class ;
+    rdfs:comment "A large-scale photovoltaic power station, designed for the supply of merchant power into the electricity grid." ;
+    rdfs:subClassOf ont:PowerGenerationFacility .
+
+ont:Solution
+    a owl:Class ;
+    rdfs:comment "A means of solving a problem or dealing with a difficult situation, often packaged as a product or service." ;
+    rdfs:subClassOf ont:IntangibleProduct .
+
+ont:Species
+    a owl:Class ;
+    rdfs:comment "A group of living organisms consisting of similar individuals capable of exchanging genes or interbreeding." ;
+    rdfs:subClassOf ont:Agent ;
+    owl:disjointWith ont:Organization , ont:Person .
+
+ont:Sponsorship
+    a owl:Class ;
+    rdfs:comment "A category of risk related to financial or in-kind support for an event or organization, which could be perceived as a means to gain improper influence." ;
+    rdfs:subClassOf ont:Transaction .
+
+ont:Stakeholder
+    a owl:Class ;
+    rdfs:comment "Any group or individual who can affect or is affected by the achievement of the organization's objectives, central to the CSRD's dual materiality concept." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:StakeholderRisk
+    a owl:Class ;
+    rdfs:comment "Risks related to adverse impacts on key stakeholder groups, such as workers, consumers, and local communities." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:Standard
+    a owl:Class ;
+    rdfs:comment "A recognized framework or set of guidelines, such as GRI or SASB, that provides a structured approach for reporting sustainability information, or a required level of quality." ;
+    rdfs:subClassOf ont:Document , ont:Rule ;
+    owl:disjointWith ont:Policy .
+
+ont:StandardizedOffer
+    a owl:Class ;
+    rdfs:comment "A product or service offering that is consistent and uniform, without customization." ;
+    rdfs:subClassOf ont:Offer .
+
+ont:StockExchange
+    a owl:Class ;
+    rdfs:comment "A marketplace where securities like company stocks are bought and sold, which may have listing requirements related to sustainability reporting." ;
+    rdfs:subClassOf ont:Organization .
+
+ont:StrategicPillar
+    a owl:Class ;
+    rdfs:comment "A fundamental thematic area of focus within a broader strategic program, guiding specific targets and actions." ;
+    rdfs:subClassOf ont:StrategicPlan ;
+    owl:disjointWith ont:StrategicProgram .
+
+ont:StrategicPlan
+    a owl:Class ;
+    rdfs:comment "A high-level document, roadmap, or abstract strategy outlining an organization's long-term approach to a specific challenge, such as its climate transition." ;
+    rdfs:subClassOf ont:Plan ;
+    owl:disjointWith ont:Goal , ont:GovernanceBody , ont:Metric , ont:Policy , ont:Program , ont:Role , ont:SustainabilityTopic , ont:Target .
+
+ont:StrategicProgram
+    a owl:Class ;
+    rdfs:comment "A comprehensive, multi-year corporate initiative that sets the overarching vision, targets, and action pillars for sustainability." ;
+    rdfs:subClassOf ont:Program , ont:StrategicPlan ;
+    owl:disjointWith ont:StrategicPillar .
+
+ont:StrategicRawMaterial
+    a owl:Class ;
+    rdfs:comment "Raw materials that are critical to the company's production and supply chain security." ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:StreamingPlatform
+    a owl:Class ;
+    rdfs:comment "An on-demand online entertainment source for TV shows, movies, and other streaming media." ;
+    rdfs:subClassOf ont:Platform .
+
+ont:StructuralCost
+    a owl:Class ;
+    rdfs:comment "Costs that are a fixed part of the operating budget, not directly related to the volume of production or sales." ;
+    rdfs:subClassOf ont:FinancialResource ;
+    owl:disjointWith ont:CommercialInvestment .
+
+ont:Subscription
+    a owl:Class ;
+    rdfs:comment "An event where investors, typically employees, commit to purchasing newly offered shares at a predetermined price and time." ;
+    rdfs:subClassOf ont:Transaction ;
+    owl:disjointWith ont:CapitalIncrease , ont:Dividend , ont:ShareSale .
+
+ont:Supplier
+    a owl:Class ;
+    rdfs:comment "A type of third-party entity that provides goods or services and is subject to a company's due diligence and risk management processes under CSRD." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:OrganizationalUnit .
+
+ont:SupplyChain
+    a owl:Class ;
+    rdfs:comment "The sequence of processes involved in the production and distribution of a commodity." ;
+    rdfs:subClassOf ont:Process ;
+    owl:disjointWith ont:Procurement .
+
+ont:SupplyChainMetric
+    a owl:Class ;
+    rdfs:comment "A quantifiable measure used to track and assess the performance and due diligence of an organization's supply chain, such as the number of suppliers evaluated for CSR risks." ;
+    rdfs:subClassOf ont:Metric ;
+    owl:disjointWith ont:EnvironmentalMetric , ont:FinancialMetric , ont:HrMetric , ont:OwnershipMetric , ont:Rating , ont:SafetyMetric .
+
+ont:SustainabilityFactor
+    a owl:Class ;
+    rdfs:comment "An environmental, social, or governance matter that can affect the value, risk, or performance of an investment or a company." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:SustainabilityTopic
+    a owl:Class ;
+    rdfs:comment "A specific subject area (e.g., Climate Change, Business Conduct) identified as material through a double materiality analysis for CSRD reporting." ;
+    rdfs:subClassOf ont:Topic ;
+    owl:disjointWith ont:Goal , ont:GovernanceBody , ont:Metric , ont:Plan , ont:Policy , ont:Program , ont:Role , ont:StrategicPlan .
+
+ont:SustainableDevelopmentGoal
+    a owl:Class ;
+    rdfs:subClassOf ont:Target .
+
+ont:System
+    a owl:Class ;
+    rdfs:comment "A set of interacting or interdependent components forming an integrated whole." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Framework , ont:Methodology , ont:Plan , ont:PropertyRight , ont:Risk , ont:Rule , ont:TrainingProgram .
+
+ont:TangibleProduct
+    a owl:Class ;
+    rdfs:comment "Products that are physical in nature, such as devices, materials, and equipment." ;
+    rdfs:subClassOf ont:ConcreteEntity .
+
+ont:Target
+    a owl:Class ;
+    rdfs:comment "A specific, measurable objective with a defined timeline that the organization commits to achieving as part of its strategic objectives." ;
+    rdfs:subClassOf ont:Goal ;
+    owl:disjointWith ont:BusinessApproach , ont:BusinessModel , ont:Framework , ont:Initiative , ont:Program , ont:StrategicPlan .
+
+ont:Team
+    a owl:Class ;
+    rdfs:comment "A group of individuals within an organization working together on a specific task, such as managing data quality for ESG reporting." ;
+    rdfs:subClassOf ont:OrganizationalUnit .
+
+ont:Telecom
+    a owl:Class ;
+    rdfs:comment "The business sector related to telecommunications." ;
+    rdfs:subClassOf ont:BusinessSector ;
+    owl:disjointWith ont:Construction , ont:EnergyAndServices , ont:Media .
+
+ont:TelecomNetwork
+    a owl:Class ;
+    rdfs:comment "The infrastructure used for transmitting information in the form of voice, data, and video." ;
+    rdfs:subClassOf ont:Infrastructure .
+
+ont:ThinkTank
+    a owl:Class ;
+    rdfs:comment "An organization that performs research and advocacy on specific topics, such as AI's impact, contributing to the broader context of a company's strategic positioning." ;
+    rdfs:subClassOf ont:Organization ;
+    owl:disjointWith ont:Company , ont:EducationalInstitution , ont:Foundation , ont:Initiative , ont:InnovationHub , ont:RatingAgency .
+
+ont:Tool
+    a owl:Class ;
+    rdfs:comment "A specific software application, model, or methodology used to assess and quantify environmental risks, such as water stress." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:Topic
+    a owl:Class ;
+    rdfs:comment "A thematic category used to group related sustainability metrics and disclosures, aligned with regulatory frameworks like CSRD." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:KeyPerformanceIndicator .
+
+ont:Traceability
+    a owl:Class ;
+    rdfs:comment "The ability to track the history, application, or location of an object or activity by means of recorded identification." ;
+    rdfs:subClassOf ont:SustainabilityTopic .
+
+ont:TrainingProgram
+    a owl:Class ;
+    rdfs:comment "A structured educational course or module designed to build employee competency and awareness regarding corporate policies, ethics, and compliance obligations." ;
+    rdfs:subClassOf ont:AbstractConcept ;
+    owl:disjointWith ont:Framework , ont:Methodology , ont:Plan , ont:Program , ont:PropertyRight , ont:Risk , ont:Rule , ont:System .
+
+ont:Transaction
+    a owl:Class ;
+    rdfs:comment "An instance of buying, selling, or exchanging something; a business deal or financial event." ;
+    rdfs:subClassOf ont:Event ;
+    owl:disjointWith ont:LegalProceeding .
+
+ont:TransitionRisk
+    a owl:Class ;
+    rdfs:comment "A risk to a company arising from the process of adjusting toward a lower-carbon economy, including policy, legal, technology, and market changes." ;
+    rdfs:subClassOf ont:Risk .
+
+ont:Transparency
+    a owl:Class ;
+    rdfs:comment "The quality of operating in such a way that it is easy for others to see what actions are performed." ;
+    rdfs:subClassOf ont:SustainabilityTopic .
+
+ont:TransportInfrastructure
+    a owl:Class ;
+    rdfs:comment "The framework of transportation systems, including roads, railways, and ports." ;
+    rdfs:subClassOf ont:Infrastructure .
+
+ont:UnhealthyDiet
+    a owl:Class ;
+    rdfs:comment "A pattern of food consumption characterized by high intake of energy, saturated fats, trans fats, free sugars, or salt, linked to negative health outcomes." ;
+    rdfs:subClassOf ont:Topic .
+
+ont:UnitedNationsGlobalCompact
+    a owl:Class ;
+    rdfs:subClassOf ont:AbstractConcept .
+
+ont:UniversalRegistrationDocument
+    a owl:Class ;
+    rdfs:subClassOf ont:Report ;
+    owl:disjointWith ont:CSRD .
+
+ont:University
+    a owl:Class ;
+    rdfs:comment "An institution of higher education and research, often engaged as a partner for innovation and talent development relevant to a company's long-term strategy." ;
+    rdfs:subClassOf ont:EducationalInstitution .
+
+ont:Vehicle
+    a owl:Class ;
+    rdfs:comment "A thing used for transporting people or goods, especially on land." ;
+    rdfs:subClassOf ont:TangibleProduct .
+
+ont:VideoContent
+    a owl:Class ;
+    rdfs:comment "Audiovisual content presented in a video format." ;
+    rdfs:subClassOf ont:AudiovisualContent .
+
+ont:VigilancePlan
+    a owl:Class ;
+    rdfs:comment "A mandatory due diligence plan under French law for large companies to identify and prevent severe impacts on human rights and the environment." ;
+    rdfs:subClassOf ont:Document .
+
+ont:Violence
+    a owl:Class ;
+    rdfs:comment "Behavior involving physical force intended to hurt, damage, or kill someone or something, which is strictly prohibited in a corporate workplace policy." ;
+    rdfs:subClassOf ont:HumanRightsImpact .
+
+ont:Whistleblower
+    a owl:Class ;
+    rdfs:comment "A person, usually an employee, who exposes information or activity within a private, public, or government organization that is deemed illegal, illicit, unsafe, or a waste, fraud, or abuse of taxpayer funds." ;
+    rdfs:subClassOf ont:Person .
+
+ont:WhistleblowerRightsViolation
+    a owl:Class ;
+    rdfs:comment "A category of risk involving retaliation against or failure to protect an individual who reports misconduct, which is a key governance aspect under CSRD." ;
+    rdfs:subClassOf ont:Wrongdoing .
+
+ont:WhistleblowingSystem
+    a owl:Class ;
+    rdfs:comment "A formal, confidential channel established by a company for employees and external stakeholders to report concerns about unethical or illegal activities." ;
+    rdfs:subClassOf ont:System .
+
+ont:WoodConstruction
+    a owl:Class ;
+    rdfs:comment "The use of wood as a primary building material in construction projects." ;
+    rdfs:subClassOf ont:BuildingMaterial .
+
+ont:WorkIncident
+    a owl:Class ;
+    rdfs:comment "An unplanned event that results in or has the potential to result in injury, illness, damage, or other loss at the workplace." ;
+    rdfs:subClassOf ont:Event .
+
+ont:WorkerRisk
+    a owl:Class ;
+    rdfs:comment "A potential adverse impact on the rights, safety, and well-being of employees and other workers throughout a company's value chain." ;
+    rdfs:subClassOf ont:StakeholderRisk .
+
+ont:WorksCouncil
+    a owl:Class ;
+    rdfs:comment "A body representing the employees of a company at the European level, facilitating information and consultation between management and workers on transnational issues." ;
+    rdfs:subClassOf ont:OrganizationalUnit .
+
+ont:Wrongdoing
+    a owl:Class ;
+    rdfs:comment "An illegal or dishonest act." ;
+    rdfs:subClassOf ont:Situation .
+
+#################################################################
+#    General Axioms (Corrected and Cleaned)
+#################################################################
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:AbstractConcept ont:Agent ont:ConcreteEntity ont:TemporalEntity )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Agreement ont:AuditCommittee ont:EmployeeRepresentativeBody ont:ExecutiveCommittee ont:Guidance ont:Legislation ont:Policy ont:Report ont:Standard )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Award ont:WorkIncident )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:CapitalIncrease ont:CapitalStructure ont:Dividend ont:FinancialMetric )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:CapitalIncrease ont:CapitalStructure ont:SharePrice ont:ShareSale ont:Subscription )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Channel ont:Metric ont:Plan ont:Role ont:Standard )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:ChildLabor ont:Discrimination ont:ForcedLabor ont:Harassment ont:Violence )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Company ont:GovernanceBody )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Country ont:PoliticalEntity )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Database ont:Document ont:ReportSection )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:EmployeeCount ont:FinancialMetric ont:NonIfrsFinancialPerformanceMeasure )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:EnvironmentalRisk ont:FinancialRisk )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:FinancialStatement ont:Subscription )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Organization ont:Person )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Risk ont:SocialIssue )
+] .
+
+[
+    a owl:AllDisjointClasses ;
+    owl:members ( ont:Event ont:Process )
+] .
