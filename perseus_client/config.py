@@ -28,6 +28,11 @@ class Settings(BaseSettings):
     neo4j_uri: str = "bolt://localhost:7687"
     neo4j_user: str = "neo4j"
     neo4j_password: str = "password"
+    falkordb_host: str = "localhost"
+    falkordb_port: int = 6379
+    falkordb_username: str = "" 
+    falkordb_password: str = ""
+    falkordb_graph_name: str = "perseus_graph"
     loglevel: str = "WARNING"
 
     model_config = SettingsConfigDict(
