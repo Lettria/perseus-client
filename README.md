@@ -30,12 +30,20 @@ Lettria's Perseus service is designed to solve this problem. It transforms your 
 - **Simple Interface**: Easy-to-use methods for file operations, ontology management, and graph building.
 - **Data Validation**: Robust data modeling with `pydantic`.
 - **Neo4j Integration**: Directly save your graph data to a Neo4j instance.
+- **FalkorDB Integration**: Directly save your graph data to a FalkorDB instance.
 - **Flexible Configuration**: Configure via environment variables or directly in code.
 
 ## 📦 Installation
 
 ```bash
-pip install perseus-client==1.0.0-rc.3
+# For Neo4j support
+pip install "perseus-client[neo4j]"
+
+# For FalkorDB support
+pip install "perseus-client[falkordb]"
+
+# For all dependencies
+pip install "perseus-client[all]"
 ```
 
 ## 🚀 Quick Start
@@ -48,12 +56,16 @@ To create an API key, please visit our app [here](https://app.perseus.lettria.ne
 
 The SDK can be configured via environment variables. The `PerseusClient` will automatically load them. You can place them in a `.env` file in your project root.
 
-| Variable          | Description                               | Required |
-| ----------------- | ----------------------------------------- | -------- |
-| `LETTRIA_API_KEY` | Your unique API key for the Lettria API.  | Yes      |
-| `NEO4J_URI`       | The URI for your Neo4j database instance. | No       |
-| `NEO4J_USER`      | The username for your Neo4j database.     | No       |
-| `NEO4J_PASSWORD`  | The password for your Neo4j database.     | No       |
+| Variable              | Description                                | Required |
+| --------------------- | ------------------------------------------ | -------- |
+| `LETTRIA_API_KEY`     | Your unique API key for the Lettria API.   | Yes      |
+| `NEO4J_URI`           | The URI for your Neo4j database instance.  | No       |
+| `NEO4J_USER`          | The username for your Neo4j database.      | No       |
+| `NEO4J_PASSWORD`      | The password for your Neo4j database.      | No       |
+| `FALKORDB_HOST`       | The host for your FalkorDB instance.       | No       |
+| `FALKORDB_PORT`       | The port for your FalkorDB (default 6379). | No       |
+| `FALKORDB_GRAPH_NAME` | The name of the graph key to use.          | No       |
+| `FALKORDB_PASSWORD`   | The password for your FalkorDB instance.   | No       |
 
 ### Example: Build a Graph
 
@@ -87,19 +99,21 @@ async def build_graph(
     ontology_path: Optional[str] = None,
     output_path: Optional[str] = None,
     save_to_neo4j: bool = False,
+    save_to_falkordb: bool = False,
     refresh_graph: bool = False,
 ) -> Job:
 ```
 
 Processes a file by uploading it, optionally with an ontology, running a job, and downloading the output.
 
-| Parameter       | Type            | Description                                                                   | Default |
-| --------------- | --------------- | ----------------------------------------------------------------------------- | ------- |
-| `file_path`     | `str`           | The path to the file to process.                                              |         |
-| `ontology_path` | `Optional[str]` | The path to the ontology file to use.                                         | `None`  |
-| `output_path`   | `Optional[str]` | The path to save the output to. If not provided, a default path will be used. | `None`  |
-| `save_to_neo4j` | `bool`          | Whether to save the output to Neo4j.                                          | `False` |
-| `refresh_graph` | `bool`          | Whether to force a new job to be created (refresh the graph).                 | `False` |
+| Parameter          | Type            | Description                                                                   | Default |
+| ------------------ | --------------- | ----------------------------------------------------------------------------- | ------- |
+| `file_path`        | `str`           | The path to the file to process.                                              |         |
+| `ontology_path`    | `Optional[str]` | The path to the ontology file to use.                                         | `None`  |
+| `output_path`      | `Optional[str]` | The path to save the output to. If not provided, a default path will be used. | `None`  |
+| `save_to_neo4j`    | `bool`          | Whether to save the output to Neo4j.                                          | `False` |
+| `save_to_falkordb` | `bool`          | Whether to save the output to FalkorDB.                                       | `False` |
+| `refresh_graph`    | `bool`          | Whether to force a new job to be created (refresh the graph).                 | `False` |
 
 ## 📂 Examples
 
@@ -115,7 +129,6 @@ For more detailed examples, check out the [`examples/`](./examples/) directory. 
 ### Advanced Example
 
 - **[Graph RAG Reporting](./examples/advanced/graph-rag-reporting/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report.
-- **[Finance Compliance](./examples/advanced/finance-compliance/)**: A complete pipeline to convert unstructured sustainability disclosures into a knowledge graph and produce CSRD-compliant reports.
 
 ## 🤝 Contributing
 

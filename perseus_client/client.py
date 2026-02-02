@@ -7,6 +7,7 @@ import ssl
 import asyncio
 from pydantic import ValidationError
 from .services.neo4j_service import Neo4jService
+from .services.falkordb_service import FalkorDBService
 from .config import Settings
 from .models import File, Job, OntologyStatus, FileStatus
 from .exceptions import ConfigurationException
@@ -39,6 +40,7 @@ class PerseusClient:
         self._job: Optional[JobService] = None
         self._ontology: Optional[OntologyService] = None
         self._neo4j: Optional[Neo4jService] = None
+        self._falkordb: Optional[FalkorDBService] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
     def _is_active(self):
@@ -61,6 +63,7 @@ class PerseusClient:
         self._job = JobService(self._session, self.api_host, self._loop)
         self._ontology = OntologyService(self._session, self.api_host, self._loop)
         self._neo4j = Neo4jService(self._loop)
+        self._falkordb = FalkorDBService(self._loop)
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -146,6 +149,13 @@ class PerseusClient:
         if not self._neo4j:
             raise ConfigurationException("Neo4j service not initialized.")
         return self._neo4j
+    
+    @property
+    def falkordb(self):
+        self._ensure_active()
+        if not self._falkordb:
+            raise ConfigurationException("FalkorDB service not initialized.")
+        return self._falkordb
 
     def build_graph(
         self,
@@ -153,6 +163,7 @@ class PerseusClient:
         ontology_path: Optional[str] = None,
         output_path: Optional[str] = None,
         save_to_neo4j: bool = False,
+        save_to_falkordb: bool = False,
         refresh_graph: bool = False,
     ) -> Job:
         self._ensure_active()
@@ -164,6 +175,7 @@ class PerseusClient:
                 ontology_path,
                 output_path,
                 save_to_neo4j,
+                save_to_falkordb,
                 refresh_graph,
             )
         )
@@ -174,6 +186,7 @@ class PerseusClient:
         ontology_path: Optional[str] = None,
         output_path: Optional[str] = None,
         save_to_neo4j: bool = False,
+        save_to_falkordb: bool = False,
         refresh_graph: bool = False,
     ) -> Job:
         """
@@ -185,6 +198,7 @@ class PerseusClient:
             output_path: The path to save the output to. If not provided, a default
                          path will be used.
             save_to_neo4j: Whether to save the output to Neo4j.
+            save_to_falkordb: Whether to save the output to FalkorDB.
             refresh_graph: Whether to force a new job to be created (refresh the graph).
         Returns:
             The completed job.
@@ -219,5 +233,8 @@ class PerseusClient:
 
         if save_to_neo4j:
             await self.neo4j.save_output_to_neo4j_async(f"{output_path}.cql")
+        
+        if save_to_falkordb:
+            await self.falkordb.save_output_to_falkordb_async(f"{output_path}.cql")
 
         return completed_job
