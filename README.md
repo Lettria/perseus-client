@@ -129,6 +129,7 @@ For more detailed examples, check out the [`examples/`](./examples/) directory. 
 ### Advanced Example
 
 - **[Graph RAG Reporting](./examples/advanced/graph-rag-reporting/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report.
+- **[Finance Compliance](./examples/advanced/finance-compliance/)**: A complete pipeline to convert unstructured sustainability disclosures into a knowledge graph and produce CSRD-compliant reports.
 
 ## 🤝 Contributing
 

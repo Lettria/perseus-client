@@ -1,0 +1,166 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix loreal: <http://loreal.com/ontology/> .
+@prefix data: <http://example.org/data/> .
+@prefix schema: <http://schema.org/> .
+data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:hasBrand data:b1cd1349-bd70-4603-950a-c47510e6b53c .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasDivision data:2d348671-870e-42f5-99c3-61fe7e90e796 .
+data:24f5ba95-ad8b-4147-9c21-be73369a02f9 schema:jobTitle "Directeur Général" .
+data:33bd7821-d917-4d0d-909d-fe006387e1d3 rdfs:label "Giorgio Armani" .
+data:d2c41c75-a213-4a87-91c5-1fc94b10c0d3 rdfs:label "SAPMENA-SSA" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasGoverningBody data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 ;
+	loreal:hasFund data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d .
+data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:hasBrand data:85792111-a32c-43f1-9d8c-257663544959 .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 schema:publication data:f4354215-5b3e-425b-8816-3bffb2b55973 .
+data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:hasBrand data:6cbe7130-3a67-42aa-b328-9fc60e25382e .
+data:8b4a35ca-e3ed-40d0-a1f7-8ce2b43b401b loreal:revenueShare "24 %"^^loreal:Percentage .
+data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:socialProgramBeneficiaries 4500000 .
+data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d loreal:hasBrand data:fe6d3a94-04ea-40fd-b58b-73adea19b6eb ;
+	loreal:revenueShare "37 %"^^loreal:Percentage .
+data:29901b0b-d52c-4700-b354-cb9ac697b73b rdfs:label "Vichy" .
+data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:revenueGrowth "+9,8 %"^^loreal:Percentage .
+data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:femaleRepresentation "43 %"^^loreal:Percentage .
+data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:peopleHelpedToEmployment 71349 .
+data:85792111-a32c-43f1-9d8c-257663544959 rdfs:label "Lancôme" .
+data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:revenueShare "11 %"^^loreal:Percentage .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 schema:numberOfEmployees 90000 .
+data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:developsProduct data:3688ad43-4398-4bb1-93d2-f504fb468fd4 .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatingProfit "8,69 milliards d’euros"^^loreal:Currency ;
+	schema:ceo data:24f5ba95-ad8b-4147-9c21-be73369a02f9 .
+data:ddd50c30-b650-42a7-8972-768049a10e54 schema:location "Chine" .
+data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:revenueShare "36 %"^^loreal:Percentage .
+data:e1962076-62bd-45b6-ac9c-a98fbe945e2d rdfs:label "Redken" .
+data:f4354215-5b3e-425b-8816-3bffb2b55973 rdfs:label "RAPPORT ANNUEL 2024" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:investmentInRI "1,3 Md €"^^loreal:Currency ;
+	schema:president data:e7e0ed02-5edc-4418-a0ea-871e84435caf .
+data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d rdfs:label "Produits Grand Public" ;
+	loreal:developsTechnology data:e03dc0e4-f8c3-4e31-ac8d-949f9c0d1c75 ;
+	loreal:hasBrand data:df9633dd-8c46-457c-b91d-c38e4485dc41 .
+data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:sustainablePackagingRate "49 %"^^loreal:Percentage .
+data:3688ad43-4398-4bb1-93d2-f504fb468fd4 rdfs:label "Mela B3" .
+data:4024e465-812e-4649-b542-9741aa5a4a56 loreal:purpose "soutien à la décarbonation des fournisseurs" .
+data:e7e0ed02-5edc-4418-a0ea-871e84435caf schema:jobTitle "Président du Conseil d’Administration" .
+data:2014e6ae-f895-4978-aba3-67d3c1db4a66 rdfs:label "Amérique du Nord" .
+data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d loreal:amountAllocated "70 M€"^^loreal:Currency .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:numberOfCountries 150 ;
+	loreal:operatesIn data:12664a91-4926-4456-96e0-bd58ee32ff50 .
+data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:revenueGrowth "+5,3 %"^^loreal:Percentage .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:proposedDividend "7,00 €"^^loreal:Currency ;
+	loreal:patentsFiled 694 .
+data:8b4a35ca-e3ed-40d0-a1f7-8ce2b43b401b rdfs:label "Asie du Nord" .
+data:953054c1-4ecd-4b85-ba47-12b6b5eb9edd rdfs:label "CreAItech" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatesIn data:ac52032a-140b-48ac-9ac0-43976746b6c4 ;
+	loreal:hasDivision data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d .
+data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:hasBrand data:e1962076-62bd-45b6-ac9c-a98fbe945e2d .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasGoverningBody data:3c032add-b6ae-4ea6-a3bf-207af326294a .
+data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:independenceRate "50 %"^^loreal:Percentage .
+data:24f5ba95-ad8b-4147-9c21-be73369a02f9 rdfs:label "Nicolas Hieronimus" .
+data:6cbe7130-3a67-42aa-b328-9fc60e25382e rdfs:label "CeraVe" .
+data:4b9589da-b9d5-4c5a-9569-bfd0eb41794b rdfs:label "Recherche & Innovation" .
+data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d loreal:revenueGrowth "+5,4 %"^^loreal:Percentage .
+data:12664a91-4926-4456-96e0-bd58ee32ff50 loreal:revenueShare "33 %"^^loreal:Percentage .
+data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 rdfs:label "Beauté Dermatologique" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:developsTechnology data:953054c1-4ecd-4b85-ba47-12b6b5eb9edd .
+data:ac52032a-140b-48ac-9ac0-43976746b6c4 loreal:revenueShare "8 %"^^loreal:Percentage .
+data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 loreal:numberOfMembers 19 .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasFund data:4024e465-812e-4649-b542-9741aa5a4a56 .
+data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:developsTechnology data:614725e5-81ca-4491-a3a0-4795d5519e87 .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatingMargin "20 %"^^loreal:Percentage .
+data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:hasBrand data:43e5cf44-567c-4006-8c4b-9f2782c725cb .
+data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:hasBrand data:29901b0b-d52c-4700-b354-cb9ac697b73b .
+data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 loreal:manages data:f7f5e02b-8d28-4d0c-9991-13f298519635 .
+data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:hasBrand data:31844502-0994-4607-9d91-42a5c2595622 .
+data:12664a91-4926-4456-96e0-bd58ee32ff50 rdfs:label "Europe" .
+data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:hasBrand data:6e7a7a79-46e3-4c31-a449-b1bb78aeda04 .
+data:fe6d3a94-04ea-40fd-b58b-73adea19b6eb rdfs:label "Maybelline" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatesIn data:2014e6ae-f895-4978-aba3-67d3c1db4a66 .
+data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 rdfs:label "L’Oréal pour le Futur" ;
+	loreal:wasteRecoveryRate "76 %"^^loreal:Percentage .
+data:2014e6ae-f895-4978-aba3-67d3c1db4a66 loreal:revenueShare "27 %"^^loreal:Percentage .
+data:d2c41c75-a213-4a87-91c5-1fc94b10c0d3 loreal:revenueShare "9 %"^^loreal:Percentage .
+data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 rdfs:label "Comité Exécutif" ;
+	loreal:manages data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d .
+data:614725e5-81ca-4491-a3a0-4795d5519e87 rdfs:label "AirLight Pro" .
+data:b1cd1349-bd70-4603-950a-c47510e6b53c rdfs:label "Kérastase" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:runsProgram data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 .
+data:f4354215-5b3e-425b-8816-3bffb2b55973 schema:datePublished "2024"^^xsd:gYear .
+data:df9633dd-8c46-457c-b91d-c38e4485dc41 rdfs:label "L’Oréal Paris" .
+data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:hasBrand data:33bd7821-d917-4d0d-909d-fe006387e1d3 .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:numberOfBrands 37 .
+data:3c032add-b6ae-4ea6-a3bf-207af326294a rdfs:label "Conseil d’Administration" .
+data:6e7a7a79-46e3-4c31-a449-b1bb78aeda04 rdfs:label "Prada" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:revenue "43,48 milliards d’euros"^^loreal:Currency .
+data:43e5cf44-567c-4006-8c4b-9f2782c725cb rdfs:label "L’Oréal Professionnel" .
+data:0a2081b7-8de5-4cff-9dea-d4196288c6d7 rdfs:label "Yves Saint Laurent" .
+data:e03dc0e4-f8c3-4e31-ac8d-949f9c0d1c75 rdfs:label "Beauty Genius" .
+data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:waterRecyclingRate "53 %"^^loreal:Percentage .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatesIn data:8b4a35ca-e3ed-40d0-a1f7-8ce2b43b401b ;
+	loreal:netProfitPerShare "12,66 €"^^loreal:Currency .
+data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d schema:startDate "2020"^^xsd:gYear .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasDivision data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 .
+data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:averageAge "58,5 ans" .
+data:ddd50c30-b650-42a7-8972-768049a10e54 rdfs:label "Suzhou" .
+data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:numberOfNationalities 4 .
+data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 loreal:manages data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 .
+data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:renewableEnergyUse "97 %"^^loreal:Percentage .
+data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 loreal:manages data:2d348671-870e-42f5-99c3-61fe7e90e796 .
+data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:revenueGrowth "+2,7 %"^^loreal:Percentage .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:ecommerceShare "28,2 %"^^loreal:Percentage ;
+	loreal:hasDepartment data:4b9589da-b9d5-4c5a-9569-bfd0eb41794b .
+data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d loreal:hasBrand data:9d1e37d3-5668-4941-8f61-760efff40792 .
+data:2d348671-870e-42f5-99c3-61fe7e90e796 rdfs:label "Produits Professionnels" .
+data:9d1e37d3-5668-4941-8f61-760efff40792 rdfs:label "Garnier" .
+data:ac52032a-140b-48ac-9ac0-43976746b6c4 rdfs:label "Amérique latine" .
+data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d rdfs:label "Fonds L’Oréal pour les Femmes" .
+data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:hasBrand data:0a2081b7-8de5-4cff-9dea-d4196288c6d7 .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:ecommerceRevenue "12,3 Mds €"^^loreal:Currency .
+data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:revenueShare "16 %"^^loreal:Percentage .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasFacility data:ddd50c30-b650-42a7-8972-768049a10e54 ;
+	loreal:hasDivision data:f7f5e02b-8d28-4d0c-9991-13f298519635 .
+data:31844502-0994-4607-9d91-42a5c2595622 rdfs:label "La Roche-Posay" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatesIn data:d2c41c75-a213-4a87-91c5-1fc94b10c0d3 ;
+	loreal:marketPosition "N°1 mondial de la beauté" .
+data:e7e0ed02-5edc-4418-a0ea-871e84435caf rdfs:label "Jean-Paul Agon" .
+data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:compositionDate "31 décembre 2024"^^xsd:date .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:purpose "Créer la beauté qui fait avancer le monde." .
+data:f7f5e02b-8d28-4d0c-9991-13f298519635 rdfs:label "Luxe" .
+data:4024e465-812e-4649-b542-9741aa5a4a56 rdfs:label "Fonds Solstice" .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 rdfs:label "L'Oréal" ;
+	loreal:comparableRevenueGrowth "+5,1 %"^^loreal:Percentage .
+data:df9633dd-8c46-457c-b91d-c38e4485dc41 a schema:Brand .
+data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 a loreal:Program .
+data:33bd7821-d917-4d0d-909d-fe006387e1d3 a schema:Brand .
+data:3237ec43-882c-49ca-b586-81834ed5b3c8 a schema:Organization .
+data:e7e0ed02-5edc-4418-a0ea-871e84435caf a schema:Person .
+data:d2c41c75-a213-4a87-91c5-1fc94b10c0d3 a loreal:GeographicZone .
+data:8b4a35ca-e3ed-40d0-a1f7-8ce2b43b401b a loreal:GeographicZone .
+data:ac52032a-140b-48ac-9ac0-43976746b6c4 a loreal:GeographicZone .
+data:85792111-a32c-43f1-9d8c-257663544959 a schema:Brand .
+data:953054c1-4ecd-4b85-ba47-12b6b5eb9edd a loreal:Technology .
+data:31844502-0994-4607-9d91-42a5c2595622 a schema:Brand .
+data:e03dc0e4-f8c3-4e31-ac8d-949f9c0d1c75 a loreal:Technology .
+data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 a loreal:Division .
+data:4b9589da-b9d5-4c5a-9569-bfd0eb41794b a loreal:Department .
+data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 a loreal:GoverningBody .
+data:f4354215-5b3e-425b-8816-3bffb2b55973 a schema:Report .
+data:2014e6ae-f895-4978-aba3-67d3c1db4a66 a loreal:GeographicZone .
+data:6cbe7130-3a67-42aa-b328-9fc60e25382e a schema:Brand .
+data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d a loreal:Division .
+data:43e5cf44-567c-4006-8c4b-9f2782c725cb a schema:Brand .
+data:3c032add-b6ae-4ea6-a3bf-207af326294a a loreal:GoverningBody .
+data:614725e5-81ca-4491-a3a0-4795d5519e87 a loreal:Technology .
+data:24f5ba95-ad8b-4147-9c21-be73369a02f9 a schema:Person .
+data:f7f5e02b-8d28-4d0c-9991-13f298519635 a loreal:Division .
+data:6e7a7a79-46e3-4c31-a449-b1bb78aeda04 a schema:Brand .
+data:2d348671-870e-42f5-99c3-61fe7e90e796 a loreal:Division .
+data:4024e465-812e-4649-b542-9741aa5a4a56 a loreal:Fund .
+data:9d1e37d3-5668-4941-8f61-760efff40792 a schema:Brand .
+data:3688ad43-4398-4bb1-93d2-f504fb468fd4 a loreal:Product .
+data:b1cd1349-bd70-4603-950a-c47510e6b53c a schema:Brand .
+data:29901b0b-d52c-4700-b354-cb9ac697b73b a schema:Brand .
+data:fe6d3a94-04ea-40fd-b58b-73adea19b6eb a schema:Brand .
+data:12664a91-4926-4456-96e0-bd58ee32ff50 a loreal:GeographicZone .
+data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d a loreal:Fund .
+data:0a2081b7-8de5-4cff-9dea-d4196288c6d7 a schema:Brand .
+data:ddd50c30-b650-42a7-8972-768049a10e54 a loreal:Facility .
+data:e1962076-62bd-45b6-ac9c-a98fbe945e2d a schema:Brand .
