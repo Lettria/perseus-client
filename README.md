@@ -128,7 +128,8 @@ For more detailed examples, check out the [`examples/`](./examples/) directory. 
 
 ### Advanced Example
 
-- **[Graph RAG Reporting](./examples/advanced/graph-rag-reporting/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report.
+- **[Graph RAG Reporting Neo4j](./examples/advanced/graph-rag-reporting-neo4j/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report. Graph is saved in Neo4j.
+- **[Graph RAG Reporting FalkorDB](./examples/advanced/graph-rag-reporting-falkordb/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report. Graph is saved in FalkorDb.
 - **[Finance Compliance](./examples/advanced/finance-compliance/)**: A complete pipeline to convert unstructured sustainability disclosures into a knowledge graph and produce CSRD-compliant reports.
 
 ## 🤝 Contributing
