@@ -5,6 +5,8 @@ from typing import Dict, List, Optional
 from datetime import datetime
 import aiohttp
 import asyncio
+import ssl
+import certifi
 
 
 from .base_service import BaseService
@@ -149,7 +151,9 @@ class OntologyService(BaseService):
                 raise
 
         try:
-            async with aiohttp.ClientSession() as s3_session:
+            ssl_context = ssl.create_default_context(cafile=certifi.where())
+            connector = aiohttp.TCPConnector(ssl=ssl_context)
+            async with aiohttp.ClientSession(connector=connector) as s3_session:
                 async with s3_session.put(upload_url, data=ontology_content) as resp:
                     resp.raise_for_status()
         except FileNotFoundError:
