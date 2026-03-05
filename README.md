@@ -123,7 +123,7 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ## 📧 Contact
 
-For support or questions, please reach out at [hello@lettria.com](mailto:hello@lettria.com).
+For support or questions, please reach out at `hello@lettria.com`.
 
 ## 📄 License
 
