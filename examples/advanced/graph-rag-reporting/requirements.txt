@@ -1,4 +1,4 @@
-perseus-client==1.0.0rc2
+perseus-client==1.0.0-rc.5
 simple_graph_retriever==1.0.0-rc11
 google-genai==1.41.0
 python-dotenv
