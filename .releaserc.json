@@ -26,6 +26,12 @@
               }
             ],
             "countMatches": true
+          },
+          {
+            "files": ["examples/**/*.txt"],
+            "from": "perseus-client==.*",
+            "to": "perseus-client==${nextRelease.version}",
+            "countMatches": true
           }
         ]
       }
