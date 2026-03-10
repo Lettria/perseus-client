@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "perseus-client"
-version = "1.0.0rc2"
+version = "1.0.0rc5"
 authors = [
   { name="Victor de La Salmonière", email="victor@lettria.com" },
 ]
@@ -29,8 +29,8 @@ dependencies = [
 
 [project.optional-dependencies]
 neo4j = ["neo4j"]
-falkordb = ["FalkorDB"]
-all = ["neo4j", "FalkorDB"]
+falkordb = ["falkordb"]
+all = ["neo4j", "falkordb"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     neo4j_password: str = "password"
     falkordb_host: str = "localhost"
     falkordb_port: int = 6379
-    falkordb_username: str = "" 
+    falkordb_username: str = ""
     falkordb_password: str = ""
     falkordb_graph_name: str = "perseus_graph"
     loglevel: str = "WARNING"

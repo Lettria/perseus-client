@@ -15,8 +15,8 @@
         "replacements": [
           {
             "files": ["README.md"],
-            "from": "pip install perseus-client==.*",
-            "to": "pip install perseus-client==${nextRelease.version}",
+            "from": "pip install \"perseus-client\\[neo4j\\]==.*\"",
+            "to": "pip install \"perseus-client[neo4j]==${nextRelease.version}\"",
             "results": [
               {
                 "file": "README.md",
@@ -25,6 +25,40 @@
                 "numReplacements": 1
               }
             ],
+            "countMatches": true
+          },
+          {
+            "files": ["README.md"],
+            "from": "pip install \"perseus-client\\[falkordb\\]==.*\"",
+            "to": "pip install \"perseus-client[falkordb]==${nextRelease.version}\"",
+            "results": [
+              {
+                "file": "README.md",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
+            "files": ["README.md"],
+            "from": "pip install \"perseus-client\\[all\\]==.*\"",
+            "to": "pip install \"perseus-client[all]==${nextRelease.version}\"",
+            "results": [
+              {
+                "file": "README.md",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
+            "files": ["examples/**/*.txt"],
+            "from": "perseus-client==.*",
+            "to": "perseus-client==${nextRelease.version}",
             "countMatches": true
           }
         ]
@@ -54,7 +88,7 @@
     [
       "@semantic-release/git",
       {
-        "assets": ["pyproject.toml", "README.md"],
+        "assets": ["pyproject.toml", "README.md", "examples/**/*.txt"],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ]

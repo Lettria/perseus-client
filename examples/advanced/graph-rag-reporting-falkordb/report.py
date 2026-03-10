@@ -5,8 +5,8 @@ import logging
 
 logging.getLogger("google_genai").setLevel(logging.ERROR)
 import sys
-from simple_graph_retriever_falkordb_edition.client import GraphRetrievalClient
-from simple_graph_retriever_falkordb_edition.models import RetrievalConfig
+from simple_graph_retriever.client import GraphRetrievalClient
+from simple_graph_retriever.models import RetrievalConfig
 from google import genai
 from google.genai import types as genai_types
 from utils import wait_for_embedder
@@ -15,9 +15,7 @@ from utils import wait_for_embedder
 def main(script_input: str):
     wait_for_embedder()
     genai_client = genai.Client()
-    retrieval_client = GraphRetrievalClient(
-        graph_db_type="falkordb",
-    )
+    retrieval_client = GraphRetrievalClient()
     data = retrieval_client.retrieve_graph(
         query=script_input,
         config=RetrievalConfig(

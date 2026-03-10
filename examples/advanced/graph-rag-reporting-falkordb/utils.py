@@ -10,10 +10,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 def wait_for_falkordb(timeout: int = 600):
-    print("settings.falkordb_host:", getattr(settings, "falkordb_host", None))
-    print("settings.falkordb_port:", getattr(settings, "falkordb_port", None))
-    print("settings.falkordb_username:", getattr(settings, "falkordb_username", None))
-    print("settings.falkordb_password:", getattr(settings, "falkordb_password", None))
     start_time = time.time()
     while time.time() - start_time < timeout:
         try:
@@ -21,7 +17,7 @@ def wait_for_falkordb(timeout: int = 600):
                 host=settings.falkordb_host,
                 port=settings.falkordb_port,
                 password=getattr(settings, "falkordb_password", None),
-                # decode_responses=True 
+                # decode_responses=True
             )
             driver.connection.ping()
             logging.info("FalkorDB is ready.")

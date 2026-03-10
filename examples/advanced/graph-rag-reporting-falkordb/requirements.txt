@@ -1,15 +1,3 @@
 perseus-client==1.0.0rc3
-simple_graph_retriever==1.0.0-rc13
+simple_graph_retriever[falkordb]==1.0.0-rc18
 google-genai==1.41.0
-python-dotenv
-httpx
-FalkorDB
-
-igraph
-leidenalg
-neo4j
-pydantic
-pydantic-settings
-qdrant-client==1.11.0
-requests
-tqdm

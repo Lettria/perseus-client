@@ -37,13 +37,13 @@ Lettria's Perseus service is designed to solve this problem. It transforms your 
 
 ```bash
 # For Neo4j support
-pip install "perseus-client[neo4j]"
+pip install "perseus-client[neo4j]==1.0.0-rc.5"
 
 # For FalkorDB support
-pip install "perseus-client[falkordb]"
+pip install "perseus-client[falkordb]==1.0.0-rc.5"
 
-# For all dependencies
-pip install "perseus-client[all]"
+# For both Neo4j and FalkorDB support
+pip install "perseus-client[all]==1.0.0-rc.5"
 ```
 
 ## 🚀 Quick Start
@@ -138,7 +138,7 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ## 📧 Contact
 
-For support or questions, please reach out at [hello@lettria.com](mailto:hello@lettria.com).
+For support or questions, please reach out at `hello@lettria.com`.
 
 ## 📄 License
 

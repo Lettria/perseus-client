@@ -1,166 +1,387 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix loreal: <http://loreal.com/ontology/> .
+@prefix myonto: <http://example.org/ontology#> .
 @prefix data: <http://example.org/data/> .
-@prefix schema: <http://schema.org/> .
-data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:hasBrand data:b1cd1349-bd70-4603-950a-c47510e6b53c .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasDivision data:2d348671-870e-42f5-99c3-61fe7e90e796 .
-data:24f5ba95-ad8b-4147-9c21-be73369a02f9 schema:jobTitle "Directeur Général" .
-data:33bd7821-d917-4d0d-909d-fe006387e1d3 rdfs:label "Giorgio Armani" .
-data:d2c41c75-a213-4a87-91c5-1fc94b10c0d3 rdfs:label "SAPMENA-SSA" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasGoverningBody data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 ;
-	loreal:hasFund data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d .
-data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:hasBrand data:85792111-a32c-43f1-9d8c-257663544959 .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 schema:publication data:f4354215-5b3e-425b-8816-3bffb2b55973 .
-data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:hasBrand data:6cbe7130-3a67-42aa-b328-9fc60e25382e .
-data:8b4a35ca-e3ed-40d0-a1f7-8ce2b43b401b loreal:revenueShare "24 %"^^loreal:Percentage .
-data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:socialProgramBeneficiaries 4500000 .
-data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d loreal:hasBrand data:fe6d3a94-04ea-40fd-b58b-73adea19b6eb ;
-	loreal:revenueShare "37 %"^^loreal:Percentage .
-data:29901b0b-d52c-4700-b354-cb9ac697b73b rdfs:label "Vichy" .
-data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:revenueGrowth "+9,8 %"^^loreal:Percentage .
-data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:femaleRepresentation "43 %"^^loreal:Percentage .
-data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:peopleHelpedToEmployment 71349 .
-data:85792111-a32c-43f1-9d8c-257663544959 rdfs:label "Lancôme" .
-data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:revenueShare "11 %"^^loreal:Percentage .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 schema:numberOfEmployees 90000 .
-data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:developsProduct data:3688ad43-4398-4bb1-93d2-f504fb468fd4 .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatingProfit "8,69 milliards d’euros"^^loreal:Currency ;
-	schema:ceo data:24f5ba95-ad8b-4147-9c21-be73369a02f9 .
-data:ddd50c30-b650-42a7-8972-768049a10e54 schema:location "Chine" .
-data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:revenueShare "36 %"^^loreal:Percentage .
-data:e1962076-62bd-45b6-ac9c-a98fbe945e2d rdfs:label "Redken" .
-data:f4354215-5b3e-425b-8816-3bffb2b55973 rdfs:label "RAPPORT ANNUEL 2024" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:investmentInRI "1,3 Md €"^^loreal:Currency ;
-	schema:president data:e7e0ed02-5edc-4418-a0ea-871e84435caf .
-data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d rdfs:label "Produits Grand Public" ;
-	loreal:developsTechnology data:e03dc0e4-f8c3-4e31-ac8d-949f9c0d1c75 ;
-	loreal:hasBrand data:df9633dd-8c46-457c-b91d-c38e4485dc41 .
-data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:sustainablePackagingRate "49 %"^^loreal:Percentage .
-data:3688ad43-4398-4bb1-93d2-f504fb468fd4 rdfs:label "Mela B3" .
-data:4024e465-812e-4649-b542-9741aa5a4a56 loreal:purpose "soutien à la décarbonation des fournisseurs" .
-data:e7e0ed02-5edc-4418-a0ea-871e84435caf schema:jobTitle "Président du Conseil d’Administration" .
-data:2014e6ae-f895-4978-aba3-67d3c1db4a66 rdfs:label "Amérique du Nord" .
-data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d loreal:amountAllocated "70 M€"^^loreal:Currency .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:numberOfCountries 150 ;
-	loreal:operatesIn data:12664a91-4926-4456-96e0-bd58ee32ff50 .
-data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:revenueGrowth "+5,3 %"^^loreal:Percentage .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:proposedDividend "7,00 €"^^loreal:Currency ;
-	loreal:patentsFiled 694 .
-data:8b4a35ca-e3ed-40d0-a1f7-8ce2b43b401b rdfs:label "Asie du Nord" .
-data:953054c1-4ecd-4b85-ba47-12b6b5eb9edd rdfs:label "CreAItech" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatesIn data:ac52032a-140b-48ac-9ac0-43976746b6c4 ;
-	loreal:hasDivision data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d .
-data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:hasBrand data:e1962076-62bd-45b6-ac9c-a98fbe945e2d .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasGoverningBody data:3c032add-b6ae-4ea6-a3bf-207af326294a .
-data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:independenceRate "50 %"^^loreal:Percentage .
-data:24f5ba95-ad8b-4147-9c21-be73369a02f9 rdfs:label "Nicolas Hieronimus" .
-data:6cbe7130-3a67-42aa-b328-9fc60e25382e rdfs:label "CeraVe" .
-data:4b9589da-b9d5-4c5a-9569-bfd0eb41794b rdfs:label "Recherche & Innovation" .
-data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d loreal:revenueGrowth "+5,4 %"^^loreal:Percentage .
-data:12664a91-4926-4456-96e0-bd58ee32ff50 loreal:revenueShare "33 %"^^loreal:Percentage .
-data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 rdfs:label "Beauté Dermatologique" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:developsTechnology data:953054c1-4ecd-4b85-ba47-12b6b5eb9edd .
-data:ac52032a-140b-48ac-9ac0-43976746b6c4 loreal:revenueShare "8 %"^^loreal:Percentage .
-data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 loreal:numberOfMembers 19 .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasFund data:4024e465-812e-4649-b542-9741aa5a4a56 .
-data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:developsTechnology data:614725e5-81ca-4491-a3a0-4795d5519e87 .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatingMargin "20 %"^^loreal:Percentage .
-data:2d348671-870e-42f5-99c3-61fe7e90e796 loreal:hasBrand data:43e5cf44-567c-4006-8c4b-9f2782c725cb .
-data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:hasBrand data:29901b0b-d52c-4700-b354-cb9ac697b73b .
-data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 loreal:manages data:f7f5e02b-8d28-4d0c-9991-13f298519635 .
-data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:hasBrand data:31844502-0994-4607-9d91-42a5c2595622 .
-data:12664a91-4926-4456-96e0-bd58ee32ff50 rdfs:label "Europe" .
-data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:hasBrand data:6e7a7a79-46e3-4c31-a449-b1bb78aeda04 .
-data:fe6d3a94-04ea-40fd-b58b-73adea19b6eb rdfs:label "Maybelline" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatesIn data:2014e6ae-f895-4978-aba3-67d3c1db4a66 .
-data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 rdfs:label "L’Oréal pour le Futur" ;
-	loreal:wasteRecoveryRate "76 %"^^loreal:Percentage .
-data:2014e6ae-f895-4978-aba3-67d3c1db4a66 loreal:revenueShare "27 %"^^loreal:Percentage .
-data:d2c41c75-a213-4a87-91c5-1fc94b10c0d3 loreal:revenueShare "9 %"^^loreal:Percentage .
-data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 rdfs:label "Comité Exécutif" ;
-	loreal:manages data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d .
-data:614725e5-81ca-4491-a3a0-4795d5519e87 rdfs:label "AirLight Pro" .
-data:b1cd1349-bd70-4603-950a-c47510e6b53c rdfs:label "Kérastase" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:runsProgram data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 .
-data:f4354215-5b3e-425b-8816-3bffb2b55973 schema:datePublished "2024"^^xsd:gYear .
-data:df9633dd-8c46-457c-b91d-c38e4485dc41 rdfs:label "L’Oréal Paris" .
-data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:hasBrand data:33bd7821-d917-4d0d-909d-fe006387e1d3 .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:numberOfBrands 37 .
-data:3c032add-b6ae-4ea6-a3bf-207af326294a rdfs:label "Conseil d’Administration" .
-data:6e7a7a79-46e3-4c31-a449-b1bb78aeda04 rdfs:label "Prada" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:revenue "43,48 milliards d’euros"^^loreal:Currency .
-data:43e5cf44-567c-4006-8c4b-9f2782c725cb rdfs:label "L’Oréal Professionnel" .
-data:0a2081b7-8de5-4cff-9dea-d4196288c6d7 rdfs:label "Yves Saint Laurent" .
-data:e03dc0e4-f8c3-4e31-ac8d-949f9c0d1c75 rdfs:label "Beauty Genius" .
-data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:waterRecyclingRate "53 %"^^loreal:Percentage .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatesIn data:8b4a35ca-e3ed-40d0-a1f7-8ce2b43b401b ;
-	loreal:netProfitPerShare "12,66 €"^^loreal:Currency .
-data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d schema:startDate "2020"^^xsd:gYear .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasDivision data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 .
-data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:averageAge "58,5 ans" .
-data:ddd50c30-b650-42a7-8972-768049a10e54 rdfs:label "Suzhou" .
-data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:numberOfNationalities 4 .
-data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 loreal:manages data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 .
-data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 loreal:renewableEnergyUse "97 %"^^loreal:Percentage .
-data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 loreal:manages data:2d348671-870e-42f5-99c3-61fe7e90e796 .
-data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:revenueGrowth "+2,7 %"^^loreal:Percentage .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:ecommerceShare "28,2 %"^^loreal:Percentage ;
-	loreal:hasDepartment data:4b9589da-b9d5-4c5a-9569-bfd0eb41794b .
-data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d loreal:hasBrand data:9d1e37d3-5668-4941-8f61-760efff40792 .
-data:2d348671-870e-42f5-99c3-61fe7e90e796 rdfs:label "Produits Professionnels" .
-data:9d1e37d3-5668-4941-8f61-760efff40792 rdfs:label "Garnier" .
-data:ac52032a-140b-48ac-9ac0-43976746b6c4 rdfs:label "Amérique latine" .
-data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d rdfs:label "Fonds L’Oréal pour les Femmes" .
-data:f7f5e02b-8d28-4d0c-9991-13f298519635 loreal:hasBrand data:0a2081b7-8de5-4cff-9dea-d4196288c6d7 .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:ecommerceRevenue "12,3 Mds €"^^loreal:Currency .
-data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 loreal:revenueShare "16 %"^^loreal:Percentage .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:hasFacility data:ddd50c30-b650-42a7-8972-768049a10e54 ;
-	loreal:hasDivision data:f7f5e02b-8d28-4d0c-9991-13f298519635 .
-data:31844502-0994-4607-9d91-42a5c2595622 rdfs:label "La Roche-Posay" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:operatesIn data:d2c41c75-a213-4a87-91c5-1fc94b10c0d3 ;
-	loreal:marketPosition "N°1 mondial de la beauté" .
-data:e7e0ed02-5edc-4418-a0ea-871e84435caf rdfs:label "Jean-Paul Agon" .
-data:3c032add-b6ae-4ea6-a3bf-207af326294a loreal:compositionDate "31 décembre 2024"^^xsd:date .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 loreal:purpose "Créer la beauté qui fait avancer le monde." .
-data:f7f5e02b-8d28-4d0c-9991-13f298519635 rdfs:label "Luxe" .
-data:4024e465-812e-4649-b542-9741aa5a4a56 rdfs:label "Fonds Solstice" .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 rdfs:label "L'Oréal" ;
-	loreal:comparableRevenueGrowth "+5,1 %"^^loreal:Percentage .
-data:df9633dd-8c46-457c-b91d-c38e4485dc41 a schema:Brand .
-data:79f96fd0-0218-4a00-8254-a6b28ab6aaf0 a loreal:Program .
-data:33bd7821-d917-4d0d-909d-fe006387e1d3 a schema:Brand .
-data:3237ec43-882c-49ca-b586-81834ed5b3c8 a schema:Organization .
-data:e7e0ed02-5edc-4418-a0ea-871e84435caf a schema:Person .
-data:d2c41c75-a213-4a87-91c5-1fc94b10c0d3 a loreal:GeographicZone .
-data:8b4a35ca-e3ed-40d0-a1f7-8ce2b43b401b a loreal:GeographicZone .
-data:ac52032a-140b-48ac-9ac0-43976746b6c4 a loreal:GeographicZone .
-data:85792111-a32c-43f1-9d8c-257663544959 a schema:Brand .
-data:953054c1-4ecd-4b85-ba47-12b6b5eb9edd a loreal:Technology .
-data:31844502-0994-4607-9d91-42a5c2595622 a schema:Brand .
-data:e03dc0e4-f8c3-4e31-ac8d-949f9c0d1c75 a loreal:Technology .
-data:f0e44020-4e73-4fd9-a610-6a34f15b7e99 a loreal:Division .
-data:4b9589da-b9d5-4c5a-9569-bfd0eb41794b a loreal:Department .
-data:45cb5e94-c30e-4841-a859-c23a8c3c7cc6 a loreal:GoverningBody .
-data:f4354215-5b3e-425b-8816-3bffb2b55973 a schema:Report .
-data:2014e6ae-f895-4978-aba3-67d3c1db4a66 a loreal:GeographicZone .
-data:6cbe7130-3a67-42aa-b328-9fc60e25382e a schema:Brand .
-data:d85712f2-95c7-46f5-aa97-0f3b4d5ea78d a loreal:Division .
-data:43e5cf44-567c-4006-8c4b-9f2782c725cb a schema:Brand .
-data:3c032add-b6ae-4ea6-a3bf-207af326294a a loreal:GoverningBody .
-data:614725e5-81ca-4491-a3a0-4795d5519e87 a loreal:Technology .
-data:24f5ba95-ad8b-4147-9c21-be73369a02f9 a schema:Person .
-data:f7f5e02b-8d28-4d0c-9991-13f298519635 a loreal:Division .
-data:6e7a7a79-46e3-4c31-a449-b1bb78aeda04 a schema:Brand .
-data:2d348671-870e-42f5-99c3-61fe7e90e796 a loreal:Division .
-data:4024e465-812e-4649-b542-9741aa5a4a56 a loreal:Fund .
-data:9d1e37d3-5668-4941-8f61-760efff40792 a schema:Brand .
-data:3688ad43-4398-4bb1-93d2-f504fb468fd4 a loreal:Product .
-data:b1cd1349-bd70-4603-950a-c47510e6b53c a schema:Brand .
-data:29901b0b-d52c-4700-b354-cb9ac697b73b a schema:Brand .
-data:fe6d3a94-04ea-40fd-b58b-73adea19b6eb a schema:Brand .
-data:12664a91-4926-4456-96e0-bd58ee32ff50 a loreal:GeographicZone .
-data:5b8815e7-0de1-4a5d-8784-0f3223c2eb8d a loreal:Fund .
-data:0a2081b7-8de5-4cff-9dea-d4196288c6d7 a schema:Brand .
-data:ddd50c30-b650-42a7-8972-768049a10e54 a loreal:Facility .
-data:e1962076-62bd-45b6-ac9c-a98fbe945e2d a schema:Brand .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:proposedDividend "7,00 €" .
+data:f785befa-4265-462c-acd7-da0d1ac613b2 rdfs:label "CeraVe" .
+data:e4d858ea-c67e-46fb-a41c-f429252acb3c rdfs:label "IA générative" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:ecommerceShare "28,2 %" .
+data:2eee8416-1330-42e6-a66f-d014eec9ca5c rdfs:label "Nicolas Meyers" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:revenueBreakdownSAPMENASSA "9 %" .
+data:b28a2119-bfd9-42e5-8fab-9d9a916f5661 myonto:belongsToDivision data:84d053a6-a8fa-4ff0-8023-98664425d438 .
+data:4f010222-1073-4811-8d30-14210de14371 rdfs:label "Dr.G" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:ecoVadisRank "top 1 %" .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:supervises data:3e08b49d-17a6-4595-a072-31e2537ebcc0 , data:688d54f2-a370-42fa-be91-8666d8499772 .
+data:c702535b-7d1d-4c6c-a5c4-5133fec378e5 myonto:belongsToDivision data:c60ca13f-94b2-48c4-b094-b373fe49e420 .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:uses data:d066c803-1d8e-49db-9c80-06b2347db6f6 .
+data:7a937451-db81-434d-92a7-ef4cc9ca019b myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:8549b18c-609e-4270-bda1-633bca6acf5e myonto:independenceRate "50 %" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasAcquiredOrLicensed data:b6b7709a-7ab4-4869-b887-1f6fce6b6f0a ;
+	myonto:hasPrinciple "Transparence" .
+data:454aa5e6-e788-4097-a5bc-1da6b30d2423 myonto:hasPageNumber "32" .
+data:ce69a342-85c8-4266-b00c-6d02e08b3b4e myonto:hasDescription "Plus d’un milliard d’euros investis chaque année en R&I avec 4 000 chercheurs" .
+data:1c606350-7bb4-4b29-a7cc-d7b892954c46 myonto:belongsToDivision data:7acdb782-c827-443d-ba16-204c2bd804e8 .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:4aa810fc-3002-4676-a65f-821faeba629c .
+data:e8c768a1-878c-4c7c-a452-cd4656983197 rdfs:label "Jean-Victor Meyers" .
+data:73b640e9-318c-47db-8e49-47c96ae20a8b rdfs:label "Thierry Hamel" .
+data:c5e07e26-6c10-491d-b375-48138a3629b1 myonto:amountAllocated "70 M€" .
+data:8549b18c-609e-4270-bda1-633bca6acf5e myonto:averageAge "58,5 ans" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:dividendGrowth "+ 6,1 %" .
+data:7acdb782-c827-443d-ba16-204c2bd804e8 myonto:launched data:5b9628fc-8d4a-4f2b-930e-36b0db98836b .
+data:4d145566-ab68-452c-8d25-028ac15555ff rdfs:label "fulfilment centres automatisés" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasPrinciple "Respect" .
+data:f171c763-f232-4001-9f50-69995a5a3e16 rdfs:label "Marques internationales" .
+data:a608821b-4c92-43b6-8133-7a4e9d141530 myonto:focusesOnSkill data:79358c71-00a2-4243-b017-b0f8c98bd130 .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:annualInvestmentInRI "Plus d’un milliard d’euros" .
+data:b05e7135-6be4-4c15-8f0e-5e32a5b86588 rdfs:label "Patrice Caine" .
+data:f171c763-f232-4001-9f50-69995a5a3e16 myonto:hasPageNumber "21" .
+data:a608821b-4c92-43b6-8133-7a4e9d141530 myonto:focusesOnSkill data:8c1485e6-d540-4e53-97a6-8625e69d0008 .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:productsDistributed "Plus de 7 milliards" ;
+	myonto:hasStrategicPillar data:4ecb6a72-d2f6-441b-9521-37401facf3b3 ;
+	myonto:revenueBreakdownEurope "33 %" .
+data:2839203f-03b8-4802-ac3f-76c6549fc45b rdfs:label "Paul Bulcke" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:5521155c-3daa-4fb4-8800-a89cd00f0f00 .
+data:b05e7135-6be4-4c15-8f0e-5e32a5b86588 myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:84d053a6-a8fa-4ff0-8023-98664425d438 rdfs:label "Beauté Dermatologique" .
+data:adae8e6d-77a7-4aed-846e-1b0faa46ddc0 rdfs:label "Vers un modèle plus durable et inclusif" .
+data:346c96df-db53-406a-bb0f-680cb1bc2383 rdfs:label "CDP" .
+data:53cffe7c-c9d6-4b45-8c21-016af870915a rdfs:label "Garnier" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:operatingIncomeGrowth "+ 6,7 %" .
+data:75604d94-ce1b-4f34-a848-208c8964ac73 myonto:hasTitle "Président du Conseil d’Administration" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasDivision data:7acdb782-c827-443d-ba16-204c2bd804e8 .
+data:7a937451-db81-434d-92a7-ef4cc9ca019b rdfs:label "Ilham Kadri" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:6f2b43c4-5ba5-4ba3-941c-41c16ef6953c , data:3df4fc26-56ef-41b6-b236-977e3405fda2 .
+data:cb87e5ad-5177-49b9-be3e-4bdbc7ada081 myonto:hasPageNumber "18" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:deploys data:4d145566-ab68-452c-8d25-028ac15555ff .
+data:884212a5-3e17-4873-ba01-eb345b808e58 myonto:supplierCount "Plus de 750" .
+data:f12647a0-5e56-44a1-94c8-fa0e6f8618f4 myonto:isLocatedIn data:c0e684cd-ad9b-4e17-b4da-9231d9d27104 .
+data:908e363b-7888-4db4-bc4c-e224acc6e498 myonto:belongsToDivision data:7acdb782-c827-443d-ba16-204c2bd804e8 .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasAcquiredOrLicensed data:9bbccdf9-a70d-4382-8d09-ef4a2b079787 .
+data:3df4fc26-56ef-41b6-b236-977e3405fda2 rdfs:label "Acquisitions" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:taxesPaid "2,8 Mds €" ;
+	myonto:hasFund data:c5e07e26-6c10-491d-b375-48138a3629b1 .
+data:e929dfec-94a8-4f0d-befb-1baeaa417fbe rdfs:label "Françoise Bettencourt Meyers" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:employeeCount "+ de 90 000" .
+data:d066c803-1d8e-49db-9c80-06b2347db6f6 myonto:usesTechnology data:e4d858ea-c67e-46fb-a41c-f429252acb3c .
+data:3851e5fd-f725-4e3b-af79-bf63b0f4f21d myonto:validatedTrajectoryOf data:de421643-e8d5-4cbf-b3de-5b1a0e518360 .
+data:5b9628fc-8d4a-4f2b-930e-36b0db98836b rdfs:label "AirLight Pro" .
+data:84d053a6-a8fa-4ff0-8023-98664425d438 myonto:developed data:8a131241-64ef-451b-a804-528dfc3e06ab .
+data:0405bcab-6988-4cc2-8a05-40714f06348d rdfs:label "Conseil d’Administration" .
+data:2839203f-03b8-4802-ac3f-76c6549fc45b myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:ecoVadisMedal "Platine" ;
+	myonto:ratedBy data:346c96df-db53-406a-bb0f-680cb1bc2383 .
+data:5521155c-3daa-4fb4-8800-a89cd00f0f00 myonto:hasPageNumber "16" .
+data:84dda5e0-07f9-4145-b15d-90d64edf835a rdfs:label "Fournisseurs" .
+data:84d053a6-a8fa-4ff0-8023-98664425d438 myonto:growthRate "+ 9,8 %" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:revenue "43,48 milliards d’euros" .
+data:9bbccdf9-a70d-4382-8d09-ef4a2b079787 rdfs:label "Jacquemus" .
+data:e02a6aa2-a22c-4da9-ba79-01432fbb75e2 myonto:hasPageNumber "31" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:0405bcab-6988-4cc2-8a05-40714f06348d .
+data:18d541ed-5eeb-4606-b41e-1e2cfe05ae50 myonto:belongsToDivision data:84d053a6-a8fa-4ff0-8023-98664425d438 .
+data:c60ca13f-94b2-48c4-b094-b373fe49e420 myonto:marketPosition "Leader en parfumerie fine" .
+data:fad45784-439f-488b-924a-f6d2baf51034 myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:a692713f-aaf0-43e6-bc40-d1f68925b42b myonto:hasTitle "Directeur Général" .
+data:fe9d853a-0df0-41d1-be83-cc874c29ef60 rdfs:label "Opérations" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasPrinciple "Courage" .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:isGoverningBodyOf data:de421643-e8d5-4cbf-b3de-5b1a0e518360 ;
+	myonto:supervises data:4fb5d1bb-c0a3-456a-bd7c-18c2ec89f8f2 .
+data:ab933053-bc0e-4291-9ce1-7446bafa6eaa rdfs:label "Lancôme" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:ecommerceRevenue "12,3 Mds €" ;
+	myonto:awardedBy data:3d48662e-28d9-483a-b95f-a30e7d855221 .
+data:7a01bf21-7b1a-487e-b5f7-c7a7d9d61a54 rdfs:label "Champion de la Beauty Tech" .
+data:8549b18c-609e-4270-bda1-633bca6acf5e myonto:asOfDate "31 décembre 2024" .
+data:7a01bf21-7b1a-487e-b5f7-c7a7d9d61a54 myonto:hasPageNumber "33" .
+data:c60ca13f-94b2-48c4-b094-b373fe49e420 myonto:growthRate "+ 2,7 %" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:dc397481-215a-4501-84f8-998106fa780d .
+data:bc6f240c-cd8c-4e94-a8e9-be129c28752f rdfs:label "Virginie Morgon" .
+data:c702535b-7d1d-4c6c-a5c4-5133fec378e5 rdfs:label "Yves Saint Laurent" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasAcquiredOrLicensed data:be7ee7e8-fd61-4503-a692-d91b75a0fff0 ;
+	myonto:hasStrategicPillar data:2de6a779-04ca-47a6-9d67-590a3e935f58 .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:5aedf38e-7a6e-47e7-875e-8a87229b518d .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasAcquiredOrLicensed data:4f010222-1073-4811-8d30-14210de14371 .
+data:b6b7709a-7ab4-4869-b887-1f6fce6b6f0a rdfs:label "Miu Miu" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:applicationsReceived "1,3 million" .
+data:6071d839-0c02-4ed4-8776-c656817a44ac rdfs:label "Finance" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasUrl "lorealrapportannuel2024.com" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasInitiative data:a608821b-4c92-43b6-8133-7a4e9d141530 ;
+	myonto:hasDivision data:c60ca13f-94b2-48c4-b094-b373fe49e420 .
+data:d67f237e-93f3-44ea-86f0-228db3c8d79a myonto:belongsToDivision data:c60ca13f-94b2-48c4-b094-b373fe49e420 .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:4d968949-fd8e-4e83-9ba8-bd3c545359f4 .
+data:aea2439c-ae48-4f42-8d30-a380554f9126 rdfs:label "Giorgio Armani" .
+data:d67f237e-93f3-44ea-86f0-228db3c8d79a rdfs:label "Aesop" .
+data:18d541ed-5eeb-4606-b41e-1e2cfe05ae50 rdfs:label "La Roche-Posay" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasProgram data:884212a5-3e17-4873-ba01-eb345b808e58 .
+data:4aa810fc-3002-4676-a65f-821faeba629c rdfs:label "Comité Exécutif" .
+data:4d968949-fd8e-4e83-9ba8-bd3c545359f4 rdfs:label "Stratégie" .
+data:53cffe7c-c9d6-4b45-8c21-016af870915a myonto:belongsToDivision data:840a0d6b-a75b-4b42-add7-f27740945b49 .
+data:4b18e75d-57b3-4a47-b157-799340ec6c3e rdfs:label "Consommateurs" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:454aa5e6-e788-4097-a5bc-1da6b30d2423 .
+data:a692713f-aaf0-43e6-bc40-d1f68925b42b myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:a4f23006-9dcf-470f-8be6-fca1b003daf4 .
+data:688d54f2-a370-42fa-be91-8666d8499772 rdfs:label "Amérique du Nord" .
+data:4d145566-ab68-452c-8d25-028ac15555ff myonto:isLocatedIn data:f12647a0-5e56-44a1-94c8-fa0e6f8618f4 .
+data:eb85ceb4-88a7-4f1c-9260-ad1fe07a5866 myonto:belongsToDivision data:840a0d6b-a75b-4b42-add7-f27740945b49 .
+data:840a0d6b-a75b-4b42-add7-f27740945b49 myonto:growthRate "+ 5,4 %" .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:supervises data:fe9d853a-0df0-41d1-be83-cc874c29ef60 .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasPrinciple "Intégrité" .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:supervises data:b1f3ebbd-60a4-43f8-8075-483e628c9103 .
+data:884212a5-3e17-4873-ba01-eb345b808e58 rdfs:label "Achats Inclusifs" .
+data:6f2b43c4-5ba5-4ba3-941c-41c16ef6953c myonto:hasPageNumber "12" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasStakeholder data:84dda5e0-07f9-4145-b15d-90d64edf835a .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:e9ba436e-4f7e-48e3-b663-40805f9a92eb .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:countryPresence "+ de 150" .
+data:43a3fd73-2e00-4c22-b14f-6861e872944a rdfs:label "SAPMENA-SSA" .
+data:fad45784-439f-488b-924a-f6d2baf51034 rdfs:label "Sophie Bellon" .
+data:0b5659b1-8991-4d59-b709-ad0d5b3d4616 rdfs:label "Mot du Président" .
+data:c5e07e26-6c10-491d-b375-48138a3629b1 myonto:activeSince "depuis 2020" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:revenueBreakdownLatinAmerica "8 %" .
+data:a4f23006-9dcf-470f-8be6-fca1b003daf4 rdfs:label "Interview du Directeur Général" .
+data:f5bab66e-7d58-4468-813f-9141b8121986 rdfs:label "Fabienne Dulac" .
+data:dc3ae817-e68d-446e-b165-1863d8197a21 rdfs:label "Prada" .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:supervises data:9693a696-b16d-4a42-a8a6-45e7aec48bcc .
+data:fef4c6d3-14d2-4a88-8a65-65e48e2840f7 rdfs:label "Collaborateurs" .
+data:b28a2119-bfd9-42e5-8fab-9d9a916f5661 rdfs:label "Vichy" .
+data:f1be722b-8465-4d7e-9410-b7421354cc89 rdfs:label "Produits Grand Public" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasStrategicPillar data:ce69a342-85c8-4266-b00c-6d02e08b3b4e ;
+	myonto:motto "Chaque jour, nous inventons le futur de la beauté" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:77bbeadf-9a32-48f1-980a-ca7e43b3163d .
+data:5521155c-3daa-4fb4-8800-a89cd00f0f00 rdfs:label "Progrès social et environnemental" .
+data:1c606350-7bb4-4b29-a7cc-d7b892954c46 rdfs:label "Redken" .
+data:f5bab66e-7d58-4468-813f-9141b8121986 myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:454aa5e6-e788-4097-a5bc-1da6b30d2423 rdfs:label "La beauté née de la science" .
+data:4b95f03b-9b64-434c-b50a-21b06dfe2a1c rdfs:label "Maybelline" .
+data:9693a696-b16d-4a42-a8a6-45e7aec48bcc rdfs:label "RH" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:opportunitiesForYouth "25 000" .
+data:840a0d6b-a75b-4b42-add7-f27740945b49 myonto:developed data:db89c386-acdd-42bc-a14c-56549438a89c .
+data:cb87e5ad-5177-49b9-be3e-4bdbc7ada081 rdfs:label "Création et partage de la valeur" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:employeeEngagementRate "79 %" ;
+	myonto:netProfitPerShare "12,66 €" .
+data:ce69a342-85c8-4266-b00c-6d02e08b3b4e rdfs:label "Le pari de l’innovation" .
+data:0b5659b1-8991-4d59-b709-ad0d5b3d4616 myonto:hasPageNumber "04" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:comparableGrowth "+ 5,1 %" ;
+	myonto:publishes data:014d46e9-102c-4796-9b7a-79356ab1e8b8 .
+data:53a62b30-b997-4f24-a502-e2ed6e926c37 myonto:belongsToDivision data:840a0d6b-a75b-4b42-add7-f27740945b49 .
+data:3d48662e-28d9-483a-b95f-a30e7d855221 rdfs:label "EcoVadis" .
+data:7acdb782-c827-443d-ba16-204c2bd804e8 myonto:growthRate "+ 5,3 %" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:f1be722b-8465-4d7e-9410-b7421354cc89 , data:cb87e5ad-5177-49b9-be3e-4bdbc7ada081 .
+data:3df4fc26-56ef-41b6-b236-977e3405fda2 myonto:hasPageNumber "20" .
+data:a692713f-aaf0-43e6-bc40-d1f68925b42b rdfs:label "Nicolas Hieronimus" .
+data:4fb5d1bb-c0a3-456a-bd7c-18c2ec89f8f2 rdfs:label "Asie du Nord" .
+data:d066c803-1d8e-49db-9c80-06b2347db6f6 rdfs:label "CreAItech" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:vulnerablePeopleEmployed "106 000" .
+data:e929dfec-94a8-4f0d-befb-1baeaa417fbe myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:supervises data:6071d839-0c02-4ed4-8776-c656817a44ac ;
+	rdfs:label "Comité Exécutif" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:decarbonationTarget "1,5 °C" ;
+	myonto:hasAcquiredOrLicensed data:66de3d1f-64b6-4858-8e5f-e9cec0e55476 .
+data:70694ab8-a154-498f-bffd-ec9bb39a49a8 rdfs:label "Jacques Ripoll" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:sustainablePackaging "49 %" .
+data:8549b18c-609e-4270-bda1-633bca6acf5e myonto:isGoverningBodyOf data:de421643-e8d5-4cbf-b3de-5b1a0e518360 .
+data:4aa810fc-3002-4676-a65f-821faeba629c myonto:hasPageNumber "08" .
+data:3851e5fd-f725-4e3b-af79-bf63b0f4f21d rdfs:label "SBTi" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:0b5659b1-8991-4d59-b709-ad0d5b3d4616 .
+data:66de3d1f-64b6-4858-8e5f-e9cec0e55476 rdfs:label "Amouage" .
+data:2776f8a5-7569-45bc-ac35-17a2f633cd2e rdfs:label "Alexandre Ricard" .
+data:7318681b-7f6c-456d-a70c-a5ee701f3e65 myonto:feature "modèles de peau bioprintés" .
+data:53a62b30-b997-4f24-a502-e2ed6e926c37 rdfs:label "L'Oréal Paris" .
+data:75604d94-ce1b-4f34-a848-208c8964ac73 myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:8549b18c-609e-4270-bda1-633bca6acf5e myonto:nationalityCount 4 .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:supervises data:43a3fd73-2e00-4c22-b14f-6861e872944a .
+data:79358c71-00a2-4243-b017-b0f8c98bd130 rdfs:label "Data" .
+data:75604d94-ce1b-4f34-a848-208c8964ac73 rdfs:label "Jean-Paul Agon" .
+data:be7ee7e8-fd61-4503-a692-d91b75a0fff0 rdfs:label "Galderma" .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:supervises data:df5995b2-ed94-4d65-aed4-62e9e1145d40 .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasDivision data:840a0d6b-a75b-4b42-add7-f27740945b49 ;
+	myonto:renewableEnergyUsage "97 %" .
+data:908e363b-7888-4db4-bc4c-e224acc6e498 rdfs:label "L'Oréal Professionnel" .
+data:e9ba436e-4f7e-48e3-b663-40805f9a92eb myonto:hasPageNumber "28" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasFacilityIn data:f12647a0-5e56-44a1-94c8-fa0e6f8618f4 .
+data:0bf7d4fa-f5be-4a38-84e0-18d0155013f7 rdfs:label "Pouvoirs publics" .
+data:2eee8416-1330-42e6-a66f-d014eec9ca5c myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:recycledWater "53 %" .
+data:70694ab8-a154-498f-bffd-ec9bb39a49a8 myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:supervises data:8edcda0e-995f-4766-b22a-62451a522a1d .
+data:8edcda0e-995f-4766-b22a-62451a522a1d rdfs:label "Amérique latine" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:revenueBreakdownNorthAmerica "27 %" .
+data:ab933053-bc0e-4291-9ce1-7446bafa6eaa myonto:belongsToDivision data:c60ca13f-94b2-48c4-b094-b373fe49e420 .
+data:e9ba436e-4f7e-48e3-b663-40805f9a92eb rdfs:label "Produits Professionnels" .
+data:77bbeadf-9a32-48f1-980a-ca7e43b3163d rdfs:label "Beauté Dermatologique" .
+data:c0e684cd-ad9b-4e17-b4da-9231d9d27104 rdfs:label "Chine" .
+data:99860f01-e9b0-4130-8e55-f42745170ec2 rdfs:label "Béatrice Guillaume-Grabisch" .
+data:f785befa-4265-462c-acd7-da0d1ac613b2 myonto:belongsToDivision data:84d053a6-a8fa-4ff0-8023-98664425d438 .
+data:bc6f240c-cd8c-4e94-a8e9-be129c28752f myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 rdfs:label "RAPPORT ANNUEL 2024" .
+data:db89c386-acdd-42bc-a14c-56549438a89c rdfs:label "Beauty Genius" .
+data:75604d94-ce1b-4f34-a848-208c8964ac73 myonto:leads data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasStakeholder data:fef4c6d3-14d2-4a88-8a65-65e48e2840f7 .
+data:d066c803-1d8e-49db-9c80-06b2347db6f6 myonto:purpose "création de contenu" .
+data:0405bcab-6988-4cc2-8a05-40714f06348d myonto:hasPageNumber "06" .
+data:2de6a779-04ca-47a6-9d67-590a3e935f58 myonto:hasDescription "Présence sur tous les segments de prix" .
+data:75604d94-ce1b-4f34-a848-208c8964ac73 myonto:hasQuote "Dans un environnement incertain, L’Oréal crée de la valeur partagée et façonne le futur de la beauté." .
+data:8a131241-64ef-451b-a804-528dfc3e06ab myonto:treats data:56e8f867-7416-4e14-83ab-f66649ca0272 .
+data:77bbeadf-9a32-48f1-980a-ca7e43b3163d myonto:hasPageNumber "26" .
+data:5aedf38e-7a6e-47e7-875e-8a87229b518d myonto:hasPageNumber "24" .
+data:7db10f74-088c-4c7e-bb35-6ee68c25e1c5 myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:a692713f-aaf0-43e6-bc40-d1f68925b42b myonto:hasQuote "2024 a été une année décisive au cours de laquelle nous avons établi les fondations du prochain chapitre de la grande Aventure L’Oréal." .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:purpose "Créer la beauté qui fait avancer le monde" .
+data:5bad87de-693b-475f-9409-209fec6f5376 myonto:memberCount 19 .
+data:c5e07e26-6c10-491d-b375-48138a3629b1 rdfs:label "Fonds L’Oréal pour les Femmes" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:patentsFiled 694 .
+data:aea2439c-ae48-4f42-8d30-a380554f9126 myonto:belongsToDivision data:c60ca13f-94b2-48c4-b094-b373fe49e420 .
+data:8a131241-64ef-451b-a804-528dfc3e06ab rdfs:label "Melasyl™" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:f171c763-f232-4001-9f50-69995a5a3e16 .
+data:a608821b-4c92-43b6-8133-7a4e9d141530 rdfs:label "Skills revolution" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:ecommerceGrowth "+ 7,8 %" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:isAbout data:de421643-e8d5-4cbf-b3de-5b1a0e518360 .
+data:840a0d6b-a75b-4b42-add7-f27740945b49 rdfs:label "Produits Grand Public" .
+data:e8c768a1-878c-4c7c-a452-cd4656983197 myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:2de6a779-04ca-47a6-9d67-590a3e935f58 rdfs:label "La beauté pour chacun" .
+data:7318681b-7f6c-456d-a70c-a5ee701f3e65 rdfs:label "Skin Technology by L’Oréal" .
+data:f12647a0-5e56-44a1-94c8-fa0e6f8618f4 rdfs:label "Suzhou" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:year "2024"^^xsd:gYear .
+data:c60ca13f-94b2-48c4-b094-b373fe49e420 rdfs:label "Luxe" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 rdfs:label "L'Oréal" .
+data:f1be722b-8465-4d7e-9410-b7421354cc89 myonto:hasPageNumber "22" .
+data:8549b18c-609e-4270-bda1-633bca6acf5e rdfs:label "Conseil d’Administration" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:e02a6aa2-a22c-4da9-ba79-01432fbb75e2 .
+data:adae8e6d-77a7-4aed-846e-1b0faa46ddc0 myonto:hasPageNumber "34" .
+data:a692713f-aaf0-43e6-bc40-d1f68925b42b myonto:leads data:5bad87de-693b-475f-9409-209fec6f5376 .
+data:8549b18c-609e-4270-bda1-633bca6acf5e myonto:femaleRepresentation "43 %" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasStakeholder data:0bf7d4fa-f5be-4a38-84e0-18d0155013f7 .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:7a01bf21-7b1a-487e-b5f7-c7a7d9d61a54 .
+data:a4f23006-9dcf-470f-8be6-fca1b003daf4 myonto:hasPageNumber "05" .
+data:6f2b43c4-5ba5-4ba3-941c-41c16ef6953c rdfs:label "Nos fondamentaux : Éthique et Culture" .
+data:4d968949-fd8e-4e83-9ba8-bd3c545359f4 myonto:hasPageNumber "10" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:cdpScore "AAA" .
+data:7acdb782-c827-443d-ba16-204c2bd804e8 rdfs:label "Produits Professionnels" .
+data:8c1485e6-d540-4e53-97a6-8625e69d0008 rdfs:label "IA" .
+data:5aedf38e-7a6e-47e7-875e-8a87229b518d rdfs:label "Luxe" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasDivision data:84d053a6-a8fa-4ff0-8023-98664425d438 ;
+	myonto:awardDetail "9e année consécutive" .
+data:4b95f03b-9b64-434c-b50a-21b06dfe2a1c myonto:belongsToDivision data:840a0d6b-a75b-4b42-add7-f27740945b49 .
+data:4ecb6a72-d2f6-441b-9521-37401facf3b3 myonto:hasDescription "Organisation décentralisée pour saisir les opportunités locales" .
+data:56e8f867-7416-4e14-83ab-f66649ca0272 rdfs:label "Hyperpigmentation" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:netProfitPerShareGrowth "+ 4,8 %" ;
+	myonto:operatingIncome "8,69 milliards d’euros" .
+data:2776f8a5-7569-45bc-ac35-17a2f633cd2e myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:eb85ceb4-88a7-4f1c-9260-ad1fe07a5866 rdfs:label "NYX" .
+data:dc397481-215a-4501-84f8-998106fa780d myonto:hasPageNumber "14" .
+data:7db10f74-088c-4c7e-bb35-6ee68c25e1c5 rdfs:label "Benny de Vlieger" .
+data:df5995b2-ed94-4d65-aed4-62e9e1145d40 rdfs:label "Europe" .
+data:dc3ae817-e68d-446e-b165-1863d8197a21 myonto:belongsToDivision data:c60ca13f-94b2-48c4-b094-b373fe49e420 .
+data:dc397481-215a-4501-84f8-998106fa780d rdfs:label "Performance financière" .
+data:4ecb6a72-d2f6-441b-9521-37401facf3b3 rdfs:label "Modèle multipolaire et agile" .
+data:7cd31b95-d4d6-43b8-b634-0b013580ba55 myonto:belongsToDivision data:7acdb782-c827-443d-ba16-204c2bd804e8 .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:revenueBreakdownNorthAsia "24 %" .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 myonto:hasSection data:adae8e6d-77a7-4aed-846e-1b0faa46ddc0 .
+data:73b640e9-318c-47db-8e49-47c96ae20a8b myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:99860f01-e9b0-4130-8e55-f42745170ec2 myonto:isMemberOf data:8549b18c-609e-4270-bda1-633bca6acf5e .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:launched data:7318681b-7f6c-456d-a70c-a5ee701f3e65 ;
+	myonto:researcherCount 4000 .
+data:a608821b-4c92-43b6-8133-7a4e9d141530 myonto:identifiedSkillsCount 578 .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:hasStakeholder data:4b18e75d-57b3-4a47-b157-799340ec6c3e .
+data:e02a6aa2-a22c-4da9-ba79-01432fbb75e2 rdfs:label "Une chaîne de valeur agile et responsable" .
+data:3e08b49d-17a6-4595-a072-31e2537ebcc0 rdfs:label "Digital" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:brandCount 37 .
+data:b1f3ebbd-60a4-43f8-8075-483e628c9103 rdfs:label "Recherche" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:operatingMargin "20 %" .
+data:7cd31b95-d4d6-43b8-b634-0b013580ba55 rdfs:label "Kérastase" .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 myonto:rank "Nº 1 mondial de la beauté" .
+data:8a131241-64ef-451b-a804-528dfc3e06ab a myonto:Molecule .
+data:53cffe7c-c9d6-4b45-8c21-016af870915a a myonto:Brand .
+data:be7ee7e8-fd61-4503-a692-d91b75a0fff0 a myonto:Brand .
+data:b05e7135-6be4-4c15-8f0e-5e32a5b86588 a myonto:Person .
+data:840a0d6b-a75b-4b42-add7-f27740945b49 a myonto:Division .
+data:e4d858ea-c67e-46fb-a41c-f429252acb3c a myonto:Technology .
+data:0b5659b1-8991-4d59-b709-ad0d5b3d4616 a myonto:DocumentSection .
+data:014d46e9-102c-4796-9b7a-79356ab1e8b8 a myonto:Document .
+data:4aa810fc-3002-4676-a65f-821faeba629c a myonto:DocumentSection .
+data:a4f23006-9dcf-470f-8be6-fca1b003daf4 a myonto:DocumentSection .
+data:5aedf38e-7a6e-47e7-875e-8a87229b518d a myonto:DocumentSection .
+data:ab933053-bc0e-4291-9ce1-7446bafa6eaa a myonto:Brand .
+data:aea2439c-ae48-4f42-8d30-a380554f9126 a myonto:Brand .
+data:f171c763-f232-4001-9f50-69995a5a3e16 a myonto:DocumentSection .
+data:7a01bf21-7b1a-487e-b5f7-c7a7d9d61a54 a myonto:DocumentSection .
+data:4d145566-ab68-452c-8d25-028ac15555ff a myonto:Facility .
+data:9693a696-b16d-4a42-a8a6-45e7aec48bcc a myonto:FunctionalDepartment .
+data:df5995b2-ed94-4d65-aed4-62e9e1145d40 a myonto:GeographicZone .
+data:84dda5e0-07f9-4145-b15d-90d64edf835a a myonto:StakeholderGroup .
+data:3df4fc26-56ef-41b6-b236-977e3405fda2 a myonto:DocumentSection .
+data:908e363b-7888-4db4-bc4c-e224acc6e498 a myonto:Brand .
+data:fe9d853a-0df0-41d1-be83-cc874c29ef60 a myonto:FunctionalDepartment .
+data:66de3d1f-64b6-4858-8e5f-e9cec0e55476 a myonto:Brand .
+data:b6b7709a-7ab4-4869-b887-1f6fce6b6f0a a myonto:Brand .
+data:7318681b-7f6c-456d-a70c-a5ee701f3e65 a myonto:Platform .
+data:e929dfec-94a8-4f0d-befb-1baeaa417fbe a myonto:Person .
+data:d066c803-1d8e-49db-9c80-06b2347db6f6 a myonto:Laboratory .
+data:5bad87de-693b-475f-9409-209fec6f5376 a myonto:GoverningBody .
+data:0405bcab-6988-4cc2-8a05-40714f06348d a myonto:DocumentSection .
+data:db89c386-acdd-42bc-a14c-56549438a89c a myonto:Service .
+data:7db10f74-088c-4c7e-bb35-6ee68c25e1c5 a myonto:Person .
+data:e02a6aa2-a22c-4da9-ba79-01432fbb75e2 a myonto:DocumentSection .
+data:a692713f-aaf0-43e6-bc40-d1f68925b42b a myonto:Person .
+data:4f010222-1073-4811-8d30-14210de14371 a myonto:Brand .
+data:c60ca13f-94b2-48c4-b094-b373fe49e420 a myonto:Division .
+data:0bf7d4fa-f5be-4a38-84e0-18d0155013f7 a myonto:StakeholderGroup .
+data:2776f8a5-7569-45bc-ac35-17a2f633cd2e a myonto:Person .
+data:688d54f2-a370-42fa-be91-8666d8499772 a myonto:GeographicZone .
+data:454aa5e6-e788-4097-a5bc-1da6b30d2423 a myonto:DocumentSection .
+data:9bbccdf9-a70d-4382-8d09-ef4a2b079787 a myonto:Brand .
+data:7cd31b95-d4d6-43b8-b634-0b013580ba55 a myonto:Brand .
+data:f1be722b-8465-4d7e-9410-b7421354cc89 a myonto:DocumentSection .
+data:2de6a779-04ca-47a6-9d67-590a3e935f58 a myonto:StrategicPillar .
+data:4b18e75d-57b3-4a47-b157-799340ec6c3e a myonto:StakeholderGroup .
+data:c5e07e26-6c10-491d-b375-48138a3629b1 a myonto:Fund .
+data:79358c71-00a2-4243-b017-b0f8c98bd130 a myonto:Skill .
+data:4d968949-fd8e-4e83-9ba8-bd3c545359f4 a myonto:DocumentSection .
+data:d67f237e-93f3-44ea-86f0-228db3c8d79a a myonto:Brand .
+data:4fb5d1bb-c0a3-456a-bd7c-18c2ec89f8f2 a myonto:GeographicZone .
+data:fef4c6d3-14d2-4a88-8a65-65e48e2840f7 a myonto:StakeholderGroup .
+data:77bbeadf-9a32-48f1-980a-ca7e43b3163d a myonto:DocumentSection .
+data:6f2b43c4-5ba5-4ba3-941c-41c16ef6953c a myonto:DocumentSection .
+data:53a62b30-b997-4f24-a502-e2ed6e926c37 a myonto:Brand .
+data:f785befa-4265-462c-acd7-da0d1ac613b2 a myonto:Brand .
+data:6071d839-0c02-4ed4-8776-c656817a44ac a myonto:FunctionalDepartment .
+data:18d541ed-5eeb-4606-b41e-1e2cfe05ae50 a myonto:Brand .
+data:5b9628fc-8d4a-4f2b-930e-36b0db98836b a myonto:Product .
+data:dc397481-215a-4501-84f8-998106fa780d a myonto:DocumentSection .
+data:8549b18c-609e-4270-bda1-633bca6acf5e a myonto:GoverningBody .
+data:4ecb6a72-d2f6-441b-9521-37401facf3b3 a myonto:StrategicPillar .
+data:70694ab8-a154-498f-bffd-ec9bb39a49a8 a myonto:Person .
+data:73b640e9-318c-47db-8e49-47c96ae20a8b a myonto:Person .
+data:3d48662e-28d9-483a-b95f-a30e7d855221 a myonto:Organization .
+data:2eee8416-1330-42e6-a66f-d014eec9ca5c a myonto:Person .
+data:ce69a342-85c8-4266-b00c-6d02e08b3b4e a myonto:StrategicPillar .
+data:bc6f240c-cd8c-4e94-a8e9-be129c28752f a myonto:Person .
+data:2839203f-03b8-4802-ac3f-76c6549fc45b a myonto:Person .
+data:5521155c-3daa-4fb4-8800-a89cd00f0f00 a myonto:DocumentSection .
+data:a608821b-4c92-43b6-8133-7a4e9d141530 a myonto:Initiative .
+data:c0e684cd-ad9b-4e17-b4da-9231d9d27104 a myonto:Country .
+data:3851e5fd-f725-4e3b-af79-bf63b0f4f21d a myonto:Organization .
+data:e9ba436e-4f7e-48e3-b663-40805f9a92eb a myonto:DocumentSection .
+data:8edcda0e-995f-4766-b22a-62451a522a1d a myonto:GeographicZone .
+data:f5bab66e-7d58-4468-813f-9141b8121986 a myonto:Person .
+data:e8c768a1-878c-4c7c-a452-cd4656983197 a myonto:Person .
+data:b28a2119-bfd9-42e5-8fab-9d9a916f5661 a myonto:Brand .
+data:56e8f867-7416-4e14-83ab-f66649ca0272 a myonto:Condition .
+data:75604d94-ce1b-4f34-a848-208c8964ac73 a myonto:Person .
+data:346c96df-db53-406a-bb0f-680cb1bc2383 a myonto:Organization .
+data:3e08b49d-17a6-4595-a072-31e2537ebcc0 a myonto:FunctionalDepartment .
+data:b1f3ebbd-60a4-43f8-8075-483e628c9103 a myonto:FunctionalDepartment .
+data:dc3ae817-e68d-446e-b165-1863d8197a21 a myonto:Brand .
+data:884212a5-3e17-4873-ba01-eb345b808e58 a myonto:Program .
+data:de421643-e8d5-4cbf-b3de-5b1a0e518360 a myonto:Organization .
+data:4b95f03b-9b64-434c-b50a-21b06dfe2a1c a myonto:Brand .
+data:adae8e6d-77a7-4aed-846e-1b0faa46ddc0 a myonto:DocumentSection .
+data:eb85ceb4-88a7-4f1c-9260-ad1fe07a5866 a myonto:Brand .
+data:7acdb782-c827-443d-ba16-204c2bd804e8 a myonto:Division .
+data:8c1485e6-d540-4e53-97a6-8625e69d0008 a myonto:Skill .
+data:43a3fd73-2e00-4c22-b14f-6861e872944a a myonto:GeographicZone .
+data:fad45784-439f-488b-924a-f6d2baf51034 a myonto:Person .
+data:7a937451-db81-434d-92a7-ef4cc9ca019b a myonto:Person .
+data:99860f01-e9b0-4130-8e55-f42745170ec2 a myonto:Person .
+data:84d053a6-a8fa-4ff0-8023-98664425d438 a myonto:Division .
+data:cb87e5ad-5177-49b9-be3e-4bdbc7ada081 a myonto:DocumentSection .
+data:f12647a0-5e56-44a1-94c8-fa0e6f8618f4 a myonto:City .
+data:c702535b-7d1d-4c6c-a5c4-5133fec378e5 a myonto:Brand .
+data:1c606350-7bb4-4b29-a7cc-d7b892954c46 a myonto:Brand .

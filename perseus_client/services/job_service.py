@@ -4,6 +4,8 @@ from typing import Any, Dict, List, Optional, cast
 import aiohttp
 import logging
 import asyncio
+import ssl
+import certifi
 
 from .base_service import BaseService
 from ..models import Job, JobStatus
@@ -116,7 +118,9 @@ class JobService(BaseService):
         if output_path is None:
             output_path = f"{job_id}.output"
         download_urls = await self._get_download_urls_async(job_id)
-        async with aiohttp.ClientSession() as download_session:
+        ssl_context = ssl.create_default_context(cafile=certifi.where())
+        connector = aiohttp.TCPConnector(ssl=ssl_context)
+        async with aiohttp.ClientSession(connector=connector) as download_session:
             await self._download_file_async(
                 download_session,
                 download_urls["ttlFileDownloadUrl"],

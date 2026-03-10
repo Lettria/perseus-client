@@ -149,7 +149,7 @@ class PerseusClient:
         if not self._neo4j:
             raise ConfigurationException("Neo4j service not initialized.")
         return self._neo4j
-    
+
     @property
     def falkordb(self):
         self._ensure_active()
@@ -230,11 +230,9 @@ class PerseusClient:
             output_path = f"{temp_dir}/perseus_job_{completed_job.id}_output"
 
         await self.job.download_job_output_async(completed_job.id, output_path)
-
         if save_to_neo4j:
             await self.neo4j.save_output_to_neo4j_async(f"{output_path}.cql")
-        
+
         if save_to_falkordb:
             await self.falkordb.save_output_to_falkordb_async(f"{output_path}.cql")
-
         return completed_job
