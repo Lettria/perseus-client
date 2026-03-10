@@ -10,7 +10,7 @@ authors = [
 ]
 description = "A Python client for Perseus API"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10,<4.0"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -18,16 +18,19 @@ classifiers = [
 ]
 dependencies = [
     "aiohttp",
-    "neo4j",
     "pydantic",
     "pydantic-settings",
     "certifi"
 ]
 
-
 [project.urls]
 "Homepage" = "https://github.com/pypa/sampleproject"
 "Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+
+[project.optional-dependencies]
+neo4j = ["neo4j"]
+falkordb = ["falkordb"]
+all = ["neo4j", "falkordb"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

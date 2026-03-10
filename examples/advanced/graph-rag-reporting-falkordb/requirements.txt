@@ -1,0 +1,3 @@
+perseus-client==1.0.0rc3
+simple_graph_retriever[falkordb]==1.0.0-rc18
+google-genai==1.41.0

@@ -1,9 +1,14 @@
-from neo4j import GraphDatabase
 import logging
 import asyncio
 from perseus_client.config import settings
 from perseus_client.exceptions import ConfigurationException
 
+try:
+    from neo4j import GraphDatabase
+    NEO4J_AVAILABLE = True
+except ImportError:
+    GraphDatabase = None
+    NEO4J_AVAILABLE = False
 
 logging.basicConfig(level=settings.loglevel.upper())
 logger = logging.getLogger(__name__)
@@ -11,6 +16,8 @@ logger = logging.getLogger(__name__)
 
 class Neo4jService:
     def __init__(self, loop: asyncio.AbstractEventLoop):
+        if not NEO4J_AVAILABLE:
+            logger.warning("Neo4jService initialized but 'neo4j' library is missing.")
         self._loop = loop
 
     def save_output_to_neo4j(self, file_path: str):
@@ -26,6 +33,13 @@ class Neo4jService:
         Args:
             file_path (str): The path to the file containing Cypher queries.
         """
+        if not NEO4J_AVAILABLE:
+            error_msg = (
+                "The 'neo4j' library is not installed. "
+                "Please run `pip install perseus-client[neo4j]` to use this feature."
+            )
+            logger.error(error_msg)
+            raise ImportError(error_msg)
         try:
             if (
                 not settings.neo4j_uri
