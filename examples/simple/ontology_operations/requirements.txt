@@ -1,2 +1,2 @@
-perseus-client==1.0.0-rc.5
+perseus-client==1.0.0-rc.6
 python-dotenv
