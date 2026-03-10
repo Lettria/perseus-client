@@ -60,6 +60,18 @@
             "from": "perseus-client==.*",
             "to": "perseus-client==${nextRelease.version}",
             "countMatches": true
+          },
+          {
+            "files": ["examples/**/*.txt"],
+            "from": "perseus-client\\[neo4j\\]==.*",
+            "to": "perseus-client[neo4j]==${nextRelease.version}",
+            "countMatches": true
+          },
+          {
+            "files": ["examples/**/*.txt"],
+            "from": "perseus-client\\[falkordb\\]==.*",
+            "to": "perseus-client[falkordb]==${nextRelease.version}",
+            "countMatches": true
           }
         ]
       }

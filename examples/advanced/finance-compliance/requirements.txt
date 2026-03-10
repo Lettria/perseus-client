@@ -1,4 +1,2 @@
-perseus-client
-python-dotenv
-neo4j
+perseus-client[neo4j]==1.0.0-rc.6
 rdflib
