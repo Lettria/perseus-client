@@ -1,2 +1,2 @@
-perseus-client[neo4j]==1.0.0-rc.6
+perseus-client[neo4j]==1.0.0-rc.7
 rdflib
