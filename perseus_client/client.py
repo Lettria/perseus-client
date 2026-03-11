@@ -255,6 +255,9 @@ class PerseusClient:
 
             if metadata:
                 cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
+                # Write the modified content back to the file for traceability
+                with open(cql_file_path, 'w', encoding='utf-8') as f:
+                    f.write(cql_content)
             
             if save_to_neo4j:
                 await self.neo4j.execute_cql_string_async(cql_content)
