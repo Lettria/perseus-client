@@ -1,0 +1,40 @@
+@prefix data: <http://example.org/data/> .
+@prefix ont: <http://example.org/ontology#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+data:15b9c8a6-5066-4a9d-80a9-907e1639a7fd a ont:City ;
+    rdfs:label "Paris" ;
+    ont:hasStatus "capital"^^xsd:token ;
+    ont:isLocatedIn data:94fd6e27-5cb8-4e4c-8a45-4d477e8e7d71 .
+
+data:4e1039d7-3bc9-4686-bcfb-63c7ac0a9730 a ont:Role ;
+    rdfs:label "project manager" .
+
+data:94fd6e27-5cb8-4e4c-8a45-4d477e8e7d71 a ont:Country ;
+    rdfs:label "France" .
+
+data:a31b30df-34cd-47be-9849-166d4535ee43 a ont:Role ;
+    rdfs:label "software engineer" .
+
+data:0e5d5444-7b8f-431f-97af-559a93ea4210 a ont:Company ;
+    rdfs:label "Innovate Inc." ;
+    ont:employs data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93,
+        data:744d72c2-e61a-4061-b725-3d1003c778f1 .
+
+data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 a ont:Person ;
+    rdfs:label "Bob" ;
+    ont:hasRole data:4e1039d7-3bc9-4686-bcfb-63c7ac0a9730 ;
+    ont:isColleagueOf data:744d72c2-e61a-4061-b725-3d1003c778f1 ;
+    ont:isEmployedBy data:0e5d5444-7b8f-431f-97af-559a93ea4210 ;
+    ont:status "verified" .
+
+data:744d72c2-e61a-4061-b725-3d1003c778f1 a ont:Person ;
+    rdfs:label "Alice" ;
+    ont:hasAge 30 ;
+    ont:hasRole data:a31b30df-34cd-47be-9849-166d4535ee43 ;
+    ont:isColleagueOf data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 ;
+    ont:isEmployedBy data:0e5d5444-7b8f-431f-97af-559a93ea4210 ;
+    ont:livesIn data:15b9c8a6-5066-4a9d-80a9-907e1639a7fd ;
+    ont:status "verified" .
+

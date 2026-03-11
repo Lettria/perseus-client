@@ -8,7 +8,7 @@ services:
       - NEO4J_AUTH=neo4j/password
       - NEO4J_PLUGINS=["apoc"]
     volumes:
-      - neo4j_data__build_graph_metadata:/data
+      - neo4j_data__cql_manipulation:/data
 
 volumes:
-  neo4j_data__build_graph_metadata:
+  neo4j_data__cql_manipulation:

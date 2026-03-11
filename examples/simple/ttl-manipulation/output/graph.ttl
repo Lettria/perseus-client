@@ -1,0 +1,30 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ont: <http://example.org/ontology#> .
+@prefix data: <http://example.org/data/> .
+data:744d72c2-e61a-4061-b725-3d1003c778f1 ont:hasAge 30 .
+data:94fd6e27-5cb8-4e4c-8a45-4d477e8e7d71 rdfs:label "France" .
+data:0e5d5444-7b8f-431f-97af-559a93ea4210 ont:employs data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 .
+data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 ont:isColleagueOf data:744d72c2-e61a-4061-b725-3d1003c778f1 .
+data:0e5d5444-7b8f-431f-97af-559a93ea4210 ont:employs data:744d72c2-e61a-4061-b725-3d1003c778f1 .
+data:744d72c2-e61a-4061-b725-3d1003c778f1 ont:isEmployedBy data:0e5d5444-7b8f-431f-97af-559a93ea4210 .
+data:15b9c8a6-5066-4a9d-80a9-907e1639a7fd ont:isLocatedIn data:94fd6e27-5cb8-4e4c-8a45-4d477e8e7d71 .
+data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 ont:isEmployedBy data:0e5d5444-7b8f-431f-97af-559a93ea4210 .
+data:744d72c2-e61a-4061-b725-3d1003c778f1 rdfs:label "Alice" ;
+	ont:isColleagueOf data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 .
+data:a31b30df-34cd-47be-9849-166d4535ee43 rdfs:label "software engineer" .
+data:0e5d5444-7b8f-431f-97af-559a93ea4210 rdfs:label "Innovate Inc." .
+data:744d72c2-e61a-4061-b725-3d1003c778f1 ont:hasRole data:a31b30df-34cd-47be-9849-166d4535ee43 .
+data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 ont:hasRole data:4e1039d7-3bc9-4686-bcfb-63c7ac0a9730 .
+data:15b9c8a6-5066-4a9d-80a9-907e1639a7fd ont:hasStatus "capital"^^xsd:token .
+data:4e1039d7-3bc9-4686-bcfb-63c7ac0a9730 rdfs:label "project manager" .
+data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 rdfs:label "Bob" .
+data:15b9c8a6-5066-4a9d-80a9-907e1639a7fd rdfs:label "Paris" .
+data:744d72c2-e61a-4061-b725-3d1003c778f1 ont:livesIn data:15b9c8a6-5066-4a9d-80a9-907e1639a7fd .
+data:27b1bab7-e555-4a89-a0c6-6e4d60ea3c93 a ont:Person .
+data:4e1039d7-3bc9-4686-bcfb-63c7ac0a9730 a ont:Role .
+data:0e5d5444-7b8f-431f-97af-559a93ea4210 a ont:Company .
+data:15b9c8a6-5066-4a9d-80a9-907e1639a7fd a ont:City .
+data:a31b30df-34cd-47be-9849-166d4535ee43 a ont:Role .
+data:94fd6e27-5cb8-4e4c-8a45-4d477e8e7d71 a ont:Country .
+data:744d72c2-e61a-4061-b725-3d1003c778f1 a ont:Person .

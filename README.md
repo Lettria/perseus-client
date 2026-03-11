@@ -122,8 +122,11 @@ For more detailed examples, check out the [`examples/`](./examples/) directory. 
 ### Simple Examples
 
 - **[Build Graph](./examples/simple/build-graph/)**: Build a knowledge graph from a text file.
+- **[Build Graph With Metadata](./examples/simple/build-graph-with-metadata/)**: Build a knowledge graph and add custom metadata to nodes and relationships.
+- **[CQL Manipulation](./examples/simple/cql-manipulation/)**: Perform custom modifications on CQL query strings.
 - **[File Operations](./examples/simple/file-operations/)**: Upload and manage files.
 - **[Ontology Operations](./examples/simple/ontology-operations/)**: Upload and manage ontologies.
+- **[TTL Manipulation](./examples/simple/ttl-manipulation/)**: Perform custom modifications on TTL (Turtle) files.
 - **[Delete Operations](./examples/simple/delete-operations/)**: Delete files and ontologies.
 
 ### Advanced Example
