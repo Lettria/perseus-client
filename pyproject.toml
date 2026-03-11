@@ -20,7 +20,8 @@ dependencies = [
     "aiohttp",
     "pydantic",
     "pydantic-settings",
-    "certifi"
+    "certifi",
+    "rdflib"
 ]
 
 [project.urls]

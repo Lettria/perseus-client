@@ -6,6 +6,8 @@ import certifi
 import ssl
 import asyncio
 import os
+
+from .services.ttl_service import TTLService
 from .services.neo4j_service import Neo4jService
 from .services.falkordb_service import FalkorDBService
 from .services.cql_service import CQLService
@@ -43,6 +45,7 @@ class PerseusClient:
         self._neo4j: Optional[Neo4jService] = None
         self._falkordb: Optional[FalkorDBService] = None
         self._cql: Optional[CQLService] = None
+        self._ttl: Optional[TTLService] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
     def _is_active(self):
@@ -67,6 +70,7 @@ class PerseusClient:
         self._neo4j = Neo4jService(self._loop)
         self._falkordb = FalkorDBService(self._loop)
         self._cql = CQLService()
+        self._ttl = TTLService()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -159,13 +163,20 @@ class PerseusClient:
         if not self._falkordb:
             raise ConfigurationException("FalkorDB service not initialized.")
         return self._falkordb
-    
+
     @property
     def cql(self) -> CQLService:
         self._ensure_active()
         if not self._cql:
             raise ConfigurationException("CQL service not initialized.")
         return self._cql
+
+    @property
+    def ttl(self) -> TTLService:
+        self._ensure_active()
+        if not self._ttl:
+            raise ConfigurationException("TTL service not initialized.")
+        return self._ttl
 
     def build_graph(
         self,
@@ -244,24 +255,42 @@ class PerseusClient:
             output_path = f"{temp_dir}/perseus_job_{completed_job.id}_output"
 
         await self.job.download_job_output_async(completed_job.id, output_path)
-        
-        cql_file_path = f"{output_path}.cql"
-        if not os.path.exists(cql_file_path):
-            raise FileNotFoundError(f"Expected CQL file not found at {cql_file_path}")
 
-        with open(cql_file_path, 'r', encoding='utf-8') as f:
-            cql_content = f.read()
+        cql_file_path = f"{output_path}.cql"
+        ttl_file_path = f"{output_path}.ttl"
+
+        cql_content = None
 
         if metadata:
-            cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
-            # Write the modified content back to the file for traceability
-            with open(cql_file_path, 'w', encoding='utf-8') as f:
-                f.write(cql_content)
+            # Handle TTL file modification
+            if os.path.exists(ttl_file_path):
+                with open(ttl_file_path, "r", encoding="utf-8") as f:
+                    ttl_content = f.read()
+                modified_ttl = self.ttl.add_metadata_to_ttl(ttl_content, metadata)
+                with open(ttl_file_path, "w", encoding="utf-8") as f:
+                    f.write(modified_ttl)
 
-        if save_to_neo4j:
-            await self.neo4j.execute_cql_string_async(cql_content)
+            # Handle CQL file modification
+            if os.path.exists(cql_file_path):
+                with open(cql_file_path, "r", encoding="utf-8") as f:
+                    cql_content = f.read()
+                cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
+                with open(cql_file_path, "w", encoding="utf-8") as f:
+                    f.write(cql_content)
 
-        if save_to_falkordb:
-            await self.falkordb.execute_cql_string_async(cql_content)
-                
+        if save_to_neo4j or save_to_falkordb:
+            if cql_content is None:
+                if not os.path.exists(cql_file_path):
+                    raise FileNotFoundError(
+                        f"Expected CQL file not found at {cql_file_path}"
+                    )
+                with open(cql_file_path, "r", encoding="utf-8") as f:
+                    cql_content = f.read()
+
+            if save_to_neo4j:
+                await self.neo4j.execute_cql_string_async(cql_content)
+
+            if save_to_falkordb:
+                await self.falkordb.execute_cql_string_async(cql_content)
+
         return completed_job
