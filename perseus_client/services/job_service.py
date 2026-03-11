@@ -151,6 +151,9 @@ class JobService(BaseService):
         """
         logger.debug(f"Downloading file from {url}")
         logger.info(f"Downloading file to {output_path}")
+        output_dir = os.path.dirname(output_path)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir, exist_ok=True)
         try:
             async with session.get(url) as response:
                 response.raise_for_status()

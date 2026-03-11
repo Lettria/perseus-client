@@ -1,0 +1,12 @@
+This is a sample text file for the add-metadata-neo4j example.
+It contains some text that will be processed by the Perseus Client
+to generate a graph. The nodes and relationships in the graph
+will then be augmented with metadata, such as the name of this file.
+This allows for better tracking of data provenance.
+The quick brown fox jumps over the lazy dog.
+The dog's name is "Max".
+The fox's name is "Freddy".
+Max and Freddy are friends.
+They live in a forest.
+The forest is beautiful.
+The end.

@@ -1,13 +1,14 @@
 import logging
 import tempfile
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 import aiohttp
 import certifi
 import ssl
 import asyncio
-from pydantic import ValidationError
+import os
 from .services.neo4j_service import Neo4jService
 from .services.falkordb_service import FalkorDBService
+from .services.cql_service import CQLService
 from .config import Settings
 from .models import File, Job, OntologyStatus, FileStatus
 from .exceptions import ConfigurationException
@@ -41,6 +42,7 @@ class PerseusClient:
         self._ontology: Optional[OntologyService] = None
         self._neo4j: Optional[Neo4jService] = None
         self._falkordb: Optional[FalkorDBService] = None
+        self._cql: Optional[CQLService] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
     def _is_active(self):
@@ -64,6 +66,7 @@ class PerseusClient:
         self._ontology = OntologyService(self._session, self.api_host, self._loop)
         self._neo4j = Neo4jService(self._loop)
         self._falkordb = FalkorDBService(self._loop)
+        self._cql = CQLService()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -156,6 +159,13 @@ class PerseusClient:
         if not self._falkordb:
             raise ConfigurationException("FalkorDB service not initialized.")
         return self._falkordb
+    
+    @property
+    def cql(self) -> CQLService:
+        self._ensure_active()
+        if not self._cql:
+            raise ConfigurationException("CQL service not initialized.")
+        return self._cql
 
     def build_graph(
         self,
@@ -165,6 +175,7 @@ class PerseusClient:
         save_to_neo4j: bool = False,
         save_to_falkordb: bool = False,
         refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> Job:
         self._ensure_active()
         if not self._loop:
@@ -177,6 +188,7 @@ class PerseusClient:
                 save_to_neo4j,
                 save_to_falkordb,
                 refresh_graph,
+                metadata,
             )
         )
 
@@ -188,6 +200,7 @@ class PerseusClient:
         save_to_neo4j: bool = False,
         save_to_falkordb: bool = False,
         refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> Job:
         """
         Processes a file by uploading it, optionally with an ontology, running a
@@ -200,6 +213,7 @@ class PerseusClient:
             save_to_neo4j: Whether to save the output to Neo4j.
             save_to_falkordb: Whether to save the output to FalkorDB.
             refresh_graph: Whether to force a new job to be created (refresh the graph).
+            metadata: A dictionary of metadata to add to all nodes and relationships.
         Returns:
             The completed job.
         """
@@ -230,9 +244,22 @@ class PerseusClient:
             output_path = f"{temp_dir}/perseus_job_{completed_job.id}_output"
 
         await self.job.download_job_output_async(completed_job.id, output_path)
-        if save_to_neo4j:
-            await self.neo4j.save_output_to_neo4j_async(f"{output_path}.cql")
+        
+        if save_to_neo4j or save_to_falkordb:
+            cql_file_path = f"{output_path}.cql"
+            if not os.path.exists(cql_file_path):
+                raise FileNotFoundError(f"Expected CQL file not found at {cql_file_path}")
 
-        if save_to_falkordb:
-            await self.falkordb.save_output_to_falkordb_async(f"{output_path}.cql")
+            with open(cql_file_path, 'r', encoding='utf-8') as f:
+                cql_content = f.read()
+
+            if metadata:
+                cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
+            
+            if save_to_neo4j:
+                await self.neo4j.execute_cql_string_async(cql_content)
+
+            if save_to_falkordb:
+                await self.falkordb.execute_cql_string_async(cql_content)
+                
         return completed_job

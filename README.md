@@ -121,10 +121,10 @@ For more detailed examples, check out the [`examples/`](./examples/) directory. 
 
 ### Simple Examples
 
-- **[Build Graph](./examples/simple/build_graph/)**: Build a knowledge graph from a text file.
-- **[File Operations](./examples/simple/file_operations/)**: Upload and manage files.
-- **[Ontology Operations](./examples/simple/ontology_operations/)**: Upload and manage ontologies.
-- **[Delete Operations](./examples/simple/delete_operations/)**: Delete files and ontologies.
+- **[Build Graph](./examples/simple/build-graph/)**: Build a knowledge graph from a text file.
+- **[File Operations](./examples/simple/file-operations/)**: Upload and manage files.
+- **[Ontology Operations](./examples/simple/ontology-operations/)**: Upload and manage ontologies.
+- **[Delete Operations](./examples/simple/delete-operations/)**: Delete files and ontologies.
 
 ### Advanced Example
 
