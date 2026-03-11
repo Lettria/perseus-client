@@ -245,24 +245,23 @@ class PerseusClient:
 
         await self.job.download_job_output_async(completed_job.id, output_path)
         
-        if save_to_neo4j or save_to_falkordb:
-            cql_file_path = f"{output_path}.cql"
-            if not os.path.exists(cql_file_path):
-                raise FileNotFoundError(f"Expected CQL file not found at {cql_file_path}")
+        cql_file_path = f"{output_path}.cql"
+        if not os.path.exists(cql_file_path):
+            raise FileNotFoundError(f"Expected CQL file not found at {cql_file_path}")
 
-            with open(cql_file_path, 'r', encoding='utf-8') as f:
-                cql_content = f.read()
+        with open(cql_file_path, 'r', encoding='utf-8') as f:
+            cql_content = f.read()
 
-            if metadata:
-                cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
-                # Write the modified content back to the file for traceability
-                with open(cql_file_path, 'w', encoding='utf-8') as f:
-                    f.write(cql_content)
-            
-            if save_to_neo4j:
-                await self.neo4j.execute_cql_string_async(cql_content)
+        if metadata:
+            cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
+            # Write the modified content back to the file for traceability
+            with open(cql_file_path, 'w', encoding='utf-8') as f:
+                f.write(cql_content)
 
-            if save_to_falkordb:
-                await self.falkordb.execute_cql_string_async(cql_content)
+        if save_to_neo4j:
+            await self.neo4j.execute_cql_string_async(cql_content)
+
+        if save_to_falkordb:
+            await self.falkordb.execute_cql_string_async(cql_content)
                 
         return completed_job
