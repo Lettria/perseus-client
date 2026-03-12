@@ -23,7 +23,7 @@ This example is split into three main scripts that should be run in order:
 ### 1. Setup Environment
 
 - Requires Docker, Docker Compose, and Python 3.8+.
-- Copy `template.env` to `.env` and fill in your `LETTRIA_API_KEY`.
+- Copy `template.env` to `.env` and fill in your `PERSEUS_API_KEY`.
   ```bash
   cp template.env .env
   ```
@@ -40,12 +40,14 @@ docker-compose up -d
 Execute the scripts in order, providing the path to the documents you want to process.
 
 1.  **Build the Knowledge Graphs:**
+
     ```bash
     python index.py assets/ecosteel_annual_report.md
     python index.py assets/techgreen_press_release.md
     ```
 
 2.  **Explore the Extracted Data from the TTL files:**
+
     ```bash
     python explore.py
     ```
@@ -58,6 +60,7 @@ Execute the scripts in order, providing the path to the documents you want to pr
 ### 4. Cleaning Up
 
 When you're done, stop and remove the Docker services:
+
 ```bash
 docker-compose down
 ```

@@ -7,11 +7,14 @@ import aiohttp
 import asyncio
 import ssl
 import certifi
+import time
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 
 from .base_service import BaseService
 from ..models import Ontology, OntologyStatus
 from ..exceptions import PerseusException, APIException
+
 
 logging.basicConfig(level=os.getenv("LOGLEVEL", "INFO"))
 logger = logging.getLogger(__name__)
@@ -176,17 +179,28 @@ class OntologyService(BaseService):
         timeout: int = 3600,
     ) -> Ontology:
         """
-        Asynchronously waits for an ontology to be uploaded and processed.
+        Asynchronously waits for an ontology to be uploaded and processed, displaying a spinner.
         """
-        ontology = await self._wait_with_spinner(
-            wait_message=f"Waiting for ontology upload {ontology_id}...",
-            polling_fct=self.find_ontology_async,
-            polling_fct_args=[ontology_id],
-            status_attribute="status",
-            end_statuses=[OntologyStatus.UPLOADED, OntologyStatus.FAILED],
-            polling_interval=polling_interval,
-            timeout=timeout,
-        )
-        if ontology.status == OntologyStatus.FAILED:
-            raise PerseusException(f"Ontology {ontology.id} failed to upload.")
-        return ontology
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            task_id = progress.add_task(description=f"Processing ontology {ontology_id}...", total=None)
+            
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                ontology = await self.find_ontology_async(ontology_id)
+                if not ontology:
+                    raise PerseusException(f"Could not find ontology {ontology_id} during polling.")
+
+                if ontology.status in [OntologyStatus.UPLOADED, OntologyStatus.FAILED]:
+                    if ontology.status == OntologyStatus.FAILED:
+                        raise PerseusException(f"Ontology {ontology.id} failed to upload.")
+                    
+                    progress.update(task_id, completed=True)
+                    return ontology
+                
+                await asyncio.sleep(polling_interval)
+
+            raise PerseusException(f"Timeout reached waiting for ontology {ontology_id}")

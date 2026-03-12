@@ -1,7 +1,8 @@
 import logging
 import asyncio
+import time
 from perseus_client.config import settings
-from perseus_client.exceptions import ConfigurationException
+from perseus_client.exceptions import ConfigurationException, PerseusException
 
 try:
     from neo4j import GraphDatabase
@@ -15,10 +16,48 @@ logger = logging.getLogger(__name__)
 
 
 class Neo4jService:
-    def __init__(self, loop: asyncio.AbstractEventLoop):
+    def __init__(self, loop: asyncio.AbstractEventLoop, wait_for_neo4j_readiness: bool = True, timeout: int = 120):
         if not NEO4J_AVAILABLE:
             logger.warning("Neo4jService initialized but 'neo4j' library is missing.")
         self._loop = loop
+
+        if wait_for_neo4j_readiness:
+            self._wait_for_neo4j(timeout)
+
+    def _wait_for_neo4j(self, timeout: int):
+        """Waits for the Neo4j database to become available, displaying a spinner."""
+        from rich.progress import Progress, SpinnerColumn, TextColumn
+
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            task = progress.add_task(description="Connecting to Neo4j...", total=None)
+            
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                try:
+                    if (
+                        not settings.neo4j_uri
+                        or not settings.neo4j_user
+                        or not settings.neo4j_password
+                    ):
+                        raise ConfigurationException(
+                            "Neo4j configuration is incomplete. Please check your settings."
+                        )
+                    with GraphDatabase.driver(
+                        settings.neo4j_uri,
+                        auth=(settings.neo4j_user, settings.neo4j_password),
+                    ) as driver:
+                        driver.verify_connectivity()
+                        progress.update(task, completed=True, description="[green]✓[/green] Connected to Neo4j.")
+                        return
+                except Exception:
+                    time.sleep(2) # Wait before retrying
+            
+            # If the loop finishes, it's a timeout
+            raise PerseusException(f"Timed out after {timeout} seconds waiting for Neo4j to become available.")
 
     def save_output_to_neo4j(self, file_path: str):
         return self._loop.run_until_complete(

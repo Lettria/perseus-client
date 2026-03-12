@@ -11,6 +11,7 @@ This example demonstrates how to add metadata (e.g., the source file name) to no
 ## Setup
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://gitlab.ops.lettria.net/text-to-graph/perseus-client.git
    cd perseus-client/examples/advanced/add-metadata-neo4j
@@ -21,9 +22,10 @@ This example demonstrates how to add metadata (e.g., the source file name) to no
      ```bash
      cp template.env .env
      ```
-   - Edit the `.env` file and add your `LETTRIA_API_KEY`.
+   - Edit the `.env` file and add your `PERSEUS_API_KEY`.
 
 3. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -36,6 +38,7 @@ This example demonstrates how to add metadata (e.g., the source file name) to no
 ## Usage
 
 1. **Run the script:**
+
    ```bash
    source .env
    python add_metadata.py assets/sample.txt
@@ -53,6 +56,7 @@ This example demonstrates how to add metadata (e.g., the source file name) to no
 ## Cleanup
 
 To stop and remove the Neo4j container, run:
+
 ```bash
 docker-compose down
 ```

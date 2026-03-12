@@ -21,7 +21,8 @@ dependencies = [
     "pydantic",
     "pydantic-settings",
     "certifi",
-    "rdflib"
+    "rdflib",
+    "rich"
 ]
 
 [project.urls]

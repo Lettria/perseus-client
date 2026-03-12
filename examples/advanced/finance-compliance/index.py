@@ -3,7 +3,6 @@ import sys
 import os
 from perseus_client.client import PerseusClient
 from dotenv import load_dotenv
-from utils import wait_for_neo4j
 
 # Configure logging and load environment variables
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -22,11 +21,6 @@ def main(file_path: str):
     output_ttl_path = os.path.join("output", f"{file_stem}.ttl")
 
     try:
-        # It's good practice to ensure Neo4j is ready before starting
-        logging.info("Waiting for Neo4j to become available...")
-        wait_for_neo4j()
-        logging.info("Neo4j is ready.")
-
         with PerseusClient() as client:
             logging.info(f"Processing file: {file_path} with ontology: {ontology_path}")
             

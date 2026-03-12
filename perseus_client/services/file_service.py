@@ -7,11 +7,13 @@ import os
 import asyncio
 import ssl
 import certifi
-
+import time
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from .base_service import BaseService
 from ..models import File, FileStatus
 from ..exceptions import PerseusException, APIException
+
 
 logger = logging.getLogger(__name__)
 
@@ -173,17 +175,28 @@ class FileService(BaseService):
         timeout: int = 3600,
     ) -> File:
         """
-        Asynchronously waits for a file to be uploaded and processed.
+        Asynchronously waits for a file to be uploaded and processed, displaying a spinner.
         """
-        file = await self._wait_with_spinner(
-            wait_message=f"Waiting for file upload {file_id}...",
-            polling_fct=self.find_file_async,
-            polling_fct_args=[file_id],
-            status_attribute="status",
-            end_statuses=[FileStatus.UPLOADED, FileStatus.FAILED],
-            polling_interval=polling_interval,
-            timeout=timeout,
-        )
-        if file.status == FileStatus.FAILED:
-            raise PerseusException(f"File {file.id} failed to upload.")
-        return file
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            task_id = progress.add_task(description=f"Processing file {file_id}...", total=None)
+            
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                file = await self.find_file_async(file_id)
+                if not file:
+                    raise PerseusException(f"Could not find file {file_id} during polling.")
+
+                if file.status in [FileStatus.UPLOADED, FileStatus.FAILED]:
+                    if file.status == FileStatus.FAILED:
+                        raise PerseusException(f"File {file.id} failed to upload.")
+                    
+                    progress.update(task_id, completed=True)
+                    return file
+                
+                await asyncio.sleep(polling_interval)
+
+            raise PerseusException(f"Timeout reached waiting for file {file_id}")

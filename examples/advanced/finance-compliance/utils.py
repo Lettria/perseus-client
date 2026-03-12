@@ -11,29 +11,6 @@ load_dotenv()
 # HELPER FUNCTIONS
 # =============================================================================
 
-def wait_for_neo4j(timeout: int = 60):
-    """
-    Waits for the Neo4j container to become available.
-    """
-    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    user = os.getenv("NEO4J_USER", "neo4j")
-    password = os.getenv("NEO4J_PASSWORD", "password")
-    
-    start_time = time.time()
-    while time.time() - start_time < timeout:
-        try:
-            driver = GraphDatabase.driver(uri, auth=(user, password))
-            with driver.session() as session:
-                session.run("RETURN 1")
-            driver.close()
-            logging.info("Neo4j is available.")
-            return
-        except Exception:
-            logging.info("Waiting for Neo4j...")
-            time.sleep(5)
-    raise Exception("Neo4j did not become available in time.")
-
-
 # =============================================================================
 # SPARQL and Cypher queries (from original utils)
 # =============================================================================

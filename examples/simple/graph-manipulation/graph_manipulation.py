@@ -3,7 +3,6 @@ import sys
 import os
 from perseus_client.client import PerseusClient
 from perseus_client.models import Entity, Relation, LiteralValue
-from utils import wait_for_neo4j
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -18,9 +17,6 @@ def main(file_path: str):
     os.makedirs(output_dir, exist_ok=True)
 
     try:
-        # Wait for Neo4j to be ready
-        wait_for_neo4j()
-
         with PerseusClient() as client:
             # 1. Build the initial KnowledgeGraph from a file using the SDK
             logger.info(f"Building initial graph from file: {file_path}")

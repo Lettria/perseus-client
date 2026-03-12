@@ -3,20 +3,22 @@
 This example demonstrates how to use the Perseus Client to delete files and ontologies that have been uploaded to the platform.
 
 The script performs two main demonstrations:
+
 1.  **File Deletion:** It uploads a sample text file, deletes it, and then verifies that the file can no longer be found.
 2.  **Ontology Deletion:** It uploads a sample ontology file, deletes it, and then verifies its deletion.
 
 ## Setup
 
 1.  **Install dependencies:**
+
     ```bash
     pip install -r requirements.txt
     ```
 
 2.  **Set up your environment:**
-    Create a `.env` file in this directory and add your `LETTRIA_API_KEY`.
+    Create a `.env` file in this directory and add your `PERSEUS_API_KEY`.
     ```env
-    LETTRIA_API_KEY="YOUR_API_KEY"
+    PERSEUS_API_KEY="YOUR_API_KEY"
     ```
 
 ## Usage

@@ -1,12 +1,10 @@
-from typing import Any, Optional, Callable, Awaitable, List, Union
+from typing import Any, Optional, Callable, Awaitable, List, Union, Coroutine
 import aiohttp
 from ..exceptions import APIException, ConfigurationException
 import logging
 from perseus_client.config import settings
 import asyncio
-import itertools
-import sys
-from time import time
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 logging.basicConfig(level=settings.loglevel.upper())
 logger = logging.getLogger(__name__)
@@ -76,49 +74,31 @@ class BaseService:
             logger.error("Async request failed: %s", e)
             raise APIException(status_code=500, message=str(e)) from e
 
-    async def _wait_with_spinner(
+    async def _wait_for_tasks(
         self,
-        wait_message: str,
-        polling_fct: Callable[..., Awaitable[Any]],
-        polling_fct_args: List[Any],
-        status_attribute: str,
-        end_statuses: List[Union[Any, str]],
-        polling_interval: float = 0.5,
-        timeout: int = 3600,
-    ) -> Any:
-        async def spinner():
-            for c in itertools.cycle("|/-\\"):
-                sys.stdout.write(f"\r{wait_message} {c}")
-                sys.stdout.flush()
-                await asyncio.sleep(0.1)
+        tasks: List[Coroutine],
+        descriptions: List[str]
+    ):
+        """
+        Waits for multiple asyncio tasks to complete, displaying a spinner for each.
+        """
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            # Create a dictionary to map asyncio tasks to Rich progress task IDs
+            rich_tasks = {
+                progress.add_task(description, total=None): task
+                for task, description in zip(tasks, descriptions)
+            }
+            
+            # Asynchronously gather all tasks
+            results = await asyncio.gather(*rich_tasks.values())
+            
+            # Mark all tasks as complete
+            for task_id in rich_tasks.keys():
+                progress.update(task_id, completed=True)
+            
+            return results
 
-        start_time = time()
-        polled_object = await polling_fct(*polling_fct_args)
-        if not polled_object:
-            raise APIException(500, f"Could not find object with {polling_fct_args}")
-
-        logger.debug(
-            f"Object {polled_object.id} status: {getattr(polled_object, status_attribute)}"
-        )
-
-        spin_task = asyncio.create_task(spinner())
-
-        try:
-            while getattr(polled_object, status_attribute) not in end_statuses:
-                if time() - start_time > timeout:
-                    raise APIException(
-                        500, f"Timeout reached for object {polled_object.id}"
-                    )
-                await asyncio.sleep(polling_interval)
-                polled_object = await polling_fct(*polling_fct_args)
-                if not polled_object:
-                    raise APIException(
-                        500, f"Could not find object with {polling_fct_args}"
-                    )
-                logger.debug(
-                    f"Object {polled_object.id} status: {getattr(polled_object, status_attribute)}"
-                )
-        finally:
-            spin_task.cancel()
-            sys.stdout.write("\r\033[K")
-        return polled_object

@@ -5,13 +5,12 @@ This script demonstrates how to upload and then delete a file and an ontology us
 ## Quick Start 🚀
 
 1.  **Setup Environment**:
-
     - Requires Python 3.8+. 🐍
     - Copy `template.env` to `.env` and fill your credentials.
 
     ```bash
     cp template.env .env
-    # Edit .env with your LETTRIA_API_KEY
+    # Edit .env with your PERSEUS_API_KEY
     ```
 
 2.  **Install Dependencies**:

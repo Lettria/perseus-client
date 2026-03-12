@@ -4,8 +4,8 @@ from perseus_client.exceptions import APIException
 
 
 def main():
-    # Ensure LETTRIA_API_KEY environment variable is set
-    # export LETTRIA_API_KEY="your_api_key_here"
+    # Ensure PERSEUS_API_KEY environment variable is set
+    # export PERSEUS_API_KEY="your_api_key_here"
 
     file_path_to_delete = "assets/file_to_delete.txt"
     ontology_path_to_delete = "assets/ontology_to_delete.ttl"

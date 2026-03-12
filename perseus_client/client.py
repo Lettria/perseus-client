@@ -223,30 +223,38 @@ class PerseusClient:
         metadata: Optional[Dict[str, Any]] = None,
     ) -> KnowledgeGraph:
         """
-        Processes a single file to build a KnowledgeGraph.
-        Args:
-            file_path: The path to the file to process.
-            ontology_id: The ID of the ontology to use.
-            refresh_graph: Whether to force new jobs to be created (refresh the graph).
-            metadata: A dictionary of metadata to add to all nodes and relationships.
-        Returns:
-            The extracted KnowledgeGraph.
+        Processes a single file to build a KnowledgeGraph with resilient job handling.
         """
         created_file = await self.file.upload_file_async(file_path)
-
         if created_file.status == FileStatus.PENDING:
             await self.file.wait_for_file_upload_async(created_file.id)
 
-        completed_job = None
-        if not refresh_graph:
-            completed_job = await self.job.find_latest_job_async(
-                file_id=created_file.id, ontology_id=ontology_id
-            )
-        if not completed_job:
-            completed_job = await self.job.run_job_async(
+        job_to_run = None
+        # Check for the latest job, regardless of its status
+        latest_job = await self.job.find_latest_job_async(
+            file_id=created_file.id, ontology_id=ontology_id
+        )
+
+        if latest_job:
+            if latest_job.status in [Job.JobStatus.PENDING, Job.JobStatus.RUNNING, Job.JobStatus.STARTING, Job.JobStatus.RUNNABLE]:
+                logging.info(f"Attaching to existing in-progress job {latest_job.id}")
+                job_to_run = latest_job
+            elif latest_job.status == Job.JobStatus.SUCCEEDED:
+                if refresh_graph:
+                    logging.info("`refresh_graph` is True, submitting new job.")
+                else:
+                    logging.info(f"Using existing completed job {latest_job.id}")
+                    job_to_run = latest_job
+        
+        if not job_to_run:
+            logging.info("No suitable existing job found, submitting a new one.")
+            job_to_run = await self.job.submit_job_async(
                 file_id=created_file.id, ontology_id=ontology_id
             )
 
+        # Wait for the job (either new or pre-existing) to complete
+        completed_job = await self.job.run_job_async(job_id=job_to_run.id)
+        
         output_dir = "/tmp/perseus-client/output"
         os.makedirs(output_dir, exist_ok=True)
         output_path = f"{output_dir}/{completed_job.id}_output"
@@ -310,17 +318,20 @@ class PerseusClient:
         Returns:
             A list of KnowledgeGraph objects.
         """
-        file_paths = file_path
-
         created_ontology_id = None
         if ontology_path:
+            # This part still runs sequentially as the ontology is shared
             created_ontology = await self.ontology.upload_ontology_async(ontology_path)
             if created_ontology.status == OntologyStatus.PENDING:
+                # A single spinner for the ontology upload
                 await self.ontology.wait_for_ontology_upload_async(created_ontology.id)
             created_ontology_id = created_ontology.id
         
+        # Create a list of tasks and descriptions for the rich progress display
         tasks = []
-        for path in file_paths:
+        descriptions = []
+        for path in file_path:
+            descriptions.append(f"Processing file {os.path.basename(path)}...")
             task = self._build_single_graph_async(
                 file_path=path,
                 ontology_id=created_ontology_id,
@@ -329,6 +340,7 @@ class PerseusClient:
             )
             tasks.append(task)
         
-        results = await asyncio.gather(*tasks)
+        # Use the new rich-based waiter from the job service
+        results = await self.job._wait_for_tasks(tasks, descriptions)
 
         return results

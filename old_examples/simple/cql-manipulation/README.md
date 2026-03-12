@@ -13,6 +13,7 @@ The custom manipulation in this example is to rename a node label from `:Person`
 ## Setup
 
 1.  **Navigate to the example directory:**
+
     ```bash
     cd examples/simple/cql-manipulation
     ```
@@ -22,9 +23,10 @@ The custom manipulation in this example is to rename a node label from `:Person`
       ```bash
       cp template.env .env
       ```
-    - Edit the `.env` file and add your `LETTRIA_API_KEY`.
+    - Edit the `.env` file and add your `PERSEUS_API_KEY`.
 
 3.  **Install dependencies:**
+
     ```bash
     pip install -r requirements.txt
     ```
@@ -62,6 +64,7 @@ python manipulate_cql.py assets/sample.txt
 ## Cleanup
 
 To stop and remove the Neo4j container, run:
+
 ```bash
 docker-compose down
 ```

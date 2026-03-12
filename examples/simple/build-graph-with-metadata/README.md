@@ -5,14 +5,16 @@ This example demonstrates how to build a knowledge graph from a text file, add c
 ## Setup
 
 1.  **Install dependencies:**
+
     ```bash
     pip install -r requirements.txt
     ```
 
 2.  **Set up your environment:**
-    Create a `.env` file in this directory and add your `LETTRIA_API_KEY`. You can also configure your Neo4j connection details here if they are different from the defaults in the `docker-compose.yaml`.
+    Create a `.env` file in this directory and add your `PERSEUS_API_KEY`. You can also configure your Neo4j connection details here if they are different from the defaults in the `docker-compose.yaml`.
+
     ```env
-    LETTRIA_API_KEY="YOUR_API_KEY"
+    PERSEUS_API_KEY="YOUR_API_KEY"
     NEO4J_URI="bolt://localhost:7687"
     NEO4J_USER="neo4j"
     NEO4J_PASSWORD="password"
@@ -33,6 +35,7 @@ python build_graph.py [path/to/your/file.txt]
 ```
 
 The script will:
+
 1.  Wait for the Neo4j container to be ready.
 2.  Upload the specified text file.
 3.  Run a job to process the file and generate a knowledge graph.

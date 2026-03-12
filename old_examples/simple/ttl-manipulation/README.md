@@ -12,6 +12,7 @@ The custom manipulation involves parsing the TTL file, finding all entities of t
 ## Setup
 
 1.  **Navigate to the example directory:**
+
     ```bash
     cd examples/simple/ttl-manipulation
     ```
@@ -21,7 +22,7 @@ The custom manipulation involves parsing the TTL file, finding all entities of t
       ```bash
       cp template.env .env
       ```
-    - Edit the `.env` file and add your `LETTRIA_API_KEY`.
+    - Edit the `.env` file and add your `PERSEUS_API_KEY`.
 
 3.  **Install dependencies:**
     ```bash

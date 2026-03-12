@@ -30,6 +30,13 @@ class JobService(BaseService):
     def find_job(self, id: str) -> Optional[Job]:
         return self._loop.run_until_complete(self.find_job_async(id))
 
+    def find_latest_succeeded_job(
+        self, file_id: str, ontology_id: Optional[str] = None
+    ) -> Optional[Job]:
+        return self._loop.run_until_complete(
+            self.find_latest_succeeded_job_async(file_id, ontology_id)
+        )
+
     def find_latest_job(
         self, file_id: str, ontology_id: Optional[str] = None
     ) -> Optional[Job]:
@@ -85,13 +92,37 @@ class JobService(BaseService):
             return None
         return jobs[0]
 
+    async def find_latest_succeeded_job_async(
+        self, file_id: str, ontology_id: Optional[str] = None
+    ) -> Optional[Job]:
+        """
+        Asynchronously finds the latest succeeded job by its file_id.
+        """
+        payload: Dict[str, Any] = {"fileId": file_id, "status": JobStatus.SUCCEEDED}
+        if ontology_id:
+            payload["ontologyId"] = ontology_id
+        response = await self._request(
+            "POST",
+            "/api/v0/job/find",
+            params={
+                "limit": 1,
+                "orderBy": "createdAt",
+                "orderDirection": "DESC",
+            },
+            json=payload,
+        )
+        if not response["jobs"]:
+            return None
+        job_data = response["jobs"][0]
+        return Job(id=job_data["id"], status=job_data["status"])
+
     async def find_latest_job_async(
         self, file_id: str, ontology_id: Optional[str] = None
     ) -> Optional[Job]:
         """
-        Asynchronously finds the latest job by its file_id.
+        Asynchronously finds the latest job by its file_id, regardless of status.
         """
-        payload: Dict[str, Any] = {"fileId": file_id, "status": JobStatus.SUCCEEDED}
+        payload: Dict[str, Any] = {"fileId": file_id}
         if ontology_id:
             payload["ontologyId"] = ontology_id
         response = await self._request(
@@ -175,26 +206,30 @@ class JobService(BaseService):
 
     async def run_job_async(
         self,
-        file_id: str,
-        ontology_id: Optional[str] = None,
+        job_id: str,
         polling_interval: int = 5,
         timeout: int = 3600,
     ) -> Job:
         """
-        Asynchronously submits a job and polls for its completion with a terminal spinner.
+        Asynchronously waits for a job to complete by polling its status.
         """
-        job = await self.submit_job_async(file_id, ontology_id)
-        logger.debug(f"Job {job.id} submitted, status: {job.status}")
+        job = await self.find_job_async(job_id)
+        if not job:
+            raise PerseusException(f"Job {job_id} not found.")
+        logger.debug(f"Waiting for job {job.id}, current status: {job.status}")
 
-        job = await self._wait_with_spinner(
-            wait_message=f"Waiting for job {job.id}...",
-            polling_fct=self.find_job_async,
-            polling_fct_args=[job.id],
-            status_attribute="status",
-            end_statuses=[JobStatus.SUCCEEDED, JobStatus.FAILED],
-            polling_interval=polling_interval,
-            timeout=timeout,
-        )
+        start_time = time()
+        while job.status not in [JobStatus.SUCCEEDED, JobStatus.FAILED]:
+            if time() - start_time > timeout:
+                raise PerseusException(f"Timeout reached for job {job.id}")
+            
+            await asyncio.sleep(polling_interval)
+            
+            updated_job = await self.find_job_async(job.id)
+            if not updated_job:
+                raise PerseusException(f"Could not find job {job.id} during polling.")
+            job = updated_job
+            logger.debug(f"Job {job.id} status: {job.status}")
 
         if job.status == JobStatus.FAILED:
             raise PerseusException(f"Job {job.id} failed.")

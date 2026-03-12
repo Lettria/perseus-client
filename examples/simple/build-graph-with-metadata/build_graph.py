@@ -3,7 +3,6 @@ import sys
 import os
 from typing import Dict, Any
 from perseus_client.client import PerseusClient
-from utils import wait_for_neo4j
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -14,9 +13,6 @@ def main(file_path: str):
     Main function to build a graph with metadata and save it to Neo4j.
     """
     try:
-        # Wait for Neo4j to be ready
-        wait_for_neo4j()
-
         # Define the custom metadata as a dictionary
         custom_metadata: Dict[str, Any] = {
             "source_file": os.path.basename(file_path),

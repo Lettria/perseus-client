@@ -58,7 +58,7 @@ The SDK can be configured via environment variables. The `PerseusClient` will au
 
 | Variable              | Description                                | Required |
 | --------------------- | ------------------------------------------ | -------- |
-| `LETTRIA_API_KEY`     | Your unique API key for the Lettria API.   | Yes      |
+| `PERSEUS_API_KEY`     | Your unique API key for the Lettria API.   | Yes      |
 | `NEO4J_URI`           | The URI for your Neo4j database instance.  | No       |
 | `NEO4J_USER`          | The username for your Neo4j database.      | No       |
 | `NEO4J_PASSWORD`      | The password for your Neo4j database.      | No       |

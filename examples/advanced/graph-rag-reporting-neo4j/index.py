@@ -3,7 +3,7 @@ import sys
 import os
 from perseus_client.client import PerseusClient
 from simple_graph_retriever.client import GraphRetrievalClient
-from utils import wait_for_embedder, wait_for_neo4j
+from utils import wait_for_embedder
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -18,7 +18,6 @@ def main(file_path: str):
 
     try:
         logging.info("Waiting for services to become available...")
-        wait_for_neo4j()
         wait_for_embedder()
         logging.info("Services are ready.")
 
