@@ -24,7 +24,9 @@ def main(file_path: str):
         with PerseusClient() as client:
             # 1. Build the initial KnowledgeGraph from a file using the SDK
             logger.info(f"Building initial graph from file: {file_path}")
-            knowledge_graphs = client.build_graph(file_path=[file_path])
+            knowledge_graphs = client.build_graph(
+                file_path=[file_path], metadata={"source": "graph_manipulation_example"}
+            )
             if not knowledge_graphs:
                 logger.error("Failed to build graph from the file.")
                 return
@@ -65,7 +67,7 @@ def main(file_path: str):
 
             # Define some URIs for our new data
             award_uri = "http://example.com/award/NobelPrizeInPhysics"
-            award_name_predicate = "http://xmlns.com/foaf/0.1/name"
+            award_name_predicate = "http://www.w3.org/2000/01/rdf-schema#label"
             award_type = "http://example.com/ontology/Award"
             year_predicate = "http://example.com/ontology/year"
             won_award_predicate = "http://example.com/ontology/wonAward"
@@ -123,14 +125,17 @@ def main(file_path: str):
                 f"Modified TTL content saved to {os.path.join(output_dir, 'output_graph_modified.ttl')}"
             )
 
-            kg.save_cql(os.path.join(output_dir, "output_graph_modified.cql"))
+            kg.save_cql(
+                os.path.join(output_dir, "output_graph_modified.cql"),
+                strip_prefixes=True,
+            )
             logger.info(
                 f"Modified CQL content saved to {os.path.join(output_dir, 'output_graph_modified.cql')}"
             )
 
             # Save the modified graph to Neo4j
             logger.info("Saving modified graph to Neo4j...")
-            kg.save_to_neo4j()
+            kg.save_to_neo4j(strip_prefixes=True)
             logger.info("Modified graph saved to Neo4j.")
 
     except Exception as e:

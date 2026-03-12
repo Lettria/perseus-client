@@ -2,11 +2,12 @@
 @prefix dbo: <http://dbpedia.org/ontology/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix ns1: <http://example.com/ontology/> .
+@prefix pmeta: <https://lettria.com/perseus/metadata#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e a foaf:Person ;
     rdfs:label "Marie Curie" ;
-    dbo:achievement "only person to win in two different scientific fields" ;
+    dbo:achievement "first woman to win a Nobel Prize" ;
     dbo:award data:8af873b0-9472-493b-85cb-6848e8657fe3 ;
     dbo:collaborator data:c3bd7358-bca8-4173-8d69-b53e73357831 ;
     dbo:discovered data:1b8324a6-6979-44c8-b2d1-92da7b7b0435,
@@ -17,29 +18,37 @@ data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e a foaf:Person ;
     dbo:spouse data:c3bd7358-bca8-4173-8d69-b53e73357831 ;
     dbo:title "pioneer" ;
     ns1:wonAward <http://example.com/award/NobelPrizeInPhysics> ;
-    foaf:gender "female" .
+    foaf:gender "female" ;
+    pmeta:source "graph_manipulation_example" .
 
 <http://example.com/award/NobelPrizeInPhysics> a ns1:Award ;
-    foaf:name "Nobel Prize in Physics" .
+    rdfs:label "Nobel Prize in Physics" .
 
 data:0cef22e4-bd44-4cfc-9fba-ad7b86fdf36d a dbo:Field ;
-    rdfs:label "Radioactivity" .
+    rdfs:label "Radioactivity" ;
+    pmeta:source "graph_manipulation_example" .
 
 data:13aa585b-f105-42ca-9844-65c2817dc1fe a dbo:Field ;
-    rdfs:label "Science" .
+    rdfs:label "Science" ;
+    pmeta:source "graph_manipulation_example" .
 
 data:1b8324a6-6979-44c8-b2d1-92da7b7b0435 a dbo:ChemicalElement ;
-    rdfs:label "Radium" .
+    rdfs:label "Radium" ;
+    pmeta:source "graph_manipulation_example" .
 
 data:28b20295-f802-45f7-a579-9a3204901ad6 a dbo:Field ;
-    rdfs:label "STEM" .
+    rdfs:label "STEM" ;
+    pmeta:source "graph_manipulation_example" .
 
 data:5e3d001c-aa3c-40ea-bbff-02e5391ef327 a dbo:ChemicalElement ;
-    rdfs:label "Polonium" .
+    rdfs:label "Polonium" ;
+    pmeta:source "graph_manipulation_example" .
 
 data:8af873b0-9472-493b-85cb-6848e8657fe3 a dbo:Award ;
-    rdfs:label "Nobel Prize" .
+    rdfs:label "Nobel Prize" ;
+    pmeta:source "graph_manipulation_example" .
 
 data:c3bd7358-bca8-4173-8d69-b53e73357831 a foaf:Person ;
-    rdfs:label "Pierre Curie" .
+    rdfs:label "Pierre Curie" ;
+    pmeta:source "graph_manipulation_example" .
 

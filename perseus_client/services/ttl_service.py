@@ -58,7 +58,7 @@ class TTLService:
 
         # Create a namespace for our custom metadata properties
         metadata_ns = Namespace("https://lettria.com/perseus/metadata#")
-        g.bind("perseus-meta", metadata_ns)
+        g.bind("pmeta", metadata_ns)
 
         # Find all unique subjects in the graph
         subjects = set(g.subjects())
@@ -70,18 +70,19 @@ class TTLService:
                     predicate = metadata_ns[key]
                     obj = Literal(value)
                     g.add((subject, predicate, obj))
-        
+
         # Serialize the graph back to a Turtle string
         return g.serialize(format="turtle")
 
     def parse_ttl_to_knowledge_graph(
-        self, 
-        ttl_content: str, 
-        neo4j_service: Optional["Neo4jService"] = None, 
-        falkordb_service: Optional["FalkorDBService"] = None
+        self,
+        ttl_content: str,
+        neo4j_service: Optional["Neo4jService"] = None,
+        falkordb_service: Optional["FalkorDBService"] = None,
     ) -> "KnowledgeGraph":
         """
-        Parses TTL content into a high-fidelity KnowledgeGraph object.
+        Parses TTL content into a high-fidelity KnowledgeGraph object, correctly
+        differentiating between individuals and classes.
 
         Args:
             ttl_content: The Turtle file content as a string.
@@ -89,7 +90,7 @@ class TTLService:
             falkordb_service: An optional FalkorDBService instance.
 
         Returns:
-            A KnowledgeGraph object populated with rich data.
+            A KnowledgeGraph object populated with rich data representing only individuals.
         """
         if not RDFLIB_AVAILABLE:
             raise ImportError(
@@ -102,55 +103,58 @@ class TTLService:
             g.parse(data=ttl_content, format="turtle")
         except Exception as e:
             logger.error(f"Failed to parse TTL content: {e}")
-            return KnowledgeGraph(neo4j_service=neo4j_service, falkordb_service=falkordb_service)
+            return KnowledgeGraph(
+                neo4j_service=neo4j_service, falkordb_service=falkordb_service
+            )
 
         entities: Dict[str, Entity] = {}
         relations: List[Relation] = []
+        namespaces = {
+            prefix: str(uri) for prefix, uri in g.namespace_manager.namespaces()
+        }
 
-        # Extract namespaces
-        namespaces = {prefix: str(uri) for prefix, uri in g.namespace_manager.namespaces()}
+        # 1. Identify all URIs that are used as classes (i.e., appear as objects of rdf:type)
+        class_uris = {str(o) for s, p, o in g if p == RDF.type}
 
-        # Identify all subjects that are entities (i.e., have a type or are part of any triple)
-        all_subjects = set(g.subjects())
-        all_objects = set(g.objects())
-        potential_entities = all_subjects.union(o for o in all_objects if isinstance(o, (URIRef, BNode)))
+        # 2. Identify individuals: any subject that is not itself a class URI
+        individual_uris = {str(s) for s, p, o in g} - class_uris
+        
+        # 3. Create Entity objects for all identified individuals
+        for uri in individual_uris:
+            entities[uri] = Entity(uri=uri)
 
-        for node in potential_entities:
-            uri = str(node)
-            if uri not in entities:
-                entities[uri] = Entity(uri=uri)
-
-        # Iterate over triples to populate entities and relations
+        # 4. Iterate through all triples to populate types, properties, and relations for individuals
         for s, p, o in g:
             subject_uri = str(s)
-            predicate_uri = str(p)
-            
-            # Ensure subject entity exists
-            if subject_uri not in entities:
-                entities[subject_uri] = Entity(uri=subject_uri)
 
-            # Case 1: The triple defines a type for the subject (e.g., :Person a dbo:Person)
+            # Only process triples where the subject is one of our identified individuals
+            if subject_uri not in entities:
+                continue
+
+            predicate_uri = str(p)
+
+            # Case A: The triple defines a type for the individual
             if predicate_uri == str(RDF.type):
                 entities[subject_uri].types.append(str(o))
             
-            # Case 2: The triple defines a relation between two entities
+            # Case B: The triple defines a relation between two individuals
             elif isinstance(o, (URIRef, BNode)):
                 object_uri = str(o)
-                # Ensure object entity exists
-                if object_uri not in entities:
-                    entities[object_uri] = Entity(uri=object_uri)
-                
-                relations.append(Relation(
-                    source_uri=subject_uri,
-                    target_uri=object_uri,
-                    predicate=predicate_uri
-                ))
-
-            # Case 3: The triple defines a literal property for the subject
+                # IMPORTANT: Only create a relation if the object is also an individual
+                if object_uri in entities:
+                    relations.append(
+                        Relation(
+                            source_uri=subject_uri,
+                            target_uri=object_uri,
+                            predicate=predicate_uri,
+                        )
+                    )
+            
+            # Case C: The triple defines a literal property for the individual
             elif isinstance(o, Literal):
                 literal_value = LiteralValue(
                     value=o.value,
-                    datatype=str(o.datatype) if o.datatype else None
+                    datatype=str(o.datatype) if o.datatype else None,
                 )
                 entities[subject_uri].properties[predicate_uri] = literal_value
 
@@ -159,10 +163,10 @@ class TTLService:
         document = Document(id=document_id, content=ttl_content, metadata={})
 
         return KnowledgeGraph(
-            entities=list(entities.values()), 
-            relations=relations, 
+            entities=list(entities.values()),
+            relations=relations,
             documents=[document],
             namespaces=namespaces,
             neo4j_service=neo4j_service,
-            falkordb_service=falkordb_service
+            falkordb_service=falkordb_service,
         )
