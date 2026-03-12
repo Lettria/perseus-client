@@ -12,7 +12,17 @@ from .services.neo4j_service import Neo4jService
 from .services.falkordb_service import FalkorDBService
 from .services.cql_service import CQLService
 from .config import Settings
-from .models import File, Job, OntologyStatus, FileStatus, KnowledgeGraph, Entity, Relation, Document
+from .models import (
+    File,
+    Job,
+    JobStatus,
+    OntologyStatus,
+    FileStatus,
+    KnowledgeGraph,
+    Entity,
+    Relation,
+    Document,
+)
 from .exceptions import ConfigurationException
 from .services.file_service import FileService
 from .services.job_service import JobService
@@ -236,16 +246,21 @@ class PerseusClient:
         )
 
         if latest_job:
-            if latest_job.status in [Job.JobStatus.PENDING, Job.JobStatus.RUNNING, Job.JobStatus.STARTING, Job.JobStatus.RUNNABLE]:
+            if latest_job.status in [
+                JobStatus.PENDING,
+                JobStatus.RUNNING,
+                JobStatus.STARTING,
+                JobStatus.RUNNABLE,
+            ]:
                 logging.info(f"Attaching to existing in-progress job {latest_job.id}")
                 job_to_run = latest_job
-            elif latest_job.status == Job.JobStatus.SUCCEEDED:
+            elif latest_job.status == JobStatus.SUCCEEDED:
                 if refresh_graph:
                     logging.info("`refresh_graph` is True, submitting new job.")
                 else:
                     logging.info(f"Using existing completed job {latest_job.id}")
                     job_to_run = latest_job
-        
+
         if not job_to_run:
             logging.info("No suitable existing job found, submitting a new one.")
             job_to_run = await self.job.submit_job_async(
@@ -254,7 +269,7 @@ class PerseusClient:
 
         # Wait for the job (either new or pre-existing) to complete
         completed_job = await self.job.run_job_async(job_id=job_to_run.id)
-        
+
         output_dir = "/tmp/perseus-client/output"
         os.makedirs(output_dir, exist_ok=True)
         output_path = f"{output_dir}/{completed_job.id}_output"
@@ -263,7 +278,7 @@ class PerseusClient:
 
         cql_file_path = f"{output_path}.cql"
         ttl_file_path = f"{output_path}.ttl"
-        
+
         cql_content: Optional[str] = None
         ttl_content: Optional[str] = None
 
@@ -291,14 +306,22 @@ class PerseusClient:
             if ttl_content is None:
                 with open(ttl_file_path, "r", encoding="utf-8") as f:
                     ttl_content = f.read()
-            
-            kg = self.ttl.parse_ttl_to_knowledge_graph(ttl_content, neo4j_service=self.neo4j, falkordb_service=self.falkordb)
+
+            kg = self.ttl.parse_ttl_to_knowledge_graph(
+                ttl_content, neo4j_service=self.neo4j, falkordb_service=self.falkordb
+            )
             kg.ttl_content = ttl_content
             kg.cql_content = cql_content
             return kg
         else:
-            logging.warning(f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph.")
-            return KnowledgeGraph(cql_content=cql_content, neo4j_service=self.neo4j, falkordb_service=self.falkordb)
+            logging.warning(
+                f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph."
+            )
+            return KnowledgeGraph(
+                cql_content=cql_content,
+                neo4j_service=self.neo4j,
+                falkordb_service=self.falkordb,
+            )
 
     async def build_graph_async(
         self,
@@ -326,7 +349,7 @@ class PerseusClient:
                 # A single spinner for the ontology upload
                 await self.ontology.wait_for_ontology_upload_async(created_ontology.id)
             created_ontology_id = created_ontology.id
-        
+
         # Create a list of tasks and descriptions for the rich progress display
         tasks = []
         descriptions = []
@@ -339,7 +362,7 @@ class PerseusClient:
                 metadata=metadata,
             )
             tasks.append(task)
-        
+
         # Use the new rich-based waiter from the job service
         results = await self.job._wait_for_tasks(tasks, descriptions)
 

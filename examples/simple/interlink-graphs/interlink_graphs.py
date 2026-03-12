@@ -14,7 +14,8 @@ def main(
     ontology_path: str,
 ):
     """
-    Main function to build multiple graphs from files with an ontology and save them to Neo4j.
+    Main function to build multiple graphs, interlink them into a single unified
+    graph, and save the result to Neo4j.
     """
     try:
         with PerseusClient() as client:
@@ -24,26 +25,34 @@ def main(
             knowledge_graphs = client.build_graph(
                 file_path=file_paths,
                 ontology_path=ontology_path,
-                metadata={"source": "multi_file_graph_example"},
+                metadata={"source": "interlink_graphs_example"},
             )
 
-            if not knowledge_graphs:
-                logger.error("Failed to build any graphs from the provided files.")
+            if not knowledge_graphs or len(knowledge_graphs) < 2:
+                logger.error("Failed to build at least two graphs for interlinking.")
                 return
 
-            logger.info(f"Successfully built {len(knowledge_graphs)} knowledge graphs.")
-
+            logger.info(
+                f"Successfully built {len(knowledge_graphs)} individual knowledge graphs."
+            )
             for i, kg in enumerate(knowledge_graphs):
-                prefix = f"graph_{i + 1}"
-                logger.info(f"--- Processing {prefix} (Graph {i+1}) ---")
                 logger.info(
-                    f"{prefix} built with {len(kg.entities)} entities and {len(kg.relations)} relations."
+                    f"  - Graph {i+1}: {len(kg.entities)} entities, {len(kg.relations)} relations"
                 )
 
-                # Save the modified graph to Neo4j
-                logger.info(f"Saving {prefix} (modified graph) to Neo4j...")
-                kg.save_to_neo4j()
-                logger.info(f"{prefix} saved to Neo4j.")
+            # 2. Interlink the knowledge graphs
+            logger.info("--- Interlinking Knowledge Graphs ---")
+            # The default interlinking key is rdfs:label, which is suitable for this example.
+            merged_kg = KnowledgeGraph.interlink(kbs=knowledge_graphs)
+            logger.info("Interlinking complete.")
+            logger.info(
+                f"  - Merged Graph: {len(merged_kg.entities)} entities, {len(merged_kg.relations)} relations"
+            )
+
+            # 3. Save the single, merged graph to Neo4j
+            logger.info("--- Saving Merged Graph to Neo4j ---")
+            merged_kg.save_to_neo4j(strip_prefixes=True)
+            logger.info("Merged graph saved to Neo4j.")
 
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}", exc_info=True)
@@ -55,7 +64,6 @@ if __name__ == "__main__":
     person1_path = os.path.join(base_dir, "assets", "person1.txt")
     person2_path = os.path.join(base_dir, "assets", "person2.txt")
     ontology_path = os.path.join(base_dir, "assets", "ontology.ttl")
-    # output_dir is no longer needed for file saving
 
     # Ensure asset files exist
     if not os.path.exists(person1_path):
