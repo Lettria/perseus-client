@@ -54,7 +54,9 @@ def main(script_input: str):
     if report.text:
         report_path = f"./output/report_{script_input.lower().replace(' ', '_')}.md"
         with open(report_path, "w") as f:
-            f.write(f"# Report on {script_input}\n\n")
+            f.write(f"# Report on {script_input}
+
+")
             f.write(report.text)
         print(f"Report generated and saved successfully at {report_path}")
     else:

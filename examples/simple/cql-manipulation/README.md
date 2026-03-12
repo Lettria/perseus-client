@@ -1,67 +1,43 @@
-# Custom CQL Manipulation Example
+# CQL Manipulation Example
 
-This example demonstrates a complete workflow where you first generate a graph using the Perseus SDK, then programmatically modify the resulting Cypher Query Language (CQL) file before finally loading it into a Neo4j database.
+This example demonstrates a workflow where you generate a knowledge graph, programmatically modify the resulting Cypher Query Language (CQL) statements, and then load the modified graph into a Neo4j database.
 
-The custom manipulation in this example is to rename a node label from `:Person` to `:Individual`.
-
-## Prerequisites
-
-- Docker and Docker Compose
-- Python 3.8+
-- An active Lettria API key
+This is useful when you need to perform custom transformations on the graph structure or properties before it's stored. In this specific example, we rename a node label from `Person` to `Individual`.
 
 ## Setup
 
-1.  **Navigate to the example directory:**
-    ```bash
-    cd examples/simple/cql-manipulation
-    ```
-
-2.  **Set up the environment:**
-    - Create a `.env` file from the template:
-      ```bash
-      cp template.env .env
-      ```
-    - Edit the `.env` file and add your `LETTRIA_API_KEY`.
-
-3.  **Install dependencies:**
+1.  **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Start the Neo4j database:**
+2.  **Set up your environment:**
+    Create a `.env` file in this directory with your `LETTRIA_API_KEY` and Neo4j connection details.
+    ```env
+    LETTRIA_API_KEY="YOUR_API_KEY"
+    NEO4J_URI="bolt://localhost:7687"
+    NEO4J_USER="neo4j"
+    NEO4J_PASSWORD="password"
+    ```
+
+3.  **Start Neo4j:**
+    A `docker-compose.yaml` file is provided to run a local Neo4j instance.
     ```bash
     docker-compose up -d
     ```
 
 ## Usage
 
-Run the script with the path to the sample text file. The script will orchestrate the full workflow.
+Run the `manipulate_cql.py` script, providing a path to a text file. If no path is provided, it will use `assets/sample.txt`.
 
 ```bash
-source .env
-python manipulate_cql.py assets/sample.txt
+python manipulate_cql.py [path/to/your/file.txt]
 ```
 
-### Workflow Steps
+The script performs the following steps:
+1.  **Generate Graph:** It first calls the Perseus API to generate a knowledge graph from the input text file and a sample ontology (`assets/ontology.ttl`).
+2.  **Intercept CQL:** Instead of directly saving the graph to Neo4j, it gets the generated CQL statements as a string. The original and modified CQL are saved to the `output/` directory for inspection.
+3.  **Manipulate CQL:** A function (`rename_label_in_cql`) performs a simple string replacement on the CQL content to change all occurrences of the label `:Person` to `:Individual`.
+4.  **Execute Modified CQL:** Finally, it connects to the Neo4j database and executes the *modified* CQL statements.
 
-1.  The script calls the Perseus `build_graph` method to generate a graph from `sample.txt` and saves the output to `./output/graph.cql`.
-2.  It then reads `graph.cql` and programmatically replaces all occurrences of the label `:Person` with `:Individual`.
-3.  Finally, it uses the SDK's Neo4j service to execute the modified CQL, loading the transformed graph into the database.
-
-### Verify the Result
-
-1.  Open the Neo4j Browser at `http://localhost:7474`.
-2.  Connect to the database using the credentials from your `.env` file (e.g., `neo4j`/`password`).
-3.  Run the following Cypher query to inspect the nodes. Note that you should query for `Individual`, not `Person`.
-    ```cypher
-    MATCH (n:Individual) RETURN n
-    ```
-    You will see the nodes that were originally labeled as `Person` are now labeled as `Individual`.
-
-## Cleanup
-
-To stop and remove the Neo4j container, run:
-```bash
-docker-compose down
-```
+After the script completes, you can query your Neo4j database and verify that the nodes have the label `Individual` instead of `Person`.

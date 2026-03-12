@@ -1,0 +1,38 @@
+@prefix action: <http://example.org/ontology/action/> .
+@prefix animal: <http://example.org/ontology/animal/> .
+@prefix data: <http://example.org/data/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix geo1: <http://example.org/ontology/geo/> .
+@prefix perseus-meta: <https://lettria.com/perseus/metadata#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rel: <http://purl.org/vocab/relationship/> .
+@prefix schema: <https://schema.org/> .
+
+data:5f023cf3-5d9f-4e4d-bb6f-673b62e6ed39 a animal:Fox ;
+    rdfs:label "Freddy" ;
+    dbo:livesIn data:6d6232e0-f077-48e5-8de8-579afe83fcae ;
+    dbo:quality "brown",
+        "quick" ;
+    action:jumpsOver data:ecaf3196-8d7a-4936-b533-a97b6f11b85b ;
+    perseus-meta:custom_tag "example-metadata" ;
+    perseus-meta:processing_date "2026-03-10" ;
+    perseus-meta:version "1.0" ;
+    schema:name "Freddy" .
+
+data:ecaf3196-8d7a-4936-b533-a97b6f11b85b a animal:Dog ;
+    rdfs:label "Max" ;
+    dbo:livesIn data:6d6232e0-f077-48e5-8de8-579afe83fcae ;
+    dbo:quality "lazy" ;
+    rel:isFriendsWith data:5f023cf3-5d9f-4e4d-bb6f-673b62e6ed39 ;
+    perseus-meta:custom_tag "example-metadata" ;
+    perseus-meta:processing_date "2026-03-10" ;
+    perseus-meta:version "1.0" ;
+    schema:name "Max" .
+
+data:6d6232e0-f077-48e5-8de8-579afe83fcae a geo1:Forest ;
+    rdfs:label "forest" ;
+    dbo:quality "beautiful" ;
+    perseus-meta:custom_tag "example-metadata" ;
+    perseus-meta:processing_date "2026-03-10" ;
+    perseus-meta:version "1.0" .
+

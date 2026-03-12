@@ -1,58 +1,42 @@
-# Add Metadata to Neo4j Example
+# Build Graph with Metadata Example
 
-This example demonstrates how to add metadata (e.g., the source file name) to nodes and relationships before saving a graph to a Neo4j database using the Perseus Client.
-
-## Prerequisites
-
-- Docker and Docker Compose
-- Python 3.8+
-- An active Lettria API key
+This example demonstrates how to build a knowledge graph from a text file, add custom metadata to all nodes and relationships, and save the resulting graph to a Neo4j database.
 
 ## Setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://gitlab.ops.lettria.net/text-to-graph/perseus-client.git
-   cd perseus-client/examples/advanced/add-metadata-neo4j
-   ```
+1.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-2. **Set up the environment:**
-   - Create a `.env` file from the template:
-     ```bash
-     cp template.env .env
-     ```
-   - Edit the `.env` file and add your `LETTRIA_API_KEY`.
+2.  **Set up your environment:**
+    Create a `.env` file in this directory and add your `LETTRIA_API_KEY`. You can also configure your Neo4j connection details here if they are different from the defaults in the `docker-compose.yaml`.
+    ```env
+    LETTRIA_API_KEY="YOUR_API_KEY"
+    NEO4J_URI="bolt://localhost:7687"
+    NEO4J_USER="neo4j"
+    NEO4J_PASSWORD="password"
+    ```
 
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Start the Neo4j database:**
-   ```bash
-   docker-compose up -d
-   ```
+3.  **Start Neo4j:**
+    A `docker-compose.yaml` file is provided to easily start a Neo4j instance.
+    ```bash
+    docker-compose up -d
+    ```
 
 ## Usage
 
-1. **Run the script:**
-   ```bash
-   source .env
-   python add_metadata.py assets/sample.txt
-   ```
+Run the `build_graph.py` script, optionally providing a path to a text file. If no path is provided, it will use the default `assets/sample.txt`.
 
-2. **Verify the results:**
-   - Open the Neo4j Browser at `http://localhost:7474`.
-   - Connect to the database using the credentials from your `.env` file (e.g., `neo4j`/`password`).
-   - Run the following Cypher query to inspect the nodes and relationships:
-     ```cypher
-     MATCH (n) RETURN n
-     ```
-   - You should see the `source_file` property on the nodes and relationships.
-
-## Cleanup
-
-To stop and remove the Neo4j container, run:
 ```bash
-docker-compose down
+python build_graph.py [path/to/your/file.txt]
 ```
+
+The script will:
+1.  Wait for the Neo4j container to be ready.
+2.  Upload the specified text file.
+3.  Run a job to process the file and generate a knowledge graph.
+4.  Add the custom metadata defined in the script to every node and relationship in the graph.
+5.  Connect to the Neo4j database and execute the CQL queries to create the graph.
+
+After the script finishes, you can connect to your Neo4j instance (e.g., via the Neo4j Browser at `http://localhost:7474`) to see the graph with the added metadata.

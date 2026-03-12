@@ -1,6 +1,6 @@
 import logging
 import tempfile
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, List, Union
 import aiohttp
 import certifi
 import ssl
@@ -12,7 +12,7 @@ from .services.neo4j_service import Neo4jService
 from .services.falkordb_service import FalkorDBService
 from .services.cql_service import CQLService
 from .config import Settings
-from .models import File, Job, OntologyStatus, FileStatus
+from .models import File, Job, OntologyStatus, FileStatus, KnowledgeGraph, Entity, Relation, Document
 from .exceptions import ConfigurationException
 from .services.file_service import FileService
 from .services.job_service import JobService
@@ -180,14 +180,22 @@ class PerseusClient:
 
     def build_graph(
         self,
-        file_path: str,
+        file_path: List[str],
         ontology_path: Optional[str] = None,
-        output_path: Optional[str] = None,
-        save_to_neo4j: bool = False,
-        save_to_falkordb: bool = False,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
-    ) -> Job:
+    ) -> List[KnowledgeGraph]:
+        """
+        Synchronously processes one or more files by uploading them, optionally with an ontology,
+        running jobs, and returning KnowledgeGraph objects.
+        Args:
+            file_path: A list of file paths to process.
+            ontology_path: The path to the ontology file to use for all files.
+            refresh_graph: Whether to force new jobs to be created (refresh the graph).
+            metadata: A dictionary of metadata to add to all nodes and relationships.
+        Returns:
+            A list of KnowledgeGraph objects.
+        """
         self._ensure_active()
         if not self._loop:
             raise ConfigurationException("Event loop not initialized.")
@@ -195,82 +203,64 @@ class PerseusClient:
             self.build_graph_async(
                 file_path,
                 ontology_path,
-                output_path,
-                save_to_neo4j,
-                save_to_falkordb,
                 refresh_graph,
                 metadata,
             )
         )
 
-    async def build_graph_async(
+    async def _build_single_graph_async(
         self,
         file_path: str,
-        ontology_path: Optional[str] = None,
-        output_path: Optional[str] = None,
-        save_to_neo4j: bool = False,
-        save_to_falkordb: bool = False,
+        ontology_id: Optional[str] = None,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
-    ) -> Job:
+    ) -> KnowledgeGraph:
         """
-        Processes a file by uploading it, optionally with an ontology, running a
-        job, and downloading the output.
+        Processes a single file to build a KnowledgeGraph.
         Args:
             file_path: The path to the file to process.
-            ontology_path: The path to the ontology file to use.
-            output_path: The path to save the output to. If not provided, a default
-                         path will be used.
-            save_to_neo4j: Whether to save the output to Neo4j.
-            save_to_falkordb: Whether to save the output to FalkorDB.
-            refresh_graph: Whether to force a new job to be created (refresh the graph).
+            ontology_id: The ID of the ontology to use.
+            refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
         Returns:
-            The completed job.
+            The extracted KnowledgeGraph.
         """
         created_file = await self.file.upload_file_async(file_path)
 
         if created_file.status == FileStatus.PENDING:
             await self.file.wait_for_file_upload_async(created_file.id)
 
-        created_ontology_id = None
-        if ontology_path:
-            created_ontology = await self.ontology.upload_ontology_async(ontology_path)
-            if created_ontology.status == OntologyStatus.PENDING:
-                await self.ontology.wait_for_ontology_upload_async(created_ontology.id)
-            created_ontology_id = created_ontology.id
-
         completed_job = None
         if not refresh_graph:
             completed_job = await self.job.find_latest_job_async(
-                file_id=created_file.id, ontology_id=created_ontology_id
+                file_id=created_file.id, ontology_id=ontology_id
             )
         if not completed_job:
             completed_job = await self.job.run_job_async(
-                file_id=created_file.id, ontology_id=created_ontology_id
+                file_id=created_file.id, ontology_id=ontology_id
             )
 
-        if not output_path:
-            temp_dir = tempfile.gettempdir()
-            output_path = f"{temp_dir}/perseus_job_{completed_job.id}_output"
+        output_dir = "/tmp/perseus-client/output"
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = f"{output_dir}/{completed_job.id}_output"
 
         await self.job.download_job_output_async(completed_job.id, output_path)
 
         cql_file_path = f"{output_path}.cql"
         ttl_file_path = f"{output_path}.ttl"
-
-        cql_content = None
+        
+        cql_content: Optional[str] = None
+        ttl_content: Optional[str] = None
 
         if metadata:
-            # Handle TTL file modification
             if os.path.exists(ttl_file_path):
                 with open(ttl_file_path, "r", encoding="utf-8") as f:
                     ttl_content = f.read()
                 modified_ttl = self.ttl.add_metadata_to_ttl(ttl_content, metadata)
                 with open(ttl_file_path, "w", encoding="utf-8") as f:
                     f.write(modified_ttl)
+                ttl_content = modified_ttl
 
-            # Handle CQL file modification
             if os.path.exists(cql_file_path):
                 with open(cql_file_path, "r", encoding="utf-8") as f:
                     cql_content = f.read()
@@ -278,19 +268,60 @@ class PerseusClient:
                 with open(cql_file_path, "w", encoding="utf-8") as f:
                     f.write(cql_content)
 
-        if save_to_neo4j or save_to_falkordb:
-            if cql_content is None:
-                if not os.path.exists(cql_file_path):
-                    raise FileNotFoundError(
-                        f"Expected CQL file not found at {cql_file_path}"
-                    )
-                with open(cql_file_path, "r", encoding="utf-8") as f:
-                    cql_content = f.read()
+        if os.path.exists(cql_file_path) and cql_content is None:
+            with open(cql_file_path, "r", encoding="utf-8") as f:
+                cql_content = f.read()
 
-            if save_to_neo4j:
-                await self.neo4j.execute_cql_string_async(cql_content)
+        if os.path.exists(ttl_file_path):
+            if ttl_content is None:
+                with open(ttl_file_path, "r", encoding="utf-8") as f:
+                    ttl_content = f.read()
+            
+            kg = self.ttl.parse_ttl_to_knowledge_graph(ttl_content, neo4j_service=self.neo4j, falkordb_service=self.falkordb)
+            kg.ttl_content = ttl_content
+            kg.cql_content = cql_content
+            return kg
+        else:
+            logging.warning(f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph.")
+            return KnowledgeGraph(cql_content=cql_content, neo4j_service=self.neo4j, falkordb_service=self.falkordb)
 
-            if save_to_falkordb:
-                await self.falkordb.execute_cql_string_async(cql_content)
+    async def build_graph_async(
+        self,
+        file_path: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> List[KnowledgeGraph]:
+        """
+        Processes one or more files by uploading them, optionally with an ontology,
+        running jobs, and returning KnowledgeGraph objects.
+        Args:
+            file_path: A list of file paths to process.
+            ontology_path: The path to the ontology file to use for all files.
+            refresh_graph: Whether to force new jobs to be created (refresh the graph).
+            metadata: A dictionary of metadata to add to all nodes and relationships.
+        Returns:
+            A list of KnowledgeGraph objects.
+        """
+        file_paths = file_path
 
-        return completed_job
+        created_ontology_id = None
+        if ontology_path:
+            created_ontology = await self.ontology.upload_ontology_async(ontology_path)
+            if created_ontology.status == OntologyStatus.PENDING:
+                await self.ontology.wait_for_ontology_upload_async(created_ontology.id)
+            created_ontology_id = created_ontology.id
+        
+        tasks = []
+        for path in file_paths:
+            task = self._build_single_graph_async(
+                file_path=path,
+                ontology_id=created_ontology_id,
+                refresh_graph=refresh_graph,
+                metadata=metadata,
+            )
+            tasks.append(task)
+        
+        results = await asyncio.gather(*tasks)
+
+        return results

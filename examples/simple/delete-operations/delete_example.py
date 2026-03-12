@@ -1,68 +1,79 @@
-import os
+import logging
 from perseus_client.client import PerseusClient
 from perseus_client.exceptions import APIException
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def main():
-    # Ensure LETTRIA_API_KEY environment variable is set
-    # export LETTRIA_API_KEY="your_api_key_here"
+def demonstrate_file_deletion():
+    """
+    Demonstrates uploading a file and then deleting it.
+    """
+    file_path = "assets/file_to_delete.txt"
+    logging.info(f"--- Starting File Deletion Demonstration ---")
+    
+    with PerseusClient() as client:
+        try:
+            # Step 1: Upload a file
+            logging.info(f"Uploading file: {file_path}")
+            uploaded_file = client.file.upload_file(file_path)
+            logging.info(f"File uploaded successfully. File ID: {uploaded_file.id}")
 
-    file_path_to_delete = "assets/file_to_delete.txt"
-    ontology_path_to_delete = "assets/ontology_to_delete.ttl"
+            # Step 2: Delete the file
+            logging.info(f"Deleting file with ID: {uploaded_file.id}")
+            client.file.delete_file(uploaded_file.id)
+            logging.info("Delete command issued successfully.")
+
+            # Step 3: Verify deletion
+            logging.info(f"Verifying that file {uploaded_file.id} has been deleted...")
+            found_files = client.file.find_files(ids=[uploaded_file.id])
+            if not found_files:
+                logging.info(f"Verification successful: File {uploaded_file.id} was not found.")
+            else:
+                logging.warning(f"Verification failed: File {uploaded_file.id} still exists.")
+
+        except APIException as e:
+            logging.error(f"An API error occurred during the file deletion process: {e}")
+        except Exception as e:
+            logging.error(f"An unexpected error occurred: {e}")
+    logging.info(f"--- Finished File Deletion Demonstration ---
+")
+
+
+def demonstrate_ontology_deletion():
+    """
+    Demonstrates uploading an ontology and then deleting it.
+    """
+    ontology_path = "assets/ontology_to_delete.ttl"
+    logging.info(f"--- Starting Ontology Deletion Demonstration ---")
 
     with PerseusClient() as client:
-        # Upload a file and then delete it
         try:
-            print(f"Uploading file for deletion: {file_path_to_delete}")
-            file_to_delete = client.file.upload_file(file_path_to_delete)
-            print(f"Uploaded File ID: {file_to_delete.id}")
+            # Step 1: Upload an ontology
+            logging.info(f"Uploading ontology: {ontology_path}")
+            uploaded_ontology = client.ontology.upload_ontology(ontology_path)
+            logging.info(f"Ontology uploaded successfully. Ontology ID: {uploaded_ontology.id}")
 
-            client.file.delete_file(file_to_delete.id)
+            # Step 2: Delete the ontology
+            logging.info(f"Deleting ontology with ID: {uploaded_ontology.id}")
+            client.ontology.delete_ontology(uploaded_ontology.id)
+            logging.info("Delete command issued successfully.")
 
-            # Verify deletion
-            print(f"Verifying deletion of file ID: {file_to_delete.id}")
-            found_files = client.file.find_files(ids=[file_to_delete.id])
-            if not found_files:
-                print(f"File {file_to_delete.id} successfully deleted and not found.")
-            else:
-                print(f"Verification failed: File {file_to_delete.id} still exists.")
-
-        except APIException as e:
-            print(f"An API error occurred during file deletion process: {e}")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-
-        print("-" * 20)
-
-        # Upload an ontology and then delete it
-        try:
-            print(f"Uploading ontology for deletion: {ontology_path_to_delete}")
-            ontology_to_delete = client.ontology.upload_ontology(
-                ontology_path_to_delete
-            )
-            print(f"Uploaded Ontology ID: {ontology_to_delete.id}")
-
-            client.ontology.delete_ontology(ontology_to_delete.id)
-
-            # Verify deletion
-            print(f"Verifying deletion of ontology ID: {ontology_to_delete.id}")
-            found_ontologies = client.ontology.find_ontologies(
-                ids=[ontology_to_delete.id]
-            )
+            # Step 3: Verify deletion
+            logging.info(f"Verifying that ontology {uploaded_ontology.id} has been deleted...")
+            found_ontologies = client.ontology.find_ontologies(ids=[uploaded_ontology.id])
             if not found_ontologies:
-                print(
-                    f"Ontology {ontology_to_delete.id} successfully deleted and not found."
-                )
+                logging.info(f"Verification successful: Ontology {uploaded_ontology.id} was not found.")
             else:
-                print(
-                    f"Verification failed: Ontology {ontology_to_delete.id} still exists."
-                )
+                logging.warning(f"Verification failed: Ontology {uploaded_ontology.id} still exists.")
 
         except APIException as e:
-            print(f"An API error occurred during ontology deletion process: {e}")
+            logging.error(f"An API error occurred during the ontology deletion process: {e}")
         except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            logging.error(f"An unexpected error occurred: {e}")
+    logging.info(f"--- Finished Ontology Deletion Demonstration ---")
 
 
 if __name__ == "__main__":
-    main()
+    demonstrate_file_deletion()
+    demonstrate_ontology_deletion()

@@ -1,0 +1,183 @@
+@prefix ont: <http://example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+#################################################################
+#    Ontology Metadata
+#################################################################
+
+<http://example.org/ontology> a owl:Ontology ;
+    rdfs:comment "Ontology for the use case: describe data about persons."@en .
+
+
+#################################################################
+#    Annotation Properties
+#################################################################
+
+# No custom annotation properties defined.
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+ont:employs a owl:ObjectProperty ;
+    rdfs:label "employs"@en ;
+    rdfs:comment "Indicates that a company has a formal employment relationship with a person, providing compensation in exchange for labor or services."@en ;
+    rdfs:domain ont:Company ;
+    rdfs:range ont:Person ;
+    owl:inverseOf ont:isEmployedBy .
+
+ont:hasRole a owl:ObjectProperty ;
+    rdfs:label "has role"@en ;
+    rdfs:comment "Represents the assignment of a specific professional function or title to an individual."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Role .
+
+ont:isColleagueOf a owl:ObjectProperty, owl:SymmetricProperty, owl:IrreflexiveProperty ;
+    rdfs:label "is colleague of"@en ;
+    rdfs:comment "Represents a mutual professional relationship between individuals who work within the same organization or team."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:isEmployedBy a owl:ObjectProperty ;
+    rdfs:label "is employed by"@en ;
+    rdfs:comment "Represents the formal working relationship in which an individual provides labor or services to an organization in exchange for compensation."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Company ;
+    owl:inverseOf ont:employs .
+
+ont:isLocatedIn a owl:ObjectProperty, owl:TransitiveProperty, owl:AsymmetricProperty, owl:IrreflexiveProperty ;
+    rdfs:label "is located in"@en ;
+    rdfs:comment "Represents the geographic containment or situatedness of a place within a larger territorial entity."@en ;
+    rdfs:domain ont:SpatialRegion ;
+    rdfs:range ont:SpatialRegion .
+
+ont:livesIn a owl:ObjectProperty ;
+    rdfs:label "lives in"@en ;
+    rdfs:comment "Represents the state of an individual residing or dwelling in a particular city."@en ;
+    rdfs:subPropertyOf ont:isLocatedIn ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:City .
+
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+ont:hasAge a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has age"@en ;
+    rdfs:comment "The number of years a person has lived since birth."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasStatus a owl:DatatypeProperty ;
+    rdfs:label "has status"@en ;
+    rdfs:comment "A descriptive qualifier indicating the designated classification or standing of an entity within a broader context."@en ;
+    rdfs:domain ont:City ;
+    rdfs:range xsd:token .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+ont:AbstractEntity a owl:Class ;
+    rdfs:label "Abstract Entity"@en ;
+    rdfs:comment "Non-material entities existing conceptually, informationally, or socially, without physical form."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:Agent, ont:Material, ont:Process, ont:Quality, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Agent a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "Entities capable of intentional action and decision-making, including persons and organizations."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Material, ont:Process, ont:Quality, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:City a owl:Class ;
+    rdfs:label "City"@en ;
+    rdfs:comment "A large and permanent human settlement serving as an administrative, commercial, or cultural center."@en ;
+    rdfs:subClassOf ont:GeographicRegion ;
+    owl:disjointWith ont:Country .
+
+ont:Company a owl:Class ;
+    rdfs:label "Company"@en ;
+    rdfs:comment "A commercial business organization formed to engage in enterprise and trade."@en ;
+    rdfs:subClassOf ont:Organization .
+
+ont:Country a owl:Class ;
+    rdfs:label "Country"@en ;
+    rdfs:comment "A sovereign nation-state occupying a defined territory with its own government and recognized borders."@en ;
+    rdfs:subClassOf ont:GeographicRegion ;
+    owl:disjointWith ont:City .
+
+ont:GeographicRegion a owl:Class ;
+    rdfs:label "Geographic Region"@en ;
+    rdfs:comment "A spatially defined area of the Earth's surface, distinguished by physical, political, or cultural boundaries."@en ;
+    rdfs:subClassOf ont:SpatialRegion .
+
+ont:Material a owl:Class ;
+    rdfs:label "Material"@en ;
+    rdfs:comment "Physical things with clear boundaries and material substance, including objects, artifacts, and natural entities."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Process, ont:Quality, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Organization a owl:Class ;
+    rdfs:label "Organization"@en ;
+    rdfs:comment "A group of people structured around a particular purpose, such as a business, institution, or association."@en ;
+    rdfs:subClassOf ont:Agent ;
+    owl:disjointWith ont:Person .
+
+ont:Person a owl:Class ;
+    rdfs:label "Person"@en ;
+    rdfs:comment "An individual human being capable of intentional action and decision-making."@en ;
+    rdfs:subClassOf ont:Agent ;
+    owl:disjointWith ont:Organization .
+
+ont:Process a owl:Class ;
+    rdfs:label "Process"@en ;
+    rdfs:comment "Occurrences that unfold over time, including events, activities, and transformations."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Material, ont:Quality, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Quality a owl:Class ;
+    rdfs:label "Quality"@en ;
+    rdfs:comment "Properties, attributes, or characteristics that describe other entities and exist only through them."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Material, ont:Process, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Role a owl:Class ;
+    rdfs:label "Role"@en ;
+    rdfs:comment "A specific function, position, or capacity held by an agent within a context or organization."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:SpatialRegion a owl:Class ;
+    rdfs:label "Spatial Region"@en ;
+    rdfs:comment "Places, locations, and spatial extents in physical or conceptual space."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Material, ont:Process, ont:Quality, ont:TemporalRegion .
+
+ont:TemporalRegion a owl:Class ;
+    rdfs:label "Temporal Region"@en ;
+    rdfs:comment "Time intervals, periods, and temporal extents."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Material, ont:Process, ont:Quality, ont:SpatialRegion .
+
+
+#################################################################
+#    General Axioms
+#################################################################
+
+[] a owl:AllDisjointClasses ;
+    owl:members (
+        ont:AbstractEntity
+        ont:Agent
+        ont:Material
+        ont:Process
+        ont:Quality
+        ont:SpatialRegion
+        ont:TemporalRegion
+    ) .

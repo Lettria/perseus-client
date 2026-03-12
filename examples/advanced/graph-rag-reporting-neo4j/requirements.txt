@@ -1,3 +1,6 @@
-perseus-client==1.0.0-rc.7
-simple_graph_retriever[neo4j]==1.0.0-rc18
-google-genai==1.41.0
+-e ../../.
+simple-graph-retriever
+python-dotenv
+google-generativeai
+neo4j
+httpx

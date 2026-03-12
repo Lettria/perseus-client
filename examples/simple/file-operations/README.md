@@ -1,29 +1,29 @@
-# File Operations Example 📂
+# File Operations Example
 
-This script shows how to upload and verify a file using the Perseus client. Easy peasy! ✨
+This example demonstrates the basic file operations using the Perseus Client:
+1.  **Uploading a file:** It shows how to upload a local file to the Perseus platform.
+2.  **Waiting for processing:** It demonstrates how to poll the status of the uploaded file until it is fully processed and ready.
+3.  **Finding a file:** It shows how to retrieve the details of an uploaded file using its ID.
 
-## Quick Start 🚀
+## Setup
 
-1.  **Setup Environment**:
-
-    - Python 3.8+ required. 🐍
-    - Copy `template.env` to `.env` and fill your credentials.
-
-    ```bash
-    cp template.env .env
-    # Edit .env with your LETTRIA_API_KEY
-    ```
-
-2.  **Install Dependencies**:
-
+1.  **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
 
-3.  **Run Example**:
-
-    ```bash
-    python file_example.py
+2.  **Set up your environment:**
+    Create a `.env` file in this directory with your `LETTRIA_API_KEY`.
+    ```env
+    LETTRIA_API_KEY="YOUR_API_KEY"
     ```
 
-    This will upload `assets/example.txt` and confirm it's there. ✅
+## Usage
+
+Run the `file_example.py` script from your terminal:
+
+```bash
+python file_example.py
+```
+
+The script will log its actions to the console. You will see the process of the file being uploaded, the script waiting for its status to change to `UPLOADED`, and finally, the script successfully finding and displaying the file's details.

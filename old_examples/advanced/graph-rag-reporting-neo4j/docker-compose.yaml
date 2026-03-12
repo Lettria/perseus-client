@@ -1,0 +1,48 @@
+services:
+  # Graph Database
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - "7474:7474" # HTTP
+      - "7687:7687" # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/j4oenj4oen # Change 'password' for production
+      - NEO4J_PLUGINS=["apoc"]
+    networks:
+      - main_local
+    volumes:
+      - neo4j_data:/data
+    restart: unless-stopped
+
+  # Vector Database
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333" # API
+      - "6334:6334" # gRPC
+    networks:
+      - main_local
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  # Text Embeddings Inference (TEI)
+  tei_embedder:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-latest
+    ports:
+      - "8080:80"
+    environment:
+      - MODEL_ID=BAAI/bge-small-en-v1.5
+      - REVISION=main
+    networks:
+      - main_local
+    restart: unless-stopped
+
+networks:
+  main_local:
+    driver: bridge
+
+volumes:
+  neo4j_data:
+  qdrant_data:
+  minio_data:

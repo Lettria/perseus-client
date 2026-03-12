@@ -1,49 +1,35 @@
-# Custom TTL Manipulation Example
+# TTL Manipulation Example
 
-This example demonstrates how to generate a knowledge graph with the Perseus SDK and then programmatically modify the resulting Turtle (TTL) file using the `rdflib` library.
+This example demonstrates a workflow where you generate a knowledge graph, programmatically modify the resulting RDF Turtle (TTL) data, and save the result. This is useful for enriching or transforming the graph data before further use.
 
-The custom manipulation involves parsing the TTL file, finding all entities of the class `:Person`, and adding a new property (`:status "verified"`) to each of them. This workflow does not require a database connection.
-
-## Prerequisites
-
-- Python 3.8+
-- An active Lettria API key
+The script uses the `rdflib` library to parse the TTL and add a new property (`status: "verified"`) to all entities that are of the type `Person` according to the provided ontology.
 
 ## Setup
 
-1.  **Navigate to the example directory:**
-    ```bash
-    cd examples/simple/ttl-manipulation
-    ```
-
-2.  **Set up the environment:**
-    - Create a `.env` file from the template:
-      ```bash
-      cp template.env .env
-      ```
-    - Edit the `.env` file and add your `LETTRIA_API_KEY`.
-
-3.  **Install dependencies:**
+1.  **Install dependencies:**
+    This example requires `rdflib`.
     ```bash
     pip install -r requirements.txt
     ```
 
+2.  **Set up your environment:**
+    Create a `.env` file in this directory with your `LETTRIA_API_KEY`.
+    ```env
+    LETTRIA_API_KEY="YOUR_API_KEY"
+    ```
+
 ## Usage
 
-Run the script with the path to the sample text file.
+Run the `manipulate_ttl.py` script, optionally providing a path to a text file. If no path is given, it will use `assets/sample.txt`.
 
 ```bash
-source .env
-python manipulate_ttl.py assets/sample.txt
+python manipulate_ttl.py [path/to/your/file.txt]
 ```
 
-### Workflow Steps
+The script performs the following steps:
+1.  **Generate Graph:** It calls the Perseus API to generate a knowledge graph from the input text and `assets/ontology.ttl`.
+2.  **Intercept TTL:** It retrieves the generated graph as a TTL-formatted string.
+3.  **Manipulate TTL:** Using `rdflib`, it parses the string, finds all triples that declare an entity as a `Person`, and adds a new `status` property to each of them.
+4.  **Save Results:** The original and the modified TTL content are saved to the `output/` directory for you to inspect.
 
-1.  The script calls the Perseus `build_graph` method with a custom ontology to generate a graph from `sample.txt`, saving the output to `./output/graph.ttl`.
-2.  It then reads the `graph.ttl` file and uses `rdflib` to parse its content.
-3.  It finds all subjects of type `:Person` and adds a new triple, `:status "verified"`, to each.
-4.  Finally, it saves the modified graph to a new file, `./output/graph_modified.ttl`.
-
-### Verify the Result
-
-After running the script, you can inspect the contents of `./output/graph_modified.ttl`. You will see that each `Person` entity now has an additional `meta:status` property with the value `"verified"`.
+After running, you can compare `output/graph.ttl` and `output/graph_modified.ttl` to see the added triples.
