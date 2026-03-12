@@ -150,7 +150,7 @@ class JobService(BaseService):
         Asynchronously downloads a file from a URL and saves it.
         """
         logger.debug(f"Downloading file from {url}")
-        logger.info(f"Downloading file to {output_path}")
+        logger.debug(f"Downloading file to {output_path}")
         output_dir = os.path.dirname(output_path)
         if output_dir and not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
@@ -171,7 +171,7 @@ class JobService(BaseService):
             raise PerseusException(
                 f"An unexpected error occurred during file download: {e}"
             ) from e
-        logger.info(f"File downloaded successfully to {output_path}")
+        logger.debug(f"File downloaded successfully to {output_path}")
 
     async def run_job_async(
         self,

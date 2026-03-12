@@ -1,17 +1,12 @@
-# SPDX-FileCopyrightText: 2023-present Your Name <you@example.com>
-#
-# SPDX-License-Identifier: MIT
 """
-Data models for the Perseus client.
+Data models for the Perseus client, designed for high-fidelity graph representation.
 """
-from pydantic import BaseModel, PrivateAttr
+from pydantic import BaseModel, PrivateAttr, Field
 from datetime import datetime
 from enum import Enum
 import logging
-from typing import Optional, List, TYPE_CHECKING
-
+from typing import Optional, List, Dict, Any, TYPE_CHECKING
 import networkx as nx
-from rdflib import Graph
 
 # Use TYPE_CHECKING to avoid circular dependencies during runtime
 if TYPE_CHECKING:
@@ -19,26 +14,30 @@ if TYPE_CHECKING:
     from .services.falkordb_service import FalkorDBService
 
 
-class Entity(BaseModel):
-    """Represents an entity in the knowledge graph."""
+class LiteralValue(BaseModel):
+    """Represents a literal value with an optional datatype URI."""
+    value: Any
+    datatype: Optional[str] = None
 
-    id: str
-    label: str
-    properties: dict = {}
+
+class Entity(BaseModel):
+    """Represents an entity with full URI and type information."""
+    uri: str
+    types: List[str] = Field(default_factory=list)
+    # Key is the full predicate URI, value is the LiteralValue object
+    properties: Dict[str, LiteralValue] = Field(default_factory=dict)
 
 
 class Relation(BaseModel):
-    """Represents a relation between two entities in the knowledge graph."""
-
-    source: str
-    target: str
-    type: str
-    properties: dict = {}
+    """Represents a relation between two entities, including properties on the relation itself."""
+    source_uri: str
+    target_uri: str
+    predicate: str  # The full URI of the relation type
+    properties: Dict[str, LiteralValue] = Field(default_factory=dict)
 
 
 class Document(BaseModel):
     """Represents a document from which the graph was extracted."""
-
     id: str
     content: str
     metadata: dict = {}
@@ -47,11 +46,14 @@ class Document(BaseModel):
 import asyncio
 
 class KnowledgeGraph(BaseModel):
-    """Represents a knowledge graph extracted from documents."""
-
-    entities: List[Entity] = []
-    relations: List[Relation] = []
-    documents: List[Document] = []
+    """Represents a knowledge graph with high-fidelity RDF data."""
+    entities: List[Entity] = Field(default_factory=list)
+    relations: List[Relation] = Field(default_factory=list)
+    documents: List[Document] = Field(default_factory=list)
+    # Stores original prefixes, e.g., {'dbo': 'http://dbpedia.org/ontology/'}
+    namespaces: Dict[str, str] = Field(default_factory=dict)
+    
+    # Original content from API
     ttl_content: Optional[str] = None
     cql_content: Optional[str] = None
 
@@ -70,7 +72,7 @@ class KnowledgeGraph(BaseModel):
 
     def save_ttl(self, file_path: str):
         """
-        Saves the KnowledgeGraph to a Turtle (TTL) file.
+        Saves the KnowledgeGraph to a Turtle (TTL) file using high-fidelity serialization.
         Args:
             file_path: The path to save the TTL file to.
         """
@@ -83,7 +85,7 @@ class KnowledgeGraph(BaseModel):
 
     def save_cql(self, file_path: str):
         """
-        Saves the KnowledgeGraph to a Cypher (CQL) file.
+        Saves the KnowledgeGraph to a Cypher (CQL) file using high-fidelity serialization.
         Args:
             file_path: The path to save the CQL file to.
         """
@@ -94,6 +96,7 @@ class KnowledgeGraph(BaseModel):
         except Exception as e:
             logging.error(f"Failed to save CQL to file {file_path}: {e}")
 
+    # ... (save_to_neo4j and save_to_falkordb methods remain the same for now) ...
     def save_to_neo4j(self):
         """
         Synchronously saves the CQL content of the KnowledgeGraph to Neo4j.
@@ -146,111 +149,117 @@ class KnowledgeGraph(BaseModel):
 
     def to_ttl(self) -> str:
         """
-        Converts the knowledge graph to a Turtle (TTL) string representation.
+        Serializes the KnowledgeGraph to a high-fidelity Turtle (TTL) string.
         """
-        from rdflib import Graph, URIRef, Literal, Namespace, RDF, RDFS
-        from urllib.parse import quote
-        
+        try:
+            from rdflib import Graph, URIRef, Literal
+            from rdflib.namespace import Namespace, RDF
+        except ImportError:
+            raise ImportError("rdflib is required for TTL serialization. Please run `pip install perseus-client[rdf]`.")
+
         g = Graph()
 
-        # Define a base URI for entities and relations if not explicitly full URIs
-        base_uri = Namespace("http://example.com/perseus/")
-        g.bind("perseus", base_uri)
+        # Bind namespaces
+        for prefix, uri in self.namespaces.items():
+            g.bind(prefix, Namespace(uri))
 
+        # Add triples from entities
         for entity in self.entities:
-            entity_uri = URIRef(entity.id)
-            # URL-encode the label for use in a URI
-            g.add((entity_uri, RDF.type, base_uri[quote(entity.label)]))
-            g.add((entity_uri, RDFS.label, Literal(entity.label)))
-            for prop_key, prop_value in entity.properties.items():
-                prop_uri = base_uri[quote(prop_key)]
-                g.add((entity_uri, prop_uri, Literal(prop_value)))
+            entity_uri = URIRef(entity.uri)
+            for entity_type in entity.types:
+                g.add((entity_uri, RDF.type, URIRef(entity_type)))
+            
+            for predicate_uri, literal_value in entity.properties.items():
+                literal_args = {}
+                if literal_value.datatype:
+                    literal_args['datatype'] = URIRef(literal_value.datatype)
+                
+                g.add((entity_uri, URIRef(predicate_uri), Literal(literal_value.value, **literal_args)))
 
+        # Add triples from relations
         for relation in self.relations:
-            source_uri = URIRef(relation.source)
-            target_uri = URIRef(relation.target)
-            # URL-encode the relation type for use in a URI
-            relation_uri = base_uri[quote(relation.type)]
-            g.add((source_uri, relation_uri, target_uri))
-            # Omitting relation properties for now to avoid complex reification
-        
+            source = URIRef(relation.source_uri)
+            predicate = URIRef(relation.predicate)
+            target = URIRef(relation.target_uri)
+            g.add((source, predicate, target))
+            # Note: Properties on relations (reification) are not handled in this serialization
+            # to keep it simpler. A full reification would create more complex structures.
+
         return g.serialize(format="turtle")
-
-    def to_rdflib(self) -> Graph:
-        """
-        Converts the knowledge graph to an RDFLib Graph.
-        """
-        from rdflib import Graph, URIRef, Literal, Namespace, RDF, RDFS
-        from urllib.parse import quote
-        
-        g = Graph()
-
-        # Define a base URI for entities and relations if not explicitly full URIs
-        base_uri = Namespace("http://example.com/perseus/")
-        g.bind("perseus", base_uri)
-
-        for entity in self.entities:
-            entity_uri = URIRef(entity.id)
-            # URL-encode the label for use in a URI
-            g.add((entity_uri, RDF.type, base_uri[quote(entity.label)]))
-            g.add((entity_uri, RDFS.label, Literal(entity.label)))
-            for prop_key, prop_value in entity.properties.items():
-                prop_uri = base_uri[quote(prop_key)]
-                g.add((entity_uri, prop_uri, Literal(prop_value)))
-
-        for relation in self.relations:
-            source_uri = URIRef(relation.source)
-            target_uri = URIRef(relation.target)
-            # URL-encode the relation type for use in a URI
-            relation_uri = base_uri[quote(relation.type)]
-            g.add((source_uri, relation_uri, target_uri))
-            # Omitting relation properties for simplicity.
-        
-        return g
-
-    def to_networkx(self) -> nx.Graph:
-        """Converts the knowledge graph to a NetworkX Graph."""
-        # Placeholder for implementation
-        pass
 
     def to_cql(self) -> str:
         """
-        Converts the knowledge graph to a Cypher Query Language (CQL) string representation.
+        Serializes the KnowledgeGraph to a Cypher Query Language (CQL) string.
         """
         cql_statements = []
+        
+        # Helper to convert a URI to a safe CQL label
+        def _uri_to_cql_label(uri: str) -> str:
+            # Attempt to use a known prefix
+            for prefix, ns_uri in self.namespaces.items():
+                if uri.startswith(ns_uri):
+                    local_name = uri[len(ns_uri):]
+                    # Sanitize for CQL: no spaces, dots, etc.
+                    safe_local_name = local_name.replace(" ", "_").replace(".", "_").replace("-", "_")
+                    return f"{prefix}_{safe_local_name}"
+            # Fallback for URIs without a known prefix
+            local_name = uri.split('/')[-1].split('#')[-1]
+            return local_name.replace(" ", "_").replace(".", "_").replace("-", "_")
 
-        def _properties_to_cql_map(properties: dict) -> str:
+        # Helper to format properties for a Cypher map
+        def _properties_to_cql_map(properties: Dict[str, LiteralValue]) -> str:
             if not properties:
-                return ""
+                return "{}"
             props = []
-            for k, v in properties.items():
-                if isinstance(v, str):
-                    props.append(f"{k}: \'{v}'")
-                else:
-                    props.append(f"{k}: {v}")
-            return "{\"" + ", ".join(props) + "\"}"
+            for k_uri, v_obj in properties.items():
+                key = _uri_to_cql_label(k_uri)
+                # JSON-like string escaping for Cypher
+                if isinstance(v_obj.value, str):
+                    # Escape backslashes and single quotes
+                    escaped_value = v_obj.value.replace("\\", "\\\\").replace("'", "\\'")
+                    props.append(f"{key}: '{escaped_value}'")
+                elif isinstance(v_obj.value, bool):
+                    props.append(f"{key}: {str(v_obj.value).lower()}")
+                else: # Numbers, etc.
+                    props.append(f"{key}: {v_obj.value}")
+            return "{" + ", ".join(props) + "}"
 
-        # Create or merge nodes
+        # Create MERGE statements for entities
         for entity in self.entities:
-            props_str = _properties_to_cql_map({"id": entity.id, **entity.properties})
-            cql_statements.append(f"MERGE (n:{entity.label} {props_str})")
-
-        # Create or merge relationships
-        for relation in self.relations:
-            # Need to match source and target nodes first
-            cql_statements.append(
-                f"MATCH (source_node {{id: \'{relation.source}'}}), "
-                f"(target_node {{id: \'{relation.target}'}})"
-            )
-            props_str = _properties_to_cql_map(relation.properties)
-            if props_str:
-                cql_statements.append(
-                    f"MERGE (source_node)-[r:{relation.type} {props_str}]->(target_node)"
-                )
+            # Use 'Resource' as a fallback label if no types are specified
+            labels = ":".join([_uri_to_cql_label(t) for t in entity.types if t]) or "Resource"
+            
+            props_map = _properties_to_cql_map(entity.properties)
+            
+            # Combine MERGE and SET into a single statement for atomicity
+            merge_clause = f"MERGE (n:{labels} {{uri: '{entity.uri}'}})"
+            set_clause = f"SET n += {props_map}"
+            
+            if entity.properties:
+                cql_statements.append(f"{merge_clause}\n{set_clause}")
             else:
-                cql_statements.append(
-                    f"MERGE (source_node)-[r:{relation.type}]->(target_node)"
-                )
+                cql_statements.append(merge_clause)
+
+        # Create MERGE statements for relationships
+        for relation in self.relations:
+            rel_type = _uri_to_cql_label(relation.predicate)
+            props_map = _properties_to_cql_map(relation.properties)
+            
+            # Efficiently MERGE source and target nodes first to avoid cartesian products
+            # This assumes the entity MERGE statements have already been prepared/run
+            match_clause = (
+                f"MATCH (source_node {{uri: '{relation.source_uri}'}})\n"
+                f"MATCH (target_node {{uri: '{relation.target_uri}'}})"
+            )
+            
+            merge_clause = f"MERGE (source_node)-[r:{rel_type}]->(target_node)"
+            
+            # Combine into a single statement and add properties if they exist
+            if relation.properties:
+                set_clause = f"SET r += {props_map}"
+                cql_statements.append(f"{match_clause}\n{merge_clause}\n{set_clause}")
+            else:
+                cql_statements.append(f"{match_clause}\n{merge_clause}")
 
         return ";\n".join(cql_statements) + ";"
 
@@ -261,41 +270,32 @@ class KnowledgeGraph(BaseModel):
 
 class FileStatus(str, Enum):
     """Enumeration for file statuses."""
-
     PENDING = "pending"
     UPLOADED = "uploaded"
     FAILED = "failed"
 
-
 class File(BaseModel):
     """Represents a file object returned by the API."""
-
     id: str
     name: str
     status: FileStatus
     created_at: datetime
 
-
 class OntologyStatus(str, Enum):
     """Enumeration for file statuses."""
-
     PENDING = "pending"
     UPLOADED = "uploaded"
     FAILED = "failed"
 
-
 class Ontology(BaseModel):
     """Represents a file object returned by the API."""
-
     id: str
     name: str
     status: OntologyStatus
     created_at: datetime
 
-
 class JobStatus(str, Enum):
     """Enumeration for job statuses."""
-
     PENDING = "PENDING"
     RUNNABLE = "RUNNABLE"
     STARTING = "STARTING"
@@ -303,10 +303,8 @@ class JobStatus(str, Enum):
     FAILED = "FAILED"
     SUCCEEDED = "SUCCEEDED"
 
-
 class Job(BaseModel):
     """Represents a job object returned by the API."""
-
     id: str
     status: JobStatus
     stopped: bool = False

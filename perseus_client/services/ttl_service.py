@@ -10,7 +10,7 @@ try:
 except ImportError:
     RDFLIB_AVAILABLE = False
 
-from ..models import KnowledgeGraph, Entity, Relation, Document
+from ..models import KnowledgeGraph, Entity, Relation, Document, LiteralValue
 
 if TYPE_CHECKING:
     from .neo4j_service import Neo4jService
@@ -79,9 +79,9 @@ class TTLService:
         ttl_content: str, 
         neo4j_service: Optional["Neo4jService"] = None, 
         falkordb_service: Optional["FalkorDBService"] = None
-    ) -> KnowledgeGraph:
+    ) -> "KnowledgeGraph":
         """
-        Parses TTL content into a KnowledgeGraph object.
+        Parses TTL content into a high-fidelity KnowledgeGraph object.
 
         Args:
             ttl_content: The Turtle file content as a string.
@@ -89,7 +89,7 @@ class TTLService:
             falkordb_service: An optional FalkorDBService instance.
 
         Returns:
-            A KnowledgeGraph object.
+            A KnowledgeGraph object populated with rich data.
         """
         if not RDFLIB_AVAILABLE:
             raise ImportError(
@@ -107,44 +107,53 @@ class TTLService:
         entities: Dict[str, Entity] = {}
         relations: List[Relation] = []
 
-        # Helper to get or create an entity
-        def get_or_create_entity(subject_node) -> Entity:
-            entity_id = str(subject_node)
-            if entity_id not in entities:
-                label = None
-                # Try to find rdfs:label
-                for o in g.objects(subject_node, RDFS.label):
-                    label = str(o)
-                    break
-                if label is None:
-                    # Fallback to last part of URI or a generic label
-                    if isinstance(subject_node, URIRef):
-                        label = str(subject_node).split('/')[-1].split('#')[-1]
-                    else:
-                        label = f"Node {len(entities)}"
+        # Extract namespaces
+        namespaces = {prefix: str(uri) for prefix, uri in g.namespace_manager.namespaces()}
 
-                entity = Entity(id=entity_id, label=label, properties={})
-                entities[entity_id] = entity
-            return entities[entity_id]
+        # Identify all subjects that are entities (i.e., have a type or are part of any triple)
+        all_subjects = set(g.subjects())
+        all_objects = set(g.objects())
+        potential_entities = all_subjects.union(o for o in all_objects if isinstance(o, (URIRef, BNode)))
 
+        for node in potential_entities:
+            uri = str(node)
+            if uri not in entities:
+                entities[uri] = Entity(uri=uri)
+
+        # Iterate over triples to populate entities and relations
         for s, p, o in g:
-            # Treat subjects as entities
-            subject_entity = get_or_create_entity(s)
+            subject_uri = str(s)
+            predicate_uri = str(p)
+            
+            # Ensure subject entity exists
+            if subject_uri not in entities:
+                entities[subject_uri] = Entity(uri=subject_uri)
 
-            # Treat objects as entities if they are URIRef or BNode
-            if isinstance(o, (URIRef, BNode)):
-                object_entity = get_or_create_entity(o)
-                # Create a relation
-                relations.append(
-                    Relation(source=subject_entity.id, target=object_entity.id, type=str(p))
-                )
+            # Case 1: The triple defines a type for the subject (e.g., :Person a dbo:Person)
+            if predicate_uri == str(RDF.type):
+                entities[subject_uri].types.append(str(o))
+            
+            # Case 2: The triple defines a relation between two entities
+            elif isinstance(o, (URIRef, BNode)):
+                object_uri = str(o)
+                # Ensure object entity exists
+                if object_uri not in entities:
+                    entities[object_uri] = Entity(uri=object_uri)
+                
+                relations.append(Relation(
+                    source_uri=subject_uri,
+                    target_uri=object_uri,
+                    predicate=predicate_uri
+                ))
+
+            # Case 3: The triple defines a literal property for the subject
             elif isinstance(o, Literal):
-                # Add literal properties to the subject entity
-                key = str(p).split('/')[-1].split('#')[-1]
-                subject_entity.properties[key] = str(o)
+                literal_value = LiteralValue(
+                    value=o.value,
+                    datatype=str(o.datatype) if o.datatype else None
+                )
+                entities[subject_uri].properties[predicate_uri] = literal_value
 
-        # Placeholder for document - in a real scenario, this would be extracted
-        # from specific triples linking entities to documents.
         # For now, we create a single generic document.
         document_id = str(uuid.uuid4())
         document = Document(id=document_id, content=ttl_content, metadata={})
@@ -153,6 +162,7 @@ class TTLService:
             entities=list(entities.values()), 
             relations=relations, 
             documents=[document],
+            namespaces=namespaces,
             neo4j_service=neo4j_service,
             falkordb_service=falkordb_service
         )

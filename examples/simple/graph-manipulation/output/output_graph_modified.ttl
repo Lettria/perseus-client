@@ -1,73 +1,45 @@
+@prefix data: <http://example.org/data/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix ns1: <http://example.com/perseus/http%3A//www.w3.org/1999/02/> .
-@prefix ns2: <http://example.com/perseus/http%3A//dbpedia.org/ontology/> .
-@prefix perseus: <http://example.com/perseus/> .
+@prefix ns1: <http://example.com/ontology/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-<http://example.com/award/1> a perseus:Award ;
-    rdfs:label "Award" ;
-    perseus:name "Nobel Prize in Physics" .
-
-<http://example.org/data/7cac7a8b-2eb7-4061-88dc-48e5302dde9e> a perseus:Marie%20Curie ;
+data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e a foaf:Person ;
     rdfs:label "Marie Curie" ;
-    perseus:achievement "only person to win in two different scientific fields" ;
-    perseus:gender "female" ;
-    ns2:award <http://example.org/data/8af873b0-9472-493b-85cb-6848e8657fe3> ;
-    ns2:collaborator <http://example.org/data/c3bd7358-bca8-4173-8d69-b53e73357831> ;
-    ns2:discovered <http://example.org/data/1b8324a6-6979-44c8-b2d1-92da7b7b0435>,
-        <http://example.org/data/5e3d001c-aa3c-40ea-bbff-02e5391ef327> ;
-    ns2:field <http://example.org/data/0cef22e4-bd44-4cfc-9fba-ad7b86fdf36d> ;
-    ns2:influenced <http://example.org/data/13aa585b-f105-42ca-9844-65c2817dc1fe>,
-        <http://example.org/data/28b20295-f802-45f7-a579-9a3204901ad6> ;
-    ns2:spouse <http://example.org/data/c3bd7358-bca8-4173-8d69-b53e73357831> ;
-    ns1:22-rdf-syntax-ns%23type foaf:Person ;
-    perseus:label "Marie Curie" ;
-    perseus:title "pioneer" .
+    dbo:achievement "only person to win in two different scientific fields" ;
+    dbo:award data:8af873b0-9472-493b-85cb-6848e8657fe3 ;
+    dbo:collaborator data:c3bd7358-bca8-4173-8d69-b53e73357831 ;
+    dbo:discovered data:1b8324a6-6979-44c8-b2d1-92da7b7b0435,
+        data:5e3d001c-aa3c-40ea-bbff-02e5391ef327 ;
+    dbo:field data:0cef22e4-bd44-4cfc-9fba-ad7b86fdf36d ;
+    dbo:influenced data:13aa585b-f105-42ca-9844-65c2817dc1fe,
+        data:28b20295-f802-45f7-a579-9a3204901ad6 ;
+    dbo:spouse data:c3bd7358-bca8-4173-8d69-b53e73357831 ;
+    dbo:title "pioneer" ;
+    ns1:wonAward <http://example.com/award/NobelPrizeInPhysics> ;
+    foaf:gender "female" .
 
-<http://dbpedia.org/ontology/Award> a perseus:Award ;
-    rdfs:label "Award" .
+<http://example.com/award/NobelPrizeInPhysics> a ns1:Award ;
+    foaf:name "Nobel Prize in Physics" .
 
-<http://example.org/data/0cef22e4-bd44-4cfc-9fba-ad7b86fdf36d> a perseus:Radioactivity ;
-    rdfs:label "Radioactivity" ;
-    ns1:22-rdf-syntax-ns%23type <http://dbpedia.org/ontology/Field> ;
-    perseus:label "Radioactivity" .
+data:0cef22e4-bd44-4cfc-9fba-ad7b86fdf36d a dbo:Field ;
+    rdfs:label "Radioactivity" .
 
-<http://example.org/data/13aa585b-f105-42ca-9844-65c2817dc1fe> a perseus:Science ;
-    rdfs:label "Science" ;
-    ns1:22-rdf-syntax-ns%23type <http://dbpedia.org/ontology/Field> ;
-    perseus:label "Science" .
+data:13aa585b-f105-42ca-9844-65c2817dc1fe a dbo:Field ;
+    rdfs:label "Science" .
 
-<http://example.org/data/1b8324a6-6979-44c8-b2d1-92da7b7b0435> a perseus:Radium ;
-    rdfs:label "Radium" ;
-    ns1:22-rdf-syntax-ns%23type <http://dbpedia.org/ontology/ChemicalElement> ;
-    perseus:label "Radium" .
+data:1b8324a6-6979-44c8-b2d1-92da7b7b0435 a dbo:ChemicalElement ;
+    rdfs:label "Radium" .
 
-<http://example.org/data/28b20295-f802-45f7-a579-9a3204901ad6> a perseus:STEM ;
-    rdfs:label "STEM" ;
-    ns1:22-rdf-syntax-ns%23type <http://dbpedia.org/ontology/Field> ;
-    perseus:label "STEM" .
+data:28b20295-f802-45f7-a579-9a3204901ad6 a dbo:Field ;
+    rdfs:label "STEM" .
 
-<http://example.org/data/5e3d001c-aa3c-40ea-bbff-02e5391ef327> a perseus:Polonium ;
-    rdfs:label "Polonium" ;
-    ns1:22-rdf-syntax-ns%23type <http://dbpedia.org/ontology/ChemicalElement> ;
-    perseus:label "Polonium" .
+data:5e3d001c-aa3c-40ea-bbff-02e5391ef327 a dbo:ChemicalElement ;
+    rdfs:label "Polonium" .
 
-<http://example.org/data/8af873b0-9472-493b-85cb-6848e8657fe3> a perseus:Nobel%20Prize ;
-    rdfs:label "Nobel Prize" ;
-    ns1:22-rdf-syntax-ns%23type <http://dbpedia.org/ontology/Award> ;
-    perseus:label "Nobel Prize" .
+data:8af873b0-9472-493b-85cb-6848e8657fe3 a dbo:Award ;
+    rdfs:label "Nobel Prize" .
 
-<http://dbpedia.org/ontology/ChemicalElement> a perseus:ChemicalElement ;
-    rdfs:label "ChemicalElement" .
-
-<http://example.org/data/c3bd7358-bca8-4173-8d69-b53e73357831> a perseus:Pierre%20Curie ;
-    rdfs:label "Pierre Curie" ;
-    ns1:22-rdf-syntax-ns%23type foaf:Person ;
-    perseus:label "Pierre Curie" .
-
-foaf:Person a perseus:Person ;
-    rdfs:label "Person" .
-
-<http://dbpedia.org/ontology/Field> a perseus:Field ;
-    rdfs:label "Field" .
+data:c3bd7358-bca8-4173-8d69-b53e73357831 a foaf:Person ;
+    rdfs:label "Pierre Curie" .
 

@@ -24,7 +24,7 @@ class PerseusClient:
     """
     A client for interacting with the Perseus API.
     This client handles authentication and provides methods for accessing the various
-    API endpoints. It requires the `LETTRIA_API_KEY` environment variable to be set.
+    API endpoints. It requires the `PERSEUS_API_KEY` environment variable to be set.
     """
 
     def __init__(self, api_host: Optional[str] = None):
@@ -36,7 +36,14 @@ class PerseusClient:
         """
         self.settings = settings
         self.api_host = api_host or self.settings.perseus_api_host
-        self._api_token = self.settings.lettria_api_key
+        self._perseus_api_key = self.settings.perseus_api_key
+
+        if not self._perseus_api_key:
+            raise ConfigurationException(
+                "Perseus API key is not configured. Please create a .env file with "
+                "PERSEUS_API_KEY='your_key_here' or set the environment variable."
+            )
+
         self._session: Optional[aiohttp.ClientSession] = None
         self._connector: Optional[aiohttp.TCPConnector] = None
         self._file: Optional[FileService] = None
@@ -125,7 +132,7 @@ class PerseusClient:
         Returns the headers for the API requests.
         """
         return {
-            "Authorization": f"Bearer {self._api_token}",
+            "Authorization": f"Bearer {self._perseus_api_key}",
             "Content-Type": "application/json",
         }
 
