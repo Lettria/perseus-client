@@ -1,0 +1,33 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix data: <http://example.org/data/> .
+data:0cef22e4-bd44-4cfc-9fba-ad7b86fdf36d rdfs:label "Radioactivity" .
+data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e dbo:title "pioneer" ;
+	dbo:discovered data:5e3d001c-aa3c-40ea-bbff-02e5391ef327 , data:1b8324a6-6979-44c8-b2d1-92da7b7b0435 .
+data:8af873b0-9472-493b-85cb-6848e8657fe3 rdfs:label "Nobel Prize" .
+data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e dbo:spouse data:c3bd7358-bca8-4173-8d69-b53e73357831 .
+data:28b20295-f802-45f7-a579-9a3204901ad6 rdfs:label "STEM" .
+data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e dbo:influenced data:13aa585b-f105-42ca-9844-65c2817dc1fe .
+data:13aa585b-f105-42ca-9844-65c2817dc1fe rdfs:label "Science" .
+data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e dbo:achievement "paved the way for women in STEM" ;
+	foaf:gender "female" ;
+	dbo:influenced data:28b20295-f802-45f7-a579-9a3204901ad6 .
+data:1b8324a6-6979-44c8-b2d1-92da7b7b0435 rdfs:label "Radium" .
+data:c3bd7358-bca8-4173-8d69-b53e73357831 rdfs:label "Pierre Curie" .
+data:5e3d001c-aa3c-40ea-bbff-02e5391ef327 rdfs:label "Polonium" .
+data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e rdfs:label "Marie Curie" ;
+	dbo:collaborator data:c3bd7358-bca8-4173-8d69-b53e73357831 ;
+	dbo:achievement "only person to win in two different scientific fields" ;
+	dbo:field data:0cef22e4-bd44-4cfc-9fba-ad7b86fdf36d ;
+	dbo:achievement "first woman to win a Nobel Prize" ;
+	dbo:award data:8af873b0-9472-493b-85cb-6848e8657fe3 .
+data:c3bd7358-bca8-4173-8d69-b53e73357831 a foaf:Person .
+data:5e3d001c-aa3c-40ea-bbff-02e5391ef327 a dbo:ChemicalElement .
+data:13aa585b-f105-42ca-9844-65c2817dc1fe a dbo:Field .
+data:8af873b0-9472-493b-85cb-6848e8657fe3 a dbo:Award .
+data:28b20295-f802-45f7-a579-9a3204901ad6 a dbo:Field .
+data:0cef22e4-bd44-4cfc-9fba-ad7b86fdf36d a dbo:Field .
+data:1b8324a6-6979-44c8-b2d1-92da7b7b0435 a dbo:ChemicalElement .
+data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e a foaf:Person .

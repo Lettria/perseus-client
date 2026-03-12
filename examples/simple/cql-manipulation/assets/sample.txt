@@ -1,5 +1,0 @@
-Alice is a 30-year-old software engineer who lives in the city of Paris.
-She works for a tech company called Innovate Inc.
-Bob is a project manager at the same company.
-Alice and Bob are colleagues.
-Paris is the capital of France.
