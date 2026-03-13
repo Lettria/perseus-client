@@ -11,6 +11,7 @@ from .services.ttl_service import TTLService
 from .services.neo4j_service import Neo4jService
 from .services.falkordb_service import FalkorDBService
 from .services.cql_service import CQLService
+from .services.graph_service import GraphService
 from .config import Settings
 from .models import (
     File,
@@ -63,6 +64,7 @@ class PerseusClient:
         self._falkordb: Optional[FalkorDBService] = None
         self._cql: Optional[CQLService] = None
         self._ttl: Optional[TTLService] = None
+        self._graph: Optional[GraphService] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
     def _is_active(self):
@@ -88,6 +90,7 @@ class PerseusClient:
         self._falkordb = FalkorDBService(self._loop)
         self._cql = CQLService()
         self._ttl = TTLService()
+        self._graph = GraphService()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -194,6 +197,13 @@ class PerseusClient:
         if not self._ttl:
             raise ConfigurationException("TTL service not initialized.")
         return self._ttl
+
+    @property
+    def graph(self) -> GraphService:
+        self._ensure_active()
+        if not self._graph:
+            raise ConfigurationException("Graph service not initialized.")
+        return self._graph
 
     def build_graph(
         self,
@@ -307,21 +317,24 @@ class PerseusClient:
                 with open(ttl_file_path, "r", encoding="utf-8") as f:
                     ttl_content = f.read()
 
-            kg = self.ttl.parse_ttl_to_knowledge_graph(
-                ttl_content, neo4j_service=self.neo4j, falkordb_service=self.falkordb
-            )
+            kg = self.ttl.parse_ttl_to_knowledge_graph(ttl_content)
             kg.ttl_content = ttl_content
             kg.cql_content = cql_content
-            return kg
         else:
             logging.warning(
                 f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph."
             )
-            return KnowledgeGraph(
-                cql_content=cql_content,
-                neo4j_service=self.neo4j,
-                falkordb_service=self.falkordb,
-            )
+            # Create an empty graph but still attach content if available
+            kg = KnowledgeGraph(cql_content=cql_content)
+
+        # Inject services into the created KnowledgeGraph instance
+        kg._ttl_service = self.ttl
+        kg._cql_service = self.cql
+        kg._neo4j_service = self.neo4j
+        kg._falkordb_service = self.falkordb
+        kg._graph_service = self.graph
+
+        return kg
 
     async def build_graph_async(
         self,

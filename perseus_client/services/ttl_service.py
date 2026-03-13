@@ -12,10 +12,6 @@ except ImportError:
 
 from ..models import KnowledgeGraph, Entity, Relation, Document, LiteralValue
 
-if TYPE_CHECKING:
-    from .neo4j_service import Neo4jService
-    from .falkordb_service import FalkorDBService
-
 logger = logging.getLogger(__name__)
 
 
@@ -77,8 +73,6 @@ class TTLService:
     def parse_ttl_to_knowledge_graph(
         self,
         ttl_content: str,
-        neo4j_service: Optional["Neo4jService"] = None,
-        falkordb_service: Optional["FalkorDBService"] = None,
     ) -> "KnowledgeGraph":
         """
         Parses TTL content into a high-fidelity KnowledgeGraph object, correctly
@@ -86,8 +80,6 @@ class TTLService:
 
         Args:
             ttl_content: The Turtle file content as a string.
-            neo4j_service: An optional Neo4jService instance.
-            falkordb_service: An optional FalkorDBService instance.
 
         Returns:
             A KnowledgeGraph object populated with rich data representing only individuals.
@@ -103,9 +95,7 @@ class TTLService:
             g.parse(data=ttl_content, format="turtle")
         except Exception as e:
             logger.error(f"Failed to parse TTL content: {e}")
-            return KnowledgeGraph(
-                neo4j_service=neo4j_service, falkordb_service=falkordb_service
-            )
+            return KnowledgeGraph()
 
         entities: Dict[str, Entity] = {}
         relations: List[Relation] = []
@@ -167,6 +157,63 @@ class TTLService:
             relations=relations,
             documents=[document],
             namespaces=namespaces,
-            neo4j_service=neo4j_service,
-            falkordb_service=falkordb_service,
         )
+
+    def to_ttl(self, kg: KnowledgeGraph) -> str:
+        """
+        Serializes the KnowledgeGraph to a high-fidelity Turtle (TTL) string.
+        """
+        if not RDFLIB_AVAILABLE:
+            raise ImportError(
+                "rdflib is required for TTL serialization. Please run `pip install perseus-client[rdf]`."
+            )
+
+        g = Graph()
+
+        # Bind namespaces
+        for prefix, uri in kg.namespaces.items():
+            g.bind(prefix, Namespace(uri))
+
+        # Add triples from entities
+        for entity in kg.entities:
+            entity_uri = URIRef(entity.uri)
+            for entity_type in entity.types:
+                g.add((entity_uri, RDF.type, URIRef(entity_type)))
+
+            for predicate_uri, literal_value in entity.properties.items():
+                literal_args = {}
+                if literal_value.datatype:
+                    literal_args["datatype"] = URIRef(literal_value.datatype)
+
+                g.add(
+                    (
+                        entity_uri,
+                        URIRef(predicate_uri),
+                        Literal(literal_value.value, **literal_args),
+                    )
+                )
+
+        # Add triples from relations
+        for relation in kg.relations:
+            source = URIRef(relation.source_uri)
+            predicate = URIRef(relation.predicate)
+            target = URIRef(relation.target_uri)
+            g.add((source, predicate, target))
+            # Note: Properties on relations (reification) are not handled in this serialization
+            # to keep it simpler. A full reification would create more complex structures.
+
+        return g.serialize(format="turtle")
+
+    def save_ttl(self, kg: KnowledgeGraph, file_path: str):
+        """
+        Saves the KnowledgeGraph to a Turtle (TTL) file using high-fidelity serialization.
+        Args:
+            kg: The KnowledgeGraph object to save.
+            file_path: The path to save the TTL file to.
+        """
+        try:
+            ttl_content = self.to_ttl(kg)
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(ttl_content)
+        except Exception as e:
+            logging.error(f"Failed to save TTL to file {file_path}: {e}")

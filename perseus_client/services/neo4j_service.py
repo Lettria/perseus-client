@@ -3,6 +3,8 @@ import asyncio
 import time
 from perseus_client.config import settings
 from perseus_client.exceptions import ConfigurationException, PerseusException
+from ..models import KnowledgeGraph
+from .cql_service import CQLService
 
 try:
     from neo4j import GraphDatabase
@@ -20,6 +22,7 @@ class Neo4jService:
         if not NEO4J_AVAILABLE:
             logger.warning("Neo4jService initialized but 'neo4j' library is missing.")
         self._loop = loop
+        self.cql_service = CQLService()
 
         if wait_for_neo4j_readiness:
             self._wait_for_neo4j(timeout)
@@ -89,8 +92,7 @@ class Neo4jService:
         """
         return self._loop.run_until_complete(self.execute_cql_string_async(cql_query))
 
-    @staticmethod
-    async def execute_cql_string_async(cql_query: str):
+    async def execute_cql_string_async(self, cql_query: str):
         """
         Asynchronously executes a string containing Cypher queries against a Neo4j database.
 
@@ -147,3 +149,37 @@ class Neo4jService:
             if driver:
                 driver.close()
             logger.info("Neo4j connection closed.")
+
+    def save_to_neo4j(self, kg: KnowledgeGraph, strip_prefixes: bool = True):
+        """
+        Synchronously saves the CQL content of the KnowledgeGraph to Neo4j.
+
+        Args:
+            kg: The KnowledgeGraph to save.
+            strip_prefixes: If True (default), strips namespace prefixes from labels and
+                            properties for a cleaner, more "native" Neo4j schema (e.g., `Person`, `label`).
+                            If False, preserves prefixed names for higher fidelity (e.g., `dbo_Person`, `rdfs_label`).
+        """
+        try:
+            asyncio.run(self.save_to_neo4j_async(kg, strip_prefixes=strip_prefixes))
+        except Exception as e:
+            logging.error(f"Failed to save to Neo4j: {e}")
+
+    async def save_to_neo4j_async(self, kg: KnowledgeGraph, strip_prefixes: bool = True):
+        """
+        Asynchronously saves the CQL content of the KnowledgeGraph to Neo4j.
+
+        Args:
+            kg: The KnowledgeGraph to save.
+            strip_prefixes: If True (default), strips namespace prefixes from labels and
+                            properties for a cleaner, more "native" Neo4j schema (e.g., `Person`, `label`).
+                            If False, preserves prefixed names for higher fidelity (e.g., `dbo_Person`, `rdfs_label`).
+        """
+        try:
+            cql_content = self.cql_service.to_cql(kg, strip_prefixes=strip_prefixes)
+            if cql_content:
+                await self.execute_cql_string_async(cql_content)
+            else:
+                logging.warning("No CQL content to save to Neo4j.")
+        except Exception as e:
+            logging.error(f"Failed to generate or save CQL to Neo4j: {e}")

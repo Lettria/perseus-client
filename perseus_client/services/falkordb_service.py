@@ -2,6 +2,8 @@ import logging
 import asyncio
 from perseus_client.config import settings
 from perseus_client.exceptions import ConfigurationException
+from ..models import KnowledgeGraph
+from .cql_service import CQLService
 
 try:
     from falkordb import FalkorDB
@@ -19,6 +21,7 @@ class FalkorDBService:
         if not FALKORDB_AVAILABLE:
              logger.warning("FalkorDBService initialized but FalkorDB library is missing.")
         self._loop = loop
+        self.cql_service = CQLService()
 
     def save_output_to_falkordb(self, file_path: str):
         return self._loop.run_until_complete(
@@ -50,8 +53,7 @@ class FalkorDBService:
         """
         return self._loop.run_until_complete(self.execute_cql_string_async(cql_query))
 
-    @staticmethod
-    async def execute_cql_string_async(cql_query: str):
+    async def execute_cql_string_async(self, cql_query: str):
         """
         Asynchronously executes a string containing Cypher queries against a FalkorDB database.
 
@@ -106,3 +108,25 @@ class FalkorDBService:
             logger.error(f"An unexpected error occurred: {e}")
         finally:
             logger.info("FalkorDB operation finished.")
+
+    def save_to_falkordb(self, kg: KnowledgeGraph):
+        """
+        Synchronously saves the CQL content of the KnowledgeGraph to FalkorDB.
+        """
+        try:
+            asyncio.run(self.save_to_falkordb_async(kg))
+        except Exception as e:
+            logging.error(f"Failed to save to FalkorDB: {e}")
+
+    async def save_to_falkordb_async(self, kg: KnowledgeGraph):
+        """
+        Asynchronously saves the CQL content of the KnowledgeGraph to FalkorDB.
+        """
+        try:
+            cql_content = self.cql_service.to_cql(kg)
+            if cql_content:
+                await self.execute_cql_string_async(cql_content)
+            else:
+                logging.warning("No CQL content to save to FalkorDB.")
+        except Exception as e:
+            logging.error(f"Failed to generate or save CQL to FalkorDB: {e}")
