@@ -14,7 +14,6 @@ from .exceptions import ConfigurationException
 import logging
 
 
-logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
 
 
@@ -33,7 +32,7 @@ class Settings(BaseSettings):
     falkordb_username: str = ""
     falkordb_password: str = ""
     falkordb_graph_name: str = "perseus_graph"
-    loglevel: str = "WARNING"
+    loglevel: str = "INFO"
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="allow"

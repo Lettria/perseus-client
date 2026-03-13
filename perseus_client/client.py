@@ -30,6 +30,8 @@ from .services.job_service import JobService
 from .services.ontology_service import OntologyService
 from .config import settings
 
+logger = logging.getLogger(__name__)
+
 
 class PerseusClient:
     """
@@ -48,6 +50,7 @@ class PerseusClient:
         self.settings = settings
         self.api_host = api_host or self.settings.perseus_api_host
         self._perseus_api_key = self.settings.perseus_api_key
+        logger.info(f"PerseusClient initialized for API host: {self.api_host}")
 
         if not self._perseus_api_key:
             raise ConfigurationException(
@@ -77,6 +80,7 @@ class PerseusClient:
     async def __aenter__(self):
         if self._is_active():
             return self
+        logger.debug("Starting asynchronous session.")
         ssl_context = ssl.create_default_context(cafile=certifi.where())
         self._connector = aiohttp.TCPConnector(ssl=ssl_context)
         self._session = aiohttp.ClientSession(
@@ -94,6 +98,7 @@ class PerseusClient:
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
+        logger.debug("Closing asynchronous session.")
         if self._session:
             await self._session.close()
         if self._connector:
@@ -109,6 +114,7 @@ class PerseusClient:
         if self._is_active():
             return self
         # Create a new loop for synchronous use
+        logger.debug("Creating new event loop for synchronous client usage.")
         self._loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self._loop)
         self._loop.run_until_complete(self.__aenter__())
@@ -121,6 +127,7 @@ class PerseusClient:
         """
         if self._loop is None:
             return
+        logger.debug("Closing event loop for synchronous client usage.")
         self._loop.run_until_complete(self.__aexit__(exc_type, exc_val, exc_tb))
         self._loop.close()
         asyncio.set_event_loop(
@@ -245,34 +252,44 @@ class PerseusClient:
         """
         Processes a single file to build a KnowledgeGraph with resilient job handling.
         """
+        logger.info(f"Building graph for file: {file_path}")
         created_file = await self.file.upload_file_async(file_path)
         if created_file.status == FileStatus.PENDING:
             await self.file.wait_for_file_upload_async(created_file.id)
 
         job_to_run = None
-        # Check for the latest job, regardless of its status
+        logger.debug(
+            f"Searching for existing job for file_id: {created_file.id}, ontology_id: {ontology_id}"
+        )
         latest_job = await self.job.find_latest_job_async(
             file_id=created_file.id, ontology_id=ontology_id
         )
 
         if latest_job:
+            logger.debug(f"Found latest job {latest_job.id} with status {latest_job.status}")
             if latest_job.status in [
                 JobStatus.PENDING,
                 JobStatus.RUNNING,
                 JobStatus.STARTING,
                 JobStatus.RUNNABLE,
             ]:
-                logging.info(f"Attaching to existing in-progress job {latest_job.id}")
+                logger.info(f"Attaching to existing in-progress job: {latest_job.id}")
                 job_to_run = latest_job
             elif latest_job.status == JobStatus.SUCCEEDED:
                 if refresh_graph:
-                    logging.info("`refresh_graph` is True, submitting new job.")
+                    logger.info(
+                        f"Job {latest_job.id} already succeeded, but refresh_graph=True, so submitting a new job."
+                    )
                 else:
-                    logging.info(f"Using existing completed job {latest_job.id}")
+                    logger.info(f"Using existing completed job: {latest_job.id}")
                     job_to_run = latest_job
+            elif latest_job.status == JobStatus.FAILED:
+                logger.warning(
+                    f"Latest job {latest_job.id} failed. Submitting a new job."
+                )
 
         if not job_to_run:
-            logging.info("No suitable existing job found, submitting a new one.")
+            logger.info("No suitable existing job found, submitting a new job.")
             job_to_run = await self.job.submit_job_async(
                 file_id=created_file.id, ontology_id=ontology_id
             )
@@ -280,9 +297,10 @@ class PerseusClient:
         # Wait for the job (either new or pre-existing) to complete
         completed_job = await self.job.run_job_async(job_id=job_to_run.id)
 
-        output_dir = "/tmp/perseus-client/output"
-        os.makedirs(output_dir, exist_ok=True)
-        output_path = f"{output_dir}/{completed_job.id}_output"
+        # Create a temporary directory for job outputs
+        output_dir = tempfile.mkdtemp(prefix="perseus-client-")
+        output_path = os.path.join(output_dir, f"{completed_job.id}_output")
+        logger.debug(f"Downloading job output to temporary path: {output_path}")
 
         await self.job.download_job_output_async(completed_job.id, output_path)
 
@@ -293,6 +311,7 @@ class PerseusClient:
         ttl_content: Optional[str] = None
 
         if metadata:
+            logger.debug(f"Applying metadata: {metadata}")
             if os.path.exists(ttl_file_path):
                 with open(ttl_file_path, "r", encoding="utf-8") as f:
                     ttl_content = f.read()
@@ -300,6 +319,7 @@ class PerseusClient:
                 with open(ttl_file_path, "w", encoding="utf-8") as f:
                     f.write(modified_ttl)
                 ttl_content = modified_ttl
+                logger.debug("Successfully applied metadata to TTL content.")
 
             if os.path.exists(cql_file_path):
                 with open(cql_file_path, "r", encoding="utf-8") as f:
@@ -307,12 +327,14 @@ class PerseusClient:
                 cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
                 with open(cql_file_path, "w", encoding="utf-8") as f:
                     f.write(cql_content)
+                logger.debug("Successfully applied metadata to CQL content.")
 
         if os.path.exists(cql_file_path) and cql_content is None:
             with open(cql_file_path, "r", encoding="utf-8") as f:
                 cql_content = f.read()
 
         if os.path.exists(ttl_file_path):
+            logger.debug(f"TTL file found at {ttl_file_path}, parsing to KnowledgeGraph.")
             if ttl_content is None:
                 with open(ttl_file_path, "r", encoding="utf-8") as f:
                     ttl_content = f.read()
@@ -321,13 +343,14 @@ class PerseusClient:
             kg.ttl_content = ttl_content
             kg.cql_content = cql_content
         else:
-            logging.warning(
+            logger.warning(
                 f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph."
             )
             # Create an empty graph but still attach content if available
             kg = KnowledgeGraph(cql_content=cql_content)
 
         # Inject services into the created KnowledgeGraph instance
+        logger.debug("Injecting services into KnowledgeGraph instance.")
         kg._ttl_service = self.ttl
         kg._cql_service = self.cql
         kg._neo4j_service = self.neo4j
@@ -356,18 +379,17 @@ class PerseusClient:
         """
         created_ontology_id = None
         if ontology_path:
+            logger.info(f"Using ontology from path: {ontology_path}")
             # This part still runs sequentially as the ontology is shared
             created_ontology = await self.ontology.upload_ontology_async(ontology_path)
             if created_ontology.status == OntologyStatus.PENDING:
                 # A single spinner for the ontology upload
                 await self.ontology.wait_for_ontology_upload_async(created_ontology.id)
             created_ontology_id = created_ontology.id
+            logger.debug(f"Using ontology_id: {created_ontology_id}")
 
-        # Create a list of tasks and descriptions for the rich progress display
         tasks = []
-        descriptions = []
         for path in file_path:
-            descriptions.append(f"Processing file {os.path.basename(path)}...")
             task = self._build_single_graph_async(
                 file_path=path,
                 ontology_id=created_ontology_id,
@@ -375,8 +397,10 @@ class PerseusClient:
                 metadata=metadata,
             )
             tasks.append(task)
-
-        # Use the new rich-based waiter from the job service
-        results = await self.job._wait_for_tasks(tasks, descriptions)
-
+        
+        logger.info(f"Processing {len(tasks)} file(s)...")
+        
+        results = await self.job._wait_for_tasks(tasks, [os.path.basename(p) for p in file_path])
+        
+        logger.info("All files processed.")
         return results

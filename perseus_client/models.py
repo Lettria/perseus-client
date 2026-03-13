@@ -8,6 +8,7 @@ from enum import Enum
 import logging
 from typing import Optional, List, Dict, Any, TYPE_CHECKING
 
+logger = logging.getLogger(__name__)
 
 # Use TYPE_CHECKING to avoid circular dependencies during runtime
 if TYPE_CHECKING:
@@ -87,6 +88,12 @@ class KnowledgeGraph(BaseModel):
         self._neo4j_service = neo4j_service
         self._falkordb_service = falkordb_service
         self._graph_service = graph_service
+        logger.debug(
+            f"KnowledgeGraph initialized with services: "
+            f"ttl={bool(ttl_service)}, cql={bool(cql_service)}, "
+            f"neo4j={bool(neo4j_service)}, falkordb={bool(falkordb_service)}, "
+            f"graph={bool(graph_service)}"
+        )
 
     def save_ttl(self, file_path: str):
         if not self._ttl_service:

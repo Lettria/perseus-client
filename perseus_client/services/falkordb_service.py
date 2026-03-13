@@ -12,7 +12,6 @@ except ImportError:
     FALKORDB = None
     FALKORDB_AVAILABLE = False
 
-logging.basicConfig(level=settings.loglevel.upper())
 logger = logging.getLogger(__name__)
 
 
@@ -53,80 +52,182 @@ class FalkorDBService:
         """
         return self._loop.run_until_complete(self.execute_cql_string_async(cql_query))
 
-    async def execute_cql_string_async(self, cql_query: str):
-        """
-        Asynchronously executes a string containing Cypher queries against a FalkorDB database.
+        async def execute_cql_string_async(self, cql_query: str):
 
-        Args:
-            cql_query (str): The string containing Cypher queries.
-        """
-        if not FALKORDB_AVAILABLE:
-            error_msg = (
-                "The 'FalkorDB' library is not installed. "
-                "Please run `pip install perseus-client[falkordb]` to use this feature."
-            )
-            logger.error(error_msg)
-            raise ImportError(error_msg)
-        
-        driver = None
-        try:
-            if (
-                not getattr(settings, "falkordb_host", None)
-                or not getattr(settings, "falkordb_port", None)
-                or not getattr(settings, "falkordb_graph_name", None)
-            ):
-                raise ConfigurationException(
-                    "FalkorDB configuration is incomplete (Host, Port, or Graph Name missing). Please check your settings."
+            """
+
+            Asynchronously executes a string containing Cypher queries against a FalkorDB database.
+
+    
+
+            Args:
+
+                cql_query (str): The string containing Cypher queries.
+
+            """
+
+            if not FALKORDB_AVAILABLE:
+
+                error_msg = (
+
+                    "The 'FalkorDB' library is not installed. "
+
+                    "Please run `pip install perseus-client[falkordb]` to use this feature."
+
                 )
 
-            driver = FalkorDB(
-                host=settings.falkordb_host,
-                port=settings.falkordb_port,
-                password=getattr(settings, "falkordb_password", None),
-                username=getattr(settings, "falkordb_username", None),
-            )
-            
-            graph = driver.select_graph(settings.falkordb_graph_name)
-            
-            await asyncio.to_thread(driver.connection.ping)
-            logger.info(f"Successfully connected to FalkorDB, Graph: {settings.falkordb_graph_name}")
+                logger.error(error_msg)
 
-        except Exception as e:
-            logger.error(f"Failed to connect to FalkorDB: {e}")
-            raise
+                raise ImportError(error_msg)
 
-        try:
-            statements = [s.strip() for s in cql_query.split(';') if s.strip()]
-            for statement in statements:
-                try:
-                    await asyncio.to_thread(graph.query, statement)
-                except Exception as e:
-                    logger.error(
-                        f"Error executing query chunk:\n{statement}\nError: {e}"
+            
+
+            driver = None
+
+            try:
+
+                if (
+
+                    not getattr(settings, "falkordb_host", None)
+
+                    or not getattr(settings, "falkordb_port", None)
+
+                    or not getattr(settings, "falkordb_graph_name", None)
+
+                ):
+
+                    raise ConfigurationException(
+
+                        "FalkorDB configuration is incomplete (Host, Port, or Graph Name missing). Please check your settings."
+
                     )
-        except Exception as e:
-            logger.error(f"An unexpected error occurred: {e}")
-        finally:
-            logger.info("FalkorDB operation finished.")
 
-    def save_to_falkordb(self, kg: KnowledgeGraph):
-        """
-        Synchronously saves the CQL content of the KnowledgeGraph to FalkorDB.
-        """
-        try:
-            asyncio.run(self.save_to_falkordb_async(kg))
-        except Exception as e:
-            logging.error(f"Failed to save to FalkorDB: {e}")
+    
 
-    async def save_to_falkordb_async(self, kg: KnowledgeGraph):
-        """
-        Asynchronously saves the CQL content of the KnowledgeGraph to FalkorDB.
-        """
-        try:
-            cql_content = self.cql_service.to_cql(kg)
-            if cql_content:
-                await self.execute_cql_string_async(cql_content)
-            else:
-                logging.warning("No CQL content to save to FalkorDB.")
-        except Exception as e:
-            logging.error(f"Failed to generate or save CQL to FalkorDB: {e}")
+                driver = FalkorDB(
+
+                    host=settings.falkordb_host,
+
+                    port=settings.falkordb_port,
+
+                    password=getattr(settings, "falkordb_password", None),
+
+                    username=getattr(settings, "falkordb_username", None),
+
+                )
+
+                
+
+                graph = driver.select_graph(settings.falkordb_graph_name)
+
+                
+
+                await asyncio.to_thread(driver.connection.ping)
+
+                logger.info(f"Successfully connected to FalkorDB at {settings.falkordb_host}:{settings.falkordb_port}, Graph: {settings.falkordb_graph_name}")
+
+    
+
+            except Exception as e:
+
+                logger.error(f"Failed to connect to FalkorDB: {e}", exc_info=True)
+
+                raise
+
+    
+
+            try:
+
+                statements = [s.strip() for s in cql_query.split(';') if s.strip()]
+
+                logger.info(f"Executing {len(statements)} CQL statements against FalkorDB.")
+
+                for statement in statements:
+
+                    try:
+
+                        logger.debug(f"Executing query:\n{statement}")
+
+                        await asyncio.to_thread(graph.query, statement)
+
+                    except Exception as e:
+
+                        logger.error(
+
+                            f"Error executing query chunk:\n{statement}\nError: {e}",
+
+                            exc_info=True,
+
+                        )
+
+            except Exception as e:
+
+                logger.error(f"An unexpected error occurred during the FalkorDB session: {e}", exc_info=True)
+
+            finally:
+
+                logger.info("FalkorDB operation finished.")
+
+    
+
+        def save_to_falkordb(self, kg: KnowledgeGraph):
+
+            """
+
+            Synchronously saves the CQL content of the KnowledgeGraph to FalkorDB.
+
+            """
+
+            logger.info("Attempting to save KnowledgeGraph to FalkorDB.")
+
+            try:
+
+                # Note: asyncio.run() is used for synchronous context.
+
+                # For fully async apps, call save_to_falkordb_async directly.
+
+                self._loop.run_until_complete(self.save_to_falkordb_async(kg))
+
+                logger.info("Successfully saved KnowledgeGraph to FalkorDB.")
+
+            except Exception as e:
+
+                logger.error(f"Failed to save to FalkorDB: {e}", exc_info=True)
+
+    
+
+        async def save_to_falkordb_async(self, kg: KnowledgeGraph):
+
+            """
+
+            Asynchronously saves the CQL content of the KnowledgeGraph to FalkorDB.
+
+            """
+
+            logger.info("Generating CQL from KnowledgeGraph for FalkorDB.")
+
+            try:
+
+                cql_content = self.cql_service.to_cql(kg)
+
+                if cql_content:
+
+                    logger.info("CQL content generated. Executing against FalkorDB.")
+
+                    await self.execute_cql_string_async(cql_content)
+
+                else:
+
+                    logger.warning(
+
+                        "KnowledgeGraph has no entities or relations to save to FalkorDB."
+
+                    )
+
+            except Exception as e:
+
+                logger.error(f"Failed to generate or save CQL to FalkorDB: {e}", exc_info=True)
+
+                raise
+
+    

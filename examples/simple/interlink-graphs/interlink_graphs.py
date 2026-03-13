@@ -1,11 +1,10 @@
-import logging
 import sys
 import os
 from perseus_client.client import PerseusClient
 from perseus_client.models import KnowledgeGraph
 from typing import List
+import logging
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -19,40 +18,25 @@ def main(
     """
     try:
         with PerseusClient() as client:
-            logger.info(
-                f"Building graphs from files: {file_paths} with ontology: {ontology_path}"
-            )
             knowledge_graphs = client.build_graph(
                 file_path=file_paths,
                 ontology_path=ontology_path,
                 metadata={"source": "interlink_graphs_example"},
+                # refresh_graph=True,
             )
 
             if not knowledge_graphs or len(knowledge_graphs) < 2:
                 logger.error("Failed to build at least two graphs for interlinking.")
                 return
 
-            logger.info(
-                f"Successfully built {len(knowledge_graphs)} individual knowledge graphs."
-            )
-            for i, kg in enumerate(knowledge_graphs):
-                logger.info(
-                    f"  - Graph {i+1}: {len(kg.entities)} entities, {len(kg.relations)} relations"
-                )
-
             # 2. Interlink the knowledge graphs
-            logger.info("--- Interlinking Knowledge Graphs ---")
-            # The default interlinking key is rdfs:label, which is suitable for this example.
-            merged_kg = KnowledgeGraph.interlink(kbs=knowledge_graphs)
-            logger.info("Interlinking complete.")
-            logger.info(
-                f"  - Merged Graph: {len(merged_kg.entities)} entities, {len(merged_kg.relations)} relations"
+            merged_kg = KnowledgeGraph.interlink(
+                kbs=knowledge_graphs,
+                # immutable_properties=["hasJobTitle"]
             )
 
             # 3. Save the single, merged graph to Neo4j
-            logger.info("--- Saving Merged Graph to Neo4j ---")
             merged_kg.save_to_neo4j(strip_prefixes=True)
-            logger.info("Merged graph saved to Neo4j.")
 
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}", exc_info=True)

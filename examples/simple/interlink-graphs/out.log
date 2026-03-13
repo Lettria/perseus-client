@@ -1,0 +1,1228 @@
+INFO:numexpr.utils:Note: NumExpr detected 32 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+INFO:numexpr.utils:NumExpr defaulting to 16 threads.
+INFO:perseus_client.client:PerseusClient initialized for API host: https://oath.perseus.lettria.net
+DEBUG:perseus_client.client:Creating new event loop for synchronous client usage.
+DEBUG:asyncio:Using selector: EpollSelector
+DEBUG:perseus_client.client:Starting asynchronous session.
+DEBUG:neo4j.pool:[#0000]  _: <POOL> created, routing address IPv4Address(('localhost', 7687))
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> resolve home database
+DEBUG:neo4j.pool:[#0000]  _: <POOL> attempting to update routing table from IPv4Address(('localhost', 7687))
+DEBUG:neo4j.io:[#0000]  _: <RESOLVE> in: localhost:7687
+DEBUG:neo4j.io:[#0000]  _: <RESOLVE> dns resolver out: 127.0.0.1:7687
+DEBUG:neo4j.pool:[#0000]  _: <POOL> _acquire router connection, database=None, address=ResolvedIPv4Address(('127.0.0.1', 7687))
+DEBUG:neo4j.pool:[#0000]  _: <POOL> trying to hand out new connection
+DEBUG:neo4j.io:[#0000]  C: <OPEN> 127.0.0.1:7687
+DEBUG:neo4j.io:[#B0FC]  C: <MAGIC> 0x6060B017
+DEBUG:neo4j.io:[#B0FC]  C: <HANDSHAKE> 0x000001FF 0x00080805 0x00020404 0x00000003
+DEBUG:neo4j.io:[#B0FC]  S: <HANDSHAKE> 0x000001FF [4] 0x00040404 0x00040405 0x00020805 0x00000006 0x00
+DEBUG:neo4j.io:[#B0FC]  C: <HANDSHAKE> 0x00000006 0x00
+DEBUG:neo4j.io:[#B0FC]  C: HELLO {'user_agent': 'neo4j-python/6.1.0 Python/3.11.14-final-0 (linux)', 'routing': {'address': 'localhost:7687'}, 'bolt_agent': {'product': 'neo4j-python/6.1.0', 'platform': 'Linux 6.17.0-14-generic; x86_64', 'language': 'Python/3.11.14-final-0', 'language_details': 'CPython; 3.11.14-final-0 (main, Oct 10 2025 08:54:04) [GCC 13.3.0]'}}
+DEBUG:neo4j.io:[#B0FC]  _: <CONNECTION> client state: CONNECTED > AUTHENTICATION
+DEBUG:neo4j.io:[#B0FC]  C: LOGON {'scheme': 'basic', 'principal': 'neo4j', 'credentials': '*******'}
+DEBUG:neo4j.io:[#B0FC]  _: <CONNECTION> client state: AUTHENTICATION > READY
+DEBUG:neo4j.io:[#B0FC]  S: SUCCESS {'server': 'Neo4j/2025.10.1', 'protocol_version': '6.0', 'connection_id': 'bolt-191', 'hints': {'connection.recv_timeout_seconds': 120, 'ssr.enabled': True}}
+DEBUG:neo4j.io:[#B0FC]  _: <CONNECTION> server state: CONNECTED > AUTHENTICATION
+DEBUG:neo4j.io:[#B0FC]  S: SUCCESS {'advertised_address': 'localhost:7687'}
+DEBUG:neo4j.io:[#B0FC]  _: <CONNECTION> server state: AUTHENTICATION > READY
+DEBUG:neo4j.io:[#B0FC]  C: ROUTE {'address': 'localhost:7687'} () {}
+DEBUG:neo4j.io:[#B0FC]  S: SUCCESS {'rt': {'servers': [{'addresses': ['localhost:7687'], 'role': 'WRITE'}, {'addresses': ['localhost:7687'], 'role': 'READ'}, {'addresses': ['localhost:7687'], 'role': 'ROUTE'}], 'ttl': 300, 'db': 'neo4j'}}
+DEBUG:neo4j.pool:[#B0FC]  _: <POOL> released bolt-191
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> updated table=RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.039278307, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> update routing table from address=ResolvedIPv4Address(('127.0.0.1', 7687)) (RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.039278307, ttl=300))
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> pinning database: 'neo4j'
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='READ', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.039278307, ttl=300, perf_time=12690.03949327 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=True): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.039278307, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#0000]  _: <POOL> trying to hand out new connection
+DEBUG:neo4j.io:[#0000]  _: <RESOLVE> in: localhost:7687
+DEBUG:neo4j.io:[#0000]  _: <RESOLVE> dns resolver out: 127.0.0.1:7687
+DEBUG:neo4j.io:[#0000]  C: <OPEN> 127.0.0.1:7687
+DEBUG:neo4j.io:[#B106]  C: <MAGIC> 0x6060B017
+DEBUG:neo4j.io:[#B106]  C: <HANDSHAKE> 0x000001FF 0x00080805 0x00020404 0x00000003
+DEBUG:neo4j.io:[#B106]  S: <HANDSHAKE> 0x000001FF [4] 0x00040404 0x00040405 0x00020805 0x00000006 0x00
+DEBUG:neo4j.io:[#B106]  C: <HANDSHAKE> 0x00000006 0x00
+DEBUG:neo4j.io:[#B106]  C: HELLO {'user_agent': 'neo4j-python/6.1.0 Python/3.11.14-final-0 (linux)', 'routing': {'address': 'localhost:7687'}, 'bolt_agent': {'product': 'neo4j-python/6.1.0', 'platform': 'Linux 6.17.0-14-generic; x86_64', 'language': 'Python/3.11.14-final-0', 'language_details': 'CPython; 3.11.14-final-0 (main, Oct 10 2025 08:54:04) [GCC 13.3.0]'}}
+DEBUG:neo4j.io:[#B106]  _: <CONNECTION> client state: CONNECTED > AUTHENTICATION
+DEBUG:neo4j.io:[#B106]  C: LOGON {'scheme': 'basic', 'principal': 'neo4j', 'credentials': '*******'}
+DEBUG:neo4j.io:[#B106]  _: <CONNECTION> client state: AUTHENTICATION > READY
+DEBUG:neo4j.io:[#B106]  S: SUCCESS {'server': 'Neo4j/2025.10.1', 'protocol_version': '6.0', 'connection_id': 'bolt-192', 'hints': {'connection.recv_timeout_seconds': 120, 'ssr.enabled': True}}
+DEBUG:neo4j.io:[#B106]  _: <CONNECTION> server state: CONNECTED > AUTHENTICATION
+DEBUG:neo4j.io:[#B106]  S: SUCCESS {'advertised_address': 'localhost:7687'}
+DEBUG:neo4j.io:[#B106]  _: <CONNECTION> server state: AUTHENTICATION > READY
+DEBUG:neo4j.pool:[#B106]  _: <POOL> released bolt-192
+DEBUG:neo4j.pool:[#0000]  _: <POOL> close
+DEBUG:neo4j.io:[#B0FC]  C: GOODBYE
+DEBUG:neo4j.io:[#B0FC]  C: <CLOSE>
+DEBUG:neo4j.io:[#B106]  C: GOODBYE
+DEBUG:neo4j.io:[#B106]  C: <CLOSE>
+
+INFO:perseus_client.client:Using ontology from path: /home/victor/lettria/gitlab.ops.lettria.net/text-to-graph/perseus-client/examples/simple/interlink-graphs/assets/ontology.ttl
+INFO:perseus_client.services.ontology_service:Starting upload process for ontology: /home/victor/lettria/gitlab.ops.lettria.net/text-to-graph/perseus-client/examples/simple/interlink-graphs/assets/ontology.ttl
+DEBUG:perseus_client.services.ontology_service:Ontology 'ontology.ttl' has hash: 2fb4aad07ea589e2052542cb66f00dc5e06cf8cda8ca9e17245e8d85768cd8c2
+DEBUG:perseus_client.services.ontology_service:Requesting to create ontology 'ontology.ttl' in API.
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/ontology
+INFO:perseus_client.services.ontology_service:Ontology with hash 2fb4aad07ea589e2052542cb66f00dc5e06cf8cda8ca9e17245e8d85768cd8c2 already exists. Fetching existing ontology.
+DEBUG:perseus_client.services.ontology_service:Finding ontologies with ids: None or source_hashes: ['2fb4aad07ea589e2052542cb66f00dc5e06cf8cda8ca9e17245e8d85768cd8c2']
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/ontology/find
+DEBUG:perseus_client.services.base_service:Success: POST https://oath.perseus.lettria.net/api/v0/ontology/find -> 200
+INFO:perseus_client.services.ontology_service:Found existing ontology with ID: 7938402a-72ad-42ff-b649-ad00329d10d5
+DEBUG:perseus_client.client:Using ontology_id: 7938402a-72ad-42ff-b649-ad00329d10d5
+INFO:perseus_client.client:Processing 2 file(s)...
+INFO:perseus_client.client:Building graph for file: /home/victor/lettria/gitlab.ops.lettria.net/text-to-graph/perseus-client/examples/simple/interlink-graphs/assets/person1.txt
+INFO:perseus_client.services.file_service:Starting upload process for file: /home/victor/lettria/gitlab.ops.lettria.net/text-to-graph/perseus-client/examples/simple/interlink-graphs/assets/person1.txt
+DEBUG:perseus_client.services.file_service:File 'person1.txt' has hash: e3f679bffb0543ead9d823f59f03b704e728291f09b09e6debc330eb534ee217
+DEBUG:perseus_client.services.file_service:Requesting to create file 'person1.txt' in API.
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/file
+INFO:perseus_client.client:Building graph for file: /home/victor/lettria/gitlab.ops.lettria.net/text-to-graph/perseus-client/examples/simple/interlink-graphs/assets/person2.txt
+INFO:perseus_client.services.file_service:Starting upload process for file: /home/victor/lettria/gitlab.ops.lettria.net/text-to-graph/perseus-client/examples/simple/interlink-graphs/assets/person2.txt
+DEBUG:perseus_client.services.file_service:File 'person2.txt' has hash: aa2fd3ff887565aad2b1c72368e83978a4901e925672ff7040b3ed69b17da2a6
+DEBUG:perseus_client.services.file_service:Requesting to create file 'person2.txt' in API.
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/file
+INFO:perseus_client.services.file_service:File with hash e3f679bffb0543ead9d823f59f03b704e728291f09b09e6debc330eb534ee217 already exists. Fetching existing file.
+DEBUG:perseus_client.services.file_service:Finding files with ids: None or source_hashes: ['e3f679bffb0543ead9d823f59f03b704e728291f09b09e6debc330eb534ee217']
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/file/find
+DEBUG:perseus_client.services.base_service:Success: POST https://oath.perseus.lettria.net/api/v0/file/find -> 200
+INFO:perseus_client.services.file_service:Found existing file with ID: 2beb97e9-ac1e-4f92-8a0b-2fc6bf3196c2
+DEBUG:perseus_client.client:Searching for existing job for file_id: 2beb97e9-ac1e-4f92-8a0b-2fc6bf3196c2, ontology_id: 7938402a-72ad-42ff-b649-ad00329d10d5
+DEBUG:perseus_client.services.job_service:Finding latest job for file_id: 2beb97e9-ac1e-4f92-8a0b-2fc6bf3196c2, ontology_id: 7938402a-72ad-42ff-b649-ad00329d10d5
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/job/find
+INFO:perseus_client.services.file_service:File with hash aa2fd3ff887565aad2b1c72368e83978a4901e925672ff7040b3ed69b17da2a6 already exists. Fetching existing file.
+DEBUG:perseus_client.services.file_service:Finding files with ids: None or source_hashes: ['aa2fd3ff887565aad2b1c72368e83978a4901e925672ff7040b3ed69b17da2a6']
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/file/find
+DEBUG:perseus_client.services.base_service:Success: POST https://oath.perseus.lettria.net/api/v0/job/find -> 200
+DEBUG:perseus_client.services.job_service:Found latest job with ID: 84849214-a20a-45d1-a1ae-4615b4b37c91 and status: JobStatus.SUCCEEDED
+DEBUG:perseus_client.client:Found latest job 84849214-a20a-45d1-a1ae-4615b4b37c91 with status JobStatus.SUCCEEDED
+INFO:perseus_client.client:Using existing completed job: 84849214-a20a-45d1-a1ae-4615b4b37c91
+INFO:perseus_client.services.job_service:Waiting for job 84849214-a20a-45d1-a1ae-4615b4b37c91 to complete.
+DEBUG:perseus_client.services.job_service:Finding job with ID: 84849214-a20a-45d1-a1ae-4615b4b37c91
+DEBUG:perseus_client.services.job_service:Finding jobs with IDs: ['84849214-a20a-45d1-a1ae-4615b4b37c91']
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/job/find
+DEBUG:perseus_client.services.base_service:Success: POST https://oath.perseus.lettria.net/api/v0/file/find -> 200
+INFO:perseus_client.services.file_service:Found existing file with ID: 184f9644-f468-4b64-b852-10be209880d5
+DEBUG:perseus_client.client:Searching for existing job for file_id: 184f9644-f468-4b64-b852-10be209880d5, ontology_id: 7938402a-72ad-42ff-b649-ad00329d10d5
+DEBUG:perseus_client.services.job_service:Finding latest job for file_id: 184f9644-f468-4b64-b852-10be209880d5, ontology_id: 7938402a-72ad-42ff-b649-ad00329d10d5
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/job/find
+DEBUG:perseus_client.services.base_service:Success: POST https://oath.perseus.lettria.net/api/v0/job/find -> 200
+DEBUG:perseus_client.services.job_service:Found 1 jobs.
+INFO:perseus_client.services.job_service:Job 84849214-a20a-45d1-a1ae-4615b4b37c91 completed successfully.
+DEBUG:perseus_client.client:Downloading job output to temporary path: /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output
+DEBUG:perseus_client.services.job_service:Starting download of outputs for job ID: 84849214-a20a-45d1-a1ae-4615b4b37c91
+DEBUG:perseus_client.services.job_service:Fetching download URLs for job ID: 84849214-a20a-45d1-a1ae-4615b4b37c91
+DEBUG:perseus_client.services.base_service:Request: GET https://oath.perseus.lettria.net/api/v0/job/84849214-a20a-45d1-a1ae-4615b4b37c91/download-output
+DEBUG:perseus_client.services.base_service:Success: POST https://oath.perseus.lettria.net/api/v0/job/find -> 200
+DEBUG:perseus_client.services.job_service:Found latest job with ID: f1f8a4c6-aaff-41ab-acf7-a8b45b551098 and status: JobStatus.SUCCEEDED
+DEBUG:perseus_client.client:Found latest job f1f8a4c6-aaff-41ab-acf7-a8b45b551098 with status JobStatus.SUCCEEDED
+INFO:perseus_client.client:Using existing completed job: f1f8a4c6-aaff-41ab-acf7-a8b45b551098
+INFO:perseus_client.services.job_service:Waiting for job f1f8a4c6-aaff-41ab-acf7-a8b45b551098 to complete.
+DEBUG:perseus_client.services.job_service:Finding job with ID: f1f8a4c6-aaff-41ab-acf7-a8b45b551098
+DEBUG:perseus_client.services.job_service:Finding jobs with IDs: ['f1f8a4c6-aaff-41ab-acf7-a8b45b551098']
+DEBUG:perseus_client.services.base_service:Request: POST https://oath.perseus.lettria.net/api/v0/job/find
+DEBUG:perseus_client.services.base_service:Success: GET https://oath.perseus.lettria.net/api/v0/job/84849214-a20a-45d1-a1ae-4615b4b37c91/download-output -> 200
+DEBUG:perseus_client.services.job_service:Successfully fetched download URLs for job ID: 84849214-a20a-45d1-a1ae-4615b4b37c91
+DEBUG:perseus_client.services.job_service:Downloading TTL file to /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.ttl
+DEBUG:perseus_client.services.job_service:Downloading file from pre-signed URL to /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.ttl
+DEBUG:perseus_client.services.base_service:Success: POST https://oath.perseus.lettria.net/api/v0/job/find -> 200
+DEBUG:perseus_client.services.job_service:Found 1 jobs.
+INFO:perseus_client.services.job_service:Job f1f8a4c6-aaff-41ab-acf7-a8b45b551098 completed successfully.
+DEBUG:perseus_client.client:Downloading job output to temporary path: /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output
+DEBUG:perseus_client.services.job_service:Starting download of outputs for job ID: f1f8a4c6-aaff-41ab-acf7-a8b45b551098
+DEBUG:perseus_client.services.job_service:Fetching download URLs for job ID: f1f8a4c6-aaff-41ab-acf7-a8b45b551098
+DEBUG:perseus_client.services.base_service:Request: GET https://oath.perseus.lettria.net/api/v0/job/f1f8a4c6-aaff-41ab-acf7-a8b45b551098/download-output
+DEBUG:perseus_client.services.base_service:Success: GET https://oath.perseus.lettria.net/api/v0/job/f1f8a4c6-aaff-41ab-acf7-a8b45b551098/download-output -> 200
+DEBUG:perseus_client.services.job_service:Successfully fetched download URLs for job ID: f1f8a4c6-aaff-41ab-acf7-a8b45b551098
+DEBUG:perseus_client.services.job_service:Downloading TTL file to /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.ttl
+DEBUG:perseus_client.services.job_service:Downloading file from pre-signed URL to /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.ttl
+DEBUG:perseus_client.services.job_service:File downloaded successfully to /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.ttl
+DEBUG:perseus_client.services.job_service:Successfully downloaded TTL output to /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.ttl
+DEBUG:perseus_client.services.job_service:Downloading CQL file to /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.cql
+DEBUG:perseus_client.services.job_service:Downloading file from pre-signed URL to /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.cql
+DEBUG:perseus_client.services.job_service:File downloaded successfully to /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.cql
+DEBUG:perseus_client.services.job_service:Successfully downloaded CQL output to /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.cql
+DEBUG:perseus_client.client:Applying metadata: {'source': 'interlink_graphs_example'}
+DEBUG:perseus_client.services.ttl_service:Parsing TTL content to add metadata.
+DEBUG:perseus_client.services.ttl_service:Adding metadata to 6 subjects in the graph.
+DEBUG:perseus_client.client:Successfully applied metadata to TTL content.
+DEBUG:perseus_client.client:Successfully applied metadata to CQL content.
+DEBUG:perseus_client.client:TTL file found at /tmp/perseus-client-phk8346i/84849214-a20a-45d1-a1ae-4615b4b37c91_output.ttl, parsing to KnowledgeGraph.
+INFO:perseus_client.services.ttl_service:Parsing TTL content into a KnowledgeGraph object.
+DEBUG:perseus_client.services.ttl_service:Successfully parsed 37 triples from TTL content.
+DEBUG:perseus_client.services.ttl_service:Identified 6 individuals and 5 classes.
+DEBUG:perseus_client.models:KnowledgeGraph initialized with services: ttl=False, cql=False, neo4j=False, falkordb=False, graph=False
+INFO:perseus_client.services.ttl_service:Successfully created KnowledgeGraph with 6 entities and 13 relations.
+DEBUG:perseus_client.client:Injecting services into KnowledgeGraph instance.
+DEBUG:perseus_client.services.job_service:File downloaded successfully to /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.ttl
+DEBUG:perseus_client.services.job_service:Successfully downloaded TTL output to /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.ttl
+DEBUG:perseus_client.services.job_service:Downloading CQL file to /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.cql
+DEBUG:perseus_client.services.job_service:Downloading file from pre-signed URL to /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.cql
+DEBUG:perseus_client.services.job_service:File downloaded successfully to /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.cql
+DEBUG:perseus_client.services.job_service:Successfully downloaded CQL output to /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.cql
+DEBUG:perseus_client.client:Applying metadata: {'source': 'interlink_graphs_example'}
+DEBUG:perseus_client.services.ttl_service:Parsing TTL content to add metadata.
+DEBUG:perseus_client.services.ttl_service:Adding metadata to 7 subjects in the graph.
+DEBUG:perseus_client.client:Successfully applied metadata to TTL content.
+DEBUG:perseus_client.client:Successfully applied metadata to CQL content.
+DEBUG:perseus_client.client:TTL file found at /tmp/perseus-client-86b_4vza/f1f8a4c6-aaff-41ab-acf7-a8b45b551098_output.ttl, parsing to KnowledgeGraph.
+INFO:perseus_client.services.ttl_service:Parsing TTL content into a KnowledgeGraph object.
+DEBUG:perseus_client.services.ttl_service:Successfully parsed 55 triples from TTL content.
+DEBUG:perseus_client.services.ttl_service:Identified 7 individuals and 5 classes.
+DEBUG:perseus_client.models:KnowledgeGraph initialized with services: ttl=False, cql=False, neo4j=False, falkordb=False, graph=False
+INFO:perseus_client.services.ttl_service:Successfully created KnowledgeGraph with 7 entities and 25 relations.
+DEBUG:perseus_client.client:Injecting services into KnowledgeGraph instance.
+INFO:perseus_client.client:All files processed.
+INFO:perseus_client.services.graph_service:Starting interlink process for 2 knowledge graphs.
+DEBUG:perseus_client.services.graph_service:Total entities before merge: 13, Total relations before merge: 38
+DEBUG:perseus_client.models:KnowledgeGraph initialized with services: ttl=False, cql=False, neo4j=False, falkordb=False, graph=False
+DEBUG:perseus_client.services.graph_service:Using immutable properties: ['id']
+WARNING:perseus_client.services.graph_service:Could not resolve property name 'id' to a full URI, returning original name for fallback comparison.
+DEBUG:perseus_client.services.graph_service:Resolved immutable properties to URIs: ['id']
+DEBUG:perseus_client.services.graph_service:kbs: [KnowledgeGraph(entities=[Entity(uri='http://example.org/data/68f6dd59-2108-47a4-99c0-51347d9aa950', types=['http://example.org/ontology#Occupation'], properties={'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='software engineer', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None)}), Entity(uri='http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286', types=['http://example.org/ontology#Organization'], properties={'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='ExampleCorp', datatype=None), 'http://example.org/ontology#hasName': LiteralValue(value='ExampleCorp', datatype=None)}), Entity(uri='http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2', types=['http://example.org/ontology#Employment'], properties={'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value="Alice's employment at ExampleCorp", datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None)}), Entity(uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', types=['http://example.org/ontology#Person'], properties={'http://example.org/ontology#hasJobTitle': LiteralValue(value='software engineer', datatype=None), 'http://example.org/ontology#hasMaritalStatus': LiteralValue(value='married', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://example.org/ontology#hasGivenName': LiteralValue(value='Alice', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Alice', datatype=None)}), Entity(uri='http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283', types=['http://example.org/ontology#Person'], properties={'http://example.org/ontology#hasGivenName': LiteralValue(value='Bob', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Bob', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://example.org/ontology#hasMaritalStatus': LiteralValue(value='married', datatype=None)}), Entity(uri='http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4', types=['http://example.org/ontology#Marriage'], properties={'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Marriage of Alice and Bob', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None)})], relations=[Relation(source_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', target_uri='http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2', predicate='http://example.org/ontology#hasEmployment', properties={}), Relation(source_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', target_uri='http://example.org/data/68f6dd59-2108-47a4-99c0-51347d9aa950', predicate='http://example.org/ontology#hasOccupation', properties={}), Relation(source_uri='http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4', target_uri='http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283', predicate='http://example.org/ontology#hasSpouse', properties={}), Relation(source_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', target_uri='http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286', predicate='http://example.org/ontology#isAffiliatedWith', properties={}), Relation(source_uri='http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286', target_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', predicate='http://example.org/ontology#employs', properties={}), Relation(source_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', target_uri='http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286', predicate='http://example.org/ontology#isEmployedBy', properties={}), Relation(source_uri='http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4', target_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', predicate='http://example.org/ontology#hasSpouse', properties={}), Relation(source_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', target_uri='http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283', predicate='http://example.org/ontology#isMarriedTo', properties={}), Relation(source_uri='http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283', target_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', predicate='http://example.org/ontology#isMarriedTo', properties={}), Relation(source_uri='http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2', target_uri='http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286', predicate='http://example.org/ontology#hasEmployer', properties={}), Relation(source_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', target_uri='http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4', predicate='http://example.org/ontology#hasMarriage', properties={}), Relation(source_uri='http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2', target_uri='http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880', predicate='http://example.org/ontology#hasEmployee', properties={}), Relation(source_uri='http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283', target_uri='http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4', predicate='http://example.org/ontology#hasMarriage', properties={})], documents=[Document(id='86fdc1f4-a81e-43d4-b16c-e6486a0ce4e4', content='@prefix data: <http://example.org/data/> .\n@prefix ont: <http://example.org/ontology#> .\n@prefix pmeta: <https://lettria.com/perseus/metadata#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n\ndata:45c042ca-be27-4ac6-94d7-95ec6c45b4c2 a ont:Employment ;\n    rdfs:label "Alice\'s employment at ExampleCorp" ;\n    ont:hasEmployee data:e205e4a2-a915-4ce5-8779-e52911957880 ;\n    ont:hasEmployer data:5834a964-56b8-4d10-99cb-d29da138a286 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:68f6dd59-2108-47a4-99c0-51347d9aa950 a ont:Occupation ;\n    rdfs:label "software engineer" ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:3ebc3ecc-284c-4c06-86c2-8a2304759be4 a ont:Marriage ;\n    rdfs:label "Marriage of Alice and Bob" ;\n    ont:hasSpouse data:73a7cf86-b3b6-4268-bb16-7e736f164283,\n        data:e205e4a2-a915-4ce5-8779-e52911957880 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:73a7cf86-b3b6-4268-bb16-7e736f164283 a ont:Person ;\n    rdfs:label "Bob" ;\n    ont:hasGivenName "Bob" ;\n    ont:hasMaritalStatus "married" ;\n    ont:hasMarriage data:3ebc3ecc-284c-4c06-86c2-8a2304759be4 ;\n    ont:isMarriedTo data:e205e4a2-a915-4ce5-8779-e52911957880 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:5834a964-56b8-4d10-99cb-d29da138a286 a ont:Organization ;\n    rdfs:label "ExampleCorp" ;\n    ont:employs data:e205e4a2-a915-4ce5-8779-e52911957880 ;\n    ont:hasName "ExampleCorp" ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:e205e4a2-a915-4ce5-8779-e52911957880 a ont:Person ;\n    rdfs:label "Alice" ;\n    ont:hasEmployment data:45c042ca-be27-4ac6-94d7-95ec6c45b4c2 ;\n    ont:hasGivenName "Alice" ;\n    ont:hasJobTitle "software engineer" ;\n    ont:hasMaritalStatus "married" ;\n    ont:hasMarriage data:3ebc3ecc-284c-4c06-86c2-8a2304759be4 ;\n    ont:hasOccupation data:68f6dd59-2108-47a4-99c0-51347d9aa950 ;\n    ont:isAffiliatedWith data:5834a964-56b8-4d10-99cb-d29da138a286 ;\n    ont:isEmployedBy data:5834a964-56b8-4d10-99cb-d29da138a286 ;\n    ont:isMarriedTo data:73a7cf86-b3b6-4268-bb16-7e736f164283 ;\n    pmeta:source "interlink_graphs_example" .\n\n', metadata={})], namespaces={'brick': 'https://brickschema.org/schema/Brick#', 'csvw': 'http://www.w3.org/ns/csvw#', 'dc': 'http://purl.org/dc/elements/1.1/', 'dcat': 'http://www.w3.org/ns/dcat#', 'dcmitype': 'http://purl.org/dc/dcmitype/', 'dcterms': 'http://purl.org/dc/terms/', 'dcam': 'http://purl.org/dc/dcam/', 'doap': 'http://usefulinc.com/ns/doap#', 'foaf': 'http://xmlns.com/foaf/0.1/', 'geo': 'http://www.opengis.net/ont/geosparql#', 'odrl': 'http://www.w3.org/ns/odrl/2/', 'org': 'http://www.w3.org/ns/org#', 'prof': 'http://www.w3.org/ns/dx/prof/', 'prov': 'http://www.w3.org/ns/prov#', 'qb': 'http://purl.org/linked-data/cube#', 'schema': 'https://schema.org/', 'sh': 'http://www.w3.org/ns/shacl#', 'skos': 'http://www.w3.org/2004/02/skos/core#', 'sosa': 'http://www.w3.org/ns/sosa/', 'ssn': 'http://www.w3.org/ns/ssn/', 'time': 'http://www.w3.org/2006/time#', 'vann': 'http://purl.org/vocab/vann/', 'void': 'http://rdfs.org/ns/void#', 'wgs': 'https://www.w3.org/2003/01/geo/wgs84_pos#', 'owl': 'http://www.w3.org/2002/07/owl#', 'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'xsd': 'http://www.w3.org/2001/XMLSchema#', 'xml': 'http://www.w3.org/XML/1998/namespace', 'data': 'http://example.org/data/', 'ont': 'http://example.org/ontology#', 'pmeta': 'https://lettria.com/perseus/metadata#'}, ttl_content='@prefix data: <http://example.org/data/> .\n@prefix ont: <http://example.org/ontology#> .\n@prefix pmeta: <https://lettria.com/perseus/metadata#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n\ndata:45c042ca-be27-4ac6-94d7-95ec6c45b4c2 a ont:Employment ;\n    rdfs:label "Alice\'s employment at ExampleCorp" ;\n    ont:hasEmployee data:e205e4a2-a915-4ce5-8779-e52911957880 ;\n    ont:hasEmployer data:5834a964-56b8-4d10-99cb-d29da138a286 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:68f6dd59-2108-47a4-99c0-51347d9aa950 a ont:Occupation ;\n    rdfs:label "software engineer" ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:3ebc3ecc-284c-4c06-86c2-8a2304759be4 a ont:Marriage ;\n    rdfs:label "Marriage of Alice and Bob" ;\n    ont:hasSpouse data:73a7cf86-b3b6-4268-bb16-7e736f164283,\n        data:e205e4a2-a915-4ce5-8779-e52911957880 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:73a7cf86-b3b6-4268-bb16-7e736f164283 a ont:Person ;\n    rdfs:label "Bob" ;\n    ont:hasGivenName "Bob" ;\n    ont:hasMaritalStatus "married" ;\n    ont:hasMarriage data:3ebc3ecc-284c-4c06-86c2-8a2304759be4 ;\n    ont:isMarriedTo data:e205e4a2-a915-4ce5-8779-e52911957880 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:5834a964-56b8-4d10-99cb-d29da138a286 a ont:Organization ;\n    rdfs:label "ExampleCorp" ;\n    ont:employs data:e205e4a2-a915-4ce5-8779-e52911957880 ;\n    ont:hasName "ExampleCorp" ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:e205e4a2-a915-4ce5-8779-e52911957880 a ont:Person ;\n    rdfs:label "Alice" ;\n    ont:hasEmployment data:45c042ca-be27-4ac6-94d7-95ec6c45b4c2 ;\n    ont:hasGivenName "Alice" ;\n    ont:hasJobTitle "software engineer" ;\n    ont:hasMaritalStatus "married" ;\n    ont:hasMarriage data:3ebc3ecc-284c-4c06-86c2-8a2304759be4 ;\n    ont:hasOccupation data:68f6dd59-2108-47a4-99c0-51347d9aa950 ;\n    ont:isAffiliatedWith data:5834a964-56b8-4d10-99cb-d29da138a286 ;\n    ont:isEmployedBy data:5834a964-56b8-4d10-99cb-d29da138a286 ;\n    ont:isMarriedTo data:73a7cf86-b3b6-4268-bb16-7e736f164283 ;\n    pmeta:source "interlink_graphs_example" .\n\n', cql_content='MERGE (n:Organization {source: \'interlink_graphs_example\', uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'});\nMERGE (n:Person {source: \'interlink_graphs_example\', uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'});\nMERGE (n:Marriage {source: \'interlink_graphs_example\', uuid: \'3ebc3ecc-284c-4c06-86c2-8a2304759be4\'});\nMERGE (n:Occupation {source: \'interlink_graphs_example\', uuid: \'68f6dd59-2108-47a4-99c0-51347d9aa950\'});\nMERGE (n:Employment {source: \'interlink_graphs_example\', uuid: \'45c042ca-be27-4ac6-94d7-95ec6c45b4c2\'});\nMERGE (n:Person {source: \'interlink_graphs_example\', uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'});\nMATCH (n:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) SET n.`label` = "Alice";\nMATCH (a:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MATCH (b:Employment {uuid: \'45c042ca-be27-4ac6-94d7-95ec6c45b4c2\'}) MERGE (a)-[:`hasEmployment` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Marriage {uuid: \'3ebc3ecc-284c-4c06-86c2-8a2304759be4\'}) MATCH (b:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) MERGE (a)-[:`hasSpouse` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Organization {uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'}) SET n.`label` = "ExampleCorp";\nMATCH (n:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) SET n.`label` = "Bob";\nMATCH (n:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) SET n.`label` = "Alice";\nMATCH (a:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MATCH (b:Marriage {uuid: \'3ebc3ecc-284c-4c06-86c2-8a2304759be4\'}) MERGE (a)-[:`hasMarriage` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Organization {uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'}) SET n.`label` = "ExampleCorp";\nMATCH (n:Organization {uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'}) SET n.`hasName` = "ExampleCorp";\nMATCH (n:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) SET n.`label` = "Alice";\nMATCH (n:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) SET n.`hasMaritalStatus` = "married";\nMATCH (a:Employment {uuid: \'45c042ca-be27-4ac6-94d7-95ec6c45b4c2\'}) MATCH (b:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MERGE (a)-[:`hasEmployee` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) SET n.`hasMaritalStatus` = "married";\nMATCH (a:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) MATCH (b:Marriage {uuid: \'3ebc3ecc-284c-4c06-86c2-8a2304759be4\'}) MERGE (a)-[:`hasMarriage` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MATCH (b:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) MERGE (a)-[:`isMarriedTo` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Marriage {uuid: \'3ebc3ecc-284c-4c06-86c2-8a2304759be4\'}) SET n.`label` = "Marriage of Alice and Bob";\nMATCH (n:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) SET n.`hasGivenName` = "Bob";\nMATCH (n:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) SET n.`hasJobTitle` = "software engineer";\nMATCH (a:Organization {uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'}) MATCH (b:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MERGE (a)-[:`employs` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MATCH (b:Organization {uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'}) MERGE (a)-[:`isEmployedBy` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MATCH (b:Occupation {uuid: \'68f6dd59-2108-47a4-99c0-51347d9aa950\'}) MERGE (a)-[:`hasOccupation` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) SET n.`label` = "Bob";\nMATCH (a:Employment {uuid: \'45c042ca-be27-4ac6-94d7-95ec6c45b4c2\'}) MATCH (b:Organization {uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'}) MERGE (a)-[:`hasEmployer` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Occupation {uuid: \'68f6dd59-2108-47a4-99c0-51347d9aa950\'}) SET n.`label` = "software engineer";\nMATCH (n:Employment {uuid: \'45c042ca-be27-4ac6-94d7-95ec6c45b4c2\'}) SET n.`label` = "Alice\'s employment at ExampleCorp";\nMATCH (a:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MATCH (b:Organization {uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'}) MERGE (a)-[:`isAffiliatedWith` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Organization {uuid: \'5834a964-56b8-4d10-99cb-d29da138a286\'}) SET n.`label` = "ExampleCorp";\nMATCH (n:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) SET n.`hasGivenName` = "Alice";\nMATCH (a:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) MATCH (b:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MERGE (a)-[:`isMarriedTo` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Marriage {uuid: \'3ebc3ecc-284c-4c06-86c2-8a2304759be4\'}) MATCH (b:Person {uuid: \'e205e4a2-a915-4ce5-8779-e52911957880\'}) MERGE (a)-[:`hasSpouse` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'73a7cf86-b3b6-4268-bb16-7e736f164283\'}) SET n.`label` = "Bob";'), KnowledgeGraph(entities=[Entity(uri='http://example.org/data/7bdcd8d8-8329-4033-a47c-2241ae17efc5', types=['http://example.org/ontology#Occupation'], properties={'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='dentist', datatype=None)}), Entity(uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', types=['http://example.org/ontology#Marriage'], properties={'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Marriage of Bob and Alice', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None)}), Entity(uri='http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e', types=['http://example.org/ontology#Organization'], properties={'http://example.org/ontology#hasName': LiteralValue(value='TechSolutions', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='TechSolutions', datatype=None)}), Entity(uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', types=['http://example.org/ontology#Person'], properties={'http://example.org/ontology#hasJobTitle': LiteralValue(value='project manager', datatype=None), 'http://example.org/ontology#hasGivenName': LiteralValue(value='Bob', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Bob', datatype=None), 'http://example.org/ontology#hasName': LiteralValue(value='Bob', datatype=None), 'http://example.org/ontology#hasFullName': LiteralValue(value='Bob', datatype=None)}), Entity(uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', types=['http://example.org/ontology#Employment'], properties={'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Employment of Bob at TechSolutions', datatype=None)}), Entity(uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', types=['http://example.org/ontology#Person'], properties={'http://example.org/ontology#hasFullName': LiteralValue(value='Alice', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://example.org/ontology#hasJobTitle': LiteralValue(value='dentist', datatype=None), 'http://example.org/ontology#hasGivenName': LiteralValue(value='Alice', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Alice', datatype=None), 'http://example.org/ontology#hasName': LiteralValue(value='Alice', datatype=None)}), Entity(uri='http://example.org/data/83374c58-a08e-455c-a8af-3019770c202a', types=['http://example.org/ontology#Occupation'], properties={'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='project manager', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None)})], relations=[Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e', predicate='http://example.org/ontology#isAffiliatedWith', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', predicate='http://example.org/ontology#isEmployeeIn', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e', predicate='http://example.org/ontology#isEmployedBy', properties={}), Relation(source_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', target_uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', predicate='http://example.org/ontology#participatesIn', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', predicate='http://example.org/ontology#knows', properties={}), Relation(source_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', target_uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', predicate='http://example.org/ontology#hasMarriage', properties={}), Relation(source_uri='http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e', target_uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', predicate='http://example.org/ontology#isEmployerIn', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', predicate='http://example.org/ontology#isMarriedTo', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', predicate='http://example.org/ontology#participatesIn', properties={}), Relation(source_uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', target_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', predicate='http://example.org/ontology#hasSpouse', properties={}), Relation(source_uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', target_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', predicate='http://example.org/ontology#hasParticipant', properties={}), Relation(source_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', target_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', predicate='http://example.org/ontology#knows', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', predicate='http://example.org/ontology#hasMarriage', properties={}), Relation(source_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', target_uri='http://example.org/data/7bdcd8d8-8329-4033-a47c-2241ae17efc5', predicate='http://example.org/ontology#hasOccupation', properties={}), Relation(source_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', target_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', predicate='http://example.org/ontology#isMarriedTo', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', predicate='http://example.org/ontology#participatesIn', properties={}), Relation(source_uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', target_uri='http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e', predicate='http://example.org/ontology#hasParticipant', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', predicate='http://example.org/ontology#hasEmployment', properties={}), Relation(source_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', target_uri='http://example.org/data/83374c58-a08e-455c-a8af-3019770c202a', predicate='http://example.org/ontology#hasOccupation', properties={}), Relation(source_uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', target_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', predicate='http://example.org/ontology#hasEmployee', properties={}), Relation(source_uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', target_uri='http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e', predicate='http://example.org/ontology#hasEmployer', properties={}), Relation(source_uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', target_uri='http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4', predicate='http://example.org/ontology#hasParticipant', properties={}), Relation(source_uri='http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705', target_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', predicate='http://example.org/ontology#hasParticipant', properties={}), Relation(source_uri='http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266', target_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', predicate='http://example.org/ontology#hasSpouse', properties={}), Relation(source_uri='http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e', target_uri='http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8', predicate='http://example.org/ontology#employs', properties={})], documents=[Document(id='ca797f10-f60f-47ab-92d6-6a95b74f2a10', content='@prefix data: <http://example.org/data/> .\n@prefix ont: <http://example.org/ontology#> .\n@prefix pmeta: <https://lettria.com/perseus/metadata#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n\ndata:7bdcd8d8-8329-4033-a47c-2241ae17efc5 a ont:Occupation ;\n    rdfs:label "dentist" ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:83374c58-a08e-455c-a8af-3019770c202a a ont:Occupation ;\n    rdfs:label "project manager" ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:229e5ed7-786a-4411-8f22-f1c2af2a0266 a ont:Marriage ;\n    rdfs:label "Marriage of Bob and Alice" ;\n    ont:hasParticipant data:2e843dc8-435f-475f-8d83-55be91f5ded4,\n        data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:hasSpouse data:2e843dc8-435f-475f-8d83-55be91f5ded4,\n        data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:28c5b891-fed3-45ba-a8a8-3e0cea09a705 a ont:Employment ;\n    rdfs:label "Employment of Bob at TechSolutions" ;\n    ont:hasEmployee data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:hasEmployer data:8de05dc6-2aac-4cde-b9da-5cc35d79af9e ;\n    ont:hasParticipant data:8de05dc6-2aac-4cde-b9da-5cc35d79af9e,\n        data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:2e843dc8-435f-475f-8d83-55be91f5ded4 a ont:Person ;\n    rdfs:label "Alice" ;\n    ont:hasFullName "Alice" ;\n    ont:hasGivenName "Alice" ;\n    ont:hasJobTitle "dentist" ;\n    ont:hasMarriage data:229e5ed7-786a-4411-8f22-f1c2af2a0266 ;\n    ont:hasName "Alice" ;\n    ont:hasOccupation data:7bdcd8d8-8329-4033-a47c-2241ae17efc5 ;\n    ont:isMarriedTo data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:knows data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:participatesIn data:229e5ed7-786a-4411-8f22-f1c2af2a0266 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:8de05dc6-2aac-4cde-b9da-5cc35d79af9e a ont:Organization ;\n    rdfs:label "TechSolutions" ;\n    ont:employs data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:hasName "TechSolutions" ;\n    ont:isEmployerIn data:28c5b891-fed3-45ba-a8a8-3e0cea09a705 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 a ont:Person ;\n    rdfs:label "Bob" ;\n    ont:hasEmployment data:28c5b891-fed3-45ba-a8a8-3e0cea09a705 ;\n    ont:hasFullName "Bob" ;\n    ont:hasGivenName "Bob" ;\n    ont:hasJobTitle "project manager" ;\n    ont:hasMarriage data:229e5ed7-786a-4411-8f22-f1c2af2a0266 ;\n    ont:hasName "Bob" ;\n    ont:hasOccupation data:83374c58-a08e-455c-a8af-3019770c202a ;\n    ont:isAffiliatedWith data:8de05dc6-2aac-4cde-b9da-5cc35d79af9e ;\n    ont:isEmployedBy data:8de05dc6-2aac-4cde-b9da-5cc35d79af9e ;\n    ont:isEmployeeIn data:28c5b891-fed3-45ba-a8a8-3e0cea09a705 ;\n    ont:isMarriedTo data:2e843dc8-435f-475f-8d83-55be91f5ded4 ;\n    ont:knows data:2e843dc8-435f-475f-8d83-55be91f5ded4 ;\n    ont:participatesIn data:229e5ed7-786a-4411-8f22-f1c2af2a0266,\n        data:28c5b891-fed3-45ba-a8a8-3e0cea09a705 ;\n    pmeta:source "interlink_graphs_example" .\n\n', metadata={})], namespaces={'brick': 'https://brickschema.org/schema/Brick#', 'csvw': 'http://www.w3.org/ns/csvw#', 'dc': 'http://purl.org/dc/elements/1.1/', 'dcat': 'http://www.w3.org/ns/dcat#', 'dcmitype': 'http://purl.org/dc/dcmitype/', 'dcterms': 'http://purl.org/dc/terms/', 'dcam': 'http://purl.org/dc/dcam/', 'doap': 'http://usefulinc.com/ns/doap#', 'foaf': 'http://xmlns.com/foaf/0.1/', 'geo': 'http://www.opengis.net/ont/geosparql#', 'odrl': 'http://www.w3.org/ns/odrl/2/', 'org': 'http://www.w3.org/ns/org#', 'prof': 'http://www.w3.org/ns/dx/prof/', 'prov': 'http://www.w3.org/ns/prov#', 'qb': 'http://purl.org/linked-data/cube#', 'schema': 'https://schema.org/', 'sh': 'http://www.w3.org/ns/shacl#', 'skos': 'http://www.w3.org/2004/02/skos/core#', 'sosa': 'http://www.w3.org/ns/sosa/', 'ssn': 'http://www.w3.org/ns/ssn/', 'time': 'http://www.w3.org/2006/time#', 'vann': 'http://purl.org/vocab/vann/', 'void': 'http://rdfs.org/ns/void#', 'wgs': 'https://www.w3.org/2003/01/geo/wgs84_pos#', 'owl': 'http://www.w3.org/2002/07/owl#', 'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'xsd': 'http://www.w3.org/2001/XMLSchema#', 'xml': 'http://www.w3.org/XML/1998/namespace', 'data': 'http://example.org/data/', 'ont': 'http://example.org/ontology#', 'pmeta': 'https://lettria.com/perseus/metadata#'}, ttl_content='@prefix data: <http://example.org/data/> .\n@prefix ont: <http://example.org/ontology#> .\n@prefix pmeta: <https://lettria.com/perseus/metadata#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n\ndata:7bdcd8d8-8329-4033-a47c-2241ae17efc5 a ont:Occupation ;\n    rdfs:label "dentist" ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:83374c58-a08e-455c-a8af-3019770c202a a ont:Occupation ;\n    rdfs:label "project manager" ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:229e5ed7-786a-4411-8f22-f1c2af2a0266 a ont:Marriage ;\n    rdfs:label "Marriage of Bob and Alice" ;\n    ont:hasParticipant data:2e843dc8-435f-475f-8d83-55be91f5ded4,\n        data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:hasSpouse data:2e843dc8-435f-475f-8d83-55be91f5ded4,\n        data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:28c5b891-fed3-45ba-a8a8-3e0cea09a705 a ont:Employment ;\n    rdfs:label "Employment of Bob at TechSolutions" ;\n    ont:hasEmployee data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:hasEmployer data:8de05dc6-2aac-4cde-b9da-5cc35d79af9e ;\n    ont:hasParticipant data:8de05dc6-2aac-4cde-b9da-5cc35d79af9e,\n        data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:2e843dc8-435f-475f-8d83-55be91f5ded4 a ont:Person ;\n    rdfs:label "Alice" ;\n    ont:hasFullName "Alice" ;\n    ont:hasGivenName "Alice" ;\n    ont:hasJobTitle "dentist" ;\n    ont:hasMarriage data:229e5ed7-786a-4411-8f22-f1c2af2a0266 ;\n    ont:hasName "Alice" ;\n    ont:hasOccupation data:7bdcd8d8-8329-4033-a47c-2241ae17efc5 ;\n    ont:isMarriedTo data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:knows data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:participatesIn data:229e5ed7-786a-4411-8f22-f1c2af2a0266 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:8de05dc6-2aac-4cde-b9da-5cc35d79af9e a ont:Organization ;\n    rdfs:label "TechSolutions" ;\n    ont:employs data:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 ;\n    ont:hasName "TechSolutions" ;\n    ont:isEmployerIn data:28c5b891-fed3-45ba-a8a8-3e0cea09a705 ;\n    pmeta:source "interlink_graphs_example" .\n\ndata:b8c9166b-6b5b-4688-ab25-785ba9bd44b8 a ont:Person ;\n    rdfs:label "Bob" ;\n    ont:hasEmployment data:28c5b891-fed3-45ba-a8a8-3e0cea09a705 ;\n    ont:hasFullName "Bob" ;\n    ont:hasGivenName "Bob" ;\n    ont:hasJobTitle "project manager" ;\n    ont:hasMarriage data:229e5ed7-786a-4411-8f22-f1c2af2a0266 ;\n    ont:hasName "Bob" ;\n    ont:hasOccupation data:83374c58-a08e-455c-a8af-3019770c202a ;\n    ont:isAffiliatedWith data:8de05dc6-2aac-4cde-b9da-5cc35d79af9e ;\n    ont:isEmployedBy data:8de05dc6-2aac-4cde-b9da-5cc35d79af9e ;\n    ont:isEmployeeIn data:28c5b891-fed3-45ba-a8a8-3e0cea09a705 ;\n    ont:isMarriedTo data:2e843dc8-435f-475f-8d83-55be91f5ded4 ;\n    ont:knows data:2e843dc8-435f-475f-8d83-55be91f5ded4 ;\n    ont:participatesIn data:229e5ed7-786a-4411-8f22-f1c2af2a0266,\n        data:28c5b891-fed3-45ba-a8a8-3e0cea09a705 ;\n    pmeta:source "interlink_graphs_example" .\n\n', cql_content='MERGE (n:Marriage {source: \'interlink_graphs_example\', uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'});\nMERGE (n:Organization {source: \'interlink_graphs_example\', uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'});\nMERGE (n:Employment {source: \'interlink_graphs_example\', uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'});\nMERGE (n:Person {source: \'interlink_graphs_example\', uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'});\nMERGE (n:Person {source: \'interlink_graphs_example\', uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'});\nMERGE (n:Occupation {source: \'interlink_graphs_example\', uuid: \'7bdcd8d8-8329-4033-a47c-2241ae17efc5\'});\nMERGE (n:Occupation {source: \'interlink_graphs_example\', uuid: \'83374c58-a08e-455c-a8af-3019770c202a\'});\nMATCH (n:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) SET n.`label` = "Alice";\nMATCH (n:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) SET n.`label` = "Marriage of Bob and Alice";\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) MERGE (a)-[:`hasEmployment` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) MERGE (a)-[:`isAffiliatedWith` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) SET n.`hasFullName` = "Bob";\nMATCH (a:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) MATCH (b:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MERGE (a)-[:`hasEmployee` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) SET n.`hasName` = "TechSolutions";\nMATCH (n:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) SET n.`hasGivenName` = "Bob";\nMATCH (n:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) SET n.`label` = "Bob";\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) MERGE (a)-[:`participatesIn` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) SET n.`label` = "Bob";\nMATCH (n:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) SET n.`hasName` = "Alice";\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) MERGE (a)-[:`participatesIn` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) MATCH (b:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MERGE (a)-[:`hasParticipant` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) MATCH (b:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MERGE (a)-[:`hasSpouse` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) SET n.`hasGivenName` = "Alice";\nMATCH (a:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MATCH (b:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MERGE (a)-[:`isMarriedTo` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) SET n.`label` = "Employment of Bob at TechSolutions";\nMATCH (n:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) SET n.`label` = "Alice";\nMATCH (a:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) MATCH (b:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MERGE (a)-[:`employs` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MATCH (b:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) MERGE (a)-[:`hasMarriage` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) SET n.`label` = "TechSolutions";\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) MERGE (a)-[:`hasMarriage` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) MATCH (b:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) MERGE (a)-[:`isEmployerIn` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) SET n.`hasJobTitle` = "dentist";\nMATCH (a:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) MATCH (b:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) MERGE (a)-[:`hasParticipant` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) SET n.`label` = "Alice";\nMATCH (n:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) SET n.`label` = "Employment of Bob at TechSolutions";\nMATCH (n:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) SET n.`hasFullName` = "Alice";\nMATCH (n:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) SET n.`label` = "TechSolutions";\nMATCH (n:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) SET n.`hasJobTitle` = "project manager";\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MERGE (a)-[:`knows` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MERGE (a)-[:`isMarriedTo` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) SET n.`label` = "TechSolutions";\nMATCH (a:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) MATCH (b:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MERGE (a)-[:`hasParticipant` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) MERGE (a)-[:`isEmployedBy` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) SET n.`label` = "Alice";\nMATCH (n:Occupation {uuid: \'7bdcd8d8-8329-4033-a47c-2241ae17efc5\'}) SET n.`label` = "dentist";\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) MERGE (a)-[:`isEmployeeIn` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MATCH (b:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MERGE (a)-[:`knows` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Occupation {uuid: \'83374c58-a08e-455c-a8af-3019770c202a\'}) SET n.`label` = "project manager";\nMATCH (a:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) MATCH (b:Organization {uuid: \'8de05dc6-2aac-4cde-b9da-5cc35d79af9e\'}) MERGE (a)-[:`hasEmployer` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) SET n.`label` = "Marriage of Bob and Alice";\nMATCH (a:Employment {uuid: \'28c5b891-fed3-45ba-a8a8-3e0cea09a705\'}) MATCH (b:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MERGE (a)-[:`hasParticipant` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) SET n.`hasName` = "Bob";\nMATCH (n:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) SET n.`label` = "Bob";\nMATCH (a:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MATCH (b:Occupation {uuid: \'7bdcd8d8-8329-4033-a47c-2241ae17efc5\'}) MERGE (a)-[:`hasOccupation` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MATCH (b:Occupation {uuid: \'83374c58-a08e-455c-a8af-3019770c202a\'}) MERGE (a)-[:`hasOccupation` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (a:Person {uuid: \'2e843dc8-435f-475f-8d83-55be91f5ded4\'}) MATCH (b:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) MERGE (a)-[:`participatesIn` {source: \'interlink_graphs_example\'}]->(b);\nMATCH (n:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) SET n.`label` = "Bob";\nMATCH (a:Marriage {uuid: \'229e5ed7-786a-4411-8f22-f1c2af2a0266\'}) MATCH (b:Person {uuid: \'b8c9166b-6b5b-4688-ab25-785ba9bd44b8\'}) MERGE (a)-[:`hasSpouse` {source: \'interlink_graphs_example\'}]->(b);')]
+DEBUG:perseus_client.services.graph_service:No conflict on immutable property 'id' for entity with key 'Bob'. Existing value: 'None', New value: 'None'.Entity properties: {'http://example.org/ontology#hasJobTitle': LiteralValue(value='project manager', datatype=None), 'http://example.org/ontology#hasGivenName': LiteralValue(value='Bob', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Bob', datatype=None), 'http://example.org/ontology#hasName': LiteralValue(value='Bob', datatype=None), 'http://example.org/ontology#hasFullName': LiteralValue(value='Bob', datatype=None)}, Existing entity properties: {'http://example.org/ontology#hasGivenName': LiteralValue(value='Bob', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Bob', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://example.org/ontology#hasMaritalStatus': LiteralValue(value='married', datatype=None)}
+DEBUG:perseus_client.services.graph_service:Merging entity 'http://example.org/data/b8c9166b-6b5b-4688-ab25-785ba9bd44b8' into existing entity 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283' based on key 'Bob'.
+DEBUG:perseus_client.services.graph_service:No conflict on immutable property 'id' for entity with key 'Alice'. Existing value: 'None', New value: 'None'.Entity properties: {'http://example.org/ontology#hasFullName': LiteralValue(value='Alice', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://example.org/ontology#hasJobTitle': LiteralValue(value='dentist', datatype=None), 'http://example.org/ontology#hasGivenName': LiteralValue(value='Alice', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Alice', datatype=None), 'http://example.org/ontology#hasName': LiteralValue(value='Alice', datatype=None)}, Existing entity properties: {'http://example.org/ontology#hasJobTitle': LiteralValue(value='software engineer', datatype=None), 'http://example.org/ontology#hasMaritalStatus': LiteralValue(value='married', datatype=None), 'https://lettria.com/perseus/metadata#source': LiteralValue(value='interlink_graphs_example', datatype=None), 'http://example.org/ontology#hasGivenName': LiteralValue(value='Alice', datatype=None), 'http://www.w3.org/2000/01/rdf-schema#label': LiteralValue(value='Alice', datatype=None)}
+DEBUG:perseus_client.services.graph_service:Merging entity 'http://example.org/data/2e843dc8-435f-475f-8d83-55be91f5ded4' into existing entity 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880' based on key 'Alice'.
+INFO:perseus_client.services.graph_service:Interlink process complete. Merged graph has 11 entities and 36 relations.
+INFO:perseus_client.services.neo4j_service:Attempting to save KnowledgeGraph to Neo4j.
+INFO:perseus_client.services.neo4j_service:Generating CQL from KnowledgeGraph for Neo4j.
+INFO:perseus_client.services.neo4j_service:CQL content generated. Executing against Neo4j.
+DEBUG:neo4j.pool:[#0000]  _: <POOL> created, routing address IPv4Address(('localhost', 7687))
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> resolve home database
+DEBUG:neo4j.pool:[#0000]  _: <POOL> attempting to update routing table from IPv4Address(('localhost', 7687))
+DEBUG:neo4j.io:[#0000]  _: <RESOLVE> in: localhost:7687
+DEBUG:neo4j.io:[#0000]  _: <RESOLVE> dns resolver out: 127.0.0.1:7687
+DEBUG:neo4j.pool:[#0000]  _: <POOL> _acquire router connection, database=None, address=ResolvedIPv4Address(('127.0.0.1', 7687))
+DEBUG:neo4j.pool:[#0000]  _: <POOL> trying to hand out new connection
+DEBUG:neo4j.io:[#0000]  C: <OPEN> 127.0.0.1:7687
+DEBUG:neo4j.io:[#B110]  C: <MAGIC> 0x6060B017
+DEBUG:neo4j.io:[#B110]  C: <HANDSHAKE> 0x000001FF 0x00080805 0x00020404 0x00000003
+DEBUG:neo4j.io:[#B110]  S: <HANDSHAKE> 0x000001FF [4] 0x00040404 0x00040405 0x00020805 0x00000006 0x00
+DEBUG:neo4j.io:[#B110]  C: <HANDSHAKE> 0x00000006 0x00
+DEBUG:neo4j.io:[#B110]  C: HELLO {'user_agent': 'neo4j-python/6.1.0 Python/3.11.14-final-0 (linux)', 'routing': {'address': 'localhost:7687'}, 'bolt_agent': {'product': 'neo4j-python/6.1.0', 'platform': 'Linux 6.17.0-14-generic; x86_64', 'language': 'Python/3.11.14-final-0', 'language_details': 'CPython; 3.11.14-final-0 (main, Oct 10 2025 08:54:04) [GCC 13.3.0]'}}
+DEBUG:neo4j.io:[#B110]  _: <CONNECTION> client state: CONNECTED > AUTHENTICATION
+DEBUG:neo4j.io:[#B110]  C: LOGON {'scheme': 'basic', 'principal': 'neo4j', 'credentials': '*******'}
+DEBUG:neo4j.io:[#B110]  _: <CONNECTION> client state: AUTHENTICATION > READY
+DEBUG:neo4j.io:[#B110]  S: SUCCESS {'server': 'Neo4j/2025.10.1', 'protocol_version': '6.0', 'connection_id': 'bolt-193', 'hints': {'connection.recv_timeout_seconds': 120, 'ssr.enabled': True}}
+DEBUG:neo4j.io:[#B110]  _: <CONNECTION> server state: CONNECTED > AUTHENTICATION
+DEBUG:neo4j.io:[#B110]  S: SUCCESS {'advertised_address': 'localhost:7687'}
+DEBUG:neo4j.io:[#B110]  _: <CONNECTION> server state: AUTHENTICATION > READY
+DEBUG:neo4j.io:[#B110]  C: ROUTE {'address': 'localhost:7687'} () {}
+DEBUG:neo4j.io:[#B110]  S: SUCCESS {'rt': {'servers': [{'addresses': ['localhost:7687'], 'role': 'WRITE'}, {'addresses': ['localhost:7687'], 'role': 'READ'}, {'addresses': ['localhost:7687'], 'role': 'ROUTE'}], 'ttl': 300, 'db': 'neo4j'}}
+DEBUG:neo4j.pool:[#B110]  _: <POOL> released bolt-193
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> updated table=RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> update routing table from address=ResolvedIPv4Address(('127.0.0.1', 7687)) (RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300))
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> pinning database: 'neo4j'
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='READ', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.672117308 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=True): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#0000]  _: <POOL> trying to hand out new connection
+DEBUG:neo4j.io:[#0000]  _: <RESOLVE> in: localhost:7687
+DEBUG:neo4j.io:[#0000]  _: <RESOLVE> dns resolver out: 127.0.0.1:7687
+DEBUG:neo4j.io:[#0000]  C: <OPEN> 127.0.0.1:7687
+DEBUG:neo4j.io:[#B120]  C: <MAGIC> 0x6060B017
+DEBUG:neo4j.io:[#B120]  C: <HANDSHAKE> 0x000001FF 0x00080805 0x00020404 0x00000003
+DEBUG:neo4j.io:[#B120]  S: <HANDSHAKE> 0x000001FF [4] 0x00040404 0x00040405 0x00020805 0x00000006 0x00
+DEBUG:neo4j.io:[#B120]  C: <HANDSHAKE> 0x00000006 0x00
+DEBUG:neo4j.io:[#B120]  C: HELLO {'user_agent': 'neo4j-python/6.1.0 Python/3.11.14-final-0 (linux)', 'routing': {'address': 'localhost:7687'}, 'bolt_agent': {'product': 'neo4j-python/6.1.0', 'platform': 'Linux 6.17.0-14-generic; x86_64', 'language': 'Python/3.11.14-final-0', 'language_details': 'CPython; 3.11.14-final-0 (main, Oct 10 2025 08:54:04) [GCC 13.3.0]'}}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> client state: CONNECTED > AUTHENTICATION
+DEBUG:neo4j.io:[#B120]  C: LOGON {'scheme': 'basic', 'principal': 'neo4j', 'credentials': '*******'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> client state: AUTHENTICATION > READY
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'server': 'Neo4j/2025.10.1', 'protocol_version': '6.0', 'connection_id': 'bolt-194', 'hints': {'connection.recv_timeout_seconds': 120, 'ssr.enabled': True}}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: CONNECTED > AUTHENTICATION
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'advertised_address': 'localhost:7687'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: AUTHENTICATION > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+INFO:perseus_client.services.neo4j_service:Successfully connected to Neo4j at neo4j://localhost:7687
+INFO:perseus_client.services.neo4j_service:Executing 47 CQL statements against Neo4j.
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Occupation` {uri: 'http://example.org/data/68f6dd59-2108-47a4-99c0-51347d9aa950'})
+SET n += {`label`: 'software engineer', `source`: 'interlink_graphs_example'}
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards cached database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=True)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.676153999 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Occupation` {uri: 'http://example.org/data/68f6dd59-2108-47a4-99c0-51347d9aa950'})\nSET n += {`label`: 'software engineer', `source`: 'interlink_graphs_example'}" {} {}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> client state: READY > STREAMING
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': [], 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> pinning database: 'neo4j'
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Organization` {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})
+SET n += {`source`: 'interlink_graphs_example', `label`: 'ExampleCorp', `hasName`: 'ExampleCorp'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCCJA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 3}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.681536875 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Organization` {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})\nSET n += {`source`: 'interlink_graphs_example', `label`: 'ExampleCorp', `hasName`: 'ExampleCorp'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCCJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Employment` {uri: 'http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2'})
+SET n += {`label`: 'Alice\'s employment at ExampleCorp', `source`: 'interlink_graphs_example'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCCZA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 4}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.686707752 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Employment` {uri: 'http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2'})\nSET n += {`label`: 'Alice\\'s employment at ExampleCorp', `source`: 'interlink_graphs_example'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCCZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Person` {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+SET n += {`hasJobTitle`: 'software engineer', `hasMaritalStatus`: 'married', `source`: 'interlink_graphs_example', `hasGivenName`: 'Alice', `label`: 'Alice', `hasFullName`: 'Alice', `hasName`: 'Alice'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCCpA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 3}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.6918475 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Person` {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nSET n += {`hasJobTitle`: 'software engineer', `hasMaritalStatus`: 'married', `source`: 'interlink_graphs_example', `hasGivenName`: 'Alice', `label`: 'Alice', `hasFullName`: 'Alice', `hasName`: 'Alice'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCCpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 15, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Person` {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+SET n += {`hasGivenName`: 'Bob', `label`: 'Bob', `source`: 'interlink_graphs_example', `hasMaritalStatus`: 'married', `hasJobTitle`: 'project manager', `hasName`: 'Bob', `hasFullName`: 'Bob'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCC5A=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 8}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.712208636 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Person` {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nSET n += {`hasGivenName`: 'Bob', `label`: 'Bob', `source`: 'interlink_graphs_example', `hasMaritalStatus`: 'married', `hasJobTitle`: 'project manager', `hasName`: 'Bob', `hasFullName`: 'Bob'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCC5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 4, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Marriage` {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})
+SET n += {`label`: 'Marriage of Alice and Bob', `source`: 'interlink_graphs_example'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCDJA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 8}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.722275518 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Marriage` {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})\nSET n += {`label`: 'Marriage of Alice and Bob', `source`: 'interlink_graphs_example'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCDJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Occupation` {uri: 'http://example.org/data/7bdcd8d8-8329-4033-a47c-2241ae17efc5'})
+SET n += {`source`: 'interlink_graphs_example', `label`: 'dentist'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCDZA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 3}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.726286239 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Occupation` {uri: 'http://example.org/data/7bdcd8d8-8329-4033-a47c-2241ae17efc5'})\nSET n += {`source`: 'interlink_graphs_example', `label`: 'dentist'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCDZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Marriage` {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+SET n += {`label`: 'Marriage of Bob and Alice', `source`: 'interlink_graphs_example'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCDpA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 3}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.73080802 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Marriage` {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nSET n += {`label`: 'Marriage of Bob and Alice', `source`: 'interlink_graphs_example'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCDpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 4, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Organization` {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})
+SET n += {`hasName`: 'TechSolutions', `source`: 'interlink_graphs_example', `label`: 'TechSolutions'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCD5A=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 3}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.739813658 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Organization` {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})\nSET n += {`hasName`: 'TechSolutions', `source`: 'interlink_graphs_example', `label`: 'TechSolutions'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCD5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 13, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Employment` {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+SET n += {`source`: 'interlink_graphs_example', `label`: 'Employment of Bob at TechSolutions'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCEJA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 4}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.758476785 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Employment` {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nSET n += {`source`: 'interlink_graphs_example', `label`: 'Employment of Bob at TechSolutions'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCEJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MERGE (n:`Occupation` {uri: 'http://example.org/data/83374c58-a08e-455c-a8af-3019770c202a'})
+SET n += {`label`: 'project manager', `source`: 'interlink_graphs_example'}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCEZA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 3}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.76326303 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MERGE (n:`Occupation` {uri: 'http://example.org/data/83374c58-a08e-455c-a8af-3019770c202a'})\nSET n += {`label`: 'project manager', `source`: 'interlink_graphs_example'}" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCEZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2'})
+MERGE (source_node)-[r:`hasEmployment`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCEpA=', 'stats': {'contains-updates': True, 'labels-added': 1, 'nodes-created': 1, 'properties-set': 3}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.76766342 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2'})\nMERGE (source_node)-[r:`hasEmployment`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCEpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/68f6dd59-2108-47a4-99c0-51347d9aa950'})
+MERGE (source_node)-[r:`hasOccupation`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCE5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.772302864 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/68f6dd59-2108-47a4-99c0-51347d9aa950'})\nMERGE (source_node)-[r:`hasOccupation`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCE5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})
+MATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MERGE (source_node)-[r:`hasSpouse`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCFJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.776682533 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})\nMATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMERGE (source_node)-[r:`hasSpouse`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCFJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})
+MERGE (source_node)-[r:`isAffiliatedWith`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCFZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.780834216 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})\nMERGE (source_node)-[r:`isAffiliatedWith`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCFZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})
+MATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MERGE (source_node)-[r:`employs`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCFpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.788637246 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})\nMATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMERGE (source_node)-[r:`employs`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCFpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})
+MERGE (source_node)-[r:`isEmployedBy`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCF5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.792798125 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})\nMERGE (source_node)-[r:`isEmployedBy`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCF5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})
+MATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MERGE (source_node)-[r:`hasSpouse`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCGJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.796951317 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})\nMATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMERGE (source_node)-[r:`hasSpouse`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCGJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MERGE (source_node)-[r:`isMarriedTo`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCGZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.80162078 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMERGE (source_node)-[r:`isMarriedTo`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCGZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MERGE (source_node)-[r:`isMarriedTo`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCGpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.806730843 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMERGE (source_node)-[r:`isMarriedTo`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCGpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2'})
+MATCH (target_node {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})
+MERGE (source_node)-[r:`hasEmployer`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCG5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.811731921 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2'})\nMATCH (target_node {uri: 'http://example.org/data/5834a964-56b8-4d10-99cb-d29da138a286'})\nMERGE (source_node)-[r:`hasEmployer`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCG5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})
+MERGE (source_node)-[r:`hasMarriage`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCHJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.816142303 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})\nMERGE (source_node)-[r:`hasMarriage`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCHJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2'})
+MATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MERGE (source_node)-[r:`hasEmployee`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCHZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.821781032 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/45c042ca-be27-4ac6-94d7-95ec6c45b4c2'})\nMATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMERGE (source_node)-[r:`hasEmployee`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCHZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})
+MERGE (source_node)-[r:`hasMarriage`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCHpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.825628763 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/3ebc3ecc-284c-4c06-86c2-8a2304759be4'})\nMERGE (source_node)-[r:`hasMarriage`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCHpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})
+MERGE (source_node)-[r:`isAffiliatedWith`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCH5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.830345667 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})\nMERGE (source_node)-[r:`isAffiliatedWith`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCH5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+MERGE (source_node)-[r:`isEmployeeIn`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCIJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.834920855 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nMERGE (source_node)-[r:`isEmployeeIn`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCIJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})
+MERGE (source_node)-[r:`isEmployedBy`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCIZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.83972708 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})\nMERGE (source_node)-[r:`isEmployedBy`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCIZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+MERGE (source_node)-[r:`participatesIn`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCIpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.844493822 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nMERGE (source_node)-[r:`participatesIn`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCIpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MERGE (source_node)-[r:`knows`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCI5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.85018567 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMERGE (source_node)-[r:`knows`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCI5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 20, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+MERGE (source_node)-[r:`hasMarriage`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCJJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.87532231 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nMERGE (source_node)-[r:`hasMarriage`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCJJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})
+MATCH (target_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+MERGE (source_node)-[r:`isEmployerIn`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCJZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.881539328 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})\nMATCH (target_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nMERGE (source_node)-[r:`isEmployerIn`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCJZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+MERGE (source_node)-[r:`participatesIn`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCJpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.887593621 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nMERGE (source_node)-[r:`participatesIn`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCJpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+MATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MERGE (source_node)-[r:`hasSpouse`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCJ5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.89326468 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nMATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMERGE (source_node)-[r:`hasSpouse`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCJ5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+MATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MERGE (source_node)-[r:`hasParticipant`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCKJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.898279416 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nMATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMERGE (source_node)-[r:`hasParticipant`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCKJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MERGE (source_node)-[r:`knows`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCKZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.903225006 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMERGE (source_node)-[r:`knows`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCKZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 2, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+MERGE (source_node)-[r:`hasMarriage`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCKpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.910189952 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nMERGE (source_node)-[r:`hasMarriage`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCKpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MATCH (target_node {uri: 'http://example.org/data/7bdcd8d8-8329-4033-a47c-2241ae17efc5'})
+MERGE (source_node)-[r:`hasOccupation`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCK5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.91416784 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMATCH (target_node {uri: 'http://example.org/data/7bdcd8d8-8329-4033-a47c-2241ae17efc5'})\nMERGE (source_node)-[r:`hasOccupation`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCK5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+MERGE (source_node)-[r:`participatesIn`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCLJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.918495632 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nMERGE (source_node)-[r:`participatesIn`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCLJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+MATCH (target_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})
+MERGE (source_node)-[r:`hasParticipant`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCLZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.922659496 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nMATCH (target_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})\nMERGE (source_node)-[r:`hasParticipant`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCLZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+MERGE (source_node)-[r:`hasEmployment`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCLpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.926678682 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nMERGE (source_node)-[r:`hasEmployment`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCLpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MATCH (target_node {uri: 'http://example.org/data/83374c58-a08e-455c-a8af-3019770c202a'})
+MERGE (source_node)-[r:`hasOccupation`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCL5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.930903162 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMATCH (target_node {uri: 'http://example.org/data/83374c58-a08e-455c-a8af-3019770c202a'})\nMERGE (source_node)-[r:`hasOccupation`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCL5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+MATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MERGE (source_node)-[r:`hasEmployee`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCMJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.936210659 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nMATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMERGE (source_node)-[r:`hasEmployee`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCMJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+MATCH (target_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})
+MERGE (source_node)-[r:`hasEmployer`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCMZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.940134628 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nMATCH (target_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})\nMERGE (source_node)-[r:`hasEmployer`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCMZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+MATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})
+MERGE (source_node)-[r:`hasParticipant`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCMpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.944307768 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nMATCH (target_node {uri: 'http://example.org/data/e205e4a2-a915-4ce5-8779-e52911957880'})\nMERGE (source_node)-[r:`hasParticipant`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCMpA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})
+MATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MERGE (source_node)-[r:`hasParticipant`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCM5A=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.948717881 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/28c5b891-fed3-45ba-a8a8-3e0cea09a705'})\nMATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMERGE (source_node)-[r:`hasParticipant`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCM5A=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 1, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})
+MATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MERGE (source_node)-[r:`hasSpouse`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCNJA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.952961398 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/229e5ed7-786a-4411-8f22-f1c2af2a0266'})\nMATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMERGE (source_node)-[r:`hasSpouse`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCNJA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:perseus_client.services.neo4j_service:Executing query:
+MATCH (source_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})
+MATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})
+MERGE (source_node)-[r:`employs`]->(target_node)
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCNZA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j:[#0000]  _: <WORKSPACE> routing towards fixed database: neo4j
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire routing connection, access_mode='WRITE', database=AcquisitionDatabase(name='neo4j', guessed=False)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> routing aged?, database=neo4j
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> purge check: last_updated_time=12690.671918791, ttl=300, perf_time=12690.956951544 => False
+DEBUG:neo4j.pool:[#0000]  _: <ROUTING> checking table freshness (readonly=False): table expired=False, has_server_for_mode=True, table routers=OrderedSet((IPv4Address(('localhost', 7687)))) => True
+DEBUG:neo4j.pool:[#0000]  _: <POOL> using existing routing table RoutingTable(database='neo4j', routers=(IPv4Address(('localhost', 7687)),), readers=(IPv4Address(('localhost', 7687)),), writers=(IPv4Address(('localhost', 7687)),), last_updated_time=12690.671918791, ttl=300)
+DEBUG:neo4j.pool:[#0000]  _: <POOL> acquire address, database='neo4j' address=IPv4Address(('localhost', 7687))
+DEBUG:neo4j.pool:[#B120]  _: <POOL> picked existing connection bolt-194
+DEBUG:neo4j.pool:[#B120]  _: <POOL> checked re_auth auth=None updated=False force=False
+DEBUG:neo4j.pool:[#B120]  _: <POOL> handing out existing connection
+DEBUG:neo4j.io:[#B120]  C: RUN "MATCH (source_node {uri: 'http://example.org/data/8de05dc6-2aac-4cde-b9da-5cc35d79af9e'})\nMATCH (target_node {uri: 'http://example.org/data/73a7cf86-b3b6-4268-bb16-7e736f164283'})\nMERGE (source_node)-[r:`employs`]->(target_node)" {} {'db': 'neo4j', 'bookmarks': ['FB:kcwQUyayvnL0RZGNdWgXctO4kckCNZA=']}
+DEBUG:neo4j.io:[#B120]  C: PULL {'n': 1000}
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'t_first': 0, 'fields': []}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: READY > STREAMING
+DEBUG:neo4j.io:[#B120]  S: SUCCESS {'bookmark': 'FB:kcwQUyayvnL0RZGNdWgXctO4kckCNpA=', 'stats': {'contains-updates': True, 'relationships-created': 1}, 'statuses': [{'gql_status': '00001', 'status_description': 'note: successful completion - omitted result'}], 'type': 'w', 't_last': 0, 'db': 'neo4j'}
+DEBUG:neo4j.io:[#B120]  _: <CONNECTION> server state: STREAMING > READY
+DEBUG:neo4j.pool:[#B120]  _: <POOL> released bolt-194
+DEBUG:neo4j.pool:[#0000]  _: <POOL> close
+DEBUG:neo4j.io:[#B110]  C: GOODBYE
+DEBUG:neo4j.io:[#B110]  C: <CLOSE>
+DEBUG:neo4j.io:[#B120]  C: GOODBYE
+DEBUG:neo4j.io:[#B120]  C: <CLOSE>
+INFO:perseus_client.services.neo4j_service:Neo4j connection closed.
+INFO:perseus_client.services.neo4j_service:Successfully saved KnowledgeGraph to Neo4j.
+DEBUG:perseus_client.client:Closing event loop for synchronous client usage.
+DEBUG:perseus_client.client:Closing asynchronous session.
+DEBUG:asyncio:Using selector: EpollSelector

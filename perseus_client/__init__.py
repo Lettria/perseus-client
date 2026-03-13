@@ -4,6 +4,10 @@
 """
 Perseus client for Python
 """
+import logging
+from .config import settings
+
+logging.basicConfig(level=settings.loglevel)
 
 from .client import PerseusClient
 from .exceptions import PerseusException

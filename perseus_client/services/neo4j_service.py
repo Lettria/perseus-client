@@ -13,7 +13,6 @@ except ImportError:
     GraphDatabase = None
     NEO4J_AVAILABLE = False
 
-logging.basicConfig(level=settings.loglevel.upper())
 logger = logging.getLogger(__name__)
 
 
@@ -122,29 +121,28 @@ class Neo4jService:
                 auth=(settings.neo4j_user, settings.neo4j_password),
             )
             driver.verify_connectivity()
-            logger.info("Successfully connected to Neo4j.")
+            logger.info(f"Successfully connected to Neo4j at {settings.neo4j_uri}")
         except Exception as e:
-            logger.error(f"Failed to connect to Neo4j: {e}")
+            logger.error(f"Failed to connect to Neo4j: {e}", exc_info=True)
             if driver:
                 driver.close()
             raise
 
         try:
             with driver.session() as session:
-                # Split the query into individual statements
                 statements = [s.strip() for s in cql_query.split(';') if s.strip()]
+                logger.info(f"Executing {len(statements)} CQL statements against Neo4j.")
                 for statement in statements:
                     try:
+                        logger.debug(f"Executing query:\n{statement}")
                         session.run(statement)
-                        logger.debug(
-                            f"Successfully executed query:\n{statement}"
-                        )
                     except Exception as e:
                         logger.error(
-                            f"Error executing query chunk:\n{statement}\nError: {e}"
+                            f"Error executing query chunk:\n{statement}\nError: {e}",
+                            exc_info=True,
                         )
         except Exception as e:
-            logger.error(f"An unexpected error occurred: {e}")
+            logger.error(f"An unexpected error occurred during the Neo4j session: {e}", exc_info=True)
         finally:
             if driver:
                 driver.close()
@@ -160,10 +158,14 @@ class Neo4jService:
                             properties for a cleaner, more "native" Neo4j schema (e.g., `Person`, `label`).
                             If False, preserves prefixed names for higher fidelity (e.g., `dbo_Person`, `rdfs_label`).
         """
+        logger.info("Attempting to save KnowledgeGraph to Neo4j.")
         try:
-            asyncio.run(self.save_to_neo4j_async(kg, strip_prefixes=strip_prefixes))
+            # Note: asyncio.run() is used for synchronous context.
+            # For fully async apps, call save_to_neo4j_async directly.
+            self._loop.run_until_complete(self.save_to_neo4j_async(kg, strip_prefixes=strip_prefixes))
+            logger.info("Successfully saved KnowledgeGraph to Neo4j.")
         except Exception as e:
-            logging.error(f"Failed to save to Neo4j: {e}")
+            logger.error(f"Failed to save to Neo4j: {e}", exc_info=True)
 
     async def save_to_neo4j_async(self, kg: KnowledgeGraph, strip_prefixes: bool = True):
         """
@@ -175,11 +177,16 @@ class Neo4jService:
                             properties for a cleaner, more "native" Neo4j schema (e.g., `Person`, `label`).
                             If False, preserves prefixed names for higher fidelity (e.g., `dbo_Person`, `rdfs_label`).
         """
+        logger.info("Generating CQL from KnowledgeGraph for Neo4j.")
         try:
             cql_content = self.cql_service.to_cql(kg, strip_prefixes=strip_prefixes)
             if cql_content:
+                logger.info("CQL content generated. Executing against Neo4j.")
                 await self.execute_cql_string_async(cql_content)
             else:
-                logging.warning("No CQL content to save to Neo4j.")
+                logger.warning(
+                    "KnowledgeGraph has no entities or relations to save to Neo4j."
+                )
         except Exception as e:
-            logging.error(f"Failed to generate or save CQL to Neo4j: {e}")
+            logger.error(f"Failed to generate or save CQL to Neo4j: {e}", exc_info=True)
+            raise

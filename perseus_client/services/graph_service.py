@@ -1,8 +1,9 @@
-
 import logging
 from typing import Optional, List, Dict
 
 from ..models import KnowledgeGraph, Entity
+
+logger = logging.getLogger(__name__)
 
 
 class GraphService:
@@ -31,11 +32,16 @@ class GraphService:
         if not kbs:
             return KnowledgeGraph()
 
-        # By default, prevent merging entities with conflicting names.
+        logger.info(f"Starting interlink process for {len(kbs)} knowledge graphs.")
+        total_entities_before = sum(len(kg.entities) for kg in kbs)
+        total_relations_before = sum(len(kg.relations) for kg in kbs)
+        logger.debug(
+            f"Total entities before merge: {total_entities_before}, Total relations before merge: {total_relations_before}"
+        )
+
         if immutable_properties is None:
             immutable_properties = ["name", "hasName", "hasFullName"]
 
-        # Helper to resolve simple names to full URIs
         def _resolve_property_name(
             name: str, all_entities: List[Entity], namespaces: Dict[str, str]
         ) -> Optional[str]:
@@ -46,37 +52,65 @@ class GraphService:
                 if prefix in namespaces:
                     return namespaces[prefix] + local
 
-            # Search for a property URI that ends with the simple name
+            # 3. If it's a short name (no prefix, no http/https), try to construct full URIs
+            #    using known namespaces and check if they exist as properties.
+            for prefix, uri_base in namespaces.items():
+                # Try with # separator
+                potential_uri_hash = uri_base + "#" + name
+                # Check if this potential URI exists in any entity's properties
+                for entity in all_entities:
+                    if potential_uri_hash in entity.properties:
+                        logger.debug(
+                            f"Resolved property name '{name}' to '{potential_uri_hash}' using namespace '{prefix}' and '#' separator."
+                        )
+                        return potential_uri_hash
+
+                # Try with / separator
+                potential_uri_slash = uri_base + "/" + name
+                # Check if this potential URI exists in any entity's properties
+                for entity in all_entities:
+                    if potential_uri_slash in entity.properties:
+                        logger.debug(
+                            f"Resolved property name '{name}' to '{potential_uri_slash}' using namespace '{prefix}' and '/' separator."
+                        )
+                        return potential_uri_slash
+
+            # 4. Fallback to suffix matching (existing logic) as a last resort.
+            #    This might catch properties that don't follow strict namespace+localName patterns
+            #    but still have the short name at the end of their URI.
             for entity in all_entities:
                 for prop_uri in entity.properties.keys():
                     if prop_uri.endswith(f"#{name}") or prop_uri.endswith(f"/{name}"):
+                        logger.debug(
+                            f"Resolved property name '{name}' via suffix match to '{prop_uri}'."
+                        )
                         return prop_uri
-            logging.warning(f"Could not resolve property name '{name}' to a full URI.")
-            return None
 
-        # --- Main interlink logic ---
+            logger.debug(
+                f"Could not resolve property name '{name}' to a full URI, returning original name for fallback comparison."
+            )
+            return name
 
-        # Initialize the new KG
         merged_kg = KnowledgeGraph()
-
         entity_map: Dict[str, Entity] = {}
         uri_redirects: Dict[str, str] = {}
-
-        # Aggregate namespaces and entities from all KGs for resolution
         all_entities = [entity for kg in kbs for entity in kg.entities]
         for kg in kbs:
             merged_kg.namespaces.update(kg.namespaces)
 
-        # Resolve immutable properties to full URIs
         resolved_immutable_properties = []
         if immutable_properties:
+            logger.debug(f"Using immutable properties: {immutable_properties}")
             for prop_name in immutable_properties:
                 resolved_uri = _resolve_property_name(
                     prop_name, all_entities, merged_kg.namespaces
                 )
                 if resolved_uri:
                     resolved_immutable_properties.append(resolved_uri)
-
+            logger.debug(
+                f"Resolved immutable properties to URIs: {resolved_immutable_properties}"
+            )
+        logger.debug(f"kbs: {kbs}")
         # 1. Iterate through all entities to identify duplicates and merge them
         for kg in kbs:
             for entity in kg.entities:
@@ -86,11 +120,8 @@ class GraphService:
 
                 if key_value is None:
                     key_value = entity.uri
-
                 if key_value in entity_map:
                     existing_entity = entity_map[key_value]
-
-                    # --- Conflict Check for Immutable Properties ---
                     has_conflict = False
                     for prop_uri in resolved_immutable_properties:
                         if (
@@ -99,21 +130,29 @@ class GraphService:
                             and existing_entity.properties[prop_uri].value
                             != entity.properties[prop_uri].value
                         ):
-                            logging.warning(
-                                f"Merge conflict on immutable property '{prop_uri}' for "
-                                f"entity with key '{key_value}'. Values: "
-                                f"'{existing_entity.properties[prop_uri].value}' vs "
-                                f"'{entity.properties[prop_uri].value}'. "
-                                f"Entity '{entity.uri}' will not be merged."
+                            logger.warning(
+                                f"Merge conflict on immutable property '{prop_uri}' for entity with key '{key_value}'. "
+                                f"Existing value: '{existing_entity.properties[prop_uri].value}', "
+                                f"New value: '{entity.properties[prop_uri].value}'. "
+                                f"Entity '{entity.uri}' will not be merged into '{existing_entity.uri}'."
                             )
                             has_conflict = True
                             break
+                        else:
+                            logger.debug(
+                                f"No conflict on immutable property '{prop_uri}' for entity with key '{key_value}'. "
+                                f"Existing value: '{existing_entity.properties.get(prop_uri)}', "
+                                f"New value: '{entity.properties.get(prop_uri)}'."
+                                f"Entity properties: {entity.properties}, Existing entity properties: {existing_entity.properties}"
+                            )
 
                     if has_conflict:
                         merged_kg.entities.append(entity)
                         continue
-                    # --- End of Conflict Check ---
 
+                    logger.debug(
+                        f"Merging entity '{entity.uri}' into existing entity '{existing_entity.uri}' based on key '{key_value}'."
+                    )
                     uri_redirects[entity.uri] = existing_entity.uri
 
                     for prop_uri, prop_value in entity.properties.items():
@@ -130,15 +169,8 @@ class GraphService:
         # 2. Iterate through all relations and relink them
         for kg in kbs:
             for relation in kg.relations:
-                if relation.source_uri in uri_redirects:
-                    source_uri = uri_redirects[relation.source_uri]
-                else:
-                    source_uri = relation.source_uri
-
-                if relation.target_uri in uri_redirects:
-                    target_uri = uri_redirects[relation.target_uri]
-                else:
-                    target_uri = relation.target_uri
+                source_uri = uri_redirects.get(relation.source_uri, relation.source_uri)
+                target_uri = uri_redirects.get(relation.target_uri, relation.target_uri)
 
                 if not any(
                     r.source_uri == source_uri
@@ -151,4 +183,7 @@ class GraphService:
                     updated_relation.target_uri = target_uri
                     merged_kg.relations.append(updated_relation)
 
+        logger.info(
+            f"Interlink process complete. Merged graph has {len(merged_kg.entities)} entities and {len(merged_kg.relations)} relations."
+        )
         return merged_kg

@@ -11,7 +11,6 @@ from .base_service import BaseService
 from ..models import Job, JobStatus
 from ..exceptions import PerseusException
 
-logging.basicConfig(level=os.getenv("LOGLEVEL", "INFO"))
 logger = logging.getLogger(__name__)
 
 
@@ -53,13 +52,12 @@ class JobService(BaseService):
 
     def run_job(
         self,
-        file_id: str,
-        ontology_id: Optional[str] = None,
+        job_id: str,
         polling_interval: int = 5,
         timeout: int = 3600,
     ) -> Job:
         return self._loop.run_until_complete(
-            self.run_job_async(file_id, ontology_id, polling_interval, timeout)
+            self.run_job_async(job_id, polling_interval, timeout)
         )
 
     async def submit_job_async(
@@ -68,27 +66,37 @@ class JobService(BaseService):
         """
         Asynchronously submits a job for processing.
         """
+        logger.info(
+            f"Submitting job for file_id: {file_id}, ontology_id: {ontology_id}"
+        )
         response = await self._request(
             "POST",
             "/api/v0/job/submit",
             json={"fileId": file_id, "ontologyId": ontology_id},
         )
         job_data = response["job"]
-        return Job(id=job_data["id"], status=job_data["status"])
+        job = Job(id=job_data["id"], status=job_data["status"])
+        logger.debug(f"Successfully submitted job with ID: {job.id}")
+        return job
 
     async def find_jobs_async(self, ids: List[str]) -> List[Job]:
         """
         Asynchronously finds one or more jobs by their IDs.
         """
+        logger.debug(f"Finding jobs with IDs: {ids}")
         response = await self._request("POST", "/api/v0/job/find", json={"ids": ids})
-        return [Job(id=job["id"], status=job["status"]) for job in response["jobs"]]
+        jobs = [Job(id=job["id"], status=job["status"]) for job in response["jobs"]]
+        logger.debug(f"Found {len(jobs)} jobs.")
+        return jobs
 
     async def find_job_async(self, id: str) -> Optional[Job]:
         """
         Asynchronously finds a job by its ID.
         """
+        logger.debug(f"Finding job with ID: {id}")
         jobs = await self.find_jobs_async(ids=[id])
         if not jobs:
+            logger.debug(f"Job with ID: {id} not found.")
             return None
         return jobs[0]
 
@@ -98,6 +106,9 @@ class JobService(BaseService):
         """
         Asynchronously finds the latest succeeded job by its file_id.
         """
+        logger.debug(
+            f"Finding latest succeeded job for file_id: {file_id}, ontology_id: {ontology_id}"
+        )
         payload: Dict[str, Any] = {"fileId": file_id, "status": JobStatus.SUCCEEDED}
         if ontology_id:
             payload["ontologyId"] = ontology_id
@@ -112,9 +123,14 @@ class JobService(BaseService):
             json=payload,
         )
         if not response["jobs"]:
+            logger.debug(
+                f"No succeeded job found for file_id: {file_id}, ontology_id: {ontology_id}"
+            )
             return None
         job_data = response["jobs"][0]
-        return Job(id=job_data["id"], status=job_data["status"])
+        job = Job(id=job_data["id"], status=job_data["status"])
+        logger.debug(f"Found latest succeeded job with ID: {job.id}")
+        return job
 
     async def find_latest_job_async(
         self, file_id: str, ontology_id: Optional[str] = None
@@ -122,6 +138,9 @@ class JobService(BaseService):
         """
         Asynchronously finds the latest job by its file_id, regardless of status.
         """
+        logger.debug(
+            f"Finding latest job for file_id: {file_id}, ontology_id: {ontology_id}"
+        )
         payload: Dict[str, Any] = {"fileId": file_id}
         if ontology_id:
             payload["ontologyId"] = ontology_id
@@ -136,9 +155,14 @@ class JobService(BaseService):
             json=payload,
         )
         if not response["jobs"]:
+            logger.debug(
+                f"No job found for file_id: {file_id}, ontology_id: {ontology_id}"
+            )
             return None
         job_data = response["jobs"][0]
-        return Job(id=job_data["id"], status=job_data["status"])
+        job = Job(id=job_data["id"], status=job_data["status"])
+        logger.debug(f"Found latest job with ID: {job.id} and status: {job.status}")
+        return job
 
     async def download_job_output_async(
         self, job_id: str, output_path: Optional[str] = None
@@ -146,29 +170,50 @@ class JobService(BaseService):
         """
         Asynchronously fetches a presigned URL and downloads the job output.
         """
+        logger.debug(f"Starting download of outputs for job ID: {job_id}")
         if output_path is None:
             output_path = f"{job_id}.output"
-        download_urls = await self._get_download_urls_async(job_id)
-        ssl_context = ssl.create_default_context(cafile=certifi.where())
-        connector = aiohttp.TCPConnector(ssl=ssl_context)
-        async with aiohttp.ClientSession(connector=connector) as download_session:
-            await self._download_file_async(
-                download_session,
-                download_urls["ttlFileDownloadUrl"],
-                f"{output_path}.ttl",
+
+        try:
+            download_urls = await self._get_download_urls_async(job_id)
+            ssl_context = ssl.create_default_context(cafile=certifi.where())
+            connector = aiohttp.TCPConnector(ssl=ssl_context)
+
+            async with aiohttp.ClientSession(connector=connector) as download_session:
+                # Download TTL file
+                ttl_output_path = f"{output_path}.ttl"
+                logger.debug(f"Downloading TTL file to {ttl_output_path}")
+                await self._download_file_async(
+                    download_session,
+                    download_urls["ttlFileDownloadUrl"],
+                    ttl_output_path,
+                )
+                logger.debug(f"Successfully downloaded TTL output to {ttl_output_path}")
+
+                # Download CQL file
+                cql_output_path = f"{output_path}.cql"
+                logger.debug(f"Downloading CQL file to {cql_output_path}")
+                await self._download_file_async(
+                    download_session,
+                    download_urls["cqlFileDownloadUrl"],
+                    cql_output_path,
+                )
+                logger.debug(f"Successfully downloaded CQL output to {cql_output_path}")
+        except Exception as e:
+            logger.error(
+                f"Failed to download outputs for job {job_id}: {e}", exc_info=True
             )
-            await self._download_file_async(
-                download_session,
-                download_urls["cqlFileDownloadUrl"],
-                f"{output_path}.cql",
-            )
+            raise
+
         return output_path
 
     async def _get_download_urls_async(self, job_id: str) -> Dict[str, str]:
         """
         Asynchronously fetches a presigned URL to download the output of a job.
         """
+        logger.debug(f"Fetching download URLs for job ID: {job_id}")
         response = await self._request("GET", f"/api/v0/job/{job_id}/download-output")
+        logger.debug(f"Successfully fetched download URLs for job ID: {job_id}")
         return {
             "ttlFileDownloadUrl": cast(Dict[str, Any], response)["ttlFileDownloadUrl"],
             "cqlFileDownloadUrl": cast(Dict[str, Any], response)["cqlFileDownloadUrl"],
@@ -180,8 +225,7 @@ class JobService(BaseService):
         """
         Asynchronously downloads a file from a URL and saves it.
         """
-        logger.debug(f"Downloading file from {url}")
-        logger.debug(f"Downloading file to {output_path}")
+        logger.debug(f"Downloading file from pre-signed URL to {output_path}")
         output_dir = os.path.dirname(output_path)
         if output_dir and not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
@@ -195,10 +239,16 @@ class JobService(BaseService):
                             break
                         f.write(chunk)
         except aiohttp.ClientResponseError as e:
+            logger.error(
+                f"Failed to download file from {url}. Status: {e.status}", exc_info=True
+            )
             raise PerseusException(
                 f"Failed to download file. Status: {e.status}, " f"Message: {e.message}"
             ) from e
         except Exception as e:
+            logger.error(
+                f"An unexpected error occurred during file download: {e}", exc_info=True
+            )
             raise PerseusException(
                 f"An unexpected error occurred during file download: {e}"
             ) from e
@@ -213,24 +263,30 @@ class JobService(BaseService):
         """
         Asynchronously waits for a job to complete by polling its status.
         """
+        logger.info(f"Waiting for job {job_id} to complete.")
+        start_time = time()
+
         job = await self.find_job_async(job_id)
         if not job:
-            raise PerseusException(f"Job {job_id} not found.")
-        logger.debug(f"Waiting for job {job.id}, current status: {job.status}")
+            raise PerseusException(f"Could not find job with id {job_id}")
 
-        start_time = time()
         while job.status not in [JobStatus.SUCCEEDED, JobStatus.FAILED]:
             if time() - start_time > timeout:
                 raise PerseusException(f"Timeout reached for job {job.id}")
-            
+
             await asyncio.sleep(polling_interval)
-            
+
             updated_job = await self.find_job_async(job.id)
             if not updated_job:
                 raise PerseusException(f"Could not find job {job.id} during polling.")
+            if updated_job.status != job.status:
+                logger.info(f"Job {job.id} status changed to: {updated_job.status}")
+
             job = updated_job
-            logger.debug(f"Job {job.id} status: {job.status}")
 
         if job.status == JobStatus.FAILED:
+            logger.error(f"Job {job.id} failed.")
             raise PerseusException(f"Job {job.id} failed.")
+
+        logger.info(f"Job {job.id} completed successfully.")
         return job

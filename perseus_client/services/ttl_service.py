@@ -39,35 +39,32 @@ class TTLService:
             The modified Turtle content as a string.
         """
         if not RDFLIB_AVAILABLE:
+            logger.error("rdflib is not installed, which is required for TTL manipulation.")
             raise ImportError(
                 "The 'rdflib' library is not installed. "
-                "Please run `pip install perseus-client` to use this feature."
+                "Please run `pip install perseus-client[rdf]` to use this feature."
             )
 
+        logger.debug("Parsing TTL content to add metadata.")
         g = Graph()
         try:
             g.parse(data=ttl_content, format="turtle")
         except Exception as e:
-            logger.error(f"Failed to parse TTL content: {e}")
-            # Return original content if parsing fails
+            logger.error(f"Failed to parse TTL content: {e}", exc_info=True)
             return ttl_content
 
-        # Create a namespace for our custom metadata properties
         metadata_ns = Namespace("https://lettria.com/perseus/metadata#")
         g.bind("pmeta", metadata_ns)
 
-        # Find all unique subjects in the graph
         subjects = set(g.subjects())
-
+        logger.debug(f"Adding metadata to {len(subjects)} subjects in the graph.")
         for subject in subjects:
-            # We only want to add metadata to URI subjects, not blank nodes
             if isinstance(subject, URIRef):
                 for key, value in metadata.items():
                     predicate = metadata_ns[key]
                     obj = Literal(value)
                     g.add((subject, predicate, obj))
 
-        # Serialize the graph back to a Turtle string
         return g.serialize(format="turtle")
 
     def parse_ttl_to_knowledge_graph(
@@ -85,16 +82,19 @@ class TTLService:
             A KnowledgeGraph object populated with rich data representing only individuals.
         """
         if not RDFLIB_AVAILABLE:
+            logger.error("rdflib is not installed, which is required for parsing TTL.")
             raise ImportError(
                 "The 'rdflib' library is not installed. "
                 "Please run `pip install perseus-client[rdf]` to use this feature."
             )
 
+        logger.info("Parsing TTL content into a KnowledgeGraph object.")
         g = Graph()
         try:
             g.parse(data=ttl_content, format="turtle")
+            logger.debug(f"Successfully parsed {len(g)} triples from TTL content.")
         except Exception as e:
-            logger.error(f"Failed to parse TTL content: {e}")
+            logger.error(f"Failed to parse TTL content: {e}", exc_info=True)
             return KnowledgeGraph()
 
         entities: Dict[str, Entity] = {}
@@ -103,34 +103,23 @@ class TTLService:
             prefix: str(uri) for prefix, uri in g.namespace_manager.namespaces()
         }
 
-        # 1. Identify all URIs that are used as classes (i.e., appear as objects of rdf:type)
         class_uris = {str(o) for s, p, o in g if p == RDF.type}
-
-        # 2. Identify individuals: any subject that is not itself a class URI
         individual_uris = {str(s) for s, p, o in g} - class_uris
+        logger.debug(f"Identified {len(individual_uris)} individuals and {len(class_uris)} classes.")
         
-        # 3. Create Entity objects for all identified individuals
         for uri in individual_uris:
             entities[uri] = Entity(uri=uri)
 
-        # 4. Iterate through all triples to populate types, properties, and relations for individuals
         for s, p, o in g:
             subject_uri = str(s)
-
-            # Only process triples where the subject is one of our identified individuals
             if subject_uri not in entities:
                 continue
 
             predicate_uri = str(p)
-
-            # Case A: The triple defines a type for the individual
             if predicate_uri == str(RDF.type):
                 entities[subject_uri].types.append(str(o))
-            
-            # Case B: The triple defines a relation between two individuals
             elif isinstance(o, (URIRef, BNode)):
                 object_uri = str(o)
-                # IMPORTANT: Only create a relation if the object is also an individual
                 if object_uri in entities:
                     relations.append(
                         Relation(
@@ -139,42 +128,38 @@ class TTLService:
                             predicate=predicate_uri,
                         )
                     )
-            
-            # Case C: The triple defines a literal property for the individual
             elif isinstance(o, Literal):
-                literal_value = LiteralValue(
+                entities[subject_uri].properties[predicate_uri] = LiteralValue(
                     value=o.value,
                     datatype=str(o.datatype) if o.datatype else None,
                 )
-                entities[subject_uri].properties[predicate_uri] = literal_value
 
-        # For now, we create a single generic document.
-        document_id = str(uuid.uuid4())
-        document = Document(id=document_id, content=ttl_content, metadata={})
-
-        return KnowledgeGraph(
+        document = Document(id=str(uuid.uuid4()), content=ttl_content, metadata={})
+        
+        kg = KnowledgeGraph(
             entities=list(entities.values()),
             relations=relations,
             documents=[document],
             namespaces=namespaces,
         )
+        logger.info(f"Successfully created KnowledgeGraph with {len(kg.entities)} entities and {len(kg.relations)} relations.")
+        return kg
 
     def to_ttl(self, kg: KnowledgeGraph) -> str:
         """
         Serializes the KnowledgeGraph to a high-fidelity Turtle (TTL) string.
         """
+        logger.info(f"Serializing KnowledgeGraph with {len(kg.entities)} entities to TTL format.")
         if not RDFLIB_AVAILABLE:
+            logger.error("rdflib is not installed, which is required for TTL serialization.")
             raise ImportError(
                 "rdflib is required for TTL serialization. Please run `pip install perseus-client[rdf]`."
             )
 
         g = Graph()
-
-        # Bind namespaces
         for prefix, uri in kg.namespaces.items():
             g.bind(prefix, Namespace(uri))
 
-        # Add triples from entities
         for entity in kg.entities:
             entity_uri = URIRef(entity.uri)
             for entity_type in entity.types:
@@ -184,7 +169,6 @@ class TTLService:
                 literal_args = {}
                 if literal_value.datatype:
                     literal_args["datatype"] = URIRef(literal_value.datatype)
-
                 g.add(
                     (
                         entity_uri,
@@ -193,16 +177,15 @@ class TTLService:
                     )
                 )
 
-        # Add triples from relations
         for relation in kg.relations:
             source = URIRef(relation.source_uri)
             predicate = URIRef(relation.predicate)
             target = URIRef(relation.target_uri)
             g.add((source, predicate, target))
-            # Note: Properties on relations (reification) are not handled in this serialization
-            # to keep it simpler. A full reification would create more complex structures.
 
-        return g.serialize(format="turtle")
+        serialized_ttl = g.serialize(format="turtle")
+        logger.info(f"Successfully serialized KnowledgeGraph to TTL string ({len(serialized_ttl)} bytes).")
+        return serialized_ttl
 
     def save_ttl(self, kg: KnowledgeGraph, file_path: str):
         """
@@ -211,9 +194,12 @@ class TTLService:
             kg: The KnowledgeGraph object to save.
             file_path: The path to save the TTL file to.
         """
+        logger.info(f"Saving KnowledgeGraph to TTL file at: {file_path}")
         try:
             ttl_content = self.to_ttl(kg)
             with open(file_path, "w", encoding="utf-8") as f:
                 f.write(ttl_content)
+            logger.info(f"Successfully saved TTL file to {file_path}.")
         except Exception as e:
-            logging.error(f"Failed to save TTL to file {file_path}: {e}")
+            logger.error(f"Failed to save TTL to file {file_path}: {e}", exc_info=True)
+            raise
