@@ -88,7 +88,7 @@ class TTLService:
                 "Please run `pip install perseus-client[rdf]` to use this feature."
             )
 
-        logger.info("Parsing TTL content into a KnowledgeGraph object.")
+        logger.debug("Parsing TTL content into a KnowledgeGraph object.")
         g = Graph()
         try:
             g.parse(data=ttl_content, format="turtle")
@@ -149,7 +149,7 @@ class TTLService:
         """
         Serializes the KnowledgeGraph to a high-fidelity Turtle (TTL) string.
         """
-        logger.info(f"Serializing KnowledgeGraph with {len(kg.entities)} entities to TTL format.")
+        logger.debug(f"Serializing KnowledgeGraph with {len(kg.entities)} entities to TTL format.")
         if not RDFLIB_AVAILABLE:
             logger.error("rdflib is not installed, which is required for TTL serialization.")
             raise ImportError(
@@ -184,7 +184,7 @@ class TTLService:
             g.add((source, predicate, target))
 
         serialized_ttl = g.serialize(format="turtle")
-        logger.info(f"Successfully serialized KnowledgeGraph to TTL string ({len(serialized_ttl)} bytes).")
+        logger.debug(f"Successfully serialized KnowledgeGraph to TTL string ({len(serialized_ttl)} bytes).")
         return serialized_ttl
 
     def save_ttl(self, kg: KnowledgeGraph, file_path: str):
@@ -194,7 +194,7 @@ class TTLService:
             kg: The KnowledgeGraph object to save.
             file_path: The path to save the TTL file to.
         """
-        logger.info(f"Saving KnowledgeGraph to TTL file at: {file_path}")
+        logger.debug(f"Saving KnowledgeGraph to TTL file at: {file_path}")
         try:
             ttl_content = self.to_ttl(kg)
             with open(file_path, "w", encoding="utf-8") as f:

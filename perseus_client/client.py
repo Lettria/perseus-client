@@ -252,7 +252,7 @@ class PerseusClient:
         """
         Processes a single file to build a KnowledgeGraph with resilient job handling.
         """
-        logger.info(f"Building graph for file: {file_path}")
+        logger.debug(f"Building graph for file: {file_path}")
         created_file = await self.file.upload_file_async(file_path)
         if created_file.status == FileStatus.PENDING:
             await self.file.wait_for_file_upload_async(created_file.id)
@@ -275,7 +275,7 @@ class PerseusClient:
                 JobStatus.STARTING,
                 JobStatus.RUNNABLE,
             ]:
-                logger.info(f"Attaching to existing in-progress job: {latest_job.id}")
+                logger.debug(f"Attaching to existing in-progress job: {latest_job.id}")
                 job_to_run = latest_job
             elif latest_job.status == JobStatus.SUCCEEDED:
                 if refresh_graph:
@@ -283,7 +283,7 @@ class PerseusClient:
                         f"Job {latest_job.id} already succeeded, but refresh_graph=True, so submitting a new job."
                     )
                 else:
-                    logger.info(f"Using existing completed job: {latest_job.id}")
+                    logger.debug(f"Using existing completed job: {latest_job.id}")
                     job_to_run = latest_job
             elif latest_job.status == JobStatus.FAILED:
                 logger.warning(
@@ -291,7 +291,7 @@ class PerseusClient:
                 )
 
         if not job_to_run:
-            logger.info("No suitable existing job found, submitting a new job.")
+            logger.debug("No suitable existing job found, submitting a new job.")
             job_to_run = await self.job.submit_job_async(
                 file_id=created_file.id, ontology_id=ontology_id
             )
@@ -383,7 +383,7 @@ class PerseusClient:
         """
         created_ontology_id = None
         if ontology_path:
-            logger.info(f"Using ontology from path: {ontology_path}")
+            logger.debug(f"Using ontology from path: {ontology_path}")
             # This part still runs sequentially as the ontology is shared
             created_ontology = await self.ontology.upload_ontology_async(ontology_path)
             if created_ontology.status == OntologyStatus.PENDING:
@@ -402,7 +402,7 @@ class PerseusClient:
             )
             tasks.append(task)
 
-        logger.info(f"Processing {len(tasks)} file(s)...")
+        logger.debug(f"Processing {len(tasks)} file(s)...")
 
         results = await self.job._wait_for_tasks(
             tasks, [os.path.basename(p) for p in file_path]

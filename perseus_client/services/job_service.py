@@ -66,7 +66,7 @@ class JobService(BaseService):
         """
         Asynchronously submits a job for processing.
         """
-        logger.info(
+        logger.debug(
             f"Submitting job for file_id: {file_id}, ontology_id: {ontology_id}"
         )
         response = await self._request(
@@ -280,7 +280,7 @@ class JobService(BaseService):
             if not updated_job:
                 raise PerseusException(f"Could not find job {job.id} during polling.")
             if updated_job.status != job.status:
-                logger.info(f"Job {job.id} status changed to: {updated_job.status}")
+                logger.debug(f"Job {job.id} status changed to: {updated_job.status}")
 
             job = updated_job
 

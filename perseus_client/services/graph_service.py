@@ -33,7 +33,7 @@ class GraphService:
         if not kbs:
             return KnowledgeGraph()
 
-        logger.info(f"Starting interlink process for {len(kbs)} knowledge graphs.")
+        logger.debug(f"Starting interlink process for {len(kbs)} knowledge graphs.")
         total_entities_before = sum(len(kg.entities) for kg in kbs)
         total_relations_before = sum(len(kg.relations) for kg in kbs)
         logger.debug(

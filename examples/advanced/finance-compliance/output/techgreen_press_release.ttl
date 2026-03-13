@@ -1,0 +1,238 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ont: <http://example.org/ontology#> .
+@prefix data: <http://example.org/data/> .
+data:749f43cd-ac21-4de1-80e5-f6f61b30963a ont:hasUnit "Percentage"^^xsd:token .
+data:4af6bea5-c413-46e0-bc56-6513154bce9a rdfs:label "Research & Innovation" .
+data:243b42a0-68b1-44d0-a7fa-54748419f46d ont:hasRole data:c6675f5f-ddc3-41e4-be3b-30f644e80d60 .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasGovernanceBody data:8c8e2976-5e34-4819-b825-f12ec3783e24 ;
+	ont:partnersWith data:8f520802-7d36-4523-9f6c-1c2b21d6db8f .
+data:3f469fa5-ec19-4adb-b308-108eb41835d5 rdfs:label "GHG Protocol" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:usesMethodology data:3f469fa5-ec19-4adb-b308-108eb41835d5 .
+data:ebd773c2-1009-4afb-8e66-c336cfa6c1fc ont:hasValue "450000000"^^xsd:decimal .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e ont:hasPillar data:ac269bad-fd79-444b-b45e-c8517703c8fc .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:publishes data:e1e4e30a-d626-467d-a14a-0fb0e05878bb .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e ont:hasTarget data:749f43cd-ac21-4de1-80e5-f6f61b30963a .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasProgram data:895507c5-fed5-4a91-a0ad-0b8ce6e00cc3 .
+data:6287a0b0-4d53-498a-8784-347de28d172b ont:isAuditOf data:faaddef3-27fe-4358-b5d9-8472958d438d .
+data:b0fc4f98-5493-4f2f-8bf7-c586a9558d02 rdfs:label "Real-time public dashboard" .
+data:263a4309-5d25-4bd2-a411-3b47a6dda620 ont:hasTargetYear "2030"^^xsd:gYear .
+data:a85c9a7f-aef7-4c7c-bbfd-35bbd946f37b ont:hasTargetValue "6 years" .
+data:8c8e2976-5e34-4819-b825-f12ec3783e24 rdfs:label "Board of Directors" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:owns data:59fb6f90-16fc-4d17-ae0b-aa4358113aa5 ;
+	ont:hasMetric data:efac9a36-464e-40f2-add7-26594a5f013d .
+data:749f43cd-ac21-4de1-80e5-f6f61b30963a rdfs:label "90% recycling rate" .
+data:687546d0-8896-4bca-aba5-b84fd1fdac87 rdfs:label "Mandatory CSRD regulation" .
+data:ff214bf4-4abc-487c-80c2-9bc9d3649f5d ont:hasYear "2025"^^xsd:gYear .
+data:a85c9a7f-aef7-4c7c-bbfd-35bbd946f37b rdfs:label "Server lifespan extension to 6 years" .
+data:ff214bf4-4abc-487c-80c2-9bc9d3649f5d ont:isAppointmentBy data:52e453e1-6df1-4531-ad63-7e3478771fe3 .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasRisk data:f97c7ef9-3d29-4c4b-a056-174612211013 .
+data:4a3a68f4-83ce-4f1a-b31c-85872486e85f ont:hasTargetValue "100"^^xsd:decimal .
+data:eac6ca1a-3d33-4d23-9906-08fd0213f17e rdfs:label "GreenOps R&D Program" .
+data:c3fab2e6-cef6-4efe-904a-415e8cbad351 ont:hasMember data:0ad316f5-e103-42c3-ae4e-0ef58bece60d .
+data:ebd773c2-1009-4afb-8e66-c336cfa6c1fc ont:hasCurrency "EUR"^^xsd:token .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:conductsTraining data:a003568e-836b-491a-a88a-f5002fe65166 .
+data:3d14792e-9d22-4ea3-aea9-22d6d2961222 rdfs:label "Chairman of the Climate Committee" .
+data:efac9a36-464e-40f2-add7-26594a5f013d rdfs:label "Client Count 2024" .
+data:4a3a68f4-83ce-4f1a-b31c-85872486e85f ont:hasTargetYear "2026"^^xsd:gYear .
+data:da3f9ddb-b5fe-402e-94c5-1c235251ad84 rdfs:label "Internal refurbishment" .
+data:14e8c526-37f6-4f73-850a-712b4955e89c rdfs:label "Data Center in Marseille" .
+data:a77f8e31-9a32-40b2-abcf-d89e1a783427 ont:hasTargetYear "2040"^^xsd:gYear .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:owns data:14e8c526-37f6-4f73-850a-712b4955e89c ;
+	ont:managesAsset data:5af298c6-37bb-4892-8a28-6aaf72a867e1 .
+data:263a4309-5d25-4bd2-a411-3b47a6dda620 ont:hasUnit "Percentage"^^xsd:token .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasRisk data:687546d0-8896-4bca-aba5-b84fd1fdac87 .
+data:ce26495c-d5e5-4ec5-b785-b40be652f9d0 rdfs:label "100% electric vehicle fleet by 2027" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:participatesIn data:96aee362-0ba6-4fa7-bda3-8cd1549ee64d ;
+	ont:hasHeadquartersIn data:f487e376-c200-449c-b932-b07e6c85745d .
+data:243b42a0-68b1-44d0-a7fa-54748419f46d rdfs:label "Sophie Laurent" .
+data:e1e4e30a-d626-467d-a14a-0fb0e05878bb ont:hasAuthor data:52e453e1-6df1-4531-ad63-7e3478771fe3 .
+data:c3b1ae96-57c6-4156-bd73-d35e0d2dc0f2 rdfs:label "Annual climate report" .
+data:e3291aef-e6b3-406e-bdda-10a2406ded1d rdfs:label "Growing client expectations" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasTarget data:ce26495c-d5e5-4ec5-b785-b40be652f9d0 .
+data:8f520802-7d36-4523-9f6c-1c2b21d6db8f rdfs:label "Amazon reforestation project" .
+data:7c85b570-ba9b-4977-8115-6e6efe4eff5d rdfs:label "ONF (French National Forestry Office)" .
+data:749f43cd-ac21-4de1-80e5-f6f61b30963a ont:hasTargetValue "90"^^xsd:decimal .
+data:791a6ef8-1e49-4fab-90eb-7f772dd0c3a9 rdfs:label "Heatwaves and cooling" .
+data:a003568e-836b-491a-a88a-f5002fe65166 rdfs:label "Carbon 4 training" .
+data:ff214bf4-4abc-487c-80c2-9bc9d3649f5d ont:hasAppointee data:d05e8bbb-319c-40a1-9470-205ec121be97 .
+data:3f469a7e-cc1d-4001-b287-1168d5cc1b53 rdfs:label "On-site solar panels at Marseille" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:participatesIn data:da3f9ddb-b5fe-402e-94c5-1c235251ad84 ;
+	ont:hasRisk data:e3291aef-e6b3-406e-bdda-10a2406ded1d .
+data:ac269bad-fd79-444b-b45e-c8517703c8fc rdfs:label "Value Chain Engagement" .
+data:1afcae11-b0fe-490c-8283-cb522233d889 rdfs:label "IT Circular Economy" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:managesAsset data:14e8c526-37f6-4f73-850a-712b4955e89c ;
+	ont:hasProgram data:9c10166d-3070-4652-8fa0-44a74df3c97e .
+data:546a6255-4cc3-48f1-8e76-d8562db99af6 rdfs:label "Responsible procurement policy" .
+data:d6d9b90e-c0c8-4174-9ed6-58f00660d9f4 rdfs:label "Climate Fresk e-learning" .
+data:895507c5-fed5-4a91-a0ad-0b8ce6e00cc3 rdfs:label "TechForest Program" .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e ont:hasTarget data:263a4309-5d25-4bd2-a411-3b47a6dda620 .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasOffer data:b0fc4f98-5493-4f2f-8bf7-c586a9558d02 .
+data:852c0af7-b04c-4617-939d-3cb29ba7d91a ont:hasBaselineYear "2024"^^xsd:gYear .
+data:4861335e-aa86-4200-a8da-8f8ef399939a rdfs:label "Founding of TechGreen Solutions" .
+data:bbdedc5d-201b-4409-950c-9d1271ab2085 rdfs:label "Madagascar reforestation project" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:owns data:e414c2db-939f-4cc7-bf0e-f7f5799b5c37 .
+data:f487e376-c200-449c-b932-b07e6c85745d rdfs:label "Paris" .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e ont:hasTarget data:a85c9a7f-aef7-4c7c-bbfd-35bbd946f37b .
+data:0ad316f5-e103-42c3-ae4e-0ef58bece60d rdfs:label "Antoine Mercier" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasPolicy data:ad4c9aa0-4632-46f2-aaad-265467601c09 .
+data:c3fab2e6-cef6-4efe-904a-415e8cbad351 rdfs:label "Climate Committee" .
+data:e1e4e30a-d626-467d-a14a-0fb0e05878bb ont:hasReportingYear "2025"^^xsd:gYear .
+data:e57f4219-3d65-471e-90c3-ba6b8755711a rdfs:label "Immersive liquid cooling" .
+data:96aee362-0ba6-4fa7-bda3-8cd1549ee64d rdfs:label "Waste heat recovery at Marseille" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasCeo data:b2e62606-52a9-4ed3-a749-2d1b8cda9cc2 ;
+	ont:hasProgram data:eac6ca1a-3d33-4d23-9906-08fd0213f17e .
+data:86d62ee0-3f63-4593-bab6-2d8901fda159 rdfs:label "Soft mobility bonus" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasOrganizationalUnit data:8e478558-fa72-4c0f-bb65-e99321a81595 .
+data:a77f8e31-9a32-40b2-abcf-d89e1a783427 ont:hasTrajectory "1.5°C"^^xsd:token .
+data:263a4309-5d25-4bd2-a411-3b47a6dda620 rdfs:label "-30% carbon intensity of purchases by 2030" .
+data:a77f8e31-9a32-40b2-abcf-d89e1a783427 ont:hasTargetValue "Net-Zero"^^xsd:normalizedString .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:conductsTraining data:d6d9b90e-c0c8-4174-9ed6-58f00660d9f4 .
+data:faaddef3-27fe-4358-b5d9-8472958d438d ont:hasReportingYear "2024"^^xsd:gYear .
+data:efac9a36-464e-40f2-add7-26594a5f013d ont:hasValue 1800 .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasTarget data:852c0af7-b04c-4617-939d-3cb29ba7d91a .
+data:ad4c9aa0-4632-46f2-aaad-265467601c09 rdfs:label "Remote work policy" .
+data:ce26495c-d5e5-4ec5-b785-b40be652f9d0 ont:hasTargetYear "2027"^^xsd:gYear .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:managesAsset data:e414c2db-939f-4cc7-bf0e-f7f5799b5c37 .
+data:034b8144-1d69-479a-b49b-712452eccd21 rdfs:label "Climate & Transition Director" .
+data:8c8e2976-5e34-4819-b825-f12ec3783e24 ont:hasCommittee data:c3fab2e6-cef6-4efe-904a-415e8cbad351 .
+data:ff214bf4-4abc-487c-80c2-9bc9d3649f5d ont:hasRole data:034b8144-1d69-479a-b49b-712452eccd21 .
+data:c6675f5f-ddc3-41e4-be3b-30f644e80d60 rdfs:label "Communications Manager" .
+data:5af298c6-37bb-4892-8a28-6aaf72a867e1 rdfs:label "Data Center in Amsterdam" .
+data:03912280-4ed4-4953-9bab-cc48f084ffc6 rdfs:label "Green Data Centers" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasPolicy data:546a6255-4cc3-48f1-8e76-d8562db99af6 .
+data:96aee362-0ba6-4fa7-bda3-8cd1549ee64d ont:occursAt data:14e8c526-37f6-4f73-850a-712b4955e89c .
+data:4a3a68f4-83ce-4f1a-b31c-85872486e85f ont:hasUnit "Percentage"^^xsd:token .
+data:e414c2db-939f-4cc7-bf0e-f7f5799b5c37 rdfs:label "Data Center in Munich" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:partnersWith data:7c85b570-ba9b-4977-8115-6e6efe4eff5d ;
+	ont:owns data:3f469a7e-cc1d-4001-b287-1168d5cc1b53 .
+data:c3b1ae96-57c6-4156-bd73-d35e0d2dc0f2 ont:hasReportingYear "2025"^^xsd:gYear .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e ont:isAuthoredBy data:d05e8bbb-319c-40a1-9470-205ec121be97 .
+data:6287a0b0-4d53-498a-8784-347de28d172b rdfs:label "Annual carbon audit" .
+data:59fb6f90-16fc-4d17-ae0b-aa4358113aa5 rdfs:label "Storage batteries" .
+data:852c0af7-b04c-4617-939d-3cb29ba7d91a ont:hasTargetYear "2030"^^xsd:gYear .
+data:ebd773c2-1009-4afb-8e66-c336cfa6c1fc rdfs:label "2024 Revenue" .
+data:ce26495c-d5e5-4ec5-b785-b40be652f9d0 ont:hasUnit "Percentage"^^xsd:token .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e ont:hasPillar data:03912280-4ed4-4953-9bab-cc48f084ffc6 .
+data:c3fab2e6-cef6-4efe-904a-415e8cbad351 ont:hasMeetingCount 4 .
+data:d05e8bbb-319c-40a1-9470-205ec121be97 rdfs:label "Marie Dupont" .
+data:ff214bf4-4abc-487c-80c2-9bc9d3649f5d rdfs:label "Appointment of Marie Dupont" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasTarget data:a77f8e31-9a32-40b2-abcf-d89e1a783427 .
+data:d05e8bbb-319c-40a1-9470-205ec121be97 ont:hasTitle "Climate & Transition Director"^^xsd:normalizedString .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:publishes data:faaddef3-27fe-4358-b5d9-8472958d438d .
+data:852c0af7-b04c-4617-939d-3cb29ba7d91a ont:hasUnit "Percentage"^^xsd:token .
+data:0ad316f5-e103-42c3-ae4e-0ef58bece60d ont:hasRole data:3d14792e-9d22-4ea3-aea9-22d6d2961222 .
+data:8e478558-fa72-4c0f-bb65-e99321a81595 ont:isHeadedBy data:034b8144-1d69-479a-b49b-712452eccd21 .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasFoundingEvent data:4861335e-aa86-4200-a8da-8f8ef399939a .
+data:82ba0993-cb3d-498d-ab59-e01381f47986 ont:isSubmittedTo data:9b47e2c0-be63-4cdc-a03f-67868341bff8 .
+data:4861335e-aa86-4200-a8da-8f8ef399939a ont:hasYear "2015"^^xsd:gYear .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:owns data:5af298c6-37bb-4892-8a28-6aaf72a867e1 ;
+	ont:hasNumberOfEmployees 2200 .
+data:243b42a0-68b1-44d0-a7fa-54748419f46d ont:isEmployedBy data:52e453e1-6df1-4531-ad63-7e3478771fe3 .
+data:6287a0b0-4d53-498a-8784-347de28d172b ont:hasYear "2025"^^xsd:gYear .
+data:4a3a68f4-83ce-4f1a-b31c-85872486e85f rdfs:label "100% employees sensitized by 2026" .
+data:efac9a36-464e-40f2-add7-26594a5f013d ont:hasYear "2024"^^xsd:gYear .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasRisk data:791a6ef8-1e49-4fab-90eb-7f772dd0c3a9 .
+data:852c0af7-b04c-4617-939d-3cb29ba7d91a rdfs:label "Intermediate target for 2030" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasCommitment data:82ba0993-cb3d-498d-ab59-e01381f47986 .
+data:82ba0993-cb3d-498d-ab59-e01381f47986 rdfs:label "Net-Zero 2040 commitment" .
+data:faaddef3-27fe-4358-b5d9-8472958d438d ont:hasAuthor data:52e453e1-6df1-4531-ad63-7e3478771fe3 .
+data:ff1f926e-c762-43b8-84c9-c32f69aa4b8a rdfs:label "Bureau Veritas" .
+data:d05e8bbb-319c-40a1-9470-205ec121be97 ont:isEmployedBy data:52e453e1-6df1-4531-ad63-7e3478771fe3 .
+data:8e478558-fa72-4c0f-bb65-e99321a81595 ont:isAttachedTo data:b2e62606-52a9-4ed3-a749-2d1b8cda9cc2 .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasTarget data:4a3a68f4-83ce-4f1a-b31c-85872486e85f ;
+	ont:publishes data:c3b1ae96-57c6-4156-bd73-d35e0d2dc0f2 .
+data:f97c7ef9-3d29-4c4b-a056-174612211013 rdfs:label "Technological obsolescence" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasInitiative data:86d62ee0-3f63-4593-bab6-2d8901fda159 .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e ont:hasPillar data:1afcae11-b0fe-490c-8283-cb522233d889 .
+data:6287a0b0-4d53-498a-8784-347de28d172b ont:isPerformedBy data:ff1f926e-c762-43b8-84c9-c32f69aa4b8a .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e rdfs:label "Digital4Climate" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasAppointment data:ff214bf4-4abc-487c-80c2-9bc9d3649f5d .
+data:243b42a0-68b1-44d0-a7fa-54748419f46d ont:hasTitle "Communications Manager"^^xsd:normalizedString .
+data:faaddef3-27fe-4358-b5d9-8472958d438d rdfs:label "First comprehensive carbon footprint for 2024" .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e ont:hasPillar data:4af6bea5-c413-46e0-bc56-6513154bce9a .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasOffer data:9a96ab36-223f-44ce-be76-1dc1b73d26e9 .
+data:b2e62606-52a9-4ed3-a749-2d1b8cda9cc2 rdfs:label "Julien Bertrand" .
+data:a85c9a7f-aef7-4c7c-bbfd-35bbd946f37b ont:hasTargetYear "2027"^^xsd:gYear .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:develops data:e57f4219-3d65-471e-90c3-ba6b8755711a .
+data:a77f8e31-9a32-40b2-abcf-d89e1a783427 rdfs:label "Net-Zero 2040 Target" .
+data:852c0af7-b04c-4617-939d-3cb29ba7d91a ont:hasReductionValue "55"^^xsd:decimal .
+data:9b47e2c0-be63-4cdc-a03f-67868341bff8 rdfs:label "Science Based Targets initiative" .
+data:ce2f695e-6238-4691-b92f-e9899901e038 rdfs:label "Water stress" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:hasMetric data:ebd773c2-1009-4afb-8e66-c336cfa6c1fc .
+data:9a96ab36-223f-44ce-be76-1dc1b73d26e9 rdfs:label "Cloud and hosting solutions" .
+data:e1e4e30a-d626-467d-a14a-0fb0e05878bb rdfs:label "CSRD report" .
+data:d40b4d98-6ec7-49dd-8067-16d70e11f4e6 rdfs:label "EcoSystem" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:partnersWith data:bbdedc5d-201b-4409-950c-9d1271ab2085 ;
+	ont:hasRisk data:ce2f695e-6238-4691-b92f-e9899901e038 .
+data:b2e62606-52a9-4ed3-a749-2d1b8cda9cc2 ont:hasTitle "CEO"^^xsd:normalizedString .
+data:8e478558-fa72-4c0f-bb65-e99321a81595 rdfs:label "Climate & Transition Department" .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 ont:partnersWith data:d40b4d98-6ec7-49dd-8067-16d70e11f4e6 .
+data:ce26495c-d5e5-4ec5-b785-b40be652f9d0 ont:hasTargetValue "100"^^xsd:decimal .
+data:ebd773c2-1009-4afb-8e66-c336cfa6c1fc ont:hasYear "2024"^^xsd:gYear .
+data:faaddef3-27fe-4358-b5d9-8472958d438d ont:hasAssuranceFrom data:ff1f926e-c762-43b8-84c9-c32f69aa4b8a .
+data:c3b1ae96-57c6-4156-bd73-d35e0d2dc0f2 ont:hasAuthor data:52e453e1-6df1-4531-ad63-7e3478771fe3 .
+data:263a4309-5d25-4bd2-a411-3b47a6dda620 ont:hasReductionValue "30"^^xsd:decimal .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 rdfs:label "TechGreen Solutions" .
+data:8e478558-fa72-4c0f-bb65-e99321a81595 a ont:OrganizationalUnit .
+data:3f469a7e-cc1d-4001-b287-1168d5cc1b53 a ont:Equipment .
+data:749f43cd-ac21-4de1-80e5-f6f61b30963a a ont:Target .
+data:243b42a0-68b1-44d0-a7fa-54748419f46d a ont:Person .
+data:faaddef3-27fe-4358-b5d9-8472958d438d a ont:Report .
+data:791a6ef8-1e49-4fab-90eb-7f772dd0c3a9 a ont:PhysicalRisk .
+data:d40b4d98-6ec7-49dd-8067-16d70e11f4e6 a ont:Organization .
+data:ff1f926e-c762-43b8-84c9-c32f69aa4b8a a ont:Auditor .
+data:da3f9ddb-b5fe-402e-94c5-1c235251ad84 a ont:Process .
+data:b0fc4f98-5493-4f2f-8bf7-c586a9558d02 a ont:Platform .
+data:895507c5-fed5-4a91-a0ad-0b8ce6e00cc3 a ont:Program .
+data:96aee362-0ba6-4fa7-bda3-8cd1549ee64d a ont:Process .
+data:ebd773c2-1009-4afb-8e66-c336cfa6c1fc a ont:FinancialMetric .
+data:4861335e-aa86-4200-a8da-8f8ef399939a a ont:Founding .
+data:ad4c9aa0-4632-46f2-aaad-265467601c09 a ont:Policy .
+data:86d62ee0-3f63-4593-bab6-2d8901fda159 a ont:Initiative .
+data:546a6255-4cc3-48f1-8e76-d8562db99af6 a ont:Policy .
+data:c3fab2e6-cef6-4efe-904a-415e8cbad351 a ont:BoardCommittee .
+data:4af6bea5-c413-46e0-bc56-6513154bce9a a ont:StrategicPillar .
+data:3d14792e-9d22-4ea3-aea9-22d6d2961222 a ont:Role .
+data:efac9a36-464e-40f2-add7-26594a5f013d a ont:OperationalMetric .
+data:e414c2db-939f-4cc7-bf0e-f7f5799b5c37 a ont:DataCenter .
+data:bbdedc5d-201b-4409-950c-9d1271ab2085 a ont:Initiative .
+data:f97c7ef9-3d29-4c4b-a056-174612211013 a ont:TransitionRisk .
+data:14e8c526-37f6-4f73-850a-712b4955e89c a ont:DataCenter .
+data:52e453e1-6df1-4531-ad63-7e3478771fe3 a ont:Company .
+data:ff214bf4-4abc-487c-80c2-9bc9d3649f5d a ont:Appointment .
+data:1afcae11-b0fe-490c-8283-cb522233d889 a ont:StrategicPillar .
+data:c6675f5f-ddc3-41e4-be3b-30f644e80d60 a ont:Role .
+data:687546d0-8896-4bca-aba5-b84fd1fdac87 a ont:TransitionRisk .
+data:a77f8e31-9a32-40b2-abcf-d89e1a783427 a ont:Target .
+data:0ad316f5-e103-42c3-ae4e-0ef58bece60d a ont:Person .
+data:852c0af7-b04c-4617-939d-3cb29ba7d91a a ont:ReductionTarget .
+data:eac6ca1a-3d33-4d23-9906-08fd0213f17e a ont:Program .
+data:4a3a68f4-83ce-4f1a-b31c-85872486e85f a ont:Target .
+data:d6d9b90e-c0c8-4174-9ed6-58f00660d9f4 a ont:TrainingProgram .
+data:e57f4219-3d65-471e-90c3-ba6b8755711a a ont:CoolingSystem .
+data:c3b1ae96-57c6-4156-bd73-d35e0d2dc0f2 a ont:Report .
+data:d05e8bbb-319c-40a1-9470-205ec121be97 a ont:Person .
+data:9b47e2c0-be63-4cdc-a03f-67868341bff8 a ont:Organization .
+data:b2e62606-52a9-4ed3-a749-2d1b8cda9cc2 a ont:Person .
+data:f487e376-c200-449c-b932-b07e6c85745d a ont:City .
+data:a85c9a7f-aef7-4c7c-bbfd-35bbd946f37b a ont:Target .
+data:e1e4e30a-d626-467d-a14a-0fb0e05878bb a ont:CSRD .
+data:7c85b570-ba9b-4977-8115-6e6efe4eff5d a ont:Organization .
+data:3f469fa5-ec19-4adb-b308-108eb41835d5 a ont:Methodology .
+data:034b8144-1d69-479a-b49b-712452eccd21 a ont:Role .
+data:ce2f695e-6238-4691-b92f-e9899901e038 a ont:PhysicalRisk .
+data:ac269bad-fd79-444b-b45e-c8517703c8fc a ont:StrategicPillar .
+data:8c8e2976-5e34-4819-b825-f12ec3783e24 a ont:GovernanceBody .
+data:9a96ab36-223f-44ce-be76-1dc1b73d26e9 a ont:Offer .
+data:8f520802-7d36-4523-9f6c-1c2b21d6db8f a ont:Initiative .
+data:263a4309-5d25-4bd2-a411-3b47a6dda620 a ont:ReductionTarget .
+data:e3291aef-e6b3-406e-bdda-10a2406ded1d a ont:TransitionRisk .
+data:ce26495c-d5e5-4ec5-b785-b40be652f9d0 a ont:Target .
+data:6287a0b0-4d53-498a-8784-347de28d172b a ont:Audit .
+data:5af298c6-37bb-4892-8a28-6aaf72a867e1 a ont:DataCenter .
+data:59fb6f90-16fc-4d17-ae0b-aa4358113aa5 a ont:Equipment .
+data:82ba0993-cb3d-498d-ab59-e01381f47986 a ont:Commitment .
+data:03912280-4ed4-4953-9bab-cc48f084ffc6 a ont:StrategicPillar .
+data:9c10166d-3070-4652-8fa0-44a74df3c97e a ont:StrategicProgram .
+data:a003568e-836b-491a-a88a-f5002fe65166 a ont:TrainingProgram .

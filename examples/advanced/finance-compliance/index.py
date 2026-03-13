@@ -1,6 +1,7 @@
 import logging
 import sys
 import os
+import asyncio
 from perseus_client.client import PerseusClient
 from dotenv import load_dotenv
 

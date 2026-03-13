@@ -115,7 +115,7 @@ class FileService(BaseService):
         """
         Asynchronously deletes a file by its ID.
         """
-        logger.info(f"Attempting to delete file with id: {file_id}")
+        logger.debug(f"Attempting to delete file with id: {file_id}")
         await self._request(
             "DELETE",
             f"/api/v0/file/{file_id}",
@@ -127,7 +127,7 @@ class FileService(BaseService):
         Asynchronously creates a file record and uploads the file content.
         If a file with the same content already exists, it will be returned.
         """
-        logger.info(f"Starting upload process for file: {file_path}")
+        logger.debug(f"Starting upload process for file: {file_path}")
         file_name = os.path.basename(file_path)
         try:
             with open(file_path, "rb") as f:
@@ -146,20 +146,20 @@ class FileService(BaseService):
             
             # If there is an upload_url, it means the file is new and needs to be uploaded.
             if upload_url:
-                logger.info(f"File created with ID: {file_obj.id}. Now uploading content to pre-signed URL.")
+                logger.debug(f"File created with ID: {file_obj.id}. Now uploading content to pre-signed URL.")
                 ssl_context = ssl.create_default_context(cafile=certifi.where())
                 connector = aiohttp.TCPConnector(ssl=ssl_context)
                 async with aiohttp.ClientSession(connector=connector) as s3_session:
                     async with s3_session.put(upload_url, data=file_content) as resp:
                         resp.raise_for_status()
-                logger.info(f"Successfully uploaded content for file: {file_obj.id}")
+                logger.debug(f"Successfully uploaded content for file: {file_obj.id}")
             else:
                 # This case is logged by the 409 handling below.
                 pass
 
         except APIException as e:
             if e.status_code == 409:
-                logger.info(
+                logger.debug(
                     f"File with hash {source_hash} already exists. Fetching existing file."
                 )
                 files = await self.find_files_async(source_hashes=[source_hash])
@@ -171,7 +171,7 @@ class FileService(BaseService):
                         f"Could not find existing file with hash {source_hash} after a 409 conflict."
                     ) from e
                 file_obj = files[0]
-                logger.info(f"Found existing file with ID: {file_obj.id}")
+                logger.debug(f"Found existing file with ID: {file_obj.id}")
             else:
                 logger.error(f"API error during file creation or upload: {e}", exc_info=True)
                 raise

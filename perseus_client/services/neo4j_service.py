@@ -21,19 +21,20 @@ class Neo4jService:
     def __init__(
         self,
         loop: asyncio.AbstractEventLoop,
-        wait_for_neo4j_readiness: bool = True,
         timeout: int = 120,
     ):
         if not NEO4J_AVAILABLE:
             logger.warning("Neo4jService initialized but 'neo4j' library is missing.")
         self._loop = loop
         self.cql_service = CQLService()
+        self.timeout = timeout
+        self._neo4j_ready = False
 
-        if wait_for_neo4j_readiness:
-            self._wait_for_neo4j(timeout)
+    async def _wait_for_neo4j_async(self):
+        """Waits for the Neo4j database to become available."""
+        if self._neo4j_ready:
+            return
 
-    def _wait_for_neo4j(self, timeout: int):
-        """Waits for the Neo4j database to become available, displaying a spinner."""
         from rich.progress import Progress, SpinnerColumn, TextColumn
 
         with Progress(
@@ -46,7 +47,7 @@ class Neo4jService:
             )
 
             start_time = time.time()
-            while time.time() - start_time < timeout:
+            while time.time() - start_time < self.timeout:
                 try:
                     if (
                         not settings.neo4j_uri
@@ -66,13 +67,14 @@ class Neo4jService:
                             completed=True,
                             description="[green]✓[/green] Connected to Neo4j.",
                         )
+                        self._neo4j_ready = True
                         return
                 except Exception:
-                    time.sleep(2)  # Wait before retrying
+                    await asyncio.sleep(2)  # Wait before retrying
 
             # If the loop finishes, it's a timeout
             raise PerseusException(
-                f"Timed out after {timeout} seconds waiting for Neo4j to become available."
+                f"Timed out after {self.timeout} seconds waiting for Neo4j to become available."
             )
 
     def save_output_to_neo4j(self, file_path: str):
@@ -85,7 +87,7 @@ class Neo4jService:
         Args:
             file_path (str): The path to the file containing Cypher queries.
         """
-        logger.info(f"Reading CQL file from {file_path}")
+        logger.debug(f"Reading CQL file from {file_path}")
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 cql_query = f.read()
@@ -118,6 +120,8 @@ class Neo4jService:
             logger.error(error_msg)
             raise ImportError(error_msg)
 
+        await self._wait_for_neo4j_async()
+
         driver = None
         try:
             if (
@@ -143,7 +147,7 @@ class Neo4jService:
         try:
             with driver.session() as session:
                 statements = [s.strip() for s in cql_query.split(";") if s.strip()]
-                logger.info(
+                logger.debug(
                     f"Executing {len(statements)} CQL statements against Neo4j."
                 )
                 for statement in statements:
@@ -175,7 +179,7 @@ class Neo4jService:
                             properties for a cleaner, more "native" Neo4j schema (e.g., `Person`, `label`).
                             If False, preserves prefixed names for higher fidelity (e.g., `dbo_Person`, `rdfs_label`).
         """
-        logger.info("Attempting to save KnowledgeGraph to Neo4j.")
+        logger.debug("Attempting to save KnowledgeGraph to Neo4j.")
         try:
             # Note: asyncio.run() is used for synchronous context.
             # For fully async apps, call save_to_neo4j_async directly.
@@ -198,11 +202,11 @@ class Neo4jService:
                             properties for a cleaner, more "native" Neo4j schema (e.g., `Person`, `label`).
                             If False, preserves prefixed names for higher fidelity (e.g., `dbo_Person`, `rdfs_label`).
         """
-        logger.info("Generating CQL from KnowledgeGraph for Neo4j.")
+        logger.debug("Generating CQL from KnowledgeGraph for Neo4j.")
         try:
             cql_content = self.cql_service.to_cql(kg, strip_prefixes=strip_prefixes)
             if cql_content:
-                logger.info("CQL content generated. Executing against Neo4j.")
+                logger.debug("CQL content generated. Executing against Neo4j.")
                 await self.execute_cql_string_async(cql_content)
             else:
                 logger.warning(

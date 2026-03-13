@@ -6,7 +6,7 @@ services:
       - "7474:7474" # HTTP
       - "7687:7687" # Bolt
     environment:
-      - NEO4J_AUTH=neo4j/j4oenj4oen # Change 'password' for production
+      - NEO4J_AUTH=neo4j/j4oenj4oen
       - NEO4J_PLUGINS=["apoc"]
     networks:
       - main_local

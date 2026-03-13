@@ -143,8 +143,7 @@ def check_esrs_e1_compliance(tx, company_name: str) -> dict:
 
 def print_compliance_report(results: dict, company_name: str):
     """Pretty-print compliance results."""
-    print(f"
-🏢 {company_name}")
+    print(f"🏢 {company_name}")
 
     quantitative = {k: v for k, v in results.items() if k.startswith("E1-")}
     narrative = {k: v for k, v in results.items() if not k.startswith("E1-")}
@@ -159,5 +158,4 @@ def print_compliance_report(results: dict, company_name: str):
 
     passed = sum(results.values())
     total = len(results)
-    print(f"
-  {passed}/{total} indicators ({int(passed / total * 100)}%)")
+    print(f"{passed}/{total} indicators ({int(passed / total * 100)}%)")

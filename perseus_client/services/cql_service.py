@@ -1,5 +1,6 @@
 from typing import Dict, Any
 import re
+from datetime import date, datetime
 from ..models import KnowledgeGraph, LiteralValue
 import logging
 
@@ -111,6 +112,10 @@ class CQLService:
 
             # Helper to format a single value for Cypher
             def _format_value(value: Any) -> str:
+                if value is None:
+                    return "null"
+                if isinstance(value, (date, datetime)):
+                    return f"'{value.isoformat()}'"
                 if isinstance(value, str):
                     escaped_value = value.replace("\\", "\\\\").replace("'", "\\'")
                     return f"'{escaped_value}'"

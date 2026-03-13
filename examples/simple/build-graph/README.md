@@ -17,7 +17,7 @@ This example demonstrates how to build a knowledge graph from a text file, add c
     PERSEUS_API_KEY="YOUR_API_KEY"
     NEO4J_URI="bolt://localhost:7687"
     NEO4J_USER="neo4j"
-    NEO4J_PASSWORD="password"
+    NEO4J_PASSWORD="j4oenj4oen"
     ```
 
 3.  **Start Neo4j:**

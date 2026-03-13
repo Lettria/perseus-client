@@ -23,8 +23,7 @@ def main():
         logging.error(f"Failed to connect to Neo4j: {e}")
         return
 
-    print("
-📋 CSRD ESRS E1 Compliance Verification")
+    print("📋 CSRD ESRS E1 Compliance Verification")
     print("=" * 70)
 
     companies = ["EcoSteel Industries", "TechGreen Solutions"]
@@ -38,8 +37,7 @@ def main():
                 logging.error(f"Could not run compliance check for {company}: {e}")
 
     driver.close()
-    print("
-" + "=" * 70)
+    print("" + "=" * 70)
 
 
 if __name__ == "__main__":

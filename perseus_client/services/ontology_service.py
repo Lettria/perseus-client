@@ -116,7 +116,7 @@ class OntologyService(BaseService):
         """
         Asynchronously deletes an ontology by its ID.
         """
-        logger.info(f"Attempting to delete ontology with id: {ontology_id}")
+        logger.debug(f"Attempting to delete ontology with id: {ontology_id}")
         await self._request(
             "DELETE",
             f"/api/v0/ontology/{ontology_id}",
@@ -128,7 +128,7 @@ class OntologyService(BaseService):
         Asynchronously creates a ontology record and uploads the ontology content.
         If a ontology with the same content already exists, it will be returned.
         """
-        logger.info(f"Starting upload process for ontology: {ontology_path}")
+        logger.debug(f"Starting upload process for ontology: {ontology_path}")
         ontology_name = os.path.basename(ontology_path)
         try:
             with open(ontology_path, "rb") as f:
@@ -146,7 +146,7 @@ class OntologyService(BaseService):
             upload_url = response["upload_url"]
 
             if upload_url:
-                logger.info(f"Ontology created with ID: {ontology_obj.id}. Now uploading content to pre-signed URL.")
+                logger.debug(f"Ontology created with ID: {ontology_obj.id}. Now uploading content to pre-signed URL.")
                 ssl_context = ssl.create_default_context(cafile=certifi.where())
                 connector = aiohttp.TCPConnector(ssl=ssl_context)
                 async with aiohttp.ClientSession(connector=connector) as s3_session:
@@ -154,11 +154,11 @@ class OntologyService(BaseService):
                         upload_url, data=ontology_content
                     ) as resp:
                         resp.raise_for_status()
-                logger.info(f"Successfully uploaded content for ontology: {ontology_obj.id}")
+                logger.debug(f"Successfully uploaded content for ontology: {ontology_obj.id}")
 
         except APIException as e:
             if e.status_code == 409:
-                logger.info(
+                logger.debug(
                     f"Ontology with hash {source_hash} already exists. Fetching existing ontology."
                 )
                 ontologies = await self.find_ontologies_async(
@@ -172,7 +172,7 @@ class OntologyService(BaseService):
                         f"Could not find existing ontology with hash {source_hash} after a 409 conflict."
                     ) from e
                 ontology_obj = ontologies[0]
-                logger.info(f"Found existing ontology with ID: {ontology_obj.id}")
+                logger.debug(f"Found existing ontology with ID: {ontology_obj.id}")
             else:
                 logger.error(
                     f"API error during ontology creation or upload: {e}", exc_info=True
