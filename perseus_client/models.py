@@ -156,6 +156,7 @@ class KnowledgeGraph(BaseModel):
         kbs: List["KnowledgeGraph"],
         interlinking_key_uri: str = "http://www.w3.org/2000/01/rdf-schema#label",
         immutable_properties: Optional[List[str]] = None,
+        merge_properties_on_conflict: bool = False,
     ) -> "KnowledgeGraph":
         if not kbs:
             return KnowledgeGraph()
@@ -168,7 +169,7 @@ class KnowledgeGraph(BaseModel):
 
         # Call the graph service's interlink method
         merged_kg = first_kg._graph_service.interlink(
-            kbs, interlinking_key_uri, immutable_properties
+            kbs, interlinking_key_uri, immutable_properties, merge_properties_on_conflict
         )
 
         # Inject services into the newly created graph

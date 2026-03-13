@@ -1,6 +1,1 @@
--e ../../.
-neo4j
-python-dotenv
-rdflib
-docker
-urllib3==1.26.18
+perseus-client[neo4j]==1.0.0-rc.7

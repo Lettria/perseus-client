@@ -125,6 +125,7 @@ For more detailed examples, check out the [`examples/`](./examples/) directory. 
 - **[Build Graph With Metadata](./examples/simple/build-graph-with-metadata/)**: Build a knowledge graph and add custom metadata to nodes and relationships.
 - **[CQL Manipulation](./examples/simple/cql-manipulation/)**: Perform custom modifications on CQL query strings.
 - **[File Operations](./examples/simple/file-operations/)**: Upload and manage files.
+- **[Entity Linked Graph](./examples/simple/entity-linked-graph/)**: Interlink multiple graphs into a unified structure.
 - **[Ontology Operations](./examples/simple/ontology-operations/)**: Upload and manage ontologies.
 - **[TTL Manipulation](./examples/simple/ttl-manipulation/)**: Perform custom modifications on TTL (Turtle) files.
 - **[Delete Operations](./examples/simple/delete-operations/)**: Delete files and ontologies.

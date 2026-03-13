@@ -1,1 +1,4 @@
 -e ../../.
+neo4j
+docker
+urllib3==1.26.18

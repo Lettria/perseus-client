@@ -8,6 +8,7 @@ from .cql_service import CQLService
 
 try:
     from neo4j import GraphDatabase
+
     NEO4J_AVAILABLE = True
 except ImportError:
     GraphDatabase = None
@@ -17,7 +18,12 @@ logger = logging.getLogger(__name__)
 
 
 class Neo4jService:
-    def __init__(self, loop: asyncio.AbstractEventLoop, wait_for_neo4j_readiness: bool = True, timeout: int = 120):
+    def __init__(
+        self,
+        loop: asyncio.AbstractEventLoop,
+        wait_for_neo4j_readiness: bool = True,
+        timeout: int = 120,
+    ):
         if not NEO4J_AVAILABLE:
             logger.warning("Neo4jService initialized but 'neo4j' library is missing.")
         self._loop = loop
@@ -35,8 +41,10 @@ class Neo4jService:
             TextColumn("[progress.description]{task.description}"),
             transient=True,
         ) as progress:
-            task = progress.add_task(description="Connecting to Neo4j...", total=None)
-            
+            task = progress.add_task(
+                description="Waiting for Neo4j to become available...", total=None
+            )
+
             start_time = time.time()
             while time.time() - start_time < timeout:
                 try:
@@ -53,18 +61,22 @@ class Neo4jService:
                         auth=(settings.neo4j_user, settings.neo4j_password),
                     ) as driver:
                         driver.verify_connectivity()
-                        progress.update(task, completed=True, description="[green]✓[/green] Connected to Neo4j.")
+                        progress.update(
+                            task,
+                            completed=True,
+                            description="[green]✓[/green] Connected to Neo4j.",
+                        )
                         return
                 except Exception:
-                    time.sleep(2) # Wait before retrying
-            
+                    time.sleep(2)  # Wait before retrying
+
             # If the loop finishes, it's a timeout
-            raise PerseusException(f"Timed out after {timeout} seconds waiting for Neo4j to become available.")
+            raise PerseusException(
+                f"Timed out after {timeout} seconds waiting for Neo4j to become available."
+            )
 
     def save_output_to_neo4j(self, file_path: str):
-        return self._loop.run_until_complete(
-            self.save_output_to_neo4j_async(file_path)
-        )
+        return self._loop.run_until_complete(self.save_output_to_neo4j_async(file_path))
 
     async def save_output_to_neo4j_async(self, file_path: str):
         """
@@ -105,7 +117,7 @@ class Neo4jService:
             )
             logger.error(error_msg)
             raise ImportError(error_msg)
-        
+
         driver = None
         try:
             if (
@@ -130,8 +142,10 @@ class Neo4jService:
 
         try:
             with driver.session() as session:
-                statements = [s.strip() for s in cql_query.split(';') if s.strip()]
-                logger.info(f"Executing {len(statements)} CQL statements against Neo4j.")
+                statements = [s.strip() for s in cql_query.split(";") if s.strip()]
+                logger.info(
+                    f"Executing {len(statements)} CQL statements against Neo4j."
+                )
                 for statement in statements:
                     try:
                         logger.debug(f"Executing query:\n{statement}")
@@ -142,7 +156,10 @@ class Neo4jService:
                             exc_info=True,
                         )
         except Exception as e:
-            logger.error(f"An unexpected error occurred during the Neo4j session: {e}", exc_info=True)
+            logger.error(
+                f"An unexpected error occurred during the Neo4j session: {e}",
+                exc_info=True,
+            )
         finally:
             if driver:
                 driver.close()
@@ -162,12 +179,16 @@ class Neo4jService:
         try:
             # Note: asyncio.run() is used for synchronous context.
             # For fully async apps, call save_to_neo4j_async directly.
-            self._loop.run_until_complete(self.save_to_neo4j_async(kg, strip_prefixes=strip_prefixes))
+            self._loop.run_until_complete(
+                self.save_to_neo4j_async(kg, strip_prefixes=strip_prefixes)
+            )
             logger.info("Successfully saved KnowledgeGraph to Neo4j.")
         except Exception as e:
             logger.error(f"Failed to save to Neo4j: {e}", exc_info=True)
 
-    async def save_to_neo4j_async(self, kg: KnowledgeGraph, strip_prefixes: bool = True):
+    async def save_to_neo4j_async(
+        self, kg: KnowledgeGraph, strip_prefixes: bool = True
+    ):
         """
         Asynchronously saves the CQL content of the KnowledgeGraph to Neo4j.
 

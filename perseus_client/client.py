@@ -50,7 +50,7 @@ class PerseusClient:
         self.settings = settings
         self.api_host = api_host or self.settings.perseus_api_host
         self._perseus_api_key = self.settings.perseus_api_key
-        logger.info(f"PerseusClient initialized for API host: {self.api_host}")
+        logger.debug(f"PerseusClient initialized for API host: {self.api_host}")
 
         if not self._perseus_api_key:
             raise ConfigurationException(
@@ -266,7 +266,9 @@ class PerseusClient:
         )
 
         if latest_job:
-            logger.debug(f"Found latest job {latest_job.id} with status {latest_job.status}")
+            logger.debug(
+                f"Found latest job {latest_job.id} with status {latest_job.status}"
+            )
             if latest_job.status in [
                 JobStatus.PENDING,
                 JobStatus.RUNNING,
@@ -334,7 +336,9 @@ class PerseusClient:
                 cql_content = f.read()
 
         if os.path.exists(ttl_file_path):
-            logger.debug(f"TTL file found at {ttl_file_path}, parsing to KnowledgeGraph.")
+            logger.debug(
+                f"TTL file found at {ttl_file_path}, parsing to KnowledgeGraph."
+            )
             if ttl_content is None:
                 with open(ttl_file_path, "r", encoding="utf-8") as f:
                     ttl_content = f.read()
@@ -397,10 +401,12 @@ class PerseusClient:
                 metadata=metadata,
             )
             tasks.append(task)
-        
+
         logger.info(f"Processing {len(tasks)} file(s)...")
-        
-        results = await self.job._wait_for_tasks(tasks, [os.path.basename(p) for p in file_path])
-        
+
+        results = await self.job._wait_for_tasks(
+            tasks, [os.path.basename(p) for p in file_path]
+        )
+
         logger.info("All files processed.")
         return results

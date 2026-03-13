@@ -12,6 +12,7 @@ class GraphService:
         kbs: List["KnowledgeGraph"],
         interlinking_key_uri: str = "http://www.w3.org/2000/01/rdf-schema#label",
         immutable_properties: Optional[List[str]] = None,
+        merge_properties_on_conflict: bool = False,
     ) -> "KnowledgeGraph":
         """
         Merges multiple KnowledgeGraph objects into a single, deduplicated graph,
@@ -155,9 +156,40 @@ class GraphService:
                     )
                     uri_redirects[entity.uri] = existing_entity.uri
 
-                    for prop_uri, prop_value in entity.properties.items():
-                        if prop_uri not in existing_entity.properties:
-                            existing_entity.properties[prop_uri] = prop_value
+                    # Merge properties, combining values into a list on conflict
+                    if merge_properties_on_conflict:
+                        for prop_uri, new_prop_obj in entity.properties.items():
+                            if prop_uri not in existing_entity.properties:
+                                existing_entity.properties[prop_uri] = new_prop_obj
+                            else:
+                                existing_prop_obj = existing_entity.properties[prop_uri]
+
+                                # Skip if values are identical
+                                if existing_prop_obj.value == new_prop_obj.value:
+                                    continue
+
+                                # Ensure the existing value is a list for merging
+                                if not isinstance(existing_prop_obj.value, list):
+                                    existing_prop_obj.value = [existing_prop_obj.value]
+
+                                # Add new value(s), avoiding duplicates
+                                if isinstance(new_prop_obj.value, list):
+                                    for item in new_prop_obj.value:
+                                        if item not in existing_prop_obj.value:
+                                            existing_prop_obj.value.append(item)
+                                else:
+                                    if (
+                                        new_prop_obj.value
+                                        not in existing_prop_obj.value
+                                    ):
+                                        existing_prop_obj.value.append(
+                                            new_prop_obj.value
+                                        )
+                    else:
+                        # Original behavior: add property only if it doesn't exist
+                        for prop_uri, prop_value in entity.properties.items():
+                            if prop_uri not in existing_entity.properties:
+                                existing_entity.properties[prop_uri] = prop_value
 
                     for type_uri in entity.types:
                         if type_uri not in existing_entity.types:

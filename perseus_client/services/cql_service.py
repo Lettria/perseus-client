@@ -108,18 +108,28 @@ class CQLService:
             if not properties:
                 return "{}"
             props = []
+
+            # Helper to format a single value for Cypher
+            def _format_value(value: Any) -> str:
+                if isinstance(value, str):
+                    escaped_value = value.replace("\\", "\\\\").replace("'", "\\'")
+                    return f"'{escaped_value}'"
+                elif isinstance(value, bool):
+                    return str(value).lower()
+                else:  # Numbers, etc.
+                    return str(value)
+
             for k_uri, v_obj in properties.items():
                 key = _uri_to_cql_identifier(k_uri)
-                # JSON-like string escaping for Cypher
-                if isinstance(v_obj.value, str):
-                    escaped_value = v_obj.value.replace("\\", "\\\\").replace(
-                        "'", "\\'"
-                    )
-                    props.append(f"{key}: '{escaped_value}'")
-                elif isinstance(v_obj.value, bool):
-                    props.append(f"{key}: {str(v_obj.value).lower()}")
-                else:  # Numbers, etc.
-                    props.append(f"{key}: {v_obj.value}")
+
+                if isinstance(v_obj.value, list):
+                    # Format as a Cypher list
+                    list_items = [_format_value(item) for item in v_obj.value]
+                    props.append(f"{key}: [{', '.join(list_items)}]")
+                else:
+                    # Format as a single value
+                    props.append(f"{key}: {_format_value(v_obj.value)}")
+
             return "{" + ", ".join(props) + "}"
 
         # Create MERGE statements for entities

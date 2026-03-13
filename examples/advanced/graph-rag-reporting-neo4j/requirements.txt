@@ -1,6 +1,0 @@
--e ../../.
-simple-graph-retriever
-python-dotenv
-google-generativeai
-neo4j
-httpx

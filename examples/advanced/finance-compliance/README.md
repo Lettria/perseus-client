@@ -32,7 +32,7 @@ This example is split into three main scripts that should be run in order:
 
 ```bash
 pip install -r requirements.txt
-docker-compose up -d
+docker compose up -d
 ```
 
 ### 3. Run the Full Workflow

@@ -22,7 +22,6 @@ def main(
                 file_path=file_paths,
                 ontology_path=ontology_path,
                 metadata={"source": "interlink_graphs_example"},
-                # refresh_graph=True,
             )
 
             if not knowledge_graphs or len(knowledge_graphs) < 2:
@@ -32,6 +31,7 @@ def main(
             # 2. Interlink the knowledge graphs
             merged_kg = KnowledgeGraph.interlink(
                 kbs=knowledge_graphs,
+                # merge_properties_on_conflict=True,
                 # immutable_properties=["hasJobTitle"]
             )
 
