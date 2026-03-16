@@ -1,65 +1,22 @@
-# Graph RAG Reporting: From Unstructured Documents to Context-Aware Insights
+# Graph RAG Reporting with Neo4j
 
-This project demonstrates how to build a powerful Graph RAG (Retrieval Augmented Generation) reporting application using the Perseus client. We'll show you how to convert unstructured PDF documents into a structured knowledge graph and leverage this graph to generate insightful, context-aware reports.
+This example demonstrates how to build a powerful Graph RAG (Retrieval Augmented Generation) application using the Perseus Client and Neo4j. The workflow involves converting a PDF document to Markdown, building a knowledge graph from the content, storing it in Neo4j, and then using this graph to generate insightful, context-aware reports with a Large Language Model (LLM).
 
-## The Challenge: Extracting Actionable Insights from Complex Documents
+## The Workflow
 
-Large corporate documents, such as annual reports and press releases, contain a wealth of information. However, extracting specific data points, understanding relationships between entities, and generating summarized reports can be a time-consuming and manual process. Traditional keyword-based search often lacks the semantic understanding required for deep analysis.
+The process is divided into three main scripts:
 
-This leads to recurring issues for analysts and decision-makers:
+1.  **`pdf_to_markdown.py`**: Converts a PDF document into a Markdown file using an LLM. This makes the text content easily accessible for graph extraction.
+2.  **`index.py`**: This is the core indexing script. It takes the Markdown file, uses the Perseus Client to build a rich knowledge graph, loads this graph into Neo4j, and then indexes the graph's content for efficient retrieval.
+3.  **`report.py`**: This script takes a user's question, retrieves the most relevant sub-graph from Neo4j, and then passes this context to an LLM to generate a comprehensive and accurate report.
 
-- **Information Overload**: Sifting through hundreds of pages to find specific details.
-- **Lack of Context**: Difficult to understand the "why" and "how" behind reported figures.
-- **Manual Reporting**: Generating comprehensive reports requires significant manual effort and aggregation.
-
-## The Solution: Graph RAG with Perseus
-
-This project leverages the Perseus Text-to-Graph engine to transform unstructured and semi-structured documents into a queryable knowledge graph. By combining knowledge graphs with Retrieval Augmented Generation (RAG), we can achieve more accurate, relevant, and context-aware report generation.
-
-**Why Graph RAG is crucial:**
-
-- **Structured Knowledge**: Information is extracted and stored as entities and relationships, making it easily queryable.
-- **Semantic Understanding**: The graph preserves the context and relationships between data points, allowing for more nuanced retrieval.
-- **Enhanced Retrieval**: RAG models can query the graph to retrieve highly relevant information, leading to more accurate generations.
-- **Dynamic Reporting**: Generate reports on demand by asking natural language questions against the knowledge graph.
-
-## The Demonstration: L'Oréal Annual Report 2024
-
-We process L'Oréal's 2024 Annual Report (PDF) to build a knowledge graph and then generate financial performance reports.
-
-### From Text to Structured Graph: An Example
-
-Here’s how a section from a report is transformed into a structured entity within the knowledge graph, which can then be used for RAG.
-
-**📄 Source Text (`LOREAL_Rapport_Annuel_2024.md`):**
-
-```markdown
-L'Oréal s'appuie sur **37 marques internationales** réparties en 4 divisions :
-**Produits Professionnels :** Kérastase, L'Oréal Professionnel, Redken, etc. Lancement du sèche-cheveu AirLight Pro.
-...
-```
-
-**🔍 Extracted Entity (in the Knowledge Graph):**
-
-```yaml
-type: BusinessDivision
-label: Produits Professionnels
-hasBrand -> Kérastase
-hasBrand -> Matrix
-hasBrand -> Redken
-hasBrand -> L’Oréal Professionnel
-```
-
-This structured output forms the basis for rich, context-aware retrieval.
-
----
-
-## The Workflow at a Glance
+## How to Run
 
 ### 1. Setup Environment
 
-- Requires Docker, Docker Compose, and Python 3.8+. 🐳🐍
-- Copy `template.env` to `.env` and fill in your Perseus API key.
+- Requires Docker, Docker Compose, and Python 3.8+.
+- Copy `template.env` to `.env` and fill in your credentials for the Perseus API, Google AI (for the LLM), and Neo4j.
+
   ```bash
   cp template.env .env
   ```
@@ -68,125 +25,33 @@ This structured output forms the basis for rich, context-aware retrieval.
 
 ```bash
 pip install -r requirements.txt
-docker compose up -d
+docker-compose up -d
 ```
 
-> ⏳ The embedder service may take a few minutes to fully boot on the first run, as it needs to download the underlying model.
+> **Note:** The embedder service may take a few minutes to boot on the first run as it needs to download the embedding model.
 
-### 3. Run the Workflow
+### 3. Run the Full Workflow
 
-1.  **Convert PDF to Markdown**:
-    - Takes a PDF document (e.g., `assets/LOREAL_Rapport_Annuel_2024.pdf`).
-    - Uses an LLM to convert the PDF content into a structured Markdown file, preserving key information and formatting.
-      ```bash
-      python pdf_to_markdown.py assets/LOREAL_Rapport_Annuel_2024.pdf
-      ```
+Execute the scripts in order.
 
-2.  **Build the Knowledge Graph**:
-    - Takes the generated Markdown document (e.g., `assets/LOREAL_Rapport_Annuel_2024.md`).
-    - Uploads the document to the Perseus platform, where the Text-to-Graph engine extracts structured information.
-    - Saves the extracted graph as a local `.ttl` file (an RDF graph) and loads it into a local Neo4j database.
-      ```bash
-      python index.py assets/LOREAL_Rapport_Annuel_2024.md
-      ```
+1.  **Convert the PDF to Markdown:**
+    ```bash
+    python pdf_to_markdown.py assets/LOREAL_Rapport_Annuel_2024.pdf
+    ```
 
-3.  **Generate Context-Aware Reports**:
-    - Connects to the Neo4j database containing the knowledge graph.
-    - Uses the knowledge graph and a RAG approach to answer natural language queries.
-    - Generates a detailed, context-aware report based on the retrieved information.
-      ```bash
-      python report.py "Money KPIs"
-      ```
+2.  **Build and Index the Knowledge Graph:**
+    ```bash
+    python index.py assets/LOREAL_Rapport_Annuel_2024.md
+    ```
 
-### 4. Cleaning Up 🧹
+3.  **Generate a Report from the Graph:**
+    ```bash
+    python report.py "What are the main activities of L'Oréal?"
+    ```
 
-When you're done, stop and remove the Docker containers:
+### 4. Cleaning Up
 
+When you are finished, stop and remove the Docker containers:
 ```bash
-docker compose down
+docker-compose down
 ```
-
----
-
-## Generated Report Example
-
-Here's an example of a report generated by querying the knowledge graph of the L'Oréal 2024 Annual Report:
-
-### **Financial Performance Report: L’Oréal Fiscal Year 2024**
-
-This report summarizes the key financial performance indicators (KPIs) and monetary insights for L’Oréal based on the 2024 data.
-
-#### **1. Group Financial Overview**
-
-L’Oréal demonstrated strong financial health in 2024, characterized by solid revenue growth and high profitability margins. The company continues to deliver value to shareholders through significant dividends and earnings per share.
-
-| KPI                      | Value                                 |
-| :----------------------- | :------------------------------------ |
-| **Total Revenue**        | €43.48 Billion                        |
-| **Comparable Growth**    | 5.1 %                                 |
-| **Operating Profit**     | €8.69 Billion                         |
-| **Operating Margin**     | 20 %                                  |
-| **Net Profit Per Share** | €12.66                                |
-| **Dividend per Share**   | €7.00                                 |
-| **Ecommerce Revenue**    | €12.3 Billion (~28% of total revenue) |
-
----
-
-#### **2. Divisional Performance (Growth Rates)**
-
-Growth was observed across all business divisions, with **Beauté Dermatologique** emerging as the primary growth engine for the group.
-
-| Division                                  | Growth Rate |
-| :---------------------------------------- | :---------- |
-| Beauté Dermatologique                     | 9.8 %       |
-| Produits Grand Public (Consumer Products) | 5.4 %       |
-| Produits Professionnels                   | 5.3 %       |
-| Luxe                                      | 2.7 %       |
-
----
-
-#### **3. Geographical Revenue Distribution**
-
-L’Oréal maintains a diversified global presence. Europe remains the largest contributor to the group's top line, followed by North America and North Asia.
-
-| Region               | Share of Total Revenue |
-| :------------------- | :--------------------- |
-| **Europe**           | 33 %                   |
-| **Amérique du Nord** | 27 %                   |
-| **Asie du Nord**     | 24 %                   |
-| **SAPMENA-SSA**      | 9 %                    |
-| **Amérique latine**  | 8 %                    |
-
----
-
-#### **4. Strategic Financial Investments & Allocations**
-
-The 2024 fiscal year was marked by aggressive inorganic growth through acquisitions and a commitment to social impact funding.
-
-- **Acquisitions & Partnerships:** The group expanded its portfolio and market reach by acquiring or partnering with several brands, including:
-  - **Galderma** (Major strategic stake)
-  - **Miu Miu** and **Jacquemus** (Expansion in luxury/fashion beauty)
-  - **Amouage** and **Dr.G**
-- **Social Investment:** The **Fonds L’Oréal pour les Femmes** (L’Oréal Fund for Women) has a dedicated allocation of **€70 Million**.
-
-- **Innovation Investment:** While specific R&D spend is not listed, the filing of **694 patents** and the establishment of the **CreAItech** lab indicate significant capital expenditure in intellectual property and tech-driven beauty.
-
-### **Key Insights**
-
-- **Profitability:** An operating margin of 20% indicates high operational efficiency and strong pricing power across its 37 brands.
-- **Digital Transformation:** Ecommerce has become a vital revenue pillar, now accounting for over €12 billion in sales.
-- **Diversification:** The balanced revenue share between Europe, North America, and North Asia provides a hedge against regional economic volatility.
-
----
-
-## Visualize in the Perseus Interface
-
-The knowledge graph outputs are accessible both locally (`.ttl` files) and in the **[Perseus web interface](https://app.perseus.lettria.net/app/jobs)** for interactive exploration:
-
-- **Nodes tab**: Browse all extracted entities (e.g., companies, financial metrics, divisions).
-
-- **Graph tab**: Visualize relationships interactively.
-
-- **Turtle and Cypher tab**: View the Turtle (.ttl) and Cypher (.cql) files.
-
-![Perseus interface - Jobs view with extracted climate entities](assets/perseus_output.png)

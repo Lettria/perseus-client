@@ -9,18 +9,20 @@ from simple_graph_retriever.client import GraphRetrievalClient
 from simple_graph_retriever.models import RetrievalConfig
 from google import genai
 from google.genai import types as genai_types
-from utils import wait_for_embedder, wait_for_neo4j
+from utils import wait_for_embedder
 
 
 def main(script_input: str):
-    wait_for_neo4j()
     wait_for_embedder()
     genai_client = genai.Client()
     retrieval_client = GraphRetrievalClient()
     data = retrieval_client.retrieve_graph(
         query=script_input,
         config=RetrievalConfig(
-            community_score_drop_off_pct=0.3, chunk_score_drop_off_pct=0.3
+            community_score_drop_off_pct=0.3,
+            chunk_score_drop_off_pct=0.3,
+            max_communities=5,
+            max_chunks=20,
         ),
     )
     if not data:
@@ -55,7 +57,7 @@ def main(script_input: str):
     if report.text:
         report_path = f"./output/report_{script_input.lower().replace(' ', '_')}.md"
         with open(report_path, "w") as f:
-            f.write(f"# Report on {script_input}\n\n")
+            f.write(f"# Report on {script_input}")
             f.write(report.text)
         print(f"Report generated and saved successfully at {report_path}")
     else:

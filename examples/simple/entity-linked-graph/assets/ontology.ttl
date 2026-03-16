@@ -1,0 +1,666 @@
+@prefix ont: <http://example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+#    Ontology Metadata
+#################################################################
+
+<http://example.org/ontology> a owl:Ontology ;
+    rdfs:comment "A generic ontology about persons, their properties, and relations. Covers personal attributes, social relationships, employment, education, and life events."@en .
+
+#################################################################
+#    Annotation Properties
+#################################################################
+
+# No custom annotation properties defined.
+
+#################################################################
+#    Object Properties
+#################################################################
+
+ont:employs a owl:ObjectProperty ;
+    rdfs:label "employs"@en ;
+    rdfs:comment "Indicates that an organization has an employment relationship with a person."@en ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:Person .
+
+ont:hasAward a owl:ObjectProperty ;
+    rdfs:label "has award"@en ;
+    rdfs:comment "Associates a person with a recognition or honour they have received."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Award .
+
+ont:hasBirthPlace a owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:label "has birth place"@en ;
+    rdfs:comment "The location where a person was born."@en ;
+    rdfs:subPropertyOf ont:hasLocation ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Location .
+
+ont:hasContactInformation a owl:ObjectProperty ;
+    rdfs:label "has contact information"@en ;
+    rdfs:comment "Associates an agent with their contact details for communication purposes."@en ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:ContactInformation .
+
+ont:hasDeathPlace a owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:label "has death place"@en ;
+    rdfs:comment "The location where a person died."@en ;
+    rdfs:subPropertyOf ont:hasLocation ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Location .
+
+ont:hasEducation a owl:ObjectProperty ;
+    rdfs:label "has education"@en ;
+    rdfs:comment "Associates a person with an educational situation they are or were enrolled in."@en ;
+    rdfs:subPropertyOf ont:participatesIn ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Education .
+
+ont:hasEducationalCredential a owl:ObjectProperty ;
+    rdfs:label "has educational credential"@en ;
+    rdfs:comment "Associates a person with a formal qualification or degree they have obtained."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:EducationalCredential .
+
+ont:hasEmployee a owl:ObjectProperty ;
+    rdfs:label "has employee"@en ;
+    rdfs:comment "Identifies the individual who performs work within a professional engagement."@en ;
+    owl:inverseOf ont:isEmployeeIn ;
+    rdfs:domain ont:Employment ;
+    rdfs:range ont:Person .
+
+ont:hasEmployer a owl:ObjectProperty ;
+    rdfs:label "has employer"@en ;
+    rdfs:comment "Identifies the organization that engages and compensates an individual for their work."@en ;
+    owl:inverseOf ont:isEmployerIn ;
+    rdfs:domain ont:Employment ;
+    rdfs:range ont:Organization .
+
+ont:hasEmployment a owl:ObjectProperty ;
+    rdfs:label "has employment"@en ;
+    rdfs:comment "Associates a person with an employment situation they are or were engaged in."@en ;
+    rdfs:subPropertyOf ont:participatesIn ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Employment .
+
+ont:hasEthnicity a owl:ObjectProperty ;
+    rdfs:label "has ethnicity"@en ;
+    rdfs:comment "Associates a person with an ethnic or cultural group with which they identify."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Ethnicity .
+
+ont:hasInterest a owl:ObjectProperty ;
+    rdfs:label "has interest"@en ;
+    rdfs:comment "Associates a person with a topic or activity they find engaging or enjoyable."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Interest .
+
+ont:hasLanguage a owl:ObjectProperty ;
+    rdfs:label "has language"@en ;
+    rdfs:comment "Associates a person with a language they speak, read, or understand."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Language .
+
+ont:hasLocation a owl:ObjectProperty ;
+    rdfs:label "has location"@en ;
+    rdfs:comment "Associates an entity with a spatial region or place."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range ont:SpatialRegion .
+
+ont:hasMarriage a owl:ObjectProperty ;
+    rdfs:label "has marriage"@en ;
+    rdfs:comment "Associates a person with a marriage situation they are or were a party to."@en ;
+    rdfs:subPropertyOf ont:participatesIn ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Marriage .
+
+ont:hasMember a owl:ObjectProperty ;
+    rdfs:label "has member"@en ;
+    rdfs:comment "Indicates that an organization includes a person as a member."@en ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:Person .
+
+ont:hasNationality a owl:ObjectProperty ;
+    rdfs:label "has nationality"@en ;
+    rdfs:comment "Associates a person with their legal or cultural national affiliation."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Nationality .
+
+ont:hasNativeLanguage a owl:ObjectProperty ;
+    rdfs:label "has native language"@en ;
+    rdfs:comment "The language a person acquired from birth or earliest childhood."@en ;
+    rdfs:subPropertyOf ont:hasLanguage ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Language .
+
+ont:hasOccupation a owl:ObjectProperty ;
+    rdfs:label "has occupation"@en ;
+    rdfs:comment "Represents the professional or vocational activity that an individual regularly practises."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Occupation .
+
+ont:hasParticipant a owl:ObjectProperty ;
+    rdfs:label "has participant"@en ;
+    rdfs:comment "Associates a process or situation with an agent that takes part in it."@en ;
+    owl:inverseOf ont:participatesIn ;
+    rdfs:domain ont:Process ;
+    rdfs:range ont:Agent .
+
+ont:hasPart a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "has part"@en ;
+    rdfs:comment "Indicates that one entity contains or is composed of another entity as a constituent part."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+ont:hasReligion a owl:ObjectProperty ;
+    rdfs:label "has religion"@en ;
+    rdfs:comment "Associates a person with a religious belief system or spiritual tradition they follow."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Religion .
+
+ont:hasResidence a owl:ObjectProperty ;
+    rdfs:label "has residence"@en ;
+    rdfs:comment "The location where a person currently lives or is domiciled."@en ;
+    rdfs:subPropertyOf ont:hasLocation ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Location .
+
+ont:hasSkill a owl:ObjectProperty ;
+    rdfs:label "has skill"@en ;
+    rdfs:comment "Associates a person with a competence or ability they have developed."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Skill .
+
+ont:hasSpouse a owl:ObjectProperty ;
+    rdfs:label "has spouse"@en ;
+    rdfs:comment "Identifies a participant in a recognized marital or civil union."@en ;
+    rdfs:domain ont:Marriage ;
+    rdfs:range ont:Person .
+
+ont:hasTemporalExtent a owl:ObjectProperty ;
+    rdfs:label "has temporal extent"@en ;
+    rdfs:comment "Associates a process or situation with the time interval during which it occurs."@en ;
+    rdfs:domain ont:Process ;
+    rdfs:range ont:TemporalRegion .
+
+ont:isAffiliatedWith a owl:ObjectProperty ;
+    rdfs:label "is affiliated with"@en ;
+    rdfs:comment "Indicates a general associative or institutional relationship between two agents."@en ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:Agent .
+
+ont:isAncestorOf a owl:ObjectProperty, owl:TransitiveProperty, owl:AsymmetricProperty, owl:IrreflexiveProperty ;
+    rdfs:label "is ancestor of"@en ;
+    rdfs:comment "Indicates that a person is a direct ancestor (parent, grandparent, etc.) of another person. This property is transitive."@en ;
+    owl:inverseOf ont:isDescendantOf ;
+    rdfs:subPropertyOf ont:isRelatedTo ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:isChildOf a owl:ObjectProperty, owl:AsymmetricProperty, owl:IrreflexiveProperty ;
+    rdfs:label "is child of"@en ;
+    rdfs:comment "Indicates that a person is the biological or legal child of another person."@en ;
+    rdfs:subPropertyOf ont:isRelatedTo ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:isDescendantOf a owl:ObjectProperty, owl:TransitiveProperty, owl:AsymmetricProperty, owl:IrreflexiveProperty ;
+    rdfs:label "is descendant of"@en ;
+    rdfs:comment "Indicates that a person is a direct descendant (child, grandchild, etc.) of another person. This property is transitive."@en ;
+    rdfs:subPropertyOf ont:isRelatedTo ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:isEmployedBy a owl:ObjectProperty ;
+    rdfs:label "is employed by"@en ;
+    rdfs:comment "Indicates that a person is in an employment relationship with an organization."@en ;
+    owl:inverseOf ont:employs ;
+    rdfs:subPropertyOf ont:isAffiliatedWith ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Organization .
+
+ont:isEmployeeIn a owl:ObjectProperty ;
+    rdfs:label "is employee in"@en ;
+    rdfs:comment "Links a person to the employment situation in which they perform work."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Employment .
+
+ont:isEmployerIn a owl:ObjectProperty ;
+    rdfs:label "is employer in"@en ;
+    rdfs:comment "Links an organization to the employment situation in which it engages workers."@en ;
+    rdfs:domain ont:Organization ;
+    rdfs:range ont:Employment .
+
+ont:isFriendOf a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "is friend of"@en ;
+    rdfs:comment "Indicates a friendly personal relationship between two persons."@en ;
+    rdfs:subPropertyOf ont:knows ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:isLocatedIn a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "is located in"@en ;
+    rdfs:comment "Indicates that one spatial region is contained within or part of another, transitively."@en ;
+    rdfs:domain ont:SpatialRegion ;
+    rdfs:range ont:SpatialRegion .
+
+ont:isMarriedTo a owl:ObjectProperty, owl:SymmetricProperty, owl:IrreflexiveProperty ;
+    rdfs:label "is married to"@en ;
+    rdfs:comment "Indicates a legally or socially recognized marital relationship between two persons. This property is symmetric: if A is married to B, then B is married to A."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:isMemberOf a owl:ObjectProperty ;
+    rdfs:label "is member of"@en ;
+    rdfs:comment "Indicates that a person belongs to or participates in an organization."@en ;
+    owl:inverseOf ont:hasMember ;
+    rdfs:subPropertyOf ont:isAffiliatedWith ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Organization .
+
+ont:isParentOf a owl:ObjectProperty, owl:AsymmetricProperty, owl:IrreflexiveProperty ;
+    rdfs:label "is parent of"@en ;
+    rdfs:comment "Indicates that a person is the biological or legal parent of another person."@en ;
+    owl:inverseOf ont:isChildOf ;
+    rdfs:subPropertyOf ont:isRelatedTo ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:isPartOf a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "is part of"@en ;
+    rdfs:comment "Indicates that one entity is a constituent part of another, supporting transitive part-whole reasoning."@en ;
+    owl:inverseOf ont:hasPart ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+ont:isRelatedTo a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "is related to"@en ;
+    rdfs:comment "Indicates a general family or kinship relationship between two persons."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:isSiblingOf a owl:ObjectProperty, owl:SymmetricProperty, owl:IrreflexiveProperty ;
+    rdfs:label "is sibling of"@en ;
+    rdfs:comment "Indicates that two persons share at least one common parent."@en ;
+    rdfs:subPropertyOf ont:isRelatedTo ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:knows a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "knows"@en ;
+    rdfs:comment "Indicates that a person has personal acquaintance or knowledge of another person."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range ont:Person .
+
+ont:participatesIn a owl:ObjectProperty ;
+    rdfs:label "participates in"@en ;
+    rdfs:comment "Associates an agent with a process or situation in which they take part."@en ;
+    rdfs:domain ont:Agent ;
+    rdfs:range ont:Process .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+ont:hasAge a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has age"@en ;
+    rdfs:comment "The current age of a person expressed in years."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:nonNegativeInteger .
+
+ont:hasAwardDate a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has award date"@en ;
+    rdfs:comment "The date on which an award was conferred upon a person or organization."@en ;
+    rdfs:subPropertyOf ont:hasDate ;
+    rdfs:domain ont:Award ;
+    rdfs:range xsd:date .
+
+ont:hasBiography a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has biography"@en ;
+    rdfs:comment "A textual description of a person's life, background, and notable experiences."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasBiologicalSex a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has biological sex"@en ;
+    rdfs:comment "The biological sex of a person as assigned at birth."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasBirthDate a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has birth date"@en ;
+    rdfs:comment "The date on which a person was born."@en ;
+    rdfs:subPropertyOf ont:hasDate ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:date .
+
+ont:hasContactDetail a owl:DatatypeProperty ;
+    rdfs:label "has contact detail"@en ;
+    rdfs:comment "A general contact detail associated with an agent, such as a phone number, email, or address string."@en ;
+    rdfs:domain ont:Agent ;
+    rdfs:range xsd:string .
+
+ont:hasDate a owl:DatatypeProperty ;
+    rdfs:label "has date"@en ;
+    rdfs:comment "A general date associated with an entity or event."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:date .
+
+ont:hasDeathDate a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has death date"@en ;
+    rdfs:comment "The date on which a person died."@en ;
+    rdfs:subPropertyOf ont:hasDate ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:date .
+
+ont:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:comment "A general textual description or summary of an entity."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+ont:hasEducationLevel a owl:DatatypeProperty ;
+    rdfs:label "has education level"@en ;
+    rdfs:comment "The highest level of formal education attained by a person, such as secondary, bachelor's, or doctoral."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasEmailAddress a owl:DatatypeProperty ;
+    rdfs:label "has email address"@en ;
+    rdfs:comment "An electronic mail address associated with an agent."@en ;
+    rdfs:subPropertyOf ont:hasContactDetail ;
+    rdfs:domain ont:Agent ;
+    rdfs:range xsd:string .
+
+ont:hasEndDate a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has end date"@en ;
+    rdfs:comment "The date on which a process, situation, or event concluded."@en ;
+    rdfs:subPropertyOf ont:hasDate ;
+    rdfs:domain ont:Process ;
+    rdfs:range xsd:date .
+
+ont:hasFamilyName a owl:DatatypeProperty ;
+    rdfs:label "has family name"@en ;
+    rdfs:comment "The hereditary surname or family name of a person."@en ;
+    rdfs:subPropertyOf ont:hasName ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasFullName a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has full name"@en ;
+    rdfs:comment "The complete legal name of a person, typically including given name(s) and family name."@en ;
+    rdfs:subPropertyOf ont:hasName ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasGender a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has gender"@en ;
+    rdfs:comment "The gender identity of a person, expressed as a string value."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasGivenName a owl:DatatypeProperty ;
+    rdfs:label "has given name"@en ;
+    rdfs:comment "The personal or first name given to a person, typically at birth."@en ;
+    rdfs:subPropertyOf ont:hasName ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasHeightValue a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has height value"@en ;
+    rdfs:comment "The physical height of a person, typically expressed in metres or centimetres."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:decimal .
+
+ont:hasIdentifier a owl:DatatypeProperty, owl:InverseFunctionalProperty ;
+    rdfs:label "has identifier"@en ;
+    rdfs:comment "A unique identifier assigned to an agent, such as a national ID number, passport number, or system identifier."@en ;
+    rdfs:domain ont:Agent ;
+    rdfs:range xsd:string .
+
+ont:hasJobTitle a owl:DatatypeProperty ;
+    rdfs:label "has job title"@en ;
+    rdfs:comment "The official title or designation of a person's role within an organization or profession."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasMaritalStatus a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has marital status"@en ;
+    rdfs:comment "The current marital status of a person, such as single, married, divorced, or widowed."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasMiddleName a owl:DatatypeProperty ;
+    rdfs:label "has middle name"@en ;
+    rdfs:comment "A secondary given name placed between the first name and the family name."@en ;
+    rdfs:subPropertyOf ont:hasName ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasName a owl:DatatypeProperty ;
+    rdfs:label "has name"@en ;
+    rdfs:comment "A name by which an agent is known or referred to."@en ;
+    rdfs:domain ont:Agent ;
+    rdfs:range xsd:string .
+
+ont:hasNickname a owl:DatatypeProperty ;
+    rdfs:label "has nickname"@en ;
+    rdfs:comment "An informal or familiar name used to refer to a person."@en ;
+    rdfs:subPropertyOf ont:hasName ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:string .
+
+ont:hasPhoneNumber a owl:DatatypeProperty ;
+    rdfs:label "has phone number"@en ;
+    rdfs:comment "A telephone number associated with an agent."@en ;
+    rdfs:subPropertyOf ont:hasContactDetail ;
+    rdfs:domain ont:Agent ;
+    rdfs:range xsd:string .
+
+ont:hasSalary a owl:DatatypeProperty ;
+    rdfs:label "has salary"@en ;
+    rdfs:comment "The monetary compensation associated with an employment situation."@en ;
+    rdfs:domain ont:Employment ;
+    rdfs:range xsd:decimal .
+
+ont:hasSkillLevel a owl:DatatypeProperty ;
+    rdfs:label "has skill level"@en ;
+    rdfs:comment "The proficiency level associated with a skill, such as beginner, intermediate, or expert."@en ;
+    rdfs:domain ont:Skill ;
+    rdfs:range xsd:string .
+
+ont:hasStartDate a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has start date"@en ;
+    rdfs:comment "The date on which a process, situation, or event began."@en ;
+    rdfs:subPropertyOf ont:hasDate ;
+    rdfs:domain ont:Process ;
+    rdfs:range xsd:date .
+
+ont:hasWebsite a owl:DatatypeProperty ;
+    rdfs:label "has website"@en ;
+    rdfs:comment "A URL pointing to the official or personal website of an agent."@en ;
+    rdfs:domain ont:Agent ;
+    rdfs:range xsd:anyURI .
+
+ont:hasWeightValue a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "has weight value"@en ;
+    rdfs:comment "The physical weight of a person, typically expressed in kilograms."@en ;
+    rdfs:domain ont:Person ;
+    rdfs:range xsd:decimal .
+
+#################################################################
+#    Classes
+#################################################################
+
+ont:AbstractEntity a owl:Class ;
+    rdfs:label "Abstract Entity"@en ;
+    rdfs:comment "Non-material entities existing conceptually, informationally, or socially, without physical form."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:Agent, ont:Material, ont:Process, ont:Quality, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Agent a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "Entities capable of intentional action and decision-making, including persons and organizations."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Material, ont:Process, ont:Quality, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Award a owl:Class ;
+    rdfs:label "Award"@en ;
+    rdfs:comment "A recognition or honour bestowed upon a person or organization in acknowledgement of achievement or merit."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:Birth a owl:Class ;
+    rdfs:label "Birth"@en ;
+    rdfs:comment "The life event marking the beginning of a person's existence."@en ;
+    rdfs:subClassOf ont:LifeEvent ;
+    owl:disjointWith ont:Death .
+
+ont:ContactInformation a owl:Class ;
+    rdfs:label "Contact Information"@en ;
+    rdfs:comment "A set of details enabling communication with a person or organization, such as an address, phone number, or email."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:Death a owl:Class ;
+    rdfs:label "Death"@en ;
+    rdfs:comment "The life event marking the end of a person's biological existence."@en ;
+    rdfs:subClassOf ont:LifeEvent ;
+    owl:disjointWith ont:Birth .
+
+ont:Document a owl:Class ;
+    rdfs:label "Document"@en ;
+    rdfs:comment "An information artifact that records, conveys, or formalizes knowledge, such as a certificate, contract, or publication."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:Education a owl:Class ;
+    rdfs:label "Education"@en ;
+    rdfs:comment "A situation in which a person is enrolled in or attending an educational institution for the purpose of learning."@en ;
+    rdfs:subClassOf ont:Situation ;
+    owl:disjointWith ont:Employment, ont:Marriage .
+
+ont:EducationalCredential a owl:Class ;
+    rdfs:label "Educational Credential"@en ;
+    rdfs:comment "A formal qualification, degree, or certificate awarded to a person upon completion of an educational programme."@en ;
+    rdfs:subClassOf ont:Document .
+
+ont:Employment a owl:Class ;
+    rdfs:label "Employment"@en ;
+    rdfs:comment "A situation in which a person works for an organization or individual in exchange for compensation."@en ;
+    rdfs:subClassOf ont:Situation ;
+    owl:disjointWith ont:Education, ont:Marriage .
+
+ont:Ethnicity a owl:Class ;
+    rdfs:label "Ethnicity"@en ;
+    rdfs:comment "A social grouping based on shared cultural heritage, ancestry, language, or tradition with which a person identifies."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:Interest a owl:Class ;
+    rdfs:label "Interest"@en ;
+    rdfs:comment "A topic, activity, or domain that a person finds engaging, enjoyable, or worth pursuing."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:Language a owl:Class ;
+    rdfs:label "Language"@en ;
+    rdfs:comment "A structured system of communication used by a person or community, such as English, French, or Spanish."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:LifeEvent a owl:Class ;
+    rdfs:label "Life Event"@en ;
+    rdfs:comment "A significant occurrence in the life of a person, such as birth, graduation, relocation, or death."@en ;
+    rdfs:subClassOf ont:Process .
+
+ont:Location a owl:Class ;
+    rdfs:label "Location"@en ;
+    rdfs:comment "A named or identifiable place, such as a city, country, address, or geographic region."@en ;
+    rdfs:subClassOf ont:SpatialRegion .
+
+ont:Marriage a owl:Class ;
+    rdfs:label "Marriage"@en ;
+    rdfs:comment "A legally or socially recognized union between persons, establishing mutual rights and obligations."@en ;
+    rdfs:subClassOf ont:Situation ;
+    owl:disjointWith ont:Education, ont:Employment .
+
+ont:Material a owl:Class ;
+    rdfs:label "Material"@en ;
+    rdfs:comment "Physical things with clear boundaries and material substance, including objects, artifacts, and natural entities."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Process, ont:Quality, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Nationality a owl:Class ;
+    rdfs:label "Nationality"@en ;
+    rdfs:comment "The legal or cultural affiliation of a person with a particular nation or state."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:Occupation a owl:Class ;
+    rdfs:label "Occupation"@en ;
+    rdfs:comment "A recognized category of work or professional activity that a person regularly performs for a livelihood."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:Organization a owl:Class ;
+    rdfs:label "Organization"@en ;
+    rdfs:comment "A group of people structured around a particular purpose, such as a company, institution, or association."@en ;
+    rdfs:subClassOf ont:Agent ;
+    owl:disjointWith ont:Person .
+
+ont:Person a owl:Class ;
+    rdfs:label "Person"@en ;
+    rdfs:comment "An individual human being capable of intentional action and decision-making."@en ;
+    rdfs:subClassOf ont:Agent ;
+    owl:disjointWith ont:Organization .
+
+ont:Process a owl:Class ;
+    rdfs:label "Process"@en ;
+    rdfs:comment "Occurrences that unfold over time, including events, activities, and transformations."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Material, ont:Quality, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Quality a owl:Class ;
+    rdfs:label "Quality"@en ;
+    rdfs:comment "Properties, attributes, or characteristics that describe other entities and exist only through them."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Material, ont:Process, ont:SpatialRegion, ont:TemporalRegion .
+
+ont:Religion a owl:Class ;
+    rdfs:label "Religion"@en ;
+    rdfs:comment "A system of beliefs, practices, and values held by a person or community, often involving spiritual or metaphysical commitments."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:Situation a owl:Class ;
+    rdfs:label "Situation"@en ;
+    rdfs:comment "A sustained state of affairs involving structured relationships between agents over a period of time."@en ;
+    rdfs:subClassOf ont:Process .
+
+ont:Skill a owl:Class ;
+    rdfs:label "Skill"@en ;
+    rdfs:comment "A learned ability or competence that a person has developed through training or experience."@en ;
+    rdfs:subClassOf ont:AbstractEntity .
+
+ont:SpatialRegion a owl:Class ;
+    rdfs:label "Spatial Region"@en ;
+    rdfs:comment "Places, locations, and spatial extents in physical or conceptual space."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Material, ont:Process, ont:Quality, ont:TemporalRegion .
+
+ont:TemporalRegion a owl:Class ;
+    rdfs:label "Temporal Region"@en ;
+    rdfs:comment "Time intervals, periods, and temporal extents."@en ;
+    rdfs:subClassOf owl:Thing ;
+    owl:disjointWith ont:AbstractEntity, ont:Agent, ont:Material, ont:Process, ont:Quality, ont:SpatialRegion .
+
+ont:TimeInterval a owl:Class ;
+    rdfs:label "Time Interval"@en ;
+    rdfs:comment "A bounded period of time defined by a start and end point, used to situate events and situations temporally."@en ;
+    rdfs:subClassOf ont:TemporalRegion .
+
+#################################################################
+#    General Axioms
+#################################################################
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ont:AbstractEntity ont:Agent ont:Material ont:Process ont:Quality ont:SpatialRegion ont:TemporalRegion ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ont:Education ont:Employment ont:Marriage ) .

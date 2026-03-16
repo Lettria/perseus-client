@@ -1,14 +1,10 @@
-from typing import Any, Optional, Callable, Awaitable, List, Union
+from typing import Any, Optional, Callable, Awaitable, List, Union, Coroutine
 import aiohttp
 from ..exceptions import APIException, ConfigurationException
 import logging
 from perseus_client.config import settings
 import asyncio
-import itertools
-import sys
-from time import time
 
-logging.basicConfig(level=settings.loglevel.upper())
 logger = logging.getLogger(__name__)
 
 
@@ -37,88 +33,52 @@ class BaseService:
                 "Client session not found. Please use the client as an async context manager, e.g., `async with PerseusClient() as client:`"
             )
         url = f"{self.api_host}{endpoint}"
-        logger.debug("Making async API request: %s %s", method.upper(), url)
+        logger.debug(f"Request: {method.upper()} {url}")
         try:
             async with self._session.request(method, url, **kwargs) as response:
-                if response.status >= 400:
-                    try:
-                        error_body = await response.json()
-                    except Exception:
-                        error_body = await response.text()
+                # Success (2xx) or No Content (204)
+                if 200 <= response.status < 300:
+                    logger.debug(f"Success: {method.upper()} {url} -> {response.status}")
+                    if response.status == 204:
+                        return None
+                    return await response.json()
 
-                    if response.status >= 500:
-                        logger.error(
-                            "Async API request failed: %s %s -> %s",
-                            method.upper(),
-                            url,
-                            error_body,
-                        )
-                    elif response.status != 409:
-                        logger.debug(
-                            "Async API request returned error: %s %s -> %s",
-                            method.upper(),
-                            url,
-                            error_body,
-                        )
-
-                    raise APIException(
-                        status_code=response.status,
-                        message=(
-                            str(error_body["message"])
-                            if isinstance(error_body, dict) and "message" in error_body
-                            else str(error_body)
-                        ),
+                # Handle errors (4xx or 5xx)
+                try:
+                    error_body = await response.json()
+                    error_message = (
+                        str(error_body.get("message"))
+                        if isinstance(error_body, dict)
+                        else str(error_body)
                     )
-                if response.status == 204:
-                    return None
-                return await response.json()
+                except Exception:
+                    error_body = await response.text()
+                    error_message = error_body
+
+                log_message = f"API Error: {method.upper()} {url} -> {response.status} {error_message}"
+
+                if response.status >= 500:
+                    logger.error(log_message)  # Critical server-side error
+                elif response.status != 409:  # Don't spam warnings for expected conflicts
+                    logger.warning(log_message)  # Client-side error
+
+                raise APIException(
+                    status_code=response.status,
+                    message=error_message,
+                )
+
         except aiohttp.ClientError as e:
-            logger.error("Async request failed: %s", e)
+            logger.error(f"Client request failed: {e}", exc_info=True)
             raise APIException(status_code=500, message=str(e)) from e
 
-    async def _wait_with_spinner(
+
+    async def _wait_for_tasks(
         self,
-        wait_message: str,
-        polling_fct: Callable[..., Awaitable[Any]],
-        polling_fct_args: List[Any],
-        status_attribute: str,
-        end_statuses: List[Union[Any, str]],
-        polling_interval: float = 0.5,
-        timeout: int = 3600,
-    ) -> Any:
-        async def spinner():
-            for c in itertools.cycle("|/-\\"):
-                sys.stdout.write(f"\r{wait_message} {c}")
-                sys.stdout.flush()
-                await asyncio.sleep(0.1)
+        tasks: List[Coroutine],
+        descriptions: List[str]
+    ):
+        """
+        Waits for multiple asyncio tasks to complete.
+        """
+        return await asyncio.gather(*tasks)
 
-        start_time = time()
-        polled_object = await polling_fct(*polling_fct_args)
-        if not polled_object:
-            raise APIException(500, f"Could not find object with {polling_fct_args}")
-
-        logger.debug(
-            f"Object {polled_object.id} status: {getattr(polled_object, status_attribute)}"
-        )
-
-        spin_task = asyncio.create_task(spinner())
-
-        try:
-            while getattr(polled_object, status_attribute) not in end_statuses:
-                if time() - start_time > timeout:
-                    raise APIException(
-                        500, f"Timeout reached for object {polled_object.id}"
-                    )
-                await asyncio.sleep(polling_interval)
-                polled_object = await polling_fct(*polling_fct_args)
-                if not polled_object:
-                    raise APIException(
-                        500, f"Could not find object with {polling_fct_args}"
-                    )
-                logger.debug(
-                    f"Object {polled_object.id} status: {getattr(polled_object, status_attribute)}"
-                )
-        finally:
-            spin_task.cancel()
-            sys.stdout.write("\r\033[K")
-        return polled_object

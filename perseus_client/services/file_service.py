@@ -7,11 +7,12 @@ import os
 import asyncio
 import ssl
 import certifi
-
+import time
 
 from .base_service import BaseService
 from ..models import File, FileStatus
 from ..exceptions import PerseusException, APIException
+
 
 logger = logging.getLogger(__name__)
 
@@ -114,7 +115,7 @@ class FileService(BaseService):
         """
         Asynchronously deletes a file by its ID.
         """
-        logger.info(f"Deleting file with id: {file_id}")
+        logger.debug(f"Attempting to delete file with id: {file_id}")
         await self._request(
             "DELETE",
             f"/api/v0/file/{file_id}",
@@ -126,44 +127,66 @@ class FileService(BaseService):
         Asynchronously creates a file record and uploads the file content.
         If a file with the same content already exists, it will be returned.
         """
+        logger.debug(f"Starting upload process for file: {file_path}")
         file_name = os.path.basename(file_path)
-        with open(file_path, "rb") as f:
-            file_content = f.read()
-            source_hash = hashlib.sha256(file_content).hexdigest()
+        try:
+            with open(file_path, "rb") as f:
+                file_content = f.read()
+                source_hash = hashlib.sha256(file_content).hexdigest()
+                logger.debug(f"File '{file_name}' has hash: {source_hash}")
+        except FileNotFoundError:
+            logger.error(f"Local file not found at: {file_path}")
+            raise PerseusException(f"Local file not found at: {file_path}")
 
         try:
+            logger.debug(f"Requesting to create file '{file_name}' in API.")
             response = await self.create_file_async(file_name, source_hash)
             file_obj = response["file"]
             upload_url = response["upload_url"]
-            if not upload_url:
-                # If the file is newly created, an upload URL is expected.
-                raise PerseusException("Failed to get upload URL for the new file.")
+            
+            # If there is an upload_url, it means the file is new and needs to be uploaded.
+            if upload_url:
+                logger.debug(f"File created with ID: {file_obj.id}. Now uploading content to pre-signed URL.")
+                ssl_context = ssl.create_default_context(cafile=certifi.where())
+                connector = aiohttp.TCPConnector(ssl=ssl_context)
+                async with aiohttp.ClientSession(connector=connector) as s3_session:
+                    async with s3_session.put(upload_url, data=file_content) as resp:
+                        resp.raise_for_status()
+                logger.debug(f"Successfully uploaded content for file: {file_obj.id}")
+            else:
+                # This case is logged by the 409 handling below.
+                pass
+
         except APIException as e:
             if e.status_code == 409:
+                logger.debug(
+                    f"File with hash {source_hash} already exists. Fetching existing file."
+                )
                 files = await self.find_files_async(source_hashes=[source_hash])
                 if not files:
-                    raise PerseusException(e) from e
-                return files[0]
+                    logger.error(
+                        f"API reported conflict for hash {source_hash}, but no file was found."
+                    )
+                    raise PerseusException(
+                        f"Could not find existing file with hash {source_hash} after a 409 conflict."
+                    ) from e
+                file_obj = files[0]
+                logger.debug(f"Found existing file with ID: {file_obj.id}")
             else:
+                logger.error(f"API error during file creation or upload: {e}", exc_info=True)
                 raise
-
-        try:
-            ssl_context = ssl.create_default_context(cafile=certifi.where())
-            connector = aiohttp.TCPConnector(ssl=ssl_context)
-            async with aiohttp.ClientSession(connector=connector) as s3_session:
-                async with s3_session.put(upload_url, data=file_content) as resp:
-                    resp.raise_for_status()
-        except FileNotFoundError:
-            raise PerseusException(f"Local file not found at: {file_path}")
         except aiohttp.ClientResponseError as e:
+            logger.error(f"Failed to upload file content: {e}", exc_info=True)
             raise PerseusException(
                 f"Failed to upload file to S3. Status: {e.status}, "
                 f"Response: {e.message}"
             ) from e
         except Exception as e:
+            logger.error(f"An unexpected error occurred during file upload: {e}", exc_info=True)
             raise PerseusException(
                 f"An unexpected error occurred during file upload: {e}"
             ) from e
+        
         return file_obj
 
     async def wait_for_file_upload_async(
@@ -175,15 +198,22 @@ class FileService(BaseService):
         """
         Asynchronously waits for a file to be uploaded and processed.
         """
-        file = await self._wait_with_spinner(
-            wait_message=f"Waiting for file upload {file_id}...",
-            polling_fct=self.find_file_async,
-            polling_fct_args=[file_id],
-            status_attribute="status",
-            end_statuses=[FileStatus.UPLOADED, FileStatus.FAILED],
-            polling_interval=polling_interval,
-            timeout=timeout,
-        )
-        if file.status == FileStatus.FAILED:
-            raise PerseusException(f"File {file.id} failed to upload.")
-        return file
+        logger.info(f"Waiting for file {file_id} to be processed by the API...")
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            file = await self.find_file_async(file_id)
+            if not file:
+                raise PerseusException(f"Could not find file {file_id} during polling.")
+
+            if file.status in [FileStatus.UPLOADED, FileStatus.FAILED]:
+                if file.status == FileStatus.FAILED:
+                    logger.error(f"File {file.id} processing failed.")
+                    raise PerseusException(f"File {file.id} failed to upload.")
+                
+                logger.info(f"File {file.id} processing complete. Status: {file.status.value}")
+                return file
+            
+            logger.debug(f"File {file_id} status is '{file.status.value}', continuing to wait.")
+            await asyncio.sleep(polling_interval)
+
+        raise PerseusException(f"Timeout reached waiting for file {file_id}")

@@ -14,7 +14,6 @@ from .exceptions import ConfigurationException
 import logging
 
 
-logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
 
 
@@ -24,7 +23,7 @@ class Settings(BaseSettings):
     """
 
     perseus_api_host: str = "https://oath.perseus.lettria.net"
-    lettria_api_key: str = ""
+    perseus_api_key: str = ""
     neo4j_uri: str = "bolt://localhost:7687"
     neo4j_user: str = "neo4j"
     neo4j_password: str = "password"
@@ -33,7 +32,7 @@ class Settings(BaseSettings):
     falkordb_username: str = ""
     falkordb_password: str = ""
     falkordb_graph_name: str = "perseus_graph"
-    loglevel: str = "WARNING"
+    loglevel: str = "INFO"
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="allow"

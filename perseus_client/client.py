@@ -1,27 +1,43 @@
 import logging
 import tempfile
-from typing import Dict, Optional
+from typing import Dict, Optional, Any, List, Union
 import aiohttp
 import certifi
 import ssl
 import asyncio
-from pydantic import ValidationError
+import os
+
+from .services.ttl_service import TTLService
 from .services.neo4j_service import Neo4jService
 from .services.falkordb_service import FalkorDBService
+from .services.cql_service import CQLService
+from .services.graph_service import GraphService
 from .config import Settings
-from .models import File, Job, OntologyStatus, FileStatus
+from .models import (
+    File,
+    Job,
+    JobStatus,
+    OntologyStatus,
+    FileStatus,
+    KnowledgeGraph,
+    Entity,
+    Relation,
+    Document,
+)
 from .exceptions import ConfigurationException
 from .services.file_service import FileService
 from .services.job_service import JobService
 from .services.ontology_service import OntologyService
 from .config import settings
 
+logger = logging.getLogger(__name__)
+
 
 class PerseusClient:
     """
     A client for interacting with the Perseus API.
     This client handles authentication and provides methods for accessing the various
-    API endpoints. It requires the `LETTRIA_API_KEY` environment variable to be set.
+    API endpoints. It requires the `PERSEUS_API_KEY` environment variable to be set.
     """
 
     def __init__(self, api_host: Optional[str] = None):
@@ -33,7 +49,15 @@ class PerseusClient:
         """
         self.settings = settings
         self.api_host = api_host or self.settings.perseus_api_host
-        self._api_token = self.settings.lettria_api_key
+        self._perseus_api_key = self.settings.perseus_api_key
+        logger.debug(f"PerseusClient initialized for API host: {self.api_host}")
+
+        if not self._perseus_api_key:
+            raise ConfigurationException(
+                "Perseus API key is not configured. Please create a .env file with "
+                "PERSEUS_API_KEY='your_key_here' or set the environment variable."
+            )
+
         self._session: Optional[aiohttp.ClientSession] = None
         self._connector: Optional[aiohttp.TCPConnector] = None
         self._file: Optional[FileService] = None
@@ -41,6 +65,9 @@ class PerseusClient:
         self._ontology: Optional[OntologyService] = None
         self._neo4j: Optional[Neo4jService] = None
         self._falkordb: Optional[FalkorDBService] = None
+        self._cql: Optional[CQLService] = None
+        self._ttl: Optional[TTLService] = None
+        self._graph: Optional[GraphService] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
     def _is_active(self):
@@ -53,6 +80,7 @@ class PerseusClient:
     async def __aenter__(self):
         if self._is_active():
             return self
+        logger.debug("Starting asynchronous session.")
         ssl_context = ssl.create_default_context(cafile=certifi.where())
         self._connector = aiohttp.TCPConnector(ssl=ssl_context)
         self._session = aiohttp.ClientSession(
@@ -64,9 +92,13 @@ class PerseusClient:
         self._ontology = OntologyService(self._session, self.api_host, self._loop)
         self._neo4j = Neo4jService(self._loop)
         self._falkordb = FalkorDBService(self._loop)
+        self._cql = CQLService()
+        self._ttl = TTLService()
+        self._graph = GraphService()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
+        logger.debug("Closing asynchronous session.")
         if self._session:
             await self._session.close()
         if self._connector:
@@ -82,6 +114,7 @@ class PerseusClient:
         if self._is_active():
             return self
         # Create a new loop for synchronous use
+        logger.debug("Creating new event loop for synchronous client usage.")
         self._loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self._loop)
         self._loop.run_until_complete(self.__aenter__())
@@ -94,6 +127,7 @@ class PerseusClient:
         """
         if self._loop is None:
             return
+        logger.debug("Closing event loop for synchronous client usage.")
         self._loop.run_until_complete(self.__aexit__(exc_type, exc_val, exc_tb))
         self._loop.close()
         asyncio.set_event_loop(
@@ -118,7 +152,7 @@ class PerseusClient:
         Returns the headers for the API requests.
         """
         return {
-            "Authorization": f"Bearer {self._api_token}",
+            "Authorization": f"Bearer {self._perseus_api_key}",
             "Content-Type": "application/json",
         }
 
@@ -157,15 +191,45 @@ class PerseusClient:
             raise ConfigurationException("FalkorDB service not initialized.")
         return self._falkordb
 
+    @property
+    def cql(self) -> CQLService:
+        self._ensure_active()
+        if not self._cql:
+            raise ConfigurationException("CQL service not initialized.")
+        return self._cql
+
+    @property
+    def ttl(self) -> TTLService:
+        self._ensure_active()
+        if not self._ttl:
+            raise ConfigurationException("TTL service not initialized.")
+        return self._ttl
+
+    @property
+    def graph(self) -> GraphService:
+        self._ensure_active()
+        if not self._graph:
+            raise ConfigurationException("Graph service not initialized.")
+        return self._graph
+
     def build_graph(
         self,
-        file_path: str,
+        file_path: List[str],
         ontology_path: Optional[str] = None,
-        output_path: Optional[str] = None,
-        save_to_neo4j: bool = False,
-        save_to_falkordb: bool = False,
         refresh_graph: bool = False,
-    ) -> Job:
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> List[KnowledgeGraph]:
+        """
+        Synchronously processes one or more files by uploading them, optionally with an ontology,
+        running jobs, and returning KnowledgeGraph objects.
+        Args:
+            file_path: A list of file paths to process.
+            ontology_path: The path to the ontology file to use for all files.
+            refresh_graph: Whether to force new jobs to be created (refresh the graph).
+            metadata: A dictionary of metadata to add to all nodes and relationships.
+        Returns:
+            A list of KnowledgeGraph objects.
+        """
         self._ensure_active()
         if not self._loop:
             raise ConfigurationException("Event loop not initialized.")
@@ -173,66 +237,176 @@ class PerseusClient:
             self.build_graph_async(
                 file_path,
                 ontology_path,
-                output_path,
-                save_to_neo4j,
-                save_to_falkordb,
                 refresh_graph,
+                metadata,
             )
         )
 
-    async def build_graph_async(
+    async def _build_single_graph_async(
         self,
         file_path: str,
-        ontology_path: Optional[str] = None,
-        output_path: Optional[str] = None,
-        save_to_neo4j: bool = False,
-        save_to_falkordb: bool = False,
+        ontology_id: Optional[str] = None,
         refresh_graph: bool = False,
-    ) -> Job:
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> KnowledgeGraph:
         """
-        Processes a file by uploading it, optionally with an ontology, running a
-        job, and downloading the output.
-        Args:
-            file_path: The path to the file to process.
-            ontology_path: The path to the ontology file to use.
-            output_path: The path to save the output to. If not provided, a default
-                         path will be used.
-            save_to_neo4j: Whether to save the output to Neo4j.
-            save_to_falkordb: Whether to save the output to FalkorDB.
-            refresh_graph: Whether to force a new job to be created (refresh the graph).
-        Returns:
-            The completed job.
+        Processes a single file to build a KnowledgeGraph with resilient job handling.
         """
+        logger.debug(f"Building graph for file: {file_path}")
         created_file = await self.file.upload_file_async(file_path)
-
         if created_file.status == FileStatus.PENDING:
             await self.file.wait_for_file_upload_async(created_file.id)
 
-        created_ontology_id = None
-        if ontology_path:
-            created_ontology = await self.ontology.upload_ontology_async(ontology_path)
-            if created_ontology.status == OntologyStatus.PENDING:
-                await self.ontology.wait_for_ontology_upload_async(created_ontology.id)
-            created_ontology_id = created_ontology.id
+        job_to_run = None
+        logger.debug(
+            f"Searching for existing job for file_id: {created_file.id}, ontology_id: {ontology_id}"
+        )
+        latest_job = await self.job.find_latest_job_async(
+            file_id=created_file.id, ontology_id=ontology_id
+        )
 
-        completed_job = None
-        if not refresh_graph:
-            completed_job = await self.job.find_latest_job_async(
-                file_id=created_file.id, ontology_id=created_ontology_id
+        if latest_job:
+            logger.debug(
+                f"Found latest job {latest_job.id} with status {latest_job.status}"
             )
-        if not completed_job:
-            completed_job = await self.job.run_job_async(
-                file_id=created_file.id, ontology_id=created_ontology_id
+            if latest_job.status in [
+                JobStatus.PENDING,
+                JobStatus.RUNNING,
+                JobStatus.STARTING,
+                JobStatus.RUNNABLE,
+            ]:
+                logger.debug(f"Attaching to existing in-progress job: {latest_job.id}")
+                job_to_run = latest_job
+            elif latest_job.status == JobStatus.SUCCEEDED:
+                if refresh_graph:
+                    logger.info(
+                        f"Job {latest_job.id} already succeeded, but refresh_graph=True, so submitting a new job."
+                    )
+                else:
+                    logger.debug(f"Using existing completed job: {latest_job.id}")
+                    job_to_run = latest_job
+            elif latest_job.status == JobStatus.FAILED:
+                logger.warning(
+                    f"Latest job {latest_job.id} failed. Submitting a new job."
+                )
+
+        if not job_to_run:
+            logger.debug("No suitable existing job found, submitting a new job.")
+            job_to_run = await self.job.submit_job_async(
+                file_id=created_file.id, ontology_id=ontology_id
             )
 
-        if not output_path:
-            temp_dir = tempfile.gettempdir()
-            output_path = f"{temp_dir}/perseus_job_{completed_job.id}_output"
+        # Wait for the job (either new or pre-existing) to complete
+        completed_job = await self.job.run_job_async(job_id=job_to_run.id)
+
+        # Create a temporary directory for job outputs
+        output_dir = tempfile.mkdtemp(prefix="perseus-client-")
+        output_path = os.path.join(output_dir, f"{completed_job.id}_output")
+        logger.debug(f"Downloading job output to temporary path: {output_path}")
 
         await self.job.download_job_output_async(completed_job.id, output_path)
-        if save_to_neo4j:
-            await self.neo4j.save_output_to_neo4j_async(f"{output_path}.cql")
 
-        if save_to_falkordb:
-            await self.falkordb.save_output_to_falkordb_async(f"{output_path}.cql")
-        return completed_job
+        cql_file_path = f"{output_path}.cql"
+        ttl_file_path = f"{output_path}.ttl"
+
+        cql_content: Optional[str] = None
+        ttl_content: Optional[str] = None
+
+        if metadata:
+            logger.debug(f"Applying metadata: {metadata}")
+            if os.path.exists(ttl_file_path):
+                with open(ttl_file_path, "r", encoding="utf-8") as f:
+                    ttl_content = f.read()
+                modified_ttl = self.ttl.add_metadata_to_ttl(ttl_content, metadata)
+                with open(ttl_file_path, "w", encoding="utf-8") as f:
+                    f.write(modified_ttl)
+                ttl_content = modified_ttl
+                logger.debug("Successfully applied metadata to TTL content.")
+
+            if os.path.exists(cql_file_path):
+                with open(cql_file_path, "r", encoding="utf-8") as f:
+                    cql_content = f.read()
+                cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
+                with open(cql_file_path, "w", encoding="utf-8") as f:
+                    f.write(cql_content)
+                logger.debug("Successfully applied metadata to CQL content.")
+
+        if os.path.exists(cql_file_path) and cql_content is None:
+            with open(cql_file_path, "r", encoding="utf-8") as f:
+                cql_content = f.read()
+
+        if os.path.exists(ttl_file_path):
+            logger.debug(
+                f"TTL file found at {ttl_file_path}, parsing to KnowledgeGraph."
+            )
+            if ttl_content is None:
+                with open(ttl_file_path, "r", encoding="utf-8") as f:
+                    ttl_content = f.read()
+
+            kg = self.ttl.parse_ttl_to_knowledge_graph(ttl_content)
+            kg.ttl_content = ttl_content
+            kg.cql_content = cql_content
+        else:
+            logger.warning(
+                f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph."
+            )
+            # Create an empty graph but still attach content if available
+            kg = KnowledgeGraph(cql_content=cql_content)
+
+        # Inject services into the created KnowledgeGraph instance
+        logger.debug("Injecting services into KnowledgeGraph instance.")
+        kg._ttl_service = self.ttl
+        kg._cql_service = self.cql
+        kg._neo4j_service = self.neo4j
+        kg._falkordb_service = self.falkordb
+        kg._graph_service = self.graph
+
+        return kg
+
+    async def build_graph_async(
+        self,
+        file_path: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> List[KnowledgeGraph]:
+        """
+        Processes one or more files by uploading them, optionally with an ontology,
+        running jobs, and returning KnowledgeGraph objects.
+        Args:
+            file_path: A list of file paths to process.
+            ontology_path: The path to the ontology file to use for all files.
+            refresh_graph: Whether to force new jobs to be created (refresh the graph).
+            metadata: A dictionary of metadata to add to all nodes and relationships.
+        Returns:
+            A list of KnowledgeGraph objects.
+        """
+        created_ontology_id = None
+        if ontology_path:
+            logger.debug(f"Using ontology from path: {ontology_path}")
+            # This part still runs sequentially as the ontology is shared
+            created_ontology = await self.ontology.upload_ontology_async(ontology_path)
+            if created_ontology.status == OntologyStatus.PENDING:
+                # A single spinner for the ontology upload
+                await self.ontology.wait_for_ontology_upload_async(created_ontology.id)
+            created_ontology_id = created_ontology.id
+            logger.debug(f"Using ontology_id: {created_ontology_id}")
+
+        tasks = []
+        for path in file_path:
+            task = self._build_single_graph_async(
+                file_path=path,
+                ontology_id=created_ontology_id,
+                refresh_graph=refresh_graph,
+                metadata=metadata,
+            )
+            tasks.append(task)
+
+        logger.debug(f"Processing {len(tasks)} file(s)...")
+
+        results = await self.job._wait_for_tasks(
+            tasks, [os.path.basename(p) for p in file_path]
+        )
+
+        logger.info("All files processed.")
+        return results

@@ -7,13 +7,14 @@ import aiohttp
 import asyncio
 import ssl
 import certifi
+import time
 
 
 from .base_service import BaseService
 from ..models import Ontology, OntologyStatus
 from ..exceptions import PerseusException, APIException
 
-logging.basicConfig(level=os.getenv("LOGLEVEL", "INFO"))
+
 logger = logging.getLogger(__name__)
 
 
@@ -115,7 +116,7 @@ class OntologyService(BaseService):
         """
         Asynchronously deletes an ontology by its ID.
         """
-        logger.info(f"Deleting ontology with id: {ontology_id}")
+        logger.debug(f"Attempting to delete ontology with id: {ontology_id}")
         await self._request(
             "DELETE",
             f"/api/v0/ontology/{ontology_id}",
@@ -127,46 +128,71 @@ class OntologyService(BaseService):
         Asynchronously creates a ontology record and uploads the ontology content.
         If a ontology with the same content already exists, it will be returned.
         """
+        logger.debug(f"Starting upload process for ontology: {ontology_path}")
         ontology_name = os.path.basename(ontology_path)
-        with open(ontology_path, "rb") as f:
-            ontology_content = f.read()
-            source_hash = hashlib.sha256(ontology_content).hexdigest()
+        try:
+            with open(ontology_path, "rb") as f:
+                ontology_content = f.read()
+                source_hash = hashlib.sha256(ontology_content).hexdigest()
+                logger.debug(f"Ontology '{ontology_name}' has hash: {source_hash}")
+        except FileNotFoundError:
+            logger.error(f"Local ontology file not found at: {ontology_path}")
+            raise PerseusException(f"Local ontology file not found at: {ontology_path}")
 
         try:
+            logger.debug(f"Requesting to create ontology '{ontology_name}' in API.")
             response = await self.create_ontology_async(ontology_name, source_hash)
             ontology_obj = response["ontology"]
             upload_url = response["upload_url"]
-            if not upload_url:
-                # If the ontology is newly created, an upload URL is expected.
-                raise PerseusException("Failed to get upload URL for the new ontology.")
+
+            if upload_url:
+                logger.debug(f"Ontology created with ID: {ontology_obj.id}. Now uploading content to pre-signed URL.")
+                ssl_context = ssl.create_default_context(cafile=certifi.where())
+                connector = aiohttp.TCPConnector(ssl=ssl_context)
+                async with aiohttp.ClientSession(connector=connector) as s3_session:
+                    async with s3_session.put(
+                        upload_url, data=ontology_content
+                    ) as resp:
+                        resp.raise_for_status()
+                logger.debug(f"Successfully uploaded content for ontology: {ontology_obj.id}")
+
         except APIException as e:
             if e.status_code == 409:
+                logger.debug(
+                    f"Ontology with hash {source_hash} already exists. Fetching existing ontology."
+                )
                 ontologies = await self.find_ontologies_async(
                     source_hashes=[source_hash]
                 )
                 if not ontologies:
-                    raise PerseusException(e) from e
-                return ontologies[0]
+                    logger.error(
+                        f"API reported conflict for hash {source_hash}, but no ontology was found."
+                    )
+                    raise PerseusException(
+                        f"Could not find existing ontology with hash {source_hash} after a 409 conflict."
+                    ) from e
+                ontology_obj = ontologies[0]
+                logger.debug(f"Found existing ontology with ID: {ontology_obj.id}")
             else:
+                logger.error(
+                    f"API error during ontology creation or upload: {e}", exc_info=True
+                )
                 raise
-
-        try:
-            ssl_context = ssl.create_default_context(cafile=certifi.where())
-            connector = aiohttp.TCPConnector(ssl=ssl_context)
-            async with aiohttp.ClientSession(connector=connector) as s3_session:
-                async with s3_session.put(upload_url, data=ontology_content) as resp:
-                    resp.raise_for_status()
-        except FileNotFoundError:
-            raise PerseusException(f"Local ontology not found at: {ontology_path}")
         except aiohttp.ClientResponseError as e:
+            logger.error(f"Failed to upload ontology content: {e}", exc_info=True)
             raise PerseusException(
                 f"Failed to upload ontology to S3. Status: {e.status}, "
                 f"Response: {e.message}"
             ) from e
         except Exception as e:
+            logger.error(
+                f"An unexpected error occurred during ontology upload: {e}",
+                exc_info=True,
+            )
             raise PerseusException(
                 f"An unexpected error occurred during ontology upload: {e}"
             ) from e
+        
         return ontology_obj
 
     async def wait_for_ontology_upload_async(
@@ -178,15 +204,26 @@ class OntologyService(BaseService):
         """
         Asynchronously waits for an ontology to be uploaded and processed.
         """
-        ontology = await self._wait_with_spinner(
-            wait_message=f"Waiting for ontology upload {ontology_id}...",
-            polling_fct=self.find_ontology_async,
-            polling_fct_args=[ontology_id],
-            status_attribute="status",
-            end_statuses=[OntologyStatus.UPLOADED, OntologyStatus.FAILED],
-            polling_interval=polling_interval,
-            timeout=timeout,
-        )
-        if ontology.status == OntologyStatus.FAILED:
-            raise PerseusException(f"Ontology {ontology.id} failed to upload.")
-        return ontology
+        logger.info(f"Waiting for ontology {ontology_id} to be processed by the API...")
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            ontology = await self.find_ontology_async(ontology_id)
+            if not ontology:
+                raise PerseusException(
+                    f"Could not find ontology {ontology_id} during polling."
+                )
+
+            if ontology.status in [OntologyStatus.UPLOADED, OntologyStatus.FAILED]:
+                if ontology.status == OntologyStatus.FAILED:
+                    logger.error(f"Ontology {ontology.id} processing failed.")
+                    raise PerseusException(
+                        f"Ontology {ontology.id} failed to upload."
+                    )
+                
+                logger.info(f"Ontology {ontology.id} processing complete. Status: {ontology.status.value}")
+                return ontology
+
+            logger.debug(f"Ontology {ontology_id} status is '{ontology.status.value}', continuing to wait.")
+            await asyncio.sleep(polling_interval)
+
+        raise PerseusException(f"Timeout reached waiting for ontology {ontology_id}")

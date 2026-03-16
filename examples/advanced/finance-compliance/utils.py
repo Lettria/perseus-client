@@ -1,10 +1,18 @@
-"""
-SPARQL and Cypher queries for CSRD compliance demo.
-See the notebook for usage examples.
-"""
+import time
+import logging
+from neo4j import GraphDatabase
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # =============================================================================
-# SPARQL QUERIES (for RDF exploration)
+# HELPER FUNCTIONS
+# =============================================================================
+
+# =============================================================================
+# SPARQL and Cypher queries (from original utils)
 # =============================================================================
 
 SPARQL_COUNT_BY_TYPE = """
@@ -33,10 +41,6 @@ ORDER BY ?label
 LIMIT 3
 """
 
-# =============================================================================
-# CYPHER QUERIES (for Neo4j compliance checks)
-# =============================================================================
-
 CYPHER_GHG_EMISSIONS = """
 MATCH (c:Company {label: $name})-[:hasMetric]->(m:GHGEmissionsMetric)
 RETURN count(m) > 0 AS present
@@ -63,10 +67,6 @@ MATCH (c:Company {label: $name})-[:hasRisk]->(r)
 WHERE r:PhysicalRisk OR r:TransitionRisk OR r:EnvironmentalRisk
 RETURN count(r) > 0 AS present
 """
-
-# =============================================================================
-# HELPER FUNCTIONS
-# =============================================================================
 
 KEY_ENTITY_TYPES = [
     "GHGEmissionsMetric",
@@ -143,7 +143,7 @@ def check_esrs_e1_compliance(tx, company_name: str) -> dict:
 
 def print_compliance_report(results: dict, company_name: str):
     """Pretty-print compliance results."""
-    print(f"\n🏢 {company_name}")
+    print(f"🏢 {company_name}")
 
     quantitative = {k: v for k, v in results.items() if k.startswith("E1-")}
     narrative = {k: v for k, v in results.items() if not k.startswith("E1-")}
@@ -158,4 +158,4 @@ def print_compliance_report(results: dict, company_name: str):
 
     passed = sum(results.values())
     total = len(results)
-    print(f"\n  {passed}/{total} indicators ({int(passed / total * 100)}%)")
+    print(f"{passed}/{total} indicators ({int(passed / total * 100)}%)")

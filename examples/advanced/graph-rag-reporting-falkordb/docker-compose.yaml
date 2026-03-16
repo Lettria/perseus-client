@@ -6,7 +6,7 @@ services:
       - "6379:6379" # Standard Redis/FalkorDB port
       - "3000:3000" # FalkorDB Web UI
     environment:
-      - REDIS_ARGS=--requirepass bdroklaf --appendonly yes # Change 'password' for production use
+      - REDIS_ARGS=--requirepass bdroklaf --appendonly yes
     networks:
       - main_local
     volumes:
