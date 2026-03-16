@@ -36,14 +36,14 @@ Lettria's Perseus service is designed to solve this problem. It transforms your 
 ## 📦 Installation
 
 ```bash
+# For both Neo4j and FalkorDB support
+pip install "perseus-client[all]==1.0.0-rc.7"
+
 # For Neo4j support
 pip install "perseus-client[neo4j]==1.0.0-rc.7"
 
 # For FalkorDB support
 pip install "perseus-client[falkordb]==1.0.0-rc.7"
-
-# For both Neo4j and FalkorDB support
-pip install "perseus-client[all]==1.0.0-rc.7"
 ```
 
 ## 🚀 Quick Start
@@ -97,30 +97,30 @@ The `build_graph_async` method returns a `KnowledgeGraph` object, which holds th
 
 #### Properties
 
-| Property    | Type                   | Description                                             |
-| ----------- | ---------------------- | ------------------------------------------------------- |
-| `entities`  | `List[Entity]`         | A list of nodes (entities) in the graph.                |
-| `relations` | `List[Relation]`       | A list of relationships (facts) connecting the entities. |
-| `documents` | `List[Document]`       | A list of source documents used to generate the graph.  |
-| `ttl_content` | `Optional[str]`    | The raw TTL content of the graph.                       |
-| `cql_content` | `Optional[str]`    | The raw CQL content of the graph.                       |
+| Property      | Type             | Description                                              |
+| ------------- | ---------------- | -------------------------------------------------------- |
+| `entities`    | `List[Entity]`   | A list of nodes (entities) in the graph.                 |
+| `relations`   | `List[Relation]` | A list of relationships (facts) connecting the entities. |
+| `documents`   | `List[Document]` | A list of source documents used to generate the graph.   |
+| `ttl_content` | `Optional[str]`  | The raw TTL content of the graph.                        |
+| `cql_content` | `Optional[str]`  | The raw CQL content of the graph.                        |
 
 #### Methods
 
 The `KnowledgeGraph` object also has several built-in methods to save or convert the data to different formats and databases.
 
-| Method                  | Return Type        | Description                                                               |
-| ----------------------- | ------------------ | ------------------------------------------------------------------------- |
-| `save_ttl(file_path: str)` | `None`             | Saves the graph to a TTL file.                                            |
-| `to_ttl()`              | `str`              | Returns the graph as a TTL string.                                        |
-| `save_cql(file_path: str, strip_prefixes: bool = True)` | `None` | Saves the graph to a CQL file.                                            |
-| `to_cql(strip_prefixes: bool = True)` | `str` | Returns the graph as a CQL string.                                        |
-| `save_to_neo4j(strip_prefixes: bool = True)` | `None` | Saves the graph to a Neo4j instance synchronously.                        |
-| `save_to_neo4j_async(strip_prefixes: bool = True)` | `None` | Saves the graph to a Neo4j instance asynchronously.                       |
-| `save_to_falkordb()`    | `None`             | Saves the graph to a FalkorDB instance synchronously.                     |
-| `save_to_falkordb_async()`| `None`           | Saves the graph to a FalkorDB instance asynchronously.                    |
-| `to_json()`             | `dict`             | Converts the knowledge graph to a JSON serializable dictionary.           |
-| `interlink(kbs: List[KnowledgeGraph], ...)` | `KnowledgeGraph`   | Merges multiple `KnowledgeGraph` objects into a single one.               |
+| Method                                                  | Return Type      | Description                                                     |
+| ------------------------------------------------------- | ---------------- | --------------------------------------------------------------- |
+| `save_ttl(file_path: str)`                              | `None`           | Saves the graph to a TTL file.                                  |
+| `to_ttl()`                                              | `str`            | Returns the graph as a TTL string.                              |
+| `save_cql(file_path: str, strip_prefixes: bool = True)` | `None`           | Saves the graph to a CQL file.                                  |
+| `to_cql(strip_prefixes: bool = True)`                   | `str`            | Returns the graph as a CQL string.                              |
+| `save_to_neo4j(strip_prefixes: bool = True)`            | `None`           | Saves the graph to a Neo4j instance synchronously.              |
+| `save_to_neo4j_async(strip_prefixes: bool = True)`      | `None`           | Saves the graph to a Neo4j instance asynchronously.             |
+| `save_to_falkordb()`                                    | `None`           | Saves the graph to a FalkorDB instance synchronously.           |
+| `save_to_falkordb_async()`                              | `None`           | Saves the graph to a FalkorDB instance asynchronously.          |
+| `to_json()`                                             | `dict`           | Converts the knowledge graph to a JSON serializable dictionary. |
+| `interlink(kbs: List[KnowledgeGraph], ...)`             | `KnowledgeGraph` | Merges multiple `KnowledgeGraph` objects into a single one.     |
 
 ### Merging `KnowledgeGraph`s
 
@@ -167,11 +167,11 @@ def build_graph(
 
 Processes one or more files by uploading them, optionally with an ontology, running jobs, and returning `KnowledgeGraph` objects synchronously.
 
-| Parameter       | Type                  | Description                                                              | Default |
-| --------------- | --------------------- | ------------------------------------------------------------------------ | ------- |
-| `file_path`     | `List[str]`           | A list of file paths to process.                                         |         |
-| `ontology_path` | `Optional[str]`       | The path to the ontology file to use.                                    | `None`  |
-| `refresh_graph` | `bool`                | Whether to force a new job to be created (refresh the graph).            | `False` |
+| Parameter       | Type                       | Description                                                     | Default |
+| --------------- | -------------------------- | --------------------------------------------------------------- | ------- |
+| `file_path`     | `List[str]`                | A list of file paths to process.                                |         |
+| `ontology_path` | `Optional[str]`            | The path to the ontology file to use.                           | `None`  |
+| `refresh_graph` | `bool`                     | Whether to force a new job to be created (refresh the graph).   | `False` |
 | `metadata`      | `Optional[Dict[str, Any]]` | A dictionary of metadata to add to all nodes and relationships. | `None`  |
 
 ### `KnowledgeGraph.interlink`
@@ -188,13 +188,12 @@ def interlink(
 
 Merges multiple `KnowledgeGraph` objects into a single one based on a linking key.
 
-| Parameter                        | Type                  | Description                                                                      | Default                                          |
-| -------------------------------- | --------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `kbs`                            | `List[KnowledgeGraph]`| A list of `KnowledgeGraph` objects to merge.                                     |                                                  |
-| `interlinking_key_uri`           | `str`                 | The URI of the property to use for linking entities (e.g., `rdfs:label`).        | `http://www.w3.org/2000/01/rdf-schema#label`      |
-| `immutable_properties`           | `Optional[List[str]]` | A list of property URIs that should not be changed during the merge.             | `None`                                           |
-| `merge_properties_on_conflict`   | `bool`                | If `True`, merges properties when a conflict occurs. Otherwise, keeps the first one. | `False`                                          |
-
+| Parameter                      | Type                   | Description                                                                          | Default                                      |
+| ------------------------------ | ---------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------- |
+| `kbs`                          | `List[KnowledgeGraph]` | A list of `KnowledgeGraph` objects to merge.                                         |                                              |
+| `interlinking_key_uri`         | `str`                  | The URI of the property to use for linking entities (e.g., `rdfs:label`).            | `http://www.w3.org/2000/01/rdf-schema#label` |
+| `immutable_properties`         | `Optional[List[str]]`  | A list of property URIs that should not be changed during the merge.                 | `None`                                       |
+| `merge_properties_on_conflict` | `bool`                 | If `True`, merges properties when a conflict occurs. Otherwise, keeps the first one. | `False`                                      |
 
 ## 📂 Examples
 
