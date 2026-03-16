@@ -1,4 +1,4 @@
-# Ontology Operations Example
+# Ontology Operations
 
 This example demonstrates basic ontology operations using the Perseus Client:
 
@@ -6,7 +6,9 @@ This example demonstrates basic ontology operations using the Perseus Client:
 2.  **Waiting for processing:** It demonstrates how to poll the status of the uploaded ontology until it is fully processed.
 3.  **Finding an ontology:** It shows how to retrieve the details of an uploaded ontology using its ID.
 
-## Setup
+## How to run
+
+### Setup
 
 1.  **Install dependencies:**
 
@@ -20,12 +22,14 @@ This example demonstrates basic ontology operations using the Perseus Client:
     PERSEUS_API_KEY="YOUR_API_KEY"
     ```
 
-## Usage
+### Usage
 
 Run the `ontology_example.py` script from your terminal:
 
 ```bash
 python ontology_example.py
 ```
+
+## Expected output
 
 The script will log its actions to the console. You will see the process of the ontology being uploaded, the script waiting for its status to change to `UPLOADED`, and finally, the script successfully finding and displaying the ontology's details.

@@ -1,49 +1,55 @@
-# Graph Manipulation Example
+# Graph Manipulation
 
 This example demonstrates the end-to-end process of:
 
 1.  **Building a knowledge graph from a file** using a live `PerseusClient`.
-2.  **Serializing the initial graph** to [Turtle (TTL)](https://www.w3.org/TR/turtle/) and [Cypher Query Language (CQL)](https://neo4j.com/docs/cypher-manual/current/) formats.
-3.  **Manipulating the in-memory graph** by adding new entities and relations.
-4.  **Saving the modified graph to Neo4j**.
-5.  **Re-serializing the modified graph** to TTL and CQL to reflect the changes.
+2.  **Manipulating the in-memory graph** by adding new entities and relations.
+3.  **Saving the modified graph to Neo4j**.
+4.  **Serializing the modified graph** to TTL to reflect the changes.
 
-## Prerequisites
+## How to run
 
-1.  A running instance of the Perseus API.
-2.  Your Perseus API key.
-3.  A running instance of [Neo4j](https://neo4j.com/docs/operations-manual/current/installation/).
+### Setup
 
-## How to Run
+1.  **Install dependencies:**
 
-1.  Navigate to the example directory:
     ```bash
-    cd examples/simple/graph-manipulation
+    pip install -r requirements.txt
     ```
 
-2.  Create a `.env` file from the template and fill in your API and Neo4j details:
-    ```bash
-    cp template.env .env
+2.  **Set up your environment:**
+    Create a `.env` file in this directory and add your `PERSEUS_API_KEY`. You can also configure your Neo4j connection details here if they are different from the defaults in the `docker-compose.yaml`.
+
+    ```env
+    PERSEUS_API_KEY="YOUR_API_KEY"
+    NEO4J_URI="bolt://localhost:7687"
+    NEO4J_USER="neo4j"
+    NEO4J_PASSWORD="j4oenj4oen"
     ```
 
-3.  Edit the `.env` file and add your `PERSEUS_API_KEY`, `NEO4J_URI`, `NEO4J_USER`, and `NEO4J_PASSWORD`.
-
-4.  Install the `perseus-client` (with `rdf` and `neo4j` extras) in editable mode from the project root if you haven't already. This ensures the example can import the necessary modules and Neo4j driver:
+3.  **Start Neo4j:**
+    A `docker-compose.yaml` file is provided to easily start a Neo4j instance.
     ```bash
-    # If you are not in the project root, navigate there first:
-    # cd ../../../ # Go to the project root: perseus-client/
-    pip install -e '.[rdf,neo4j]'
+    docker-compose up -d
     ```
 
-5.  Run the example script:
-    ```bash
-    python graph_manipulation.py
-    ```
+### Usage
 
-This will:
+Run the `graph_manipulation.py` script from your terminal:
+
+```bash
+python graph_manipulation.py
+```
+
+## Expected output
+
+The script will:
 - Connect to the Perseus API to build a graph from `assets/sample.txt`.
 - Create an `output` directory within the example folder.
-- Save the initial graph to `output/output_graph_original.ttl` and `output/output_graph_original.cql`.
+- Save the initial graph to `output/output_graph_original.ttl`.
 - Add a new "Award" entity and a "WON_AWARD" relation in-memory.
 - **Save the modified graph to your configured Neo4j instance.**
-- Save the modified graph to `output/output_graph_modified.ttl` and `output/output_graph_modified.cql`.
+- Save the modified graph to `output/output_graph_modified.ttl`.
+- Log the progress to the console.
+
+After the script finishes, you can connect to your Neo4j instance (e.g., via the Neo4j Browser at `http://localhost:7474`) to see the modified graph.

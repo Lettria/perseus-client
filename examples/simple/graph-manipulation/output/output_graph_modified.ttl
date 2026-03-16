@@ -7,7 +7,7 @@
 
 data:7cac7a8b-2eb7-4061-88dc-48e5302dde9e a foaf:Person ;
     rdfs:label "Marie Curie" ;
-    dbo:achievement "first woman to win a Nobel Prize" ;
+    dbo:achievement "paved the way for women in STEM" ;
     dbo:award data:8af873b0-9472-493b-85cb-6848e8657fe3 ;
     dbo:collaborator data:c3bd7358-bca8-4173-8d69-b53e73357831 ;
     dbo:discovered data:1b8324a6-6979-44c8-b2d1-92da7b7b0435,
