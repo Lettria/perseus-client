@@ -74,14 +74,77 @@ This example shows how to build a graph from a text file.
 ```python
 import asyncio
 from perseus_client import PerseusClient
+from perseus_client.models import KnowledgeGraph
 
 async def main():
     async with PerseusClient() as client:
         try:
-            await client.build_graph(
-                file_path="path/to/your/document.txt",
+            graphs: List[KnowledgeGraph] = client.build_graph(
+                file_path=["path/to/your/document.txt"],
             )
-            print("🎉 Graph built successfully!")
+            for graph in graphs:
+                print(f"🎉 Graph built successfully with {len(graph.entities)} entities and {len(graph.relations)} relations!")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### The `KnowledgeGraph` Object
+
+The `build_graph_async` method returns a `KnowledgeGraph` object, which holds the structured data of your graph.
+
+#### Properties
+
+| Property    | Type                   | Description                                             |
+| ----------- | ---------------------- | ------------------------------------------------------- |
+| `entities`  | `List[Entity]`         | A list of nodes (entities) in the graph.                |
+| `relations` | `List[Relation]`       | A list of relationships (facts) connecting the entities. |
+| `documents` | `List[Document]`       | A list of source documents used to generate the graph.  |
+| `ttl_content` | `Optional[str]`    | The raw TTL content of the graph.                       |
+| `cql_content` | `Optional[str]`    | The raw CQL content of the graph.                       |
+
+#### Methods
+
+The `KnowledgeGraph` object also has several built-in methods to save or convert the data to different formats and databases.
+
+| Method                  | Return Type        | Description                                                               |
+| ----------------------- | ------------------ | ------------------------------------------------------------------------- |
+| `save_ttl(file_path: str)` | `None`             | Saves the graph to a TTL file.                                            |
+| `to_ttl()`              | `str`              | Returns the graph as a TTL string.                                        |
+| `save_cql(file_path: str, strip_prefixes: bool = True)` | `None` | Saves the graph to a CQL file.                                            |
+| `to_cql(strip_prefixes: bool = True)` | `str` | Returns the graph as a CQL string.                                        |
+| `save_to_neo4j(strip_prefixes: bool = True)` | `None` | Saves the graph to a Neo4j instance synchronously.                        |
+| `save_to_neo4j_async(strip_prefixes: bool = True)` | `None` | Saves the graph to a Neo4j instance asynchronously.                       |
+| `save_to_falkordb()`    | `None`             | Saves the graph to a FalkorDB instance synchronously.                     |
+| `save_to_falkordb_async()`| `None`           | Saves the graph to a FalkorDB instance asynchronously.                    |
+| `to_json()`             | `dict`             | Converts the knowledge graph to a JSON serializable dictionary.           |
+| `interlink(kbs: List[KnowledgeGraph], ...)` | `KnowledgeGraph`   | Merges multiple `KnowledgeGraph` objects into a single one.               |
+
+### Merging `KnowledgeGraph`s
+
+You can merge multiple `KnowledgeGraph` objects using the static `KnowledgeGraph.interlink` method.
+
+```python
+import asyncio
+from typing import List
+from perseus_client import PerseusClient
+from perseus_client.models import KnowledgeGraph
+
+async def main():
+    async with PerseusClient() as client:
+        try:
+            # Build two graphs
+            graphs: List[KnowledgeGraph] = await client.build_graph_async(
+                file_path=["path/to/document1.txt", "path/to/document2.txt"]
+            )
+
+            # Interlink them using the static method
+            if len(graphs) >= 2:
+                merged_graph = KnowledgeGraph.interlink(kbs=graphs)
+                print(f"🎉 Graphs merged successfully with {len(merged_graph.entities)} entities and {len(merged_graph.relations)} relations!")
+
         except Exception as e:
             print(f"An error occurred: {e}")
 
@@ -94,26 +157,44 @@ if __name__ == "__main__":
 ### `client.build_graph`
 
 ```python
-async def build_graph(
-    file_path: str,
+def build_graph(
+    file_path: List[str],
     ontology_path: Optional[str] = None,
-    output_path: Optional[str] = None,
-    save_to_neo4j: bool = False,
-    save_to_falkordb: bool = False,
     refresh_graph: bool = False,
-) -> Job:
+    metadata: Optional[Dict[str, Any]] = None,
+) -> List[KnowledgeGraph]:
 ```
 
-Processes a file by uploading it, optionally with an ontology, running a job, and downloading the output.
+Processes one or more files by uploading them, optionally with an ontology, running jobs, and returning `KnowledgeGraph` objects synchronously.
 
-| Parameter          | Type            | Description                                                                   | Default |
-| ------------------ | --------------- | ----------------------------------------------------------------------------- | ------- |
-| `file_path`        | `str`           | The path to the file to process.                                              |         |
-| `ontology_path`    | `Optional[str]` | The path to the ontology file to use.                                         | `None`  |
-| `output_path`      | `Optional[str]` | The path to save the output to. If not provided, a default path will be used. | `None`  |
-| `save_to_neo4j`    | `bool`          | Whether to save the output to Neo4j.                                          | `False` |
-| `save_to_falkordb` | `bool`          | Whether to save the output to FalkorDB.                                       | `False` |
-| `refresh_graph`    | `bool`          | Whether to force a new job to be created (refresh the graph).                 | `False` |
+| Parameter       | Type                  | Description                                                              | Default |
+| --------------- | --------------------- | ------------------------------------------------------------------------ | ------- |
+| `file_path`     | `List[str]`           | A list of file paths to process.                                         |         |
+| `ontology_path` | `Optional[str]`       | The path to the ontology file to use.                                    | `None`  |
+| `refresh_graph` | `bool`                | Whether to force a new job to be created (refresh the graph).            | `False` |
+| `metadata`      | `Optional[Dict[str, Any]]` | A dictionary of metadata to add to all nodes and relationships. | `None`  |
+
+### `KnowledgeGraph.interlink`
+
+```python
+@staticmethod
+def interlink(
+    kbs: List["KnowledgeGraph"],
+    interlinking_key_uri: str = "http://www.w3.org/2000/01/rdf-schema#label",
+    immutable_properties: Optional[List[str]] = None,
+    merge_properties_on_conflict: bool = False,
+) -> "KnowledgeGraph":
+```
+
+Merges multiple `KnowledgeGraph` objects into a single one based on a linking key.
+
+| Parameter                        | Type                  | Description                                                                      | Default                                          |
+| -------------------------------- | --------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `kbs`                            | `List[KnowledgeGraph]`| A list of `KnowledgeGraph` objects to merge.                                     |                                                  |
+| `interlinking_key_uri`           | `str`                 | The URI of the property to use for linking entities (e.g., `rdfs:label`).        | `http://www.w3.org/2000/01/rdf-schema#label`      |
+| `immutable_properties`           | `Optional[List[str]]` | A list of property URIs that should not be changed during the merge.             | `None`                                           |
+| `merge_properties_on_conflict`   | `bool`                | If `True`, merges properties when a conflict occurs. Otherwise, keeps the first one. | `False`                                          |
+
 
 ## 📂 Examples
 
@@ -122,19 +203,17 @@ For more detailed examples, check out the [`examples/`](./examples/) directory. 
 ### Simple Examples
 
 - **[Build Graph](./examples/simple/build-graph/)**: Build a knowledge graph from a text file.
-- **[Build Graph With Metadata](./examples/simple/build-graph-with-metadata/)**: Build a knowledge graph and add custom metadata to nodes and relationships.
-- **[CQL Manipulation](./examples/simple/cql-manipulation/)**: Perform custom modifications on CQL query strings.
-- **[File Operations](./examples/simple/file-operations/)**: Upload and manage files.
-- **[Entity Linked Graph](./examples/simple/entity-linked-graph/)**: Interlink multiple graphs into a unified structure.
-- **[Ontology Operations](./examples/simple/ontology-operations/)**: Upload and manage ontologies.
-- **[TTL Manipulation](./examples/simple/ttl-manipulation/)**: Perform custom modifications on TTL (Turtle) files.
 - **[Delete Operations](./examples/simple/delete-operations/)**: Delete files and ontologies.
+- **[Entity Linked Graph](./examples/simple/entity-linked-graph/)**: Interlink multiple graphs into a unified structure.
+- **[File Operations](./examples/simple/file-operations/)**: Upload and manage files.
+- **[Graph Manipulation](./examples/simple/graph-manipulation/)**: Perform custom modifications on the graph.
+- **[Ontology Operations](./examples/simple/ontology-operations/)**: Upload and manage ontologies.
 
-### Advanced Example
+### Advanced Examples
 
-- **[Graph RAG Reporting Neo4j](./examples/advanced/graph-rag-reporting-neo4j/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report. Graph is saved in Neo4j.
-- **[Graph RAG Reporting FalkorDB](./examples/advanced/graph-rag-reporting-falkordb/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report. Graph is saved in FalkorDb.
 - **[Finance Compliance](./examples/advanced/finance-compliance/)**: A complete pipeline to convert unstructured sustainability disclosures into a knowledge graph and produce CSRD-compliant reports.
+- **[Graph RAG Reporting FalkorDB](./examples/advanced/graph-rag-reporting-falkordb/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report. Graph is saved in FalkorDB.
+- **[Graph RAG Reporting Neo4j](./examples/advanced/graph-rag-reporting-neo4j/)**: A complete workflow to turn a PDF into a knowledge graph and generate a report. Graph is saved in Neo4j.
 
 ## 🤝 Contributing
 

@@ -39,11 +39,10 @@ docker compose up -d
 
 Execute the scripts in order, providing the path to the documents you want to process.
 
-1.  **Build the Knowledge Graphs:**
+1.  **Build the Knowledge Graphs:** `index.py` is configured to process `assets/ecosteel_annual_report.md` and `assets/techgreen_press_release.md` directly. Simply run:
 
     ```bash
-    python index.py assets/ecosteel_annual_report.md
-    python index.py assets/techgreen_press_release.md
+    python index.py
     ```
 
 2.  **Explore the Extracted Data from the TTL files:**
