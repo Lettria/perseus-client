@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "perseus-client"
-version = "1.0.0rc8"
+version = "1.0.0rc9"
 authors = [
   { name="Victor de La Salmonière", email="victor@lettria.com" },
 ]
