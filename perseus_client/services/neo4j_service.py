@@ -69,6 +69,8 @@ class Neo4jService:
                         )
                         self._neo4j_ready = True
                         return
+                except ConfigurationException:
+                    raise
                 except Exception:
                     await asyncio.sleep(2)  # Wait before retrying
 
@@ -205,7 +207,7 @@ class Neo4jService:
         logger.debug("Generating CQL from KnowledgeGraph for Neo4j.")
         try:
             cql_content = self.cql_service.to_cql(kg, strip_prefixes=strip_prefixes)
-            if cql_content:
+            if cql_content and cql_content.strip() != ';':
                 logger.debug("CQL content generated. Executing against Neo4j.")
                 await self.execute_cql_string_async(cql_content)
             else:

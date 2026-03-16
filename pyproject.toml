@@ -33,6 +33,13 @@ dependencies = [
 neo4j = ["neo4j"]
 falkordb = ["falkordb"]
 all = ["neo4j", "falkordb"]
+test = [
+    "pytest",
+    "pytest-cov",
+    "requests-mock",
+    "Faker",
+    "pytest-asyncio"
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
