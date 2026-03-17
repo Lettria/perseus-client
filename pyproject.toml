@@ -41,5 +41,5 @@ test = [
     "pytest-asyncio"
 ]
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.setuptools]
+packages = ["perseus_client"]

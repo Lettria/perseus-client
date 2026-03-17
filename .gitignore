@@ -10,3 +10,4 @@ build_graph_async*
 find_files
 examples/advanced/finance-compliance/*.ipynb
 venv/
+.coverage
