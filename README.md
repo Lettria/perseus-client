@@ -186,13 +186,13 @@ def interlink(
 ) -> "KnowledgeGraph":
 ```
 
-Merges multiple `KnowledgeGraph` objects into a single one based on a linking key.
+Merges multiple `KnowledgeGraph` objects into a single one based on a linking key. Entities are deduplicated and their properties are combined. If `immutable_properties` are specified, entities with conflicting values for these properties will not be merged, resulting in separate entities in the final graph.
 
 | Parameter                      | Type                   | Description                                                                          | Default                                      |
 | ------------------------------ | ---------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------- |
 | `kbs`                          | `List[KnowledgeGraph]` | A list of `KnowledgeGraph` objects to merge.                                         |                                              |
 | `interlinking_key_uri`         | `str`                  | The URI of the property to use for linking entities (e.g., `rdfs:label`).            | `http://www.w3.org/2000/01/rdf-schema#label` |
-| `immutable_properties`         | `Optional[List[str]]`  | A list of property URIs that should not be changed during the merge.                 | `None`                                       |
+| `immutable_properties`         | `Optional[List[str]]`  | A list of property URIs (e.g., `"http://purl.org/dc/elements/1.1/title"` or `"hasJobTitle"`) that, if their values conflict between entities, will prevent those entities from being merged. Instead, separate entities will be retained.                 | `None`                                       |
 | `merge_properties_on_conflict` | `bool`                 | If `True`, merges properties when a conflict occurs. Otherwise, keeps the first one. | `False`                                      |
 
 ## 📂 Examples
