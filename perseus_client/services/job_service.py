@@ -181,24 +181,30 @@ class JobService(BaseService):
 
             async with aiohttp.ClientSession(connector=connector) as download_session:
                 # Download TTL file
-                ttl_output_path = f"{output_path}.ttl"
-                logger.debug(f"Downloading TTL file to {ttl_output_path}")
-                await self._download_file_async(
-                    download_session,
-                    download_urls["ttlFileDownloadUrl"],
-                    ttl_output_path,
-                )
-                logger.debug(f"Successfully downloaded TTL output to {ttl_output_path}")
+                if download_urls.get("ttlFileDownloadUrl"):
+                    ttl_output_path = f"{output_path}.ttl"
+                    logger.debug(f"Downloading TTL file to {ttl_output_path}")
+                    await self._download_file_async(
+                        download_session,
+                        download_urls["ttlFileDownloadUrl"],
+                        ttl_output_path,
+                    )
+                    logger.debug(
+                        f"Successfully downloaded TTL output to {ttl_output_path}"
+                    )
 
                 # Download CQL file
-                cql_output_path = f"{output_path}.cql"
-                logger.debug(f"Downloading CQL file to {cql_output_path}")
-                await self._download_file_async(
-                    download_session,
-                    download_urls["cqlFileDownloadUrl"],
-                    cql_output_path,
-                )
-                logger.debug(f"Successfully downloaded CQL output to {cql_output_path}")
+                if download_urls.get("cqlFileDownloadUrl"):
+                    cql_output_path = f"{output_path}.cql"
+                    logger.debug(f"Downloading CQL file to {cql_output_path}")
+                    await self._download_file_async(
+                        download_session,
+                        download_urls["cqlFileDownloadUrl"],
+                        cql_output_path,
+                    )
+                    logger.debug(
+                        f"Successfully downloaded CQL output to {cql_output_path}"
+                    )
         except Exception as e:
             logger.error(
                 f"Failed to download outputs for job {job_id}: {e}", exc_info=True
@@ -230,7 +236,7 @@ class JobService(BaseService):
         if output_dir and not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
         try:
-            async with session.get(url) as response:
+            async with await session.get(url) as response:
                 response.raise_for_status()
                 with open(output_path, "wb") as f:
                     while True:

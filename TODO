@@ -1,6 +1,0 @@
-- add to_rdflib on KG
-- interlinking_key_uri as a list
-- property list should be ont:hasJobTitle "software engineer", "dentist" ; in turtle
-- from_ttl to knowledge graph ?
-- verify class type on interlinking
-- document more interlinking
