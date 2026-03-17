@@ -1,1 +1,1 @@
-perseus-client==1.0.0-rc.9
+perseus-client==1.0.0-rc.10
