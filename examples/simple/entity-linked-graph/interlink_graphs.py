@@ -31,12 +31,18 @@ def main(
             # 2. Interlink the knowledge graphs
             merged_kg = KnowledgeGraph.interlink(
                 kbs=knowledge_graphs,
-                # merge_properties_on_conflict=True,
+                merge_properties_on_conflict=True,
                 # immutable_properties=["hasJobTitle"]
             )
 
+            # write ttl content
+            with open("merged_graph.ttl", "w") as f:
+                f.write(merged_kg.to_ttl())
+
             # 3. Save the single, merged graph to Neo4j
             merged_kg.save_to_neo4j(strip_prefixes=True)
+
+            # merge with current graph state in db
 
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}", exc_info=True)

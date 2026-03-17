@@ -1,0 +1,107 @@
+@prefix data: <http://example.org/data/> .
+@prefix ont: <http://example.org/ontology#> .
+@prefix pmeta: <https://lettria.com/perseus/metadata#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+data:2910310a-d22b-49be-86c0-d932595bc501 a ont:Occupation ;
+    rdfs:label "project manager" ;
+    pmeta:source "interlink_graphs_example" .
+
+data:46855c1a-6d60-43d2-8176-8757042c81f2 a ont:Occupation ;
+    rdfs:label "software engineer" ;
+    pmeta:source "interlink_graphs_example" .
+
+data:69314fa2-48c9-4dec-af60-dbe91199aa67 a ont:Occupation ;
+    rdfs:label "dentist" ;
+    pmeta:source "interlink_graphs_example" .
+
+data:0d87ed6d-4c21-45b3-a209-f978761baf9a a ont:Marriage ;
+    rdfs:label "Alice and Bob's marriage" ;
+    ont:hasParticipant data:8bc42da3-d63e-4013-ae39-d4c84197eaab,
+        data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    ont:hasSpouse data:8bc42da3-d63e-4013-ae39-d4c84197eaab,
+        data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    pmeta:source "interlink_graphs_example" .
+
+data:3921fd45-6664-4b22-91e9-93f86e790879 a ont:Organization ;
+    rdfs:label "ExampleCorp" ;
+    ont:employs data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    ont:hasName "ExampleCorp" ;
+    ont:isEmployerIn data:8e9854b9-5bd8-459b-bd49-fa40cce3b6b5 ;
+    ont:participatesIn data:8e9854b9-5bd8-459b-bd49-fa40cce3b6b5 ;
+    pmeta:source "interlink_graphs_example" .
+
+data:78c631d8-83c8-4485-a715-744d9ebe481f a ont:Organization ;
+    rdfs:label "TechSolutions" ;
+    ont:employs data:8bc42da3-d63e-4013-ae39-d4c84197eaab ;
+    ont:hasName "TechSolutions" ;
+    ont:isEmployerIn data:baf091aa-f8f9-4a11-90ca-1242e86b53cb ;
+    pmeta:source "interlink_graphs_example" .
+
+data:9b25054e-546f-4e3a-bfd4-cada3af03c11 a ont:Marriage ;
+    rdfs:label "Marriage of Bob and Alice" ;
+    ont:hasParticipant data:8bc42da3-d63e-4013-ae39-d4c84197eaab,
+        data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    ont:hasSpouse data:8bc42da3-d63e-4013-ae39-d4c84197eaab,
+        data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    pmeta:source "interlink_graphs_example" .
+
+data:baf091aa-f8f9-4a11-90ca-1242e86b53cb a ont:Employment ;
+    rdfs:label "Employment of Bob at TechSolutions" ;
+    ont:hasEmployee data:8bc42da3-d63e-4013-ae39-d4c84197eaab ;
+    ont:hasEmployer data:78c631d8-83c8-4485-a715-744d9ebe481f ;
+    ont:hasParticipant data:78c631d8-83c8-4485-a715-744d9ebe481f,
+        data:8bc42da3-d63e-4013-ae39-d4c84197eaab ;
+    pmeta:source "interlink_graphs_example" .
+
+data:8e9854b9-5bd8-459b-bd49-fa40cce3b6b5 a ont:Employment ;
+    rdfs:label "Alice's employment at ExampleCorp" ;
+    ont:hasEmployee data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    ont:hasEmployer data:3921fd45-6664-4b22-91e9-93f86e790879 ;
+    ont:hasParticipant data:3921fd45-6664-4b22-91e9-93f86e790879,
+        data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    pmeta:source "interlink_graphs_example" .
+
+data:8bc42da3-d63e-4013-ae39-d4c84197eaab a ont:Person ;
+    rdfs:label "Bob" ;
+    ont:hasEmployment data:baf091aa-f8f9-4a11-90ca-1242e86b53cb ;
+    ont:hasFullName "Bob" ;
+    ont:hasGivenName "Bob" ;
+    ont:hasJobTitle "project manager" ;
+    ont:hasMaritalStatus "married" ;
+    ont:hasMarriage data:0d87ed6d-4c21-45b3-a209-f978761baf9a,
+        data:9b25054e-546f-4e3a-bfd4-cada3af03c11 ;
+    ont:hasName "Bob" ;
+    ont:hasOccupation data:2910310a-d22b-49be-86c0-d932595bc501 ;
+    ont:isAffiliatedWith data:78c631d8-83c8-4485-a715-744d9ebe481f ;
+    ont:isEmployedBy data:78c631d8-83c8-4485-a715-744d9ebe481f ;
+    ont:isEmployeeIn data:baf091aa-f8f9-4a11-90ca-1242e86b53cb ;
+    ont:isMarriedTo data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    ont:isRelatedTo data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    ont:knows data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd ;
+    ont:participatesIn data:0d87ed6d-4c21-45b3-a209-f978761baf9a,
+        data:9b25054e-546f-4e3a-bfd4-cada3af03c11,
+        data:baf091aa-f8f9-4a11-90ca-1242e86b53cb ;
+    pmeta:source "interlink_graphs_example" .
+
+data:e3c19fd5-8e31-471b-ad7f-7c695c8a05dd a ont:Person ;
+    rdfs:label "Alice" ;
+    ont:hasEmployment data:8e9854b9-5bd8-459b-bd49-fa40cce3b6b5 ;
+    ont:hasFullName "Alice" ;
+    ont:hasGivenName "Alice" ;
+    ont:hasJobTitle "['software engineer', 'dentist']" ;
+    ont:hasMaritalStatus "married" ;
+    ont:hasMarriage data:0d87ed6d-4c21-45b3-a209-f978761baf9a,
+        data:9b25054e-546f-4e3a-bfd4-cada3af03c11 ;
+    ont:hasName "Alice" ;
+    ont:hasOccupation data:46855c1a-6d60-43d2-8176-8757042c81f2,
+        data:69314fa2-48c9-4dec-af60-dbe91199aa67 ;
+    ont:isAffiliatedWith data:3921fd45-6664-4b22-91e9-93f86e790879 ;
+    ont:isEmployedBy data:3921fd45-6664-4b22-91e9-93f86e790879 ;
+    ont:isEmployeeIn data:8e9854b9-5bd8-459b-bd49-fa40cce3b6b5 ;
+    ont:isMarriedTo data:8bc42da3-d63e-4013-ae39-d4c84197eaab ;
+    ont:participatesIn data:0d87ed6d-4c21-45b3-a209-f978761baf9a,
+        data:8e9854b9-5bd8-459b-bd49-fa40cce3b6b5,
+        data:9b25054e-546f-4e3a-bfd4-cada3af03c11 ;
+    pmeta:source "interlink_graphs_example" .
+

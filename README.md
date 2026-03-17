@@ -103,7 +103,7 @@ The `build_graph_async` method returns a `KnowledgeGraph` object, which holds th
 | `relations`   | `List[Relation]` | A list of relationships (facts) connecting the entities. |
 | `documents`   | `List[Document]` | A list of source documents used to generate the graph.   |
 | `ttl_content` | `Optional[str]`  | The raw TTL content of the graph.                        |
-| `cql_content` | `Optional[str]`  | The raw CQL content of the graph.                        |
+| `cql_content` | `Optional[str]`  | The raw Cypher Query Language content of the graph.      |
 
 #### Methods
 

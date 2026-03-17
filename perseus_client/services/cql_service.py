@@ -84,23 +84,20 @@ class CQLService:
         # Helper to convert a URI to a clean, simple, and safe CQL identifier
         def _uri_to_cql_identifier(uri: str) -> str:
             if strip_prefixes:
-                # Check for special overrides first
                 if uri in PREDICATE_MAP:
                     return f"`{PREDICATE_MAP[uri]}`"
-
-                # Extract local name after the last '/' or '#'
+                for prefix, ns_uri in kg.namespaces.items():
+                    if uri.startswith(ns_uri):
+                        local_name = uri[len(ns_uri):]
+                        return f"`{local_name}`"
                 local_name = uri.split("/")[-1].split("#")[-1]
-
-                # Basic sanitization for safety, though backticks handle most issues
                 sanitized_name = local_name.replace(" ", "_").replace("-", "_")
                 return f"`{sanitized_name}`"
             else:
-                # High-fidelity version: use prefixes
                 for prefix, ns_uri in kg.namespaces.items():
                     if uri.startswith(ns_uri):
                         local_name = uri[len(ns_uri) :]
                         return f"`{prefix}_{local_name}`"
-                # Fallback for URIs without a known prefix
                 local_name = uri.split("/")[-1].split("#")[-1]
                 return f"`{local_name}`"
 

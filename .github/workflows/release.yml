@@ -1,13 +1,33 @@
-name: Release
+name: Test and Release
 
 on:
   push:
+    branches:
+      - '**'
+  pull_request:
     branches:
       - main
       - release-candidate
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test,all]
+      - name: Run tests
+        run: pytest
+
   release:
+    needs: test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release-candidate'
     permissions:
       contents: write
       issues: write

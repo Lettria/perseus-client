@@ -199,7 +199,7 @@ class FalkorDBService:
         logger.debug("Generating CQL from KnowledgeGraph for FalkorDB.")
         try:
             cql_content = self.cql_service.to_cql(kg)
-            if cql_content:
+            if cql_content and cql_content.strip() != ';':
                 logger.debug("CQL content generated. Executing against FalkorDB.")
                 await self.execute_cql_string_async(cql_content)
             else:
