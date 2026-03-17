@@ -3,7 +3,10 @@ from unittest.mock import MagicMock, patch, mock_open
 import pytest
 import logging
 
-from perseus_client.services.falkordb_service import FalkorDBService
+from perseus_client.services.falkordb_service import (
+    FalkorDBService,
+    FALKORDB_AVAILABLE,
+)
 from perseus_client.models import KnowledgeGraph, Entity, Relation
 from perseus_client.exceptions import ConfigurationException
 
@@ -30,6 +33,7 @@ async def test_save_output_to_falkordb_async_from_file(mock_execute, mock_file):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skipif(not FALKORDB_AVAILABLE, reason="falkordb not installed")
 @patch("asyncio.to_thread")
 @patch("perseus_client.services.falkordb_service.FalkorDB")
 async def test_execute_cql_string_async(mock_falkordb, mock_to_thread):
@@ -86,6 +90,7 @@ async def test_save_to_falkordb_async_from_kg(mock_execute):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skipif(not FALKORDB_AVAILABLE, reason="falkordb not installed")
 @patch(
     "perseus_client.services.falkordb_service.FalkorDBService._wait_for_falkordb_async",
 )

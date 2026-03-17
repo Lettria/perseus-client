@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch, mock_open, AsyncMock
 import pytest
 import logging
 
-from perseus_client.services.neo4j_service import Neo4jService
+from perseus_client.services.neo4j_service import Neo4jService, NEO4J_AVAILABLE
 from perseus_client.models import KnowledgeGraph, Entity, Relation
 from perseus_client.exceptions import ConfigurationException
 
@@ -30,6 +30,7 @@ async def test_save_output_to_neo4j_async_from_file(mock_execute, mock_file):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skipif(not NEO4J_AVAILABLE, reason="neo4j not installed")
 @patch(
     "perseus_client.services.neo4j_service.Neo4jService._wait_for_neo4j_async",
     new_callable=AsyncMock,
@@ -99,6 +100,7 @@ async def test_save_to_neo4j_async_from_kg(mock_execute):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skipif(not NEO4J_AVAILABLE, reason="neo4j not installed")
 @patch(
     "perseus_client.services.neo4j_service.Neo4jService._wait_for_neo4j_async",
     new_callable=AsyncMock,
