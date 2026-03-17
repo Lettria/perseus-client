@@ -52,3 +52,42 @@ The script will:
 - Log the progress to the console.
 
 After the script finishes, you can connect to your Neo4j instance (e.g., via the Neo4j Browser at `http://localhost:7474`) to see the unified graph.
+
+## Advanced Usage: Handling Conflicting Properties
+
+This example intentionally includes a conflict between `person1.txt` and `person2.txt` to demonstrate how to handle disagreeing properties during a merge.
+
+-   In `assets/person1.txt`, Alice is a "software engineer".
+-   In `assets/person2.txt`, Alice is a "dentist".
+
+By default, the `interlink()` method will merge the two "Alice" entities into one and, since `merge_properties_on_conflict` is `True`, it will retain both job titles.
+
+However, you can prevent merging based on specific properties by using the `immutable_properties` argument.
+
+### Trying it out
+
+1.  **Open `interlink_graphs.py`**.
+2.  **Uncomment the `immutable_properties` line**:
+
+    ```python
+    # Before
+    merged_kg = KnowledgeGraph.interlink(
+        kbs=knowledge_graphs,
+        merge_properties_on_conflict=True,
+        # immutable_properties=["hasJobTitle"]
+    )
+
+    # After
+    merged_kg = KnowledgeGraph.interlink(
+        kbs=knowledge_graphs,
+        merge_properties_on_conflict=True,
+        immutable_properties=["hasJobTitle"]
+    )
+    ```
+
+3.  **Run the script again.**
+
+### Expected Outcome
+
+-   **Default (commented out):** The two "Alice" entities are merged into a single node in Neo4j.
+-   **With `immutable_properties=["hasJobTitle"]`:** The two "Alice" entities will **not** be merged because their `hasJobTitle` values are different. You will see two separate "Alice" nodes in your Neo4j graph.

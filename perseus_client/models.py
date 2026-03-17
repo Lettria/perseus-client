@@ -169,7 +169,10 @@ class KnowledgeGraph(BaseModel):
 
         # Call the graph service's interlink method
         merged_kg = first_kg._graph_service.interlink(
-            kbs, interlinking_key_uri, immutable_properties, merge_properties_on_conflict
+            kbs,
+            interlinking_key_uri,
+            immutable_properties,
+            merge_properties_on_conflict,
         )
 
         # Inject services into the newly created graph
@@ -178,6 +181,8 @@ class KnowledgeGraph(BaseModel):
         merged_kg._neo4j_service = first_kg._neo4j_service
         merged_kg._falkordb_service = first_kg._falkordb_service
         merged_kg._graph_service = first_kg._graph_service
+        merged_kg.ttl_content = merged_kg.to_ttl()
+        merged_kg.cql_content = merged_kg.to_cql()
 
         return merged_kg
 
