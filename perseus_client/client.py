@@ -12,6 +12,8 @@ from .services.neo4j_service import Neo4jService
 from .services.falkordb_service import FalkorDBService
 from .services.cql_service import CQLService
 from .services.graph_service import GraphService
+from .services.interlink_service import InterlinkService
+from .services.rdflib_service import RDFLibService
 from .config import Settings
 from .models import (
     File,
@@ -68,6 +70,8 @@ class PerseusClient:
         self._cql: Optional[CQLService] = None
         self._ttl: Optional[TTLService] = None
         self._graph: Optional[GraphService] = None
+        self._interlink: Optional[InterlinkService] = None
+        self._rdflib: Optional[RDFLibService] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
     def _is_active(self):
@@ -95,6 +99,8 @@ class PerseusClient:
         self._cql = CQLService()
         self._ttl = TTLService()
         self._graph = GraphService()
+        self._interlink = InterlinkService()
+        self._rdflib = RDFLibService()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -211,6 +217,20 @@ class PerseusClient:
         if not self._graph:
             raise ConfigurationException("Graph service not initialized.")
         return self._graph
+
+    @property
+    def interlink(self) -> InterlinkService:
+        self._ensure_active()
+        if not self._interlink:
+            raise ConfigurationException("Interlink service not initialized.")
+        return self._interlink
+
+    @property
+    def rdflib(self) -> RDFLibService:
+        self._ensure_active()
+        if not self._rdflib:
+            raise ConfigurationException("RDFLib service not initialized.")
+        return self._rdflib
 
     def build_graph(
         self,
@@ -360,6 +380,8 @@ class PerseusClient:
         kg._neo4j_service = self.neo4j
         kg._falkordb_service = self.falkordb
         kg._graph_service = self.graph
+        kg._interlink_service = self.interlink
+        kg._rdflib_service = self.rdflib
 
         return kg
 

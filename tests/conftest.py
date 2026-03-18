@@ -10,6 +10,8 @@ from perseus_client.services.falkordb_service import FalkorDBService
 from perseus_client.services.cql_service import CQLService
 from perseus_client.services.ttl_service import TTLService
 from perseus_client.services.graph_service import GraphService
+from perseus_client.services.interlink_service import InterlinkService
+from perseus_client.services.rdflib_service import RDFLibService
 import aiohttp
 import asyncio
 
@@ -73,5 +75,7 @@ def client(mock_token, mock_api_url, mock_aiohttp_session_instance, mock_event_l
         client_instance._cql = CQLService()
         client_instance._ttl = TTLService()
         client_instance._graph = GraphService()
+        client_instance._interlink = InterlinkService()
+        client_instance._rdflib = RDFLibService()
 
         return client_instance

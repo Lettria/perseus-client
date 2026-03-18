@@ -1,0 +1,32 @@
+@prefix data: <http://example.org/data/> .
+@prefix ex: <http://example.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+data:bbb1d265-1e74-49bb-be5c-d6b7e80f8e0b a ex:Person ;
+    rdfs:label "Jane Smith" ;
+    ex:hasOccupation data:cfaeb9b6-dad2-4b79-87bd-555ce26a544e ;
+    ex:worksAt data:51670c44-6b7b-40f8-9c98-ba3e2cbaf6d9 .
+
+data:bcd23a2c-489a-48ee-a0b9-795dcc7c1057 a ex:Person ;
+    rdfs:label "John Doe" ;
+    ex:hasOccupation data:fdab823c-9488-41c6-b34c-038e52bf08d0 ;
+    ex:livesIn data:f9148762-c7b4-4987-bf06-f5b0d97d34d8 ;
+    ex:worksAt data:1f088904-9497-47bf-8ced-6359c0cd057d .
+
+data:cfaeb9b6-dad2-4b79-87bd-555ce26a544e a ex:Role ;
+    rdfs:label "project manager" ;
+    ex:roleAt data:51670c44-6b7b-40f8-9c98-ba3e2cbaf6d9 .
+
+data:f9148762-c7b4-4987-bf06-f5b0d97d34d8 a ex:City ;
+    rdfs:label "New York" .
+
+data:fdab823c-9488-41c6-b34c-038e52bf08d0 a ex:Role ;
+    rdfs:label "software engineer" ;
+    ex:roleAt data:1f088904-9497-47bf-8ced-6359c0cd057d .
+
+data:1f088904-9497-47bf-8ced-6359c0cd057d a ex:Organization ;
+    rdfs:label "Acme Inc." .
+
+data:51670c44-6b7b-40f8-9c98-ba3e2cbaf6d9 a ex:Organization ;
+    rdfs:label "Foo Corp." .
+

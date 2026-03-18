@@ -1,0 +1,2 @@
+John Doe is a software engineer at Acme Inc. He lives in New York.
+Jane Smith is a project manager at Foo Corp.

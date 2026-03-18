@@ -73,13 +73,14 @@ This example shows how to build a graph from a text file.
 
 ```python
 import asyncio
+from typing import List
 from perseus_client import PerseusClient
 from perseus_client.models import KnowledgeGraph
 
 async def main():
     async with PerseusClient() as client:
         try:
-            graphs: List[KnowledgeGraph] = client.build_graph(
+            graphs: List[KnowledgeGraph] = await client.build_graph_async(
                 file_path=["path/to/your/document.txt"],
             )
             for graph in graphs:
@@ -180,20 +181,20 @@ Processes one or more files by uploading them, optionally with an ontology, runn
 @staticmethod
 def interlink(
     kbs: List["KnowledgeGraph"],
-    interlinking_key_uri: str = "http://www.w3.org/2000/01/rdf-schema#label",
+    interlinking_key_uris: List[str] = ["http://www.w3.org/2000/01/rdf-schema#label"],
     immutable_properties: Optional[List[str]] = None,
     merge_properties_on_conflict: bool = False,
 ) -> "KnowledgeGraph":
 ```
 
-Merges multiple `KnowledgeGraph` objects into a single one based on a linking key. Entities are deduplicated and their properties are combined. If `immutable_properties` are specified, entities with conflicting values for these properties will not be merged, resulting in separate entities in the final graph.
+Merges multiple `KnowledgeGraph` objects into a single one based on a linking key. Entities are deduplicated and their properties are combined. By default, entities of different types will not be merged, even if they share the same linking key. If `immutable_properties` are specified, entities with conflicting values for these properties will also not be merged, resulting in separate entities in the final graph.
 
-| Parameter                      | Type                   | Description                                                                          | Default                                      |
-| ------------------------------ | ---------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------- |
-| `kbs`                          | `List[KnowledgeGraph]` | A list of `KnowledgeGraph` objects to merge.                                         |                                              |
-| `interlinking_key_uri`         | `str`                  | The URI of the property to use for linking entities (e.g., `rdfs:label`).            | `http://www.w3.org/2000/01/rdf-schema#label` |
-| `immutable_properties`         | `Optional[List[str]]`  | A list of property URIs (e.g., `"http://purl.org/dc/elements/1.1/title"` or `"hasJobTitle"`) that, if their values conflict between entities, will prevent those entities from being merged. Instead, separate entities will be retained.                 | `None`                                       |
-| `merge_properties_on_conflict` | `bool`                 | If `True`, merges properties when a conflict occurs. Otherwise, keeps the first one. | `False`                                      |
+| Parameter                      | Type                  | Description                                                                                                                                                              | Default                                            |
+| ------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `kbs`                          | `List[KnowledgeGraph]`| A list of `KnowledgeGraph` objects to merge.                                                                                                                             |                                                    |
+| `interlinking_key_uris`        | `List[str]`           | The URI of the property to use for linking entities (e.g., `rdfs:label`).                                                                                                  | `["http://www.w3.org/2000/01/rdf-schema#label"]` |
+| `immutable_properties`         | `Optional[List[str]]` | A list of property URIs (e.g., `"http://purl.org/dc/elements/1.1/title"` or `"hasJobTitle"`) that, if their values conflict between entities, will prevent those entities from being merged. Instead, separate entities will be retained. | `None`                                             |
+| `merge_properties_on_conflict` | `bool`                | If `True`, merges properties when a conflict occurs. Otherwise, keeps the first one.                                                                                     | `False`                                            |
 
 ## 📂 Examples
 
@@ -207,6 +208,7 @@ For more detailed examples, check out the [`examples/`](./examples/) directory. 
 - **[File Operations](./examples/simple/file-operations/)**: Upload and manage files.
 - **[Graph Manipulation](./examples/simple/graph-manipulation/)**: Perform custom modifications on the graph.
 - **[Ontology Operations](./examples/simple/ontology-operations/)**: Upload and manage ontologies.
+- **[SPARQL Query](./examples/simple/sparql-query/)**: Query the graph using SPARQL.
 
 ### Advanced Examples
 

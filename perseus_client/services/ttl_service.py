@@ -166,16 +166,28 @@ class TTLService:
                 g.add((entity_uri, RDF.type, URIRef(entity_type)))
 
             for predicate_uri, literal_value in entity.properties.items():
+                predicate = URIRef(predicate_uri)
                 literal_args = {}
                 if literal_value.datatype:
                     literal_args["datatype"] = URIRef(literal_value.datatype)
-                g.add(
-                    (
-                        entity_uri,
-                        URIRef(predicate_uri),
-                        Literal(literal_value.value, **literal_args),
+
+                if isinstance(literal_value.value, list):
+                    for item in literal_value.value:
+                        g.add(
+                            (
+                                entity_uri,
+                                predicate,
+                                Literal(item, **literal_args),
+                            )
+                        )
+                else:
+                    g.add(
+                        (
+                            entity_uri,
+                            predicate,
+                            Literal(literal_value.value, **literal_args),
+                        )
                     )
-                )
 
         for relation in kg.relations:
             source = URIRef(relation.source_uri)

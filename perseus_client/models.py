@@ -12,11 +12,14 @@ logger = logging.getLogger(__name__)
 
 # Use TYPE_CHECKING to avoid circular dependencies during runtime
 if TYPE_CHECKING:
+    from rdflib import Graph
     from .services.ttl_service import TTLService
     from .services.cql_service import CQLService
     from .services.neo4j_service import Neo4jService
     from .services.falkordb_service import FalkorDBService
     from .services.graph_service import GraphService
+    from .services.interlink_service import InterlinkService
+    from .services.rdflib_service import RDFLibService
 
 
 class LiteralValue(BaseModel):
@@ -72,6 +75,8 @@ class KnowledgeGraph(BaseModel):
     _neo4j_service: Optional["Neo4jService"] = PrivateAttr(default=None)
     _falkordb_service: Optional["FalkorDBService"] = PrivateAttr(default=None)
     _graph_service: Optional["GraphService"] = PrivateAttr(default=None)
+    _interlink_service: Optional["InterlinkService"] = PrivateAttr(default=None)
+    _rdflib_service: Optional["RDFLibService"] = PrivateAttr(default=None)
 
     def __init__(
         self,
@@ -80,6 +85,8 @@ class KnowledgeGraph(BaseModel):
         neo4j_service: Optional["Neo4jService"] = None,
         falkordb_service: Optional["FalkorDBService"] = None,
         graph_service: Optional["GraphService"] = None,
+        interlink_service: Optional["InterlinkService"] = None,
+        rdflib_service: Optional["RDFLibService"] = None,
         **data,
     ):
         super().__init__(**data)
@@ -88,11 +95,14 @@ class KnowledgeGraph(BaseModel):
         self._neo4j_service = neo4j_service
         self._falkordb_service = falkordb_service
         self._graph_service = graph_service
+        self._interlink_service = interlink_service
+        self._rdflib_service = rdflib_service
         logger.debug(
             f"KnowledgeGraph initialized with services: "
             f"ttl={bool(ttl_service)}, cql={bool(cql_service)}, "
             f"neo4j={bool(neo4j_service)}, falkordb={bool(falkordb_service)}, "
-            f"graph={bool(graph_service)}"
+            f"graph={bool(graph_service)}, interlink={bool(interlink_service)}, "
+            f"rdflib={bool(rdflib_service)}"
         )
 
     def save_ttl(self, file_path: str):
@@ -122,6 +132,13 @@ class KnowledgeGraph(BaseModel):
                 "CQLService not available on this KnowledgeGraph instance."
             )
         return self._cql_service.to_cql(self, strip_prefixes)
+
+    def to_rdflib(self) -> "Graph":
+        if not self._rdflib_service:
+            raise RuntimeError(
+                "RDFLibService not available on this KnowledgeGraph instance."
+            )
+        return self._rdflib_service.to_rdflib(self)
 
     def save_to_neo4j(self, strip_prefixes: bool = True):
         if not self._neo4j_service:
@@ -154,7 +171,9 @@ class KnowledgeGraph(BaseModel):
     @staticmethod
     def interlink(
         kbs: List["KnowledgeGraph"],
-        interlinking_key_uri: str = "http://www.w3.org/2000/01/rdf-schema#label",
+        interlinking_key_uris: List[str] = [
+            "http://www.w3.org/2000/01/rdf-schema#label"
+        ],
         immutable_properties: Optional[List[str]] = None,
         merge_properties_on_conflict: bool = False,
     ) -> "KnowledgeGraph":
@@ -162,15 +181,15 @@ class KnowledgeGraph(BaseModel):
             return KnowledgeGraph()
 
         first_kg = kbs[0]
-        if not first_kg._graph_service:
+        if not first_kg._interlink_service:
             raise RuntimeError(
-                "GraphService not available on the provided KnowledgeGraph instances."
+                "InterlinkService not available on the provided KnowledgeGraph instances."
             )
 
         # Call the graph service's interlink method
-        merged_kg = first_kg._graph_service.interlink(
+        merged_kg = first_kg._interlink_service.interlink(
             kbs,
-            interlinking_key_uri,
+            interlinking_key_uris,
             immutable_properties,
             merge_properties_on_conflict,
         )
@@ -181,6 +200,7 @@ class KnowledgeGraph(BaseModel):
         merged_kg._neo4j_service = first_kg._neo4j_service
         merged_kg._falkordb_service = first_kg._falkordb_service
         merged_kg._graph_service = first_kg._graph_service
+        merged_kg._interlink_service = first_kg._interlink_service
         merged_kg.ttl_content = merged_kg.to_ttl()
         merged_kg.cql_content = merged_kg.to_cql()
 
@@ -195,8 +215,10 @@ class KnowledgeGraph(BaseModel):
                 "_neo4j_service",
                 "_falkordb_service",
                 "_graph_service",
+                "_interlink_service",
             }
         )
+
 
 
 class FileStatus(str, Enum):

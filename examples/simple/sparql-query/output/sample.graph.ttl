@@ -1,0 +1,58 @@
+@prefix data: <http://example.org/data/> .
+@prefix ont: <http://example.org/ontology#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+data:0c4a644e-01ed-46f2-b951-23d3df44d8d5 a ont:Occupation ;
+    rdfs:label "software engineer" .
+
+data:7e945bf0-21ea-4d73-8a7d-f09ff1f6b82d a ont:Location ;
+    rdfs:label "New York" .
+
+data:c0da0da0-bdd8-4384-86e8-dbdcffb710f3 a ont:Occupation ;
+    rdfs:label "project manager" .
+
+data:18ca4b6b-2122-4be8-b019-1617ca109dbe a ont:Organization ;
+    rdfs:label "Acme Inc." ;
+    ont:employs data:33b4b7c4-73ed-44f2-9315-04dd80cc9382 ;
+    ont:hasName "Acme Inc." ;
+    ont:isEmployerIn data:b8606a5a-3c31-4e10-b6fb-1d9ec7f5e377 .
+
+data:33b4b7c4-73ed-44f2-9315-04dd80cc9382 a ont:Person ;
+    rdfs:label "John Doe" ;
+    ont:hasEmployment data:b8606a5a-3c31-4e10-b6fb-1d9ec7f5e377 ;
+    ont:hasFamilyName "Doe" ;
+    ont:hasFullName "John Doe" ;
+    ont:hasGivenName "John" ;
+    ont:hasJobTitle "software engineer" ;
+    ont:hasOccupation data:0c4a644e-01ed-46f2-b951-23d3df44d8d5 ;
+    ont:hasResidence data:7e945bf0-21ea-4d73-8a7d-f09ff1f6b82d ;
+    ont:isEmployedBy data:18ca4b6b-2122-4be8-b019-1617ca109dbe ;
+    ont:isEmployeeIn data:b8606a5a-3c31-4e10-b6fb-1d9ec7f5e377 .
+
+data:6ba8e84a-1b62-441b-9948-d037b48e66e7 a ont:Organization ;
+    rdfs:label "Foo Corp." ;
+    ont:employs data:d2cb8778-f233-4d58-81c6-31dd682b81db ;
+    ont:hasName "Foo Corp." ;
+    ont:isEmployerIn data:d9537496-8115-4f05-abcd-d49d75e777cc .
+
+data:d2cb8778-f233-4d58-81c6-31dd682b81db a ont:Person ;
+    rdfs:label "Jane Smith" ;
+    ont:hasEmployment data:d9537496-8115-4f05-abcd-d49d75e777cc ;
+    ont:hasFamilyName "Smith" ;
+    ont:hasFullName "Jane Smith" ;
+    ont:hasGivenName "Jane" ;
+    ont:hasJobTitle "project manager" ;
+    ont:hasOccupation data:c0da0da0-bdd8-4384-86e8-dbdcffb710f3 ;
+    ont:isEmployedBy data:6ba8e84a-1b62-441b-9948-d037b48e66e7 ;
+    ont:isEmployeeIn data:d9537496-8115-4f05-abcd-d49d75e777cc .
+
+data:b8606a5a-3c31-4e10-b6fb-1d9ec7f5e377 a ont:Employment ;
+    rdfs:label "Employment of John Doe at Acme Inc." ;
+    ont:hasEmployee data:33b4b7c4-73ed-44f2-9315-04dd80cc9382 ;
+    ont:hasEmployer data:18ca4b6b-2122-4be8-b019-1617ca109dbe .
+
+data:d9537496-8115-4f05-abcd-d49d75e777cc a ont:Employment ;
+    rdfs:label "Employment of Jane Smith at Foo Corp." ;
+    ont:hasEmployee data:d2cb8778-f233-4d58-81c6-31dd682b81db ;
+    ont:hasEmployer data:6ba8e84a-1b62-441b-9948-d037b48e66e7 .
+
