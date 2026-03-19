@@ -182,8 +182,8 @@ class BuildService:
             # Create an empty graph but still attach content if available
             kg = KnowledgeGraph(cql_content=cql_content)
 
-        # kg.ttl_content = self._ttl.to_ttl(kg)
-        # kg.cql_content = self._cql.to_cql(kg)
+        kg.ttl_content = self._ttl.to_ttl(kg)
+        kg.cql_content = self._cql.to_cql(kg)
 
         # Inject services into the created KnowledgeGraph instance
         logger.debug("Injecting services into KnowledgeGraph instance.")
