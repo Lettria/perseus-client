@@ -3,9 +3,10 @@
 This example demonstrates the end-to-end process of:
 
 1.  **Building a knowledge graph from a file** using a live `PerseusClient`.
-2.  **Manipulating the in-memory graph** by adding new entities and relations.
-3.  **Saving the modified graph to Neo4j**.
-4.  **Serializing the modified graph** to TTL to reflect the changes.
+2.  **Injects metadata** into the graph, such as `source: graph_manipulation_example`.
+3.  **Manipulating the in-memory graph** by adding new entities and relations.
+4.  **Saving the modified graph to Neo4j**.
+5.  **Serializing the modified graph** to TTL to reflect the changes.
 
 ## How to run
 

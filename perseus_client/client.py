@@ -1,5 +1,4 @@
 import logging
-import tempfile
 from typing import Dict, Optional, Any, List, Union
 import aiohttp
 import certifi
@@ -30,6 +29,7 @@ from .exceptions import ConfigurationException
 from .services.file_service import FileService
 from .services.job_service import JobService
 from .services.ontology_service import OntologyService
+from .services.build_service import BuildService
 from .config import settings
 
 logger = logging.getLogger(__name__)
@@ -72,6 +72,7 @@ class PerseusClient:
         self._graph: Optional[GraphService] = None
         self._interlink: Optional[InterlinkService] = None
         self._rdflib: Optional[RDFLibService] = None
+        self._build: Optional[BuildService] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
     def _is_active(self):
@@ -101,6 +102,18 @@ class PerseusClient:
         self._graph = GraphService()
         self._interlink = InterlinkService()
         self._rdflib = RDFLibService()
+        self._build = BuildService(
+            self._file,
+            self._job,
+            self._ontology,
+            self._ttl,
+            self._cql,
+            self._neo4j,
+            self._falkordb,
+            self._graph,
+            self._interlink,
+            self._rdflib,
+        )
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -232,9 +245,16 @@ class PerseusClient:
             raise ConfigurationException("RDFLib service not initialized.")
         return self._rdflib
 
+    @property
+    def build(self) -> BuildService:
+        self._ensure_active()
+        if not self._build:
+            raise ConfigurationException("Build service not initialized.")
+        return self._build
+
     def build_graph(
         self,
-        file_path: List[str],
+        file_paths: List[str],
         ontology_path: Optional[str] = None,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
@@ -243,7 +263,7 @@ class PerseusClient:
         Synchronously processes one or more files by uploading them, optionally with an ontology,
         running jobs, and returning KnowledgeGraph objects.
         Args:
-            file_path: A list of file paths to process.
+            file_paths: A list of file paths to process.
             ontology_path: The path to the ontology file to use for all files.
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
@@ -255,180 +275,79 @@ class PerseusClient:
             raise ConfigurationException("Event loop not initialized.")
         return self._loop.run_until_complete(
             self.build_graph_async(
-                file_path,
+                file_paths,
                 ontology_path,
                 refresh_graph,
                 metadata,
             )
         )
 
-    async def _build_single_graph_async(
-        self,
-        file_path: str,
-        ontology_id: Optional[str] = None,
-        refresh_graph: bool = False,
-        metadata: Optional[Dict[str, Any]] = None,
-    ) -> KnowledgeGraph:
-        """
-        Processes a single file to build a KnowledgeGraph with resilient job handling.
-        """
-        logger.debug(f"Building graph for file: {file_path}")
-        created_file = await self.file.upload_file_async(file_path)
-        if created_file.status == FileStatus.PENDING:
-            await self.file.wait_for_file_upload_async(created_file.id)
-
-        job_to_run = None
-        logger.debug(
-            f"Searching for existing job for file_id: {created_file.id}, ontology_id: {ontology_id}"
-        )
-        latest_job = await self.job.find_latest_job_async(
-            file_id=created_file.id, ontology_id=ontology_id
-        )
-
-        if latest_job:
-            logger.debug(
-                f"Found latest job {latest_job.id} with status {latest_job.status}"
-            )
-            if latest_job.status in [
-                JobStatus.PENDING,
-                JobStatus.RUNNING,
-                JobStatus.STARTING,
-                JobStatus.RUNNABLE,
-            ]:
-                logger.debug(f"Attaching to existing in-progress job: {latest_job.id}")
-                job_to_run = latest_job
-            elif latest_job.status == JobStatus.SUCCEEDED:
-                if refresh_graph:
-                    logger.info(
-                        f"Job {latest_job.id} already succeeded, but refresh_graph=True, so submitting a new job."
-                    )
-                else:
-                    logger.debug(f"Using existing completed job: {latest_job.id}")
-                    job_to_run = latest_job
-            elif latest_job.status == JobStatus.FAILED:
-                logger.warning(
-                    f"Latest job {latest_job.id} failed. Submitting a new job."
-                )
-
-        if not job_to_run:
-            logger.debug("No suitable existing job found, submitting a new job.")
-            job_to_run = await self.job.submit_job_async(
-                file_id=created_file.id, ontology_id=ontology_id
-            )
-
-        # Wait for the job (either new or pre-existing) to complete
-        completed_job = await self.job.run_job_async(job_id=job_to_run.id)
-
-        # Create a temporary directory for job outputs
-        output_dir = tempfile.mkdtemp(prefix="perseus-client-")
-        output_path = os.path.join(output_dir, f"{completed_job.id}_output")
-        logger.debug(f"Downloading job output to temporary path: {output_path}")
-
-        await self.job.download_job_output_async(completed_job.id, output_path)
-
-        cql_file_path = f"{output_path}.cql"
-        ttl_file_path = f"{output_path}.ttl"
-
-        cql_content: Optional[str] = None
-        ttl_content: Optional[str] = None
-
-        if metadata:
-            logger.debug(f"Applying metadata: {metadata}")
-            if os.path.exists(ttl_file_path):
-                with open(ttl_file_path, "r", encoding="utf-8") as f:
-                    ttl_content = f.read()
-                modified_ttl = self.ttl.add_metadata_to_ttl(ttl_content, metadata)
-                with open(ttl_file_path, "w", encoding="utf-8") as f:
-                    f.write(modified_ttl)
-                ttl_content = modified_ttl
-                logger.debug("Successfully applied metadata to TTL content.")
-
-            if os.path.exists(cql_file_path):
-                with open(cql_file_path, "r", encoding="utf-8") as f:
-                    cql_content = f.read()
-                cql_content = self.cql.add_metadata_to_cql(cql_content, metadata)
-                with open(cql_file_path, "w", encoding="utf-8") as f:
-                    f.write(cql_content)
-                logger.debug("Successfully applied metadata to CQL content.")
-
-        if os.path.exists(cql_file_path) and cql_content is None:
-            with open(cql_file_path, "r", encoding="utf-8") as f:
-                cql_content = f.read()
-
-        if os.path.exists(ttl_file_path):
-            logger.debug(
-                f"TTL file found at {ttl_file_path}, parsing to KnowledgeGraph."
-            )
-            if ttl_content is None:
-                with open(ttl_file_path, "r", encoding="utf-8") as f:
-                    ttl_content = f.read()
-
-            kg = self.ttl.parse_ttl_to_knowledge_graph(ttl_content)
-            kg.ttl_content = ttl_content
-            kg.cql_content = cql_content
-        else:
-            logger.warning(
-                f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph."
-            )
-            # Create an empty graph but still attach content if available
-            kg = KnowledgeGraph(cql_content=cql_content)
-
-        # Inject services into the created KnowledgeGraph instance
-        logger.debug("Injecting services into KnowledgeGraph instance.")
-        kg._ttl_service = self.ttl
-        kg._cql_service = self.cql
-        kg._neo4j_service = self.neo4j
-        kg._falkordb_service = self.falkordb
-        kg._graph_service = self.graph
-        kg._interlink_service = self.interlink
-        kg._rdflib_service = self.rdflib
-
-        return kg
-
     async def build_graph_async(
         self,
-        file_path: List[str],
+        file_paths: List[str],
         ontology_path: Optional[str] = None,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> List[KnowledgeGraph]:
         """
-        Processes one or more files by uploading them, optionally with an ontology,
+        Asynchronously processes one or more files by uploading them, optionally with an ontology,
         running jobs, and returning KnowledgeGraph objects.
         Args:
-            file_path: A list of file paths to process.
+            file_paths: A list of file paths to process.
             ontology_path: The path to the ontology file to use for all files.
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
         Returns:
             A list of KnowledgeGraph objects.
         """
-        created_ontology_id = None
-        if ontology_path:
-            logger.debug(f"Using ontology from path: {ontology_path}")
-            # This part still runs sequentially as the ontology is shared
-            created_ontology = await self.ontology.upload_ontology_async(ontology_path)
-            if created_ontology.status == OntologyStatus.PENDING:
-                # A single spinner for the ontology upload
-                await self.ontology.wait_for_ontology_upload_async(created_ontology.id)
-            created_ontology_id = created_ontology.id
-            logger.debug(f"Using ontology_id: {created_ontology_id}")
-
-        tasks = []
-        for path in file_path:
-            task = self._build_single_graph_async(
-                file_path=path,
-                ontology_id=created_ontology_id,
-                refresh_graph=refresh_graph,
-                metadata=metadata,
-            )
-            tasks.append(task)
-
-        logger.debug(f"Processing {len(tasks)} file(s)...")
-
-        results = await self.job._wait_for_tasks(
-            tasks, [os.path.basename(p) for p in file_path]
+        self._ensure_active()
+        return await self.build.build_graph_async(
+            file_paths=file_paths,
+            ontology_path=ontology_path,
+            refresh_graph=refresh_graph,
+            metadata=metadata,
         )
 
-        logger.info("All files processed.")
-        return results
+    def interlink(
+        self,
+        kbs: List[KnowledgeGraph],
+        interlinking_key_uris: List[str] = [
+            "http://www.w3.org/2000/01/rdf-schema#label"
+        ],
+        immutable_properties: Optional[List[str]] = None,
+        merge_properties_on_conflict: bool = False,
+    ) -> KnowledgeGraph:
+        """
+        Synchronously merges multiple KnowledgeGraph objects into a single one.
+        """
+        self._ensure_active()
+        if not self._loop:
+            raise ConfigurationException("Event loop not initialized.")
+        return self._loop.run_until_complete(
+            self.interlink_async(
+                kbs,
+                interlinking_key_uris,
+                immutable_properties,
+                merge_properties_on_conflict,
+            )
+        )
+
+    async def interlink_async(
+        self,
+        kbs: List[KnowledgeGraph],
+        interlinking_key_uris: List[str] = [
+            "http://www.w3.org/2000/01/rdf-schema#label"
+        ],
+        immutable_properties: Optional[List[str]] = None,
+        merge_properties_on_conflict: bool = False,
+    ) -> KnowledgeGraph:
+        """
+        Asynchronously merges multiple KnowledgeGraph objects into a single one.
+        """
+        self._ensure_active()
+        return await self.build.interlink_async(
+            kbs=kbs,
+            interlinking_key_uris=interlinking_key_uris,
+            immutable_properties=immutable_properties,
+            merge_properties_on_conflict=merge_properties_on_conflict,
+        )

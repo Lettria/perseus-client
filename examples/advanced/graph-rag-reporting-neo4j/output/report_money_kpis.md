@@ -1,54 +1,65 @@
-# Report on money kpisThis report summarizes the financial Key Performance Indicators (KPIs) and money-related metrics for L’Oréal based on the 2024 annual data.
+# Report on money kpis### **L’Oréal Financial Performance & Money KPIs Report (2024)**
 
-### 1. Group Financial Performance
-L’Oréal maintains its position as the world’s No. 1 beauty company with strong profitability and a 20% operating margin.
+This report summarizes the key financial indicators and value-creation metrics for L’Oréal as derived from the 2024 Annual Report data.
 
-| KPI | Value | Growth / Trend |
+---
+
+### **1. Group Financial Highlights**
+L’Oréal maintains its position as the world leader in beauty, characterized by strong top-line revenue and consistent profitability growth.
+
+| KPI | Value | Growth / Change |
 | :--- | :--- | :--- |
-| **Total Revenue** | 43.48 billion € | + 5.1% (Comparable) |
-| **Operating Income** | 8.69 billion € | + 6.7% |
-| **Operating Margin** | 20% | — |
-| **Net Profit Per Share** | 12.66 € | + 4.8% |
+| **Total Revenue** | 43.48 billion € | + 5.1 % (Comparable Growth) |
+| **Operating Income** | 8.69 billion € | + 6.7 % |
+| **Operating Margin** | 20 % | — |
+| **Net Profit Per Share (EPS)** | 12.66 € | + 4.8 % |
 | **Taxes Paid** | 2.8 billion € | — |
 
-### 2. Shareholder Value & Dividends
-The company continues to increase its returns to shareholders, reflecting confidence in long-term growth.
+---
 
-*   **Proposed Dividend:** 7.00 € per share.
-*   **Dividend Growth:** + 6.1%.
-*   **Net Profit Per Share Growth:** + 4.8%.
+### **2. Divisional Performance**
+Growth was distributed across all business segments, with Dermatological Beauty leading in terms of percentage growth.
 
-### 3. Revenue Breakdown by Region
-L’Oréal’s "multipositional and agile" model is supported by a diversified global footprint, with Europe and North America remaining the primary revenue drivers.
-
-| Region | % of Total Revenue |
-| :--- | :--- |
-| **Europe** | 33 % |
-| **North America** | 27 % |
-| **North Asia** | 24 % |
-| **SAPMENA-SSA** | 9 % |
-| **Latin America** | 8 % |
-
-### 4. Divisional Performance
-All divisions showed positive growth, with **Dermatological Beauty** significantly outperforming the group average.
-
-| Division | Growth Rate | Key Insight |
+| Division | Growth Rate | Market Position / Notable Tech |
 | :--- | :--- | :--- |
-| **Beauté Dermatologique** | + 9.8 % | Highest growth sector |
-| **Produits Grand Public** | + 5.4 % | Includes L'Oréal Paris, Garnier, NYX |
-| **Produits Professionnels** | + 5.3 % | Includes Kérastase, Redken |
+| **Beauté Dermatologique** | + 9.8 % | Fastest growing segment |
+| **Produits Grand Public** | + 5.4 % | Developed "Beauty Genius" |
+| **Produits Professionnels** | + 5.3 % | Launched "AirLight Pro" |
 | **Luxe** | + 2.7 % | Leader in fine perfumery |
 
-### 5. Digital and Innovation Investments
-Financial resources are heavily directed toward R&I (Research & Innovation) and digital transformation to maintain market leadership.
+---
 
-*   **Annual Investment in R&I:** Over 1 billion €.
-*   **eCommerce Revenue:** 12.3 billion € (Representing **28.2%** of total revenue).
-*   **eCommerce Growth:** + 7.8 %.
-*   **Social Investment:** 70 million € allocated to the "Fonds L’Oréal pour les Femmes" since 2020.
+### **3. Sales Channels & Geographic Breakdown**
+Digital transformation and global diversification remain primary drivers of revenue.
 
-### 6. Operational Scale & Indirect Economic Indicators
-*   **Brand Portfolio:** 37 global brands.
-*   **Product Volume:** Over 7 billion products distributed.
-*   **Strategic Acquisitions/Licensing:** Recent financial activity includes partnerships or acquisitions of Galderma, Miu Miu, Jacquemus, and Amouage.
-*   **Supply Chain Inclusivity:** Over 750 suppliers involved in the "Achats Inclusifs" (Inclusive Sourcing) program.
+**E-commerce Performance:**
+*   **E-commerce Revenue:** 12.3 billion €
+*   **E-commerce Growth:** + 7.8 %
+*   **Share of Total Revenue:** 28.2 %
+
+**Geographic Revenue Breakdown:**
+*   **Europe:** 33 %
+*   **North America:** 27 %
+*   **North Asia:** 24 %
+*   **SAPMENASSA:** 9 %
+*   **Latin America:** 8 %
+
+---
+
+### **4. Shareholder Returns & Strategic Investments**
+L’Oréal demonstrates a commitment to returning value to shareholders while maintaining heavy investment in future innovation.
+
+*   **Proposed Dividend:** 7.00 € (representing a **+ 6.1 % growth**).
+*   **Annual Investment in Research & Innovation (R&I):** Over 1 billion €.
+*   **Acquisitions & Partnerships:** Recently expanded the portfolio through licenses or acquisitions of brands such as **Miu Miu, Galderma, Amouage, Dr.G, and Jacquemus**.
+*   **Social Investment:** The **Fonds L’Oréal pour les Femmes** has been allocated 70 million € since 2020.
+
+---
+
+### **5. Efficiency & Productivity Indicators**
+Directly impacting the bottom line through operational excellence and human capital management.
+
+*   **Employee Productivity:** 1.3 million applications received for a workforce of 90,000+, with a 79% employee engagement rate.
+*   **Supply Chain:** Deployment of automated fulfillment centers (notably in Suzhou) to optimize distribution costs for over 7 billion products.
+*   **Innovation Output:** 694 patents filed in a single year to protect R&I investments.
+*   **Sustainability Linked to Value:** 97% renewable energy usage and a "Platinum" EcoVadis medal (top 1% of companies) suggest high ESG ratings, which often correlate with lower capital risk and improved operational efficiency.

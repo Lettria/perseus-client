@@ -176,7 +176,7 @@ class FalkorDBService:
 
     
 
-    def save_to_falkordb(self, kg: KnowledgeGraph):
+    def save_to_falkordb(self, kg: KnowledgeGraph, strip_prefixes: bool = True):
         """
         Synchronously saves the CQL content of the KnowledgeGraph to FalkorDB.
         """
@@ -184,22 +184,23 @@ class FalkorDBService:
         try:
             # Note: asyncio.run() is used for synchronous context.
             # For fully async apps, call save_to_falkordb_async directly.
-            self._loop.run_until_complete(self.save_to_falkordb_async(kg))
+            self._loop.run_until_complete(
+                self.save_to_falkordb_async(kg, strip_prefixes)
+            )
             logger.info("Successfully saved KnowledgeGraph to FalkorDB.")
         except Exception as e:
             logger.error(f"Failed to save to FalkorDB: {e}", exc_info=True)
 
-
-    
-
-    async def save_to_falkordb_async(self, kg: KnowledgeGraph):
+    async def save_to_falkordb_async(
+        self, kg: KnowledgeGraph, strip_prefixes: bool = True
+    ):
         """
         Asynchronously saves the CQL content of the KnowledgeGraph to FalkorDB.
         """
         logger.debug("Generating CQL from KnowledgeGraph for FalkorDB.")
         try:
-            cql_content = self.cql_service.to_cql(kg)
-            if cql_content and cql_content.strip() != ';':
+            cql_content = self.cql_service.to_cql(kg, strip_prefixes=strip_prefixes)
+            if cql_content and cql_content.strip() != ";":
                 logger.debug("CQL content generated. Executing against FalkorDB.")
                 await self.execute_cql_string_async(cql_content)
             else:
@@ -207,5 +208,7 @@ class FalkorDBService:
                     "KnowledgeGraph has no entities or relations to save to FalkorDB."
                 )
         except Exception as e:
-            logger.error(f"Failed to generate or save CQL to FalkorDB: {e}", exc_info=True)
+            logger.error(
+                f"Failed to generate or save CQL to FalkorDB: {e}", exc_info=True
+            )
             raise

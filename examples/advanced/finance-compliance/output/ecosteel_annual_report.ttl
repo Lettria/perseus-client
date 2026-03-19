@@ -1,330 +1,403 @@
+@prefix data: <http://example.org/data/> .
+@prefix ont: <http://example.org/ontology#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix ont: <http://example.org/ontology#> .
-@prefix data: <http://example.org/data/> .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasRisk data:296a9a3e-d5c6-4c13-95fb-e0e9b66b06ab .
-data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 rdfs:label "CEO variable compensation" .
-data:fd12d7d2-0523-43ac-b47c-0517c29df143 ont:hasTarget data:9d18c0ed-7b2e-4a02-a2b1-cd374138ea1e .
-data:5552fabc-fb07-4afc-814e-767754a7f980 ont:hasComponent data:4063f145-a692-49ad-b859-e34f5ef9976b .
-data:9ad4bb67-3b9d-433c-a60f-28596231f736 rdfs:label "Steel production 2024" .
-data:46d969ea-b4a2-4835-bb6a-7e8b94ac69a7 ont:hasTargetYear "2030"^^xsd:gYear .
-data:8a29d9d1-590e-4a20-a58d-466cb006d990 rdfs:label "Renewable energy share 2024" .
-data:62d17e19-0d77-439c-b689-557ce076c2cb rdfs:label "Climate Report 2024" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:publishes data:d0649936-a0d4-495a-bd8a-f4d28cfa87f5 .
-data:2c12f40f-1218-4461-bc5a-0dc393354437 ont:hasStartDate "2023-01-01"^^xsd:date .
-data:c9d9ebc3-b4b1-4f9f-812c-580747678404 rdfs:label "Reforestation of disused industrial site" .
-data:04b9140c-addd-48b2-9048-bf48e5e1324d ont:isHeadedBy data:563b08c9-0f37-45f9-b33e-062dc74a36d6 .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasRisk data:2cccccf5-f776-4f20-9b7e-f37949d9b0e0 .
-data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 rdfs:label "Financial Reporting 2024" .
-data:fea69d0e-e501-4cb8-ae74-c244f416a23c rdfs:label "Extreme weather events" .
-data:d0649936-a0d4-495a-bd8a-f4d28cfa87f5 rdfs:label "First complete CSRD report" .
-data:5552fabc-fb07-4afc-814e-767754a7f980 ont:hasUnit "GWh"^^xsd:token .
-data:04dfb93c-6411-4e46-9865-0b679fb8b8d0 rdfs:label "Renewable energy share 2023" .
-data:61a5250b-16a8-42d4-a82b-560e6d423840 rdfs:label "Start of H2 electrolyzer construction" .
-data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 ont:hasYear "2024"^^xsd:gYear .
-data:99172ccf-2004-49c7-a5f9-2038f932ad3b rdfs:label "Scope 3 transport emissions 2024" .
-data:409db48c-8289-4bb3-8aa2-dd61c62e5062 ont:isAuthoredBy data:7d810919-9222-4c54-becf-d86053782b82 .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:managesAsset data:ac6d9af1-c904-49ae-8c46-8345b2b2f78e ;
-	ont:hasRisk data:fc6f1de5-b4f5-4d46-a14a-de9c89953d7f ;
-	ont:hasOrganizationalUnit data:33f7c2e2-7423-4821-a889-8253516b3625 .
-data:4063f145-a692-49ad-b859-e34f5ef9976b ont:hasUnit "GWh"^^xsd:token .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:participatesIn data:8c40a58b-d07d-4514-9512-9eea637973c1 .
-data:8a29d9d1-590e-4a20-a58d-466cb006d990 ont:hasYear "2024"^^xsd:gYear .
-data:c6bc73f7-9ba3-4842-8c02-28768fe1f953 rdfs:label "\"GreenSteel 2030\" Program" .
-data:99172ccf-2004-49c7-a5f9-2038f932ad3b ont:hasValue "400000"^^xsd:decimal .
-data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 ont:hasUnit "tCO2e"^^xsd:token .
-data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd ont:hasValue "2730"^^xsd:decimal .
-data:beba38bb-aabb-4f01-ae80-731a7fc5ac96 ont:hasYear "2024"^^xsd:gYear .
-data:27f79fb9-a13a-4c6f-863f-71b6388fcc29 ont:hasUnit "tCO2e/tonne of steel produced"^^xsd:token .
-data:5fefb155-32e1-4f87-af9f-888a01ae39cd ont:hasValue 2780 .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:a3a9cec7-ea15-4513-aea3-d78d907bbc82 .
-data:5fefb155-32e1-4f87-af9f-888a01ae39cd rdfs:label "Steel production 2023" .
-data:c018aa94-8ddb-42f4-8340-f8787874b076 rdfs:label "Process Electrification CO2 savings target" .
-data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 ont:includes data:be236724-4f30-41f4-ba44-60248af2aa06 .
-data:8c40a58b-d07d-4514-9512-9eea637973c1 ont:hasYear "2025"^^xsd:gYear .
-data:2c12f40f-1218-4461-bc5a-0dc393354437 ont:hasAppointee data:ced1d1f0-66fc-4b85-a0ab-49bfea6dda69 .
-data:5c28b200-2a7a-41f2-8210-269b76125101 rdfs:label "Board of Directors" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasNumberOfEmployees 8500 .
-data:3db43985-c93b-41cc-b83d-38a6504de88b rdfs:label "Executive Committee" .
-data:15e1152e-4acd-419e-94ee-8cc2ef93717b rdfs:label "Construction of 50 MW electrolyzer" .
-data:edb0382a-e16c-4e37-bf6b-40555768fb9e ont:hasBaselineYear "2019"^^xsd:gYear .
-data:7a1ce72b-22f3-4c5f-948d-a379ed14072e ont:hasYear "2024"^^xsd:gYear ;
-	rdfs:label "Scope 2 emissions 2024" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasRisk data:a0986d46-609f-469c-846a-aef2dfc5695e .
-data:99172ccf-2004-49c7-a5f9-2038f932ad3b ont:hasUnit "tCO2e"^^xsd:token .
-data:59b406fa-c465-4016-835e-71fd2ca0dc9b rdfs:label "Climate Committee" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasAppointment data:2c12f40f-1218-4461-bc5a-0dc393354437 .
-data:409db48c-8289-4bb3-8aa2-dd61c62e5062 rdfs:label "Training on climate issues" .
-data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd ont:hasYear "2024"^^xsd:gYear .
-data:a3a9cec7-ea15-4513-aea3-d78d907bbc82 ont:hasValue 4 .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasGovernanceBody data:3db43985-c93b-41cc-b83d-38a6504de88b .
-data:64f2ced9-d8be-49ed-977f-1ab02f356657 ont:hasTarget data:c018aa94-8ddb-42f4-8340-f8787874b076 .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 ont:hasComponent data:5a1ed34f-d689-41cc-840f-5b1881b26674 .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasTarget data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df ;
-	ont:hasCommitment data:04fad0fa-7192-4eac-9edb-643a80d9b157 .
-data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 ont:includes data:50184147-8537-4c8c-b3b0-89648dfcfca8 .
-data:7516f06b-1fb9-4c37-9192-6eb588d78d93 ont:hasTargetYear "2025"^^xsd:gYear .
-data:c6bc73f7-9ba3-4842-8c02-28768fe1f953 ont:hasPillar data:64f2ced9-d8be-49ed-977f-1ab02f356657 .
-data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf ont:hasUnit "tCO2e"^^xsd:token ;
-	ont:hasComponent data:7a1ce72b-22f3-4c5f-948d-a379ed14072e .
-data:ced1d1f0-66fc-4b85-a0ab-49bfea6dda69 rdfs:label "Jean-Marc Dufour" .
-data:59b406fa-c465-4016-835e-71fd2ca0dc9b ont:hasMeetingCount 4 .
-data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df ont:hasTargetYear "2050"^^xsd:gYear .
-data:13b237a8-da50-475f-8ffc-259128e415f4 rdfs:label "200 GWh onshore wind PPA" .
-data:ae00935a-8e5f-426f-8586-b70b8e12820b rdfs:label "-25% reduction in Scope 3 emissions by 2030" .
-data:50971766-46ee-44d8-84d1-7624d953584a ont:hasValue "280"^^xsd:decimal .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 ont:hasValue "4200"^^xsd:decimal .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:conductsTraining data:409db48c-8289-4bb3-8aa2-dd61c62e5062 ;
-	ont:hasMetric data:04dfb93c-6411-4e46-9865-0b679fb8b8d0 .
-data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 ont:hasComponent data:beba38bb-aabb-4f01-ae80-731a7fc5ac96 .
-data:5552fabc-fb07-4afc-814e-767754a7f980 ont:hasYear "2024"^^xsd:gYear .
-data:7516f06b-1fb9-4c37-9192-6eb588d78d93 ont:hasReductionValue "5"^^xsd:decimal .
-data:15e1152e-4acd-419e-94ee-8cc2ef93717b ont:occursAt data:057d8bf8-20b3-460f-b870-d571ba2d14fc .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:760c3aab-f4f8-4078-ae91-5294073964c7 .
-data:563b08c9-0f37-45f9-b33e-062dc74a36d6 ont:isPositionAt data:4a4541ae-59e1-40e1-bdb7-17359a74011f .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasGovernanceBody data:5c28b200-2a7a-41f2-8210-269b76125101 .
-data:ced1d1f0-66fc-4b85-a0ab-49bfea6dda69 ont:hasTitle "Director"^^xsd:normalizedString .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:5552fabc-fb07-4afc-814e-767754a7f980 ;
-	ont:hasTarget data:7516f06b-1fb9-4c37-9192-6eb588d78d93 .
-data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 ont:hasValue "2400000"^^xsd:decimal .
-data:fef0f589-5bff-4b98-acfe-9ce2a316025b rdfs:label "Green Hydrogen" .
-data:4063f145-a692-49ad-b859-e34f5ef9976b rdfs:label "Solar photovoltaic energy consumption 2024" .
-data:5a1ed34f-d689-41cc-840f-5b1881b26674 ont:hasUnit "GWh"^^xsd:token .
-data:6d1076d7-4ef0-489f-af13-8ee614eb0258 rdfs:label "Dike reinforcement and drainage systems" .
-data:428c7e7b-c63b-4f00-badd-f05c6c5e8f8f rdfs:label "Total GHG emissions 2023" .
-data:55bdbedd-fa5b-4bb5-b33a-921ad51d141c ont:hasUnit "tCO2e"^^xsd:token .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 ont:hasYear "2024"^^xsd:gYear .
-data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 ont:hasTurnover "2800000000"^^xsd:decimal .
-data:be5ce474-0203-40ee-95f7-8358e7a720a4 rdfs:label "PUE Lyon data center 2024" .
-data:50184147-8537-4c8c-b3b0-89648dfcfca8 rdfs:label "GreenSteel 2030 progress KPI" .
-data:15e1152e-4acd-419e-94ee-8cc2ef93717b ont:involves data:87a1ef23-00b3-401f-ba36-bd6452b8e46f .
-data:edb0382a-e16c-4e37-bf6b-40555768fb9e ont:hasReductionValue "42"^^xsd:decimal .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 ont:hasComponent data:4063f145-a692-49ad-b859-e34f5ef9976b .
-data:04fad0fa-7192-4eac-9edb-643a80d9b157 ont:isValidatedBy data:fc562f83-d0b8-4619-bbd9-a68c90677576 .
-data:8a29d9d1-590e-4a20-a58d-466cb006d990 ont:hasValue "35"^^xsd:decimal .
-data:5a1ed34f-d689-41cc-840f-5b1881b26674 rdfs:label "Grid electricity consumption 2024" .
-data:057d8bf8-20b3-460f-b870-d571ba2d14fc rdfs:label "Lyon" .
-data:7516f06b-1fb9-4c37-9192-6eb588d78d93 rdfs:label "-5% total emissions vs 2024 target" .
-data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df ont:isAlignedWith data:983006ff-247b-424f-9e55-25ef74b4ffef .
-data:a9f07a65-0698-4faf-8a91-808413ba19dd rdfs:label "Scope 1 emissions 2024" .
-data:760c3aab-f4f8-4078-ae91-5294073964c7 rdfs:label "Carbon intensity 2023" .
-data:61a5250b-16a8-42d4-a82b-560e6d423840 ont:hasYear "2025"^^xsd:gYear .
-data:7a1ce72b-22f3-4c5f-948d-a379ed14072e ont:hasValue "180000"^^xsd:decimal .
-data:760c3aab-f4f8-4078-ae91-5294073964c7 ont:hasValue 1.41 .
-data:200d0c43-93a7-431c-8f67-20e28b0c4ab5 ont:hasYear "2024"^^xsd:gYear .
-data:9d18c0ed-7b2e-4a02-a2b1-cd374138ea1e rdfs:label "Energy Efficiency consumption reduction target" .
-data:9ad4bb67-3b9d-433c-a60f-28596231f736 ont:hasValue 2800 .
-data:2c12f40f-1218-4461-bc5a-0dc393354437 rdfs:label "Appointment of Jean-Marc Dufour" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:isSubjectTo data:5c69961b-dc95-459d-88a1-fc159516f82c .
-data:2c12f40f-1218-4461-bc5a-0dc393354437 ont:hasRole data:563b08c9-0f37-45f9-b33e-062dc74a36d6 .
-data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf ont:hasComponent data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 .
-data:c6bc73f7-9ba3-4842-8c02-28768fe1f953 ont:hasPillar data:fef0f589-5bff-4b98-acfe-9ce2a316025b .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasRisk data:fea69d0e-e501-4cb8-ae74-c244f416a23c .
-data:8c40a58b-d07d-4514-9512-9eea637973c1 rdfs:label "Signing of 200 GWh onshore wind PPA" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasOrganizationalUnit data:04b9140c-addd-48b2-9048-bf48e5e1324d .
-data:a0986d46-609f-469c-846a-aef2dfc5695e rdfs:label "Mandatory CSRD reporting" .
-data:6d1076d7-4ef0-489f-af13-8ee614eb0258 ont:hasYear "2023"^^xsd:gYear .
-data:a9f07a65-0698-4faf-8a91-808413ba19dd ont:hasValue "1200000"^^xsd:decimal .
-data:8c40a58b-d07d-4514-9512-9eea637973c1 ont:involves data:13b237a8-da50-475f-8ffc-259128e415f4 .
-data:04fad0fa-7192-4eac-9edb-643a80d9b157 rdfs:label "Net-Zero 2050 Commitment" .
-data:46d969ea-b4a2-4835-bb6a-7e8b94ac69a7 rdfs:label "70% renewable energy by 2030" .
-data:edb0382a-e16c-4e37-bf6b-40555768fb9e ont:hasTargetYear "2030"^^xsd:gYear .
-data:fc6f1de5-b4f5-4d46-a14a-de9c89953d7f rdfs:label "EU ETS carbon pricing" .
-data:563b08c9-0f37-45f9-b33e-062dc74a36d6 rdfs:label "Director of Energy Transition Department" .
-data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd ont:hasUnit "GWh"^^xsd:token .
-data:33f7c2e2-7423-4821-a889-8253516b3625 rdfs:label "CSRD Reporting Team" .
-data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf ont:hasValue "3780000"^^xsd:decimal .
-data:cbf225af-33ea-4970-8450-ca75ab1b3f7a rdfs:label "Water stress" .
-data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df ont:isValidatedBy data:fc562f83-d0b8-4619-bbd9-a68c90677576 .
-data:9d18c0ed-7b2e-4a02-a2b1-cd374138ea1e ont:hasUnit "%"^^xsd:token .
-data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf rdfs:label "Total GHG emissions 2024" .
-data:200d0c43-93a7-431c-8f67-20e28b0c4ab5 rdfs:label "Operational managers sensitized" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasTarget data:a6d72286-15bf-4157-8bdf-776bac0cc868 .
-data:5c69961b-dc95-459d-88a1-fc159516f82c rdfs:label "Carbon Border Adjustment Mechanism" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:9ad4bb67-3b9d-433c-a60f-28596231f736 .
-data:beba38bb-aabb-4f01-ae80-731a7fc5ac96 ont:hasValue "1800000"^^xsd:decimal .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:4063f145-a692-49ad-b859-e34f5ef9976b .
-data:be5ce474-0203-40ee-95f7-8358e7a720a4 ont:hasYear "2024"^^xsd:gYear .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:partnersWith data:4d0a6bb4-44e1-48f8-8bf4-1b901d283a4d .
-data:61a5250b-16a8-42d4-a82b-560e6d423840 ont:occursAt data:057d8bf8-20b3-460f-b870-d571ba2d14fc .
-data:c018aa94-8ddb-42f4-8340-f8787874b076 ont:hasReductionValue 650000 .
-data:5fefb155-32e1-4f87-af9f-888a01ae39cd ont:hasYear "2023"^^xsd:gYear .
-data:50971766-46ee-44d8-84d1-7624d953584a ont:hasUnit "GWh"^^xsd:token .
-data:5511c62b-878e-463c-92e9-7fae083c912b rdfs:label "10,000 VCS credits" .
-data:983006ff-247b-424f-9e55-25ef74b4ffef rdfs:label "Paris Agreement" .
-data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 ont:hasCurrency "EUR"^^xsd:token .
-data:27f79fb9-a13a-4c6f-863f-71b6388fcc29 ont:hasBaselineYear "2019"^^xsd:gYear .
-data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 rdfs:label "Scope 3 emissions 2024" .
-data:d0649936-a0d4-495a-bd8a-f4d28cfa87f5 ont:hasReportingYear "2025"^^xsd:gYear .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:50971766-46ee-44d8-84d1-7624d953584a .
-data:c018aa94-8ddb-42f4-8340-f8787874b076 ont:hasUnit "tCO2e/year"^^xsd:token .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:employs data:ced1d1f0-66fc-4b85-a0ab-49bfea6dda69 .
-data:1ffb68a5-3d56-4570-a8a7-4accf279bd15 ont:hasDateString "Q1 2025" .
-data:be5ce474-0203-40ee-95f7-8358e7a720a4 ont:hasValue 1.3 .
-data:4063f145-a692-49ad-b859-e34f5ef9976b ont:hasValue "140"^^xsd:decimal .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:participatesIn data:15e1152e-4acd-419e-94ee-8cc2ef93717b .
-data:99172ccf-2004-49c7-a5f9-2038f932ad3b ont:hasYear "2024"^^xsd:gYear .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 ont:hasComponent data:5552fabc-fb07-4afc-814e-767754a7f980 .
-data:edb0382a-e16c-4e37-bf6b-40555768fb9e rdfs:label "-42% reduction in Scope 1+2 emissions by 2030" .
-data:4063f145-a692-49ad-b859-e34f5ef9976b ont:hasYear "2024"^^xsd:gYear .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasHeadquartersIn data:057d8bf8-20b3-460f-b870-d571ba2d14fc ;
-	ont:hasTarget data:46d969ea-b4a2-4835-bb6a-7e8b94ac69a7 .
-data:5552fabc-fb07-4afc-814e-767754a7f980 rdfs:label "Renewable electricity consumption 2024" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:5fefb155-32e1-4f87-af9f-888a01ae39cd .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 ont:hasComponent data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:publishes data:62d17e19-0d77-439c-b689-557ce076c2cb .
-data:760c3aab-f4f8-4078-ae91-5294073964c7 ont:hasYear "2023"^^xsd:gYear .
-data:a6d72286-15bf-4157-8bdf-776bac0cc868 ont:hasTargetValue "100"^^xsd:decimal .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasTarget data:edb0382a-e16c-4e37-bf6b-40555768fb9e .
-data:200d0c43-93a7-431c-8f67-20e28b0c4ab5 ont:hasValue "85"^^xsd:decimal .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf .
-data:5552fabc-fb07-4afc-814e-767754a7f980 ont:hasValue "420"^^xsd:decimal .
-data:46d969ea-b4a2-4835-bb6a-7e8b94ac69a7 ont:hasTargetValue "70"^^xsd:decimal .
-data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 ont:hasComponent data:55bdbedd-fa5b-4bb5-b33a-921ad51d141c .
-data:8a29d9d1-590e-4a20-a58d-466cb006d990 ont:hasUnit "%"^^xsd:token .
-data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf ont:hasYear "2024"^^xsd:gYear ;
-	ont:hasComponent data:a9f07a65-0698-4faf-8a91-808413ba19dd .
-data:50971766-46ee-44d8-84d1-7624d953584a ont:hasYear "2024"^^xsd:gYear .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:428c7e7b-c63b-4f00-badd-f05c6c5e8f8f .
-data:55bdbedd-fa5b-4bb5-b33a-921ad51d141c rdfs:label "Scope 3 product use emissions 2024" .
-data:ae00935a-8e5f-426f-8586-b70b8e12820b ont:hasReductionValue "25"^^xsd:decimal .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f rdfs:label "EcoSteel Industries" ;
-	ont:hasMetric data:200d0c43-93a7-431c-8f67-20e28b0c4ab5 ;
-	ont:owns data:5511c62b-878e-463c-92e9-7fae083c912b .
-data:87a1ef23-00b3-401f-ba36-bd6452b8e46f rdfs:label "50 MW electrolyzer" .
-data:ac6d9af1-c904-49ae-8c46-8345b2b2f78e rdfs:label "Lyon data center" .
-data:a6d72286-15bf-4157-8bdf-776bac0cc868 ont:hasTargetYear "2027"^^xsd:gYear .
-data:9d18c0ed-7b2e-4a02-a2b1-cd374138ea1e ont:hasReductionValue "15"^^xsd:decimal .
-data:a3a9cec7-ea15-4513-aea3-d78d907bbc82 rdfs:label "Production sites count 2024" .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 rdfs:label "Total energy consumption 2024" .
-data:1ffb68a5-3d56-4570-a8a7-4accf279bd15 rdfs:label "Finalization of DRI-EAF study" .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 ont:hasComponent data:50971766-46ee-44d8-84d1-7624d953584a .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:5a1ed34f-d689-41cc-840f-5b1881b26674 ;
-	ont:participatesIn data:6d1076d7-4ef0-489f-af13-8ee614eb0258 ;
-	ont:hasRisk data:cbf225af-33ea-4970-8450-ca75ab1b3f7a ;
-	ont:hasFinancialReporting data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 .
-data:50971766-46ee-44d8-84d1-7624d953584a rdfs:label "Offshore wind energy consumption 2024" .
-data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df rdfs:label "Net-Zero by 2050 Target" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:8a29d9d1-590e-4a20-a58d-466cb006d990 .
-data:a9f07a65-0698-4faf-8a91-808413ba19dd ont:hasUnit "tCO2e"^^xsd:token .
-data:9ad4bb67-3b9d-433c-a60f-28596231f736 ont:hasUnit "kt"^^xsd:token .
-data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 ont:hasComponent data:99172ccf-2004-49c7-a5f9-2038f932ad3b .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 ont:hasUnit "GWh"^^xsd:token .
-data:7a1ce72b-22f3-4c5f-948d-a379ed14072e ont:hasUnit "tCO2e"^^xsd:token .
-data:5c28b200-2a7a-41f2-8210-269b76125101 ont:hasSubcommittee data:59b406fa-c465-4016-835e-71fd2ca0dc9b .
-data:fc562f83-d0b8-4619-bbd9-a68c90677576 rdfs:label "Science Based Targets initiative (SBTi)" .
-data:5552fabc-fb07-4afc-814e-767754a7f980 ont:hasComponent data:50971766-46ee-44d8-84d1-7624d953584a .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasAddress "Lyon, France" ;
-	ont:hasMetric data:be5ce474-0203-40ee-95f7-8358e7a720a4 .
-data:64f2ced9-d8be-49ed-977f-1ab02f356657 rdfs:label "Process Electrification" .
-data:fd12d7d2-0523-43ac-b47c-0517c29df143 rdfs:label "Energy Efficiency" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:27f79fb9-a13a-4c6f-863f-71b6388fcc29 .
-data:2cccccf5-f776-4f20-9b7e-f37949d9b0e0 rdfs:label "International competitiveness" .
-data:428c7e7b-c63b-4f00-badd-f05c6c5e8f8f ont:hasValue "3920000"^^xsd:decimal .
-data:ae00935a-8e5f-426f-8586-b70b8e12820b ont:hasTargetYear "2030"^^xsd:gYear .
-data:55bdbedd-fa5b-4bb5-b33a-921ad51d141c ont:hasYear "2024"^^xsd:gYear .
-data:7d810919-9222-4c54-becf-d86053782b82 rdfs:label "Carbon 4" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd .
-data:62d17e19-0d77-439c-b689-557ce076c2cb ont:hasReportingYear "2024"^^xsd:gYear .
-data:4d0a6bb4-44e1-48f8-8bf4-1b901d283a4d rdfs:label "H2Green" .
-data:04dfb93c-6411-4e46-9865-0b679fb8b8d0 ont:hasYear "2023"^^xsd:gYear .
-data:27f79fb9-a13a-4c6f-863f-71b6388fcc29 rdfs:label "Carbon intensity 2024" .
-data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df ont:hasTrajectory "1.5°C"^^xsd:token .
-data:04b9140c-addd-48b2-9048-bf48e5e1324d rdfs:label "Energy Transition Department" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasMetric data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 .
-data:c6bc73f7-9ba3-4842-8c02-28768fe1f953 ont:hasPillar data:fd12d7d2-0523-43ac-b47c-0517c29df143 .
-data:27f79fb9-a13a-4c6f-863f-71b6388fcc29 ont:hasValue 1.35 .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasProgram data:c6bc73f7-9ba3-4842-8c02-28768fe1f953 .
-data:5a1ed34f-d689-41cc-840f-5b1881b26674 ont:hasYear "2024"^^xsd:gYear .
-data:a9f07a65-0698-4faf-8a91-808413ba19dd ont:hasYear "2024"^^xsd:gYear .
-data:04dfb93c-6411-4e46-9865-0b679fb8b8d0 ont:hasValue "28"^^xsd:decimal .
-data:a3a9cec7-ea15-4513-aea3-d78d907bbc82 ont:hasYear "2024"^^xsd:gYear .
-data:15e1152e-4acd-419e-94ee-8cc2ef93717b ont:hasDateString "Q2 2027" .
-data:296a9a3e-d5c6-4c13-95fb-e0e9b66b06ab rdfs:label "CBAM" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasTarget data:ae00935a-8e5f-426f-8586-b70b8e12820b .
-data:beba38bb-aabb-4f01-ae80-731a7fc5ac96 ont:hasUnit "tCO2e"^^xsd:token .
-data:5a1ed34f-d689-41cc-840f-5b1881b26674 ont:hasValue "1050"^^xsd:decimal .
-data:55bdbedd-fa5b-4bb5-b33a-921ad51d141c ont:hasValue "200000"^^xsd:decimal .
-data:428c7e7b-c63b-4f00-badd-f05c6c5e8f8f ont:hasYear "2023"^^xsd:gYear .
-data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd rdfs:label "Natural gas consumption 2024" .
-data:9ad4bb67-3b9d-433c-a60f-28596231f736 ont:hasYear "2024"^^xsd:gYear .
-data:beba38bb-aabb-4f01-ae80-731a7fc5ac96 rdfs:label "Scope 3 raw materials emissions 2024" .
-data:a6d72286-15bf-4157-8bdf-776bac0cc868 rdfs:label "100% renewable electricity by 2027" .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f ont:hasInitiative data:c9d9ebc3-b4b1-4f9f-812c-580747678404 .
-data:5fefb155-32e1-4f87-af9f-888a01ae39cd ont:hasUnit "kt"^^xsd:token .
-data:200d0c43-93a7-431c-8f67-20e28b0c4ab5 ont:hasUnit "%"^^xsd:token .
-data:be236724-4f30-41f4-ba44-60248af2aa06 rdfs:label "Absolute Scope 1+2 reduction KPI" .
-data:99172ccf-2004-49c7-a5f9-2038f932ad3b a ont:GHGEmissionsMetric .
-data:983006ff-247b-424f-9e55-25ef74b4ffef a ont:InternationalAgreement .
-data:9ad4bb67-3b9d-433c-a60f-28596231f736 a ont:OperationalMetric .
-data:1ffb68a5-3d56-4570-a8a7-4accf279bd15 a ont:Milestone .
-data:61a5250b-16a8-42d4-a82b-560e6d423840 a ont:Milestone .
-data:c018aa94-8ddb-42f4-8340-f8787874b076 a ont:ReductionTarget .
-data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df a ont:Target .
-data:5552fabc-fb07-4afc-814e-767754a7f980 a ont:EnergyConsumptionMetric .
-data:be5ce474-0203-40ee-95f7-8358e7a720a4 a ont:EnvironmentalMetric .
-data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 a ont:FinancialReporting .
-data:be236724-4f30-41f4-ba44-60248af2aa06 a ont:EsgKeyPerformanceIndicator .
-data:15e1152e-4acd-419e-94ee-8cc2ef93717b a ont:Process .
-data:5511c62b-878e-463c-92e9-7fae083c912b a ont:CarbonCredit .
-data:4d0a6bb4-44e1-48f8-8bf4-1b901d283a4d a ont:Company .
-data:3db43985-c93b-41cc-b83d-38a6504de88b a ont:ExecutiveCommittee .
-data:fc6f1de5-b4f5-4d46-a14a-de9c89953d7f a ont:TransitionRisk .
-data:9d18c0ed-7b2e-4a02-a2b1-cd374138ea1e a ont:ReductionTarget .
-data:46d969ea-b4a2-4835-bb6a-7e8b94ac69a7 a ont:ReductionTarget .
-data:beba38bb-aabb-4f01-ae80-731a7fc5ac96 a ont:GHGEmissionsMetric .
-data:59b406fa-c465-4016-835e-71fd2ca0dc9b a ont:BoardCommittee .
-data:c6bc73f7-9ba3-4842-8c02-28768fe1f953 a ont:StrategicProgram .
-data:27f79fb9-a13a-4c6f-863f-71b6388fcc29 a ont:CarbonIntensityMetric .
-data:d0649936-a0d4-495a-bd8a-f4d28cfa87f5 a ont:CSRD .
-data:2cccccf5-f776-4f20-9b7e-f37949d9b0e0 a ont:TransitionRisk .
-data:5c28b200-2a7a-41f2-8210-269b76125101 a ont:GovernanceBody .
-data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 a ont:GHGEmissionsMetric .
-data:2c12f40f-1218-4461-bc5a-0dc393354437 a ont:Appointment .
-data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 a ont:EnergyConsumptionMetric .
-data:5c69961b-dc95-459d-88a1-fc159516f82c a ont:Regulation .
-data:7a1ce72b-22f3-4c5f-948d-a379ed14072e a ont:GHGEmissionsMetric .
-data:a9f07a65-0698-4faf-8a91-808413ba19dd a ont:GHGEmissionsMetric .
-data:04dfb93c-6411-4e46-9865-0b679fb8b8d0 a ont:EnvironmentalMetric .
-data:8a29d9d1-590e-4a20-a58d-466cb006d990 a ont:EnvironmentalMetric .
-data:ced1d1f0-66fc-4b85-a0ab-49bfea6dda69 a ont:Person .
-data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf a ont:GHGEmissionsMetric .
-data:5fefb155-32e1-4f87-af9f-888a01ae39cd a ont:OperationalMetric .
-data:cbf225af-33ea-4970-8450-ca75ab1b3f7a a ont:PhysicalRisk .
-data:33f7c2e2-7423-4821-a889-8253516b3625 a ont:Team .
-data:ac6d9af1-c904-49ae-8c46-8345b2b2f78e a ont:DataCenter .
-data:c9d9ebc3-b4b1-4f9f-812c-580747678404 a ont:BiodiversityRestorationInitiative .
-data:4a4541ae-59e1-40e1-bdb7-17359a74011f a ont:Company .
-data:13b237a8-da50-475f-8ffc-259128e415f4 a ont:PowerPurchaseAgreement .
-data:04b9140c-addd-48b2-9048-bf48e5e1324d a ont:OrganizationalUnit .
-data:04fad0fa-7192-4eac-9edb-643a80d9b157 a ont:Commitment .
-data:428c7e7b-c63b-4f00-badd-f05c6c5e8f8f a ont:GHGEmissionsMetric .
-data:edb0382a-e16c-4e37-bf6b-40555768fb9e a ont:ReductionTarget .
-data:563b08c9-0f37-45f9-b33e-062dc74a36d6 a ont:Position .
-data:ae00935a-8e5f-426f-8586-b70b8e12820b a ont:ReductionTarget .
-data:4063f145-a692-49ad-b859-e34f5ef9976b a ont:EnergyConsumptionMetric .
-data:a6d72286-15bf-4157-8bdf-776bac0cc868 a ont:ReductionTarget .
-data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 a ont:IncentivePlan .
-data:057d8bf8-20b3-460f-b870-d571ba2d14fc a ont:City .
-data:64f2ced9-d8be-49ed-977f-1ab02f356657 a ont:StrategicPillar .
-data:87a1ef23-00b3-401f-ba36-bd6452b8e46f a ont:Equipment .
-data:62d17e19-0d77-439c-b689-557ce076c2cb a ont:Report .
-data:7516f06b-1fb9-4c37-9192-6eb588d78d93 a ont:ReductionTarget .
-data:6d1076d7-4ef0-489f-af13-8ee614eb0258 a ont:Process .
-data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd a ont:EnergyConsumptionMetric .
-data:fea69d0e-e501-4cb8-ae74-c244f416a23c a ont:PhysicalRisk .
-data:fc562f83-d0b8-4619-bbd9-a68c90677576 a ont:Initiative .
-data:55bdbedd-fa5b-4bb5-b33a-921ad51d141c a ont:GHGEmissionsMetric .
-data:a3a9cec7-ea15-4513-aea3-d78d907bbc82 a ont:OperationalMetric .
-data:200d0c43-93a7-431c-8f67-20e28b0c4ab5 a ont:HrMetric .
-data:7d810919-9222-4c54-becf-d86053782b82 a ont:Company .
-data:409db48c-8289-4bb3-8aa2-dd61c62e5062 a ont:TrainingProgram .
-data:760c3aab-f4f8-4078-ae91-5294073964c7 a ont:CarbonIntensityMetric .
-data:50971766-46ee-44d8-84d1-7624d953584a a ont:EnergyConsumptionMetric .
-data:8c40a58b-d07d-4514-9512-9eea637973c1 a ont:Event .
-data:a0986d46-609f-469c-846a-aef2dfc5695e a ont:ComplianceRisk .
-data:fd12d7d2-0523-43ac-b47c-0517c29df143 a ont:StrategicPillar .
-data:fef0f589-5bff-4b98-acfe-9ce2a316025b a ont:StrategicPillar .
-data:50184147-8537-4c8c-b3b0-89648dfcfca8 a ont:EsgKeyPerformanceIndicator .
-data:296a9a3e-d5c6-4c13-95fb-e0e9b66b06ab a ont:ComplianceRisk .
-data:5a1ed34f-d689-41cc-840f-5b1881b26674 a ont:EnergyConsumptionMetric .
+
+data:1ffb68a5-3d56-4570-a8a7-4accf279bd15 a ont:Milestone ;
+    rdfs:label "Finalization of DRI-EAF study" ;
+    ont:hasDateString "Q1 2025" .
+
+data:61a5250b-16a8-42d4-a82b-560e6d423840 a ont:Milestone ;
+    rdfs:label "Start of H2 electrolyzer construction" ;
+    ont:hasYear "2025"^^xsd:gYear ;
+    ont:occursAt data:057d8bf8-20b3-460f-b870-d571ba2d14fc .
+
+data:04b9140c-addd-48b2-9048-bf48e5e1324d a ont:OrganizationalUnit ;
+    rdfs:label "Energy Transition Department" ;
+    ont:isHeadedBy data:563b08c9-0f37-45f9-b33e-062dc74a36d6 .
+
+data:04dfb93c-6411-4e46-9865-0b679fb8b8d0 a ont:EnvironmentalMetric ;
+    rdfs:label "Renewable energy share 2023" ;
+    ont:hasValue 28.0 ;
+    ont:hasYear "2023"^^xsd:gYear .
+
+data:04fad0fa-7192-4eac-9edb-643a80d9b157 a ont:Commitment ;
+    rdfs:label "Net-Zero 2050 Commitment" ;
+    ont:isValidatedBy data:fc562f83-d0b8-4619-bbd9-a68c90677576 .
+
+data:13b237a8-da50-475f-8ffc-259128e415f4 a ont:PowerPurchaseAgreement ;
+    rdfs:label "200 GWh onshore wind PPA" .
+
+data:15e1152e-4acd-419e-94ee-8cc2ef93717b a ont:Process ;
+    rdfs:label "Construction of 50 MW electrolyzer" ;
+    ont:hasDateString "Q2 2027" ;
+    ont:involves data:87a1ef23-00b3-401f-ba36-bd6452b8e46f ;
+    ont:occursAt data:057d8bf8-20b3-460f-b870-d571ba2d14fc .
+
+data:200d0c43-93a7-431c-8f67-20e28b0c4ab5 a ont:HrMetric ;
+    rdfs:label "Operational managers sensitized" ;
+    ont:hasUnit "%"^^xsd:token ;
+    ont:hasValue 85.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:27f79fb9-a13a-4c6f-863f-71b6388fcc29 a ont:CarbonIntensityMetric ;
+    rdfs:label "Carbon intensity 2024" ;
+    ont:hasBaselineYear "2019"^^xsd:gYear ;
+    ont:hasUnit "tCO2e/tonne of steel produced"^^xsd:token ;
+    ont:hasValue 1.35 .
+
+data:296a9a3e-d5c6-4c13-95fb-e0e9b66b06ab a ont:ComplianceRisk ;
+    rdfs:label "CBAM" .
+
+data:2c12f40f-1218-4461-bc5a-0dc393354437 a ont:Appointment ;
+    rdfs:label "Appointment of Jean-Marc Dufour" ;
+    ont:hasAppointee data:ced1d1f0-66fc-4b85-a0ab-49bfea6dda69 ;
+    ont:hasRole data:563b08c9-0f37-45f9-b33e-062dc74a36d6 ;
+    ont:hasStartDate "2023-01-01"^^xsd:date .
+
+data:2cccccf5-f776-4f20-9b7e-f37949d9b0e0 a ont:TransitionRisk ;
+    rdfs:label "International competitiveness" .
+
+data:33f7c2e2-7423-4821-a889-8253516b3625 a ont:Team ;
+    rdfs:label "CSRD Reporting Team" .
+
+data:3db43985-c93b-41cc-b83d-38a6504de88b a ont:ExecutiveCommittee ;
+    rdfs:label "Executive Committee" .
+
+data:409db48c-8289-4bb3-8aa2-dd61c62e5062 a ont:TrainingProgram ;
+    rdfs:label "Training on climate issues" ;
+    ont:isAuthoredBy data:7d810919-9222-4c54-becf-d86053782b82 .
+
+data:428c7e7b-c63b-4f00-badd-f05c6c5e8f8f a ont:GHGEmissionsMetric ;
+    rdfs:label "Total GHG emissions 2023" ;
+    ont:hasValue 3920000.0 ;
+    ont:hasYear "2023"^^xsd:gYear .
+
+data:46d969ea-b4a2-4835-bb6a-7e8b94ac69a7 a ont:ReductionTarget ;
+    rdfs:label "70% renewable energy by 2030" ;
+    ont:hasTargetValue 70.0 ;
+    ont:hasTargetYear "2030"^^xsd:gYear .
+
+data:4a4541ae-59e1-40e1-bdb7-17359a74011f a ont:Company ;
+    rdfs:label "EcoSteel Industries" ;
+    ont:conductsTraining data:409db48c-8289-4bb3-8aa2-dd61c62e5062 ;
+    ont:employs data:ced1d1f0-66fc-4b85-a0ab-49bfea6dda69 ;
+    ont:hasAddress "Lyon, France" ;
+    ont:hasAppointment data:2c12f40f-1218-4461-bc5a-0dc393354437 ;
+    ont:hasCommitment data:04fad0fa-7192-4eac-9edb-643a80d9b157 ;
+    ont:hasFinancialReporting data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 ;
+    ont:hasGovernanceBody data:3db43985-c93b-41cc-b83d-38a6504de88b,
+        data:5c28b200-2a7a-41f2-8210-269b76125101 ;
+    ont:hasHeadquartersIn data:057d8bf8-20b3-460f-b870-d571ba2d14fc ;
+    ont:hasInitiative data:c9d9ebc3-b4b1-4f9f-812c-580747678404 ;
+    ont:hasMetric data:04dfb93c-6411-4e46-9865-0b679fb8b8d0,
+        data:200d0c43-93a7-431c-8f67-20e28b0c4ab5,
+        data:27f79fb9-a13a-4c6f-863f-71b6388fcc29,
+        data:4063f145-a692-49ad-b859-e34f5ef9976b,
+        data:428c7e7b-c63b-4f00-badd-f05c6c5e8f8f,
+        data:50971766-46ee-44d8-84d1-7624d953584a,
+        data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd,
+        data:5552fabc-fb07-4afc-814e-767754a7f980,
+        data:5a1ed34f-d689-41cc-840f-5b1881b26674,
+        data:5fefb155-32e1-4f87-af9f-888a01ae39cd,
+        data:760c3aab-f4f8-4078-ae91-5294073964c7,
+        data:8a29d9d1-590e-4a20-a58d-466cb006d990,
+        data:9ad4bb67-3b9d-433c-a60f-28596231f736,
+        data:a3a9cec7-ea15-4513-aea3-d78d907bbc82,
+        data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5,
+        data:be5ce474-0203-40ee-95f7-8358e7a720a4,
+        data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf ;
+    ont:hasNumberOfEmployees 8500 ;
+    ont:hasOrganizationalUnit data:04b9140c-addd-48b2-9048-bf48e5e1324d,
+        data:33f7c2e2-7423-4821-a889-8253516b3625 ;
+    ont:hasProgram data:c6bc73f7-9ba3-4842-8c02-28768fe1f953 ;
+    ont:hasRisk data:296a9a3e-d5c6-4c13-95fb-e0e9b66b06ab,
+        data:2cccccf5-f776-4f20-9b7e-f37949d9b0e0,
+        data:a0986d46-609f-469c-846a-aef2dfc5695e,
+        data:cbf225af-33ea-4970-8450-ca75ab1b3f7a,
+        data:fc6f1de5-b4f5-4d46-a14a-de9c89953d7f,
+        data:fea69d0e-e501-4cb8-ae74-c244f416a23c ;
+    ont:hasTarget data:46d969ea-b4a2-4835-bb6a-7e8b94ac69a7,
+        data:7516f06b-1fb9-4c37-9192-6eb588d78d93,
+        data:a6d72286-15bf-4157-8bdf-776bac0cc868,
+        data:ae00935a-8e5f-426f-8586-b70b8e12820b,
+        data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df,
+        data:edb0382a-e16c-4e37-bf6b-40555768fb9e ;
+    ont:isSubjectTo data:5c69961b-dc95-459d-88a1-fc159516f82c ;
+    ont:managesAsset data:ac6d9af1-c904-49ae-8c46-8345b2b2f78e ;
+    ont:owns data:5511c62b-878e-463c-92e9-7fae083c912b ;
+    ont:participatesIn data:15e1152e-4acd-419e-94ee-8cc2ef93717b,
+        data:6d1076d7-4ef0-489f-af13-8ee614eb0258,
+        data:8c40a58b-d07d-4514-9512-9eea637973c1 ;
+    ont:partnersWith data:4d0a6bb4-44e1-48f8-8bf4-1b901d283a4d ;
+    ont:publishes data:62d17e19-0d77-439c-b689-557ce076c2cb,
+        data:d0649936-a0d4-495a-bd8a-f4d28cfa87f5 .
+
+data:4d0a6bb4-44e1-48f8-8bf4-1b901d283a4d a ont:Company ;
+    rdfs:label "H2Green" .
+
+data:50184147-8537-4c8c-b3b0-89648dfcfca8 a ont:EsgKeyPerformanceIndicator ;
+    rdfs:label "GreenSteel 2030 progress KPI" .
+
+data:5511c62b-878e-463c-92e9-7fae083c912b a ont:CarbonCredit ;
+    rdfs:label "10,000 VCS credits" .
+
+data:55bdbedd-fa5b-4bb5-b33a-921ad51d141c a ont:GHGEmissionsMetric ;
+    rdfs:label "Scope 3 product use emissions 2024" ;
+    ont:hasUnit "tCO2e"^^xsd:token ;
+    ont:hasValue 200000.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:59b406fa-c465-4016-835e-71fd2ca0dc9b a ont:BoardCommittee ;
+    rdfs:label "Climate Committee" ;
+    ont:hasMeetingCount 4 .
+
+data:5c28b200-2a7a-41f2-8210-269b76125101 a ont:GovernanceBody ;
+    rdfs:label "Board of Directors" ;
+    ont:hasSubcommittee data:59b406fa-c465-4016-835e-71fd2ca0dc9b .
+
+data:5c69961b-dc95-459d-88a1-fc159516f82c a ont:Regulation ;
+    rdfs:label "Carbon Border Adjustment Mechanism" .
+
+data:5fefb155-32e1-4f87-af9f-888a01ae39cd a ont:OperationalMetric ;
+    rdfs:label "Steel production 2023" ;
+    ont:hasUnit "kt"^^xsd:token ;
+    ont:hasValue 2780 ;
+    ont:hasYear "2023"^^xsd:gYear .
+
+data:62d17e19-0d77-439c-b689-557ce076c2cb a ont:Report ;
+    rdfs:label "Climate Report 2024" ;
+    ont:hasReportingYear "2024"^^xsd:gYear .
+
+data:64f2ced9-d8be-49ed-977f-1ab02f356657 a ont:StrategicPillar ;
+    rdfs:label "Process Electrification" ;
+    ont:hasTarget data:c018aa94-8ddb-42f4-8340-f8787874b076 .
+
+data:6d1076d7-4ef0-489f-af13-8ee614eb0258 a ont:Process ;
+    rdfs:label "Dike reinforcement and drainage systems" ;
+    ont:hasYear "2023"^^xsd:gYear .
+
+data:7516f06b-1fb9-4c37-9192-6eb588d78d93 a ont:ReductionTarget ;
+    rdfs:label "-5% total emissions vs 2024 target" ;
+    ont:hasReductionValue 5.0 ;
+    ont:hasTargetYear "2025"^^xsd:gYear .
+
+data:760c3aab-f4f8-4078-ae91-5294073964c7 a ont:CarbonIntensityMetric ;
+    rdfs:label "Carbon intensity 2023" ;
+    ont:hasValue 1.41 ;
+    ont:hasYear "2023"^^xsd:gYear .
+
+data:7a1ce72b-22f3-4c5f-948d-a379ed14072e a ont:GHGEmissionsMetric ;
+    rdfs:label "Scope 2 emissions 2024" ;
+    ont:hasUnit "tCO2e"^^xsd:token ;
+    ont:hasValue 180000.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:7d810919-9222-4c54-becf-d86053782b82 a ont:Company ;
+    rdfs:label "Carbon 4" .
+
+data:87a1ef23-00b3-401f-ba36-bd6452b8e46f a ont:Equipment ;
+    rdfs:label "50 MW electrolyzer" .
+
+data:8a29d9d1-590e-4a20-a58d-466cb006d990 a ont:EnvironmentalMetric ;
+    rdfs:label "Renewable energy share 2024" ;
+    ont:hasUnit "%"^^xsd:token ;
+    ont:hasValue 35.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:8c40a58b-d07d-4514-9512-9eea637973c1 a ont:Event ;
+    rdfs:label "Signing of 200 GWh onshore wind PPA" ;
+    ont:hasYear "2025"^^xsd:gYear ;
+    ont:involves data:13b237a8-da50-475f-8ffc-259128e415f4 .
+
+data:983006ff-247b-424f-9e55-25ef74b4ffef a ont:InternationalAgreement ;
+    rdfs:label "Paris Agreement" .
+
+data:99172ccf-2004-49c7-a5f9-2038f932ad3b a ont:GHGEmissionsMetric ;
+    rdfs:label "Scope 3 transport emissions 2024" ;
+    ont:hasUnit "tCO2e"^^xsd:token ;
+    ont:hasValue 400000.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:9ad4bb67-3b9d-433c-a60f-28596231f736 a ont:OperationalMetric ;
+    rdfs:label "Steel production 2024" ;
+    ont:hasUnit "kt"^^xsd:token ;
+    ont:hasValue 2800 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:9d18c0ed-7b2e-4a02-a2b1-cd374138ea1e a ont:ReductionTarget ;
+    rdfs:label "Energy Efficiency consumption reduction target" ;
+    ont:hasReductionValue 15.0 ;
+    ont:hasUnit "%"^^xsd:token .
+
+data:a0986d46-609f-469c-846a-aef2dfc5695e a ont:ComplianceRisk ;
+    rdfs:label "Mandatory CSRD reporting" .
+
+data:a3a9cec7-ea15-4513-aea3-d78d907bbc82 a ont:OperationalMetric ;
+    rdfs:label "Production sites count 2024" ;
+    ont:hasValue 4 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:a5521e0c-36c5-4cb1-a091-bc1e4ed596b5 a ont:EnergyConsumptionMetric ;
+    rdfs:label "Total energy consumption 2024" ;
+    ont:hasComponent data:4063f145-a692-49ad-b859-e34f5ef9976b,
+        data:50971766-46ee-44d8-84d1-7624d953584a,
+        data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd,
+        data:5552fabc-fb07-4afc-814e-767754a7f980,
+        data:5a1ed34f-d689-41cc-840f-5b1881b26674 ;
+    ont:hasUnit "GWh"^^xsd:token ;
+    ont:hasValue 4200.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:a6d72286-15bf-4157-8bdf-776bac0cc868 a ont:ReductionTarget ;
+    rdfs:label "100% renewable electricity by 2027" ;
+    ont:hasTargetValue 100.0 ;
+    ont:hasTargetYear "2027"^^xsd:gYear .
+
+data:a9f07a65-0698-4faf-8a91-808413ba19dd a ont:GHGEmissionsMetric ;
+    rdfs:label "Scope 1 emissions 2024" ;
+    ont:hasUnit "tCO2e"^^xsd:token ;
+    ont:hasValue 1200000.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:ac6d9af1-c904-49ae-8c46-8345b2b2f78e a ont:DataCenter ;
+    rdfs:label "Lyon data center" .
+
+data:ae00935a-8e5f-426f-8586-b70b8e12820b a ont:ReductionTarget ;
+    rdfs:label "-25% reduction in Scope 3 emissions by 2030" ;
+    ont:hasReductionValue 25.0 ;
+    ont:hasTargetYear "2030"^^xsd:gYear .
+
+data:be236724-4f30-41f4-ba44-60248af2aa06 a ont:EsgKeyPerformanceIndicator ;
+    rdfs:label "Absolute Scope 1+2 reduction KPI" .
+
+data:be5ce474-0203-40ee-95f7-8358e7a720a4 a ont:EnvironmentalMetric ;
+    rdfs:label "PUE Lyon data center 2024" ;
+    ont:hasValue 1.3 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:beba38bb-aabb-4f01-ae80-731a7fc5ac96 a ont:GHGEmissionsMetric ;
+    rdfs:label "Scope 3 raw materials emissions 2024" ;
+    ont:hasUnit "tCO2e"^^xsd:token ;
+    ont:hasValue 1800000.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 a ont:GHGEmissionsMetric ;
+    rdfs:label "Scope 3 emissions 2024" ;
+    ont:hasComponent data:55bdbedd-fa5b-4bb5-b33a-921ad51d141c,
+        data:99172ccf-2004-49c7-a5f9-2038f932ad3b,
+        data:beba38bb-aabb-4f01-ae80-731a7fc5ac96 ;
+    ont:hasUnit "tCO2e"^^xsd:token ;
+    ont:hasValue 2400000.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:c018aa94-8ddb-42f4-8340-f8787874b076 a ont:ReductionTarget ;
+    rdfs:label "Process Electrification CO2 savings target" ;
+    ont:hasReductionValue 650000 ;
+    ont:hasUnit "tCO2e/year"^^xsd:token .
+
+data:c6bc73f7-9ba3-4842-8c02-28768fe1f953 a ont:StrategicProgram ;
+    rdfs:label "\"GreenSteel 2030\" Program" ;
+    ont:hasPillar data:64f2ced9-d8be-49ed-977f-1ab02f356657,
+        data:fd12d7d2-0523-43ac-b47c-0517c29df143,
+        data:fef0f589-5bff-4b98-acfe-9ce2a316025b .
+
+data:c9d9ebc3-b4b1-4f9f-812c-580747678404 a ont:BiodiversityRestorationInitiative ;
+    rdfs:label "Reforestation of disused industrial site" .
+
+data:cbf225af-33ea-4970-8450-ca75ab1b3f7a a ont:PhysicalRisk ;
+    rdfs:label "Water stress" .
+
+data:d05f42a5-2aad-4f4c-a2f0-df4c871c62bf a ont:GHGEmissionsMetric ;
+    rdfs:label "Total GHG emissions 2024" ;
+    ont:hasComponent data:7a1ce72b-22f3-4c5f-948d-a379ed14072e,
+        data:a9f07a65-0698-4faf-8a91-808413ba19dd,
+        data:bfd39381-f0d4-4718-9b34-d0bc3eb34898 ;
+    ont:hasUnit "tCO2e"^^xsd:token ;
+    ont:hasValue 3780000.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:d0649936-a0d4-495a-bd8a-f4d28cfa87f5 a ont:CSRD ;
+    rdfs:label "First complete CSRD report" ;
+    ont:hasReportingYear "2025"^^xsd:gYear .
+
+data:d2e25b4e-c7c4-4f90-bc63-56525f5a6ab4 a ont:FinancialReporting,
+        ont:IncentivePlan ;
+    rdfs:label "CEO variable compensation" ;
+    ont:hasCurrency "EUR"^^xsd:token ;
+    ont:hasTurnover 2800000000.0 ;
+    ont:includes data:50184147-8537-4c8c-b3b0-89648dfcfca8,
+        data:be236724-4f30-41f4-ba44-60248af2aa06 .
+
+data:d3f7e5df-b07e-4b2c-9bd0-a648a2d288df a ont:Target ;
+    rdfs:label "Net-Zero by 2050 Target" ;
+    ont:hasTargetYear "2050"^^xsd:gYear ;
+    ont:hasTrajectory "1.5°C"^^xsd:token ;
+    ont:isAlignedWith data:983006ff-247b-424f-9e55-25ef74b4ffef ;
+    ont:isValidatedBy data:fc562f83-d0b8-4619-bbd9-a68c90677576 .
+
+data:edb0382a-e16c-4e37-bf6b-40555768fb9e a ont:ReductionTarget ;
+    rdfs:label "-42% reduction in Scope 1+2 emissions by 2030" ;
+    ont:hasBaselineYear "2019"^^xsd:gYear ;
+    ont:hasReductionValue 42.0 ;
+    ont:hasTargetYear "2030"^^xsd:gYear .
+
+data:fc6f1de5-b4f5-4d46-a14a-de9c89953d7f a ont:TransitionRisk ;
+    rdfs:label "EU ETS carbon pricing" .
+
+data:fd12d7d2-0523-43ac-b47c-0517c29df143 a ont:StrategicPillar ;
+    rdfs:label "Energy Efficiency" ;
+    ont:hasTarget data:9d18c0ed-7b2e-4a02-a2b1-cd374138ea1e .
+
+data:fea69d0e-e501-4cb8-ae74-c244f416a23c a ont:PhysicalRisk ;
+    rdfs:label "Extreme weather events" .
+
+data:fef0f589-5bff-4b98-acfe-9ce2a316025b a ont:StrategicPillar ;
+    rdfs:label "Green Hydrogen" .
+
+data:5358befd-fe6e-41e2-ab08-9c0dd657d3cd a ont:EnergyConsumptionMetric ;
+    rdfs:label "Natural gas consumption 2024" ;
+    ont:hasUnit "GWh"^^xsd:token ;
+    ont:hasValue 2730.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:5552fabc-fb07-4afc-814e-767754a7f980 a ont:EnergyConsumptionMetric ;
+    rdfs:label "Renewable electricity consumption 2024" ;
+    ont:hasComponent data:4063f145-a692-49ad-b859-e34f5ef9976b,
+        data:50971766-46ee-44d8-84d1-7624d953584a ;
+    ont:hasUnit "GWh"^^xsd:token ;
+    ont:hasValue 420.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:563b08c9-0f37-45f9-b33e-062dc74a36d6 a ont:Position ;
+    rdfs:label "Director of Energy Transition Department" ;
+    ont:isPositionAt data:4a4541ae-59e1-40e1-bdb7-17359a74011f .
+
+data:5a1ed34f-d689-41cc-840f-5b1881b26674 a ont:EnergyConsumptionMetric ;
+    rdfs:label "Grid electricity consumption 2024" ;
+    ont:hasUnit "GWh"^^xsd:token ;
+    ont:hasValue 1050.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:ced1d1f0-66fc-4b85-a0ab-49bfea6dda69 a ont:Person ;
+    rdfs:label "Jean-Marc Dufour" ;
+    ont:hasTitle "Director"^^xsd:normalizedString .
+
+data:fc562f83-d0b8-4619-bbd9-a68c90677576 a ont:Initiative ;
+    rdfs:label "Science Based Targets initiative (SBTi)" .
+
+data:057d8bf8-20b3-460f-b870-d571ba2d14fc a ont:City ;
+    rdfs:label "Lyon" .
+
+data:4063f145-a692-49ad-b859-e34f5ef9976b a ont:EnergyConsumptionMetric ;
+    rdfs:label "Solar photovoltaic energy consumption 2024" ;
+    ont:hasUnit "GWh"^^xsd:token ;
+    ont:hasValue 140.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+
+data:50971766-46ee-44d8-84d1-7624d953584a a ont:EnergyConsumptionMetric ;
+    rdfs:label "Offshore wind energy consumption 2024" ;
+    ont:hasUnit "GWh"^^xsd:token ;
+    ont:hasValue 280.0 ;
+    ont:hasYear "2024"^^xsd:gYear .
+

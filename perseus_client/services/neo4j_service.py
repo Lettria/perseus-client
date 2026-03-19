@@ -207,7 +207,7 @@ class Neo4jService:
         logger.debug("Generating CQL from KnowledgeGraph for Neo4j.")
         try:
             cql_content = self.cql_service.to_cql(kg, strip_prefixes=strip_prefixes)
-            if cql_content and cql_content.strip() != ';':
+            if cql_content and cql_content.strip() != ";":
                 logger.debug("CQL content generated. Executing against Neo4j.")
                 await self.execute_cql_string_async(cql_content)
             else:

@@ -154,19 +154,19 @@ class KnowledgeGraph(BaseModel):
             )
         await self._neo4j_service.save_to_neo4j_async(self, strip_prefixes)
 
-    def save_to_falkordb(self):
+    def save_to_falkordb(self, strip_prefixes: bool = True):
         if not self._falkordb_service:
             raise RuntimeError(
                 "FalkorDBService not available on this KnowledgeGraph instance."
             )
-        self._falkordb_service.save_to_falkordb(self)
+        self._falkordb_service.save_to_falkordb(self, strip_prefixes)
 
-    async def save_to_falkordb_async(self):
+    async def save_to_falkordb_async(self, strip_prefixes: bool = True):
         if not self._falkordb_service:
             raise RuntimeError(
                 "FalkorDBService not available on this KnowledgeGraph instance."
             )
-        await self._falkordb_service.save_to_falkordb_async(self)
+        await self._falkordb_service.save_to_falkordb_async(self, strip_prefixes)
 
     @staticmethod
     def interlink(

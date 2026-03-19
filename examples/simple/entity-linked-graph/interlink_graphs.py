@@ -1,7 +1,6 @@
 import sys
 import os
-from perseus_client.client import PerseusClient
-from perseus_client.models import KnowledgeGraph
+import perseus_client
 from typing import List
 import logging
 
@@ -17,33 +16,30 @@ def main(
     graph, and save the result to Neo4j.
     """
     try:
-        with PerseusClient() as client:
-            knowledge_graphs = client.build_graph(
-                file_path=file_paths,
-                ontology_path=ontology_path,
-                metadata={"source": "interlink_graphs_example"},
-            )
+        knowledge_graphs = perseus_client.build_graph(
+            file_paths=file_paths,
+            ontology_path=ontology_path,
+            metadata={"source": "interlink_graphs_example"},
+        )
 
-            if not knowledge_graphs or len(knowledge_graphs) < 2:
-                logger.error("Failed to build at least two graphs for interlinking.")
-                return
+        if not knowledge_graphs or len(knowledge_graphs) < 2:
+            logger.error("Failed to build at least two graphs for interlinking.")
+            return
 
-            # 2. Interlink the knowledge graphs
-            merged_kg = KnowledgeGraph.interlink(
-                kbs=knowledge_graphs,
-                merge_properties_on_conflict=True,
-                # immutable_properties=["hasJobTitle"]
-            )
+        # 2. Interlink the knowledge graphs
+        merged_kg = perseus_client.interlink(
+            kbs=knowledge_graphs,
+            merge_properties_on_conflict=True,
+            # immutable_properties=["hasJobTitle"]
+        )
 
-            with open("./output/merged_graph.ttl", "w") as f:
-                f.write(merged_kg.ttl_content if merged_kg.ttl_content else "")
-            with open("./output/merged_graph.cql", "w") as f:
-                f.write(merged_kg.cql_content if merged_kg.cql_content else "")
+        with open("./output/merged_graph.ttl", "w") as f:
+            f.write(merged_kg.ttl_content if merged_kg.ttl_content else "")
+        with open("./output/merged_graph.cql", "w") as f:
+            f.write(merged_kg.cql_content if merged_kg.cql_content else "")
 
-            # 3. Save the single, merged graph to Neo4j
-            merged_kg.save_to_neo4j(strip_prefixes=True)
-
-            # merge with current graph state in db
+        # 3. Save the single, merged graph to Neo4j
+        merged_kg.save_to_neo4j(strip_prefixes=True)
 
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}", exc_info=True)
