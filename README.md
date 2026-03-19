@@ -59,6 +59,7 @@ The SDK can be configured via environment variables. The `PerseusClient` will au
 | Variable              | Description                                | Required |
 | --------------------- | ------------------------------------------ | -------- |
 | `PERSEUS_API_KEY`     | Your unique API key for the Lettria API.   | Yes      |
+| `LOGLEVEL`            | The log level for the client.              | No       |
 | `NEO4J_URI`           | The URI for your Neo4j database instance.  | No       |
 | `NEO4J_USER`          | The username for your Neo4j database.      | No       |
 | `NEO4J_PASSWORD`      | The password for your Neo4j database.      | No       |
@@ -67,29 +68,28 @@ The SDK can be configured via environment variables. The `PerseusClient` will au
 | `FALKORDB_GRAPH_NAME` | The name of the graph key to use.          | No       |
 | `FALKORDB_PASSWORD`   | The password for your FalkorDB instance.   | No       |
 
+By default, the log level is set to `INFO`. You can change it by setting the `LOGLEVEL` environment variable to `DEBUG`, `WARNING`, `ERROR`, or `CRITICAL`.
+
 ### Example: Build a Graph
 
 This example shows how to build a graph from a text file.
 
 ```python
-import asyncio
-from typing import List
-from perseus_client import PerseusClient
-from perseus_client.models import KnowledgeGraph
+import perseus_client
 
-async def main():
-    async with PerseusClient() as client:
-        try:
-            graphs: List[KnowledgeGraph] = await client.build_graph_async(
-                file_paths=["path/to/your/document.txt"],
-            )
-            for graph in graphs:
-                print(f"🎉 Graph built successfully with {len(graph.entities)} entities and {len(graph.relations)} relations!")
-        except Exception as e:
-            print(f"An error occurred: {e}")
+# This will automatically use the configuration from your environment variables.
+try:
+    # Build a graph from a document
+    knowledge_graphs = perseus_client.build_graph(
+        file_paths=["path/to/your/document.txt"],
+    )
 
-if __name__ == "__main__":
-    asyncio.run(main())
+    # Print the result
+    for graph in knowledge_graphs:
+        print(f"🎉 Graph built successfully with {len(graph.entities)} entities and {len(graph.relations)} relations!")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
 ```
 
 ### The `KnowledgeGraph` Object
@@ -118,14 +118,36 @@ The `KnowledgeGraph` object also has several built-in methods to save or convert
 | `to_cql(strip_prefixes: bool = True)`                   | `str`            | Returns the graph as a CQL string.                              |
 | `save_to_neo4j(strip_prefixes: bool = True)`            | `None`           | Saves the graph to a Neo4j instance synchronously.              |
 | `save_to_neo4j_async(strip_prefixes: bool = True)`      | `None`           | Saves the graph to a Neo4j instance asynchronously.             |
-| `save_to_falkordb()`                                    | `None`           | Saves the graph to a FalkorDB instance synchronously.           |
-| `save_to_falkordb_async()`                              | `None`           | Saves the graph to a FalkorDB instance asynchronously.          |
+| `save_to_falkordb(strip_prefixes: bool = True)`         | `None`           | Saves the graph to a FalkorDB instance synchronously.           |
+| `save_to_falkordb_async(strip_prefixes: bool = True)`   | `None`           | Saves the graph to a FalkorDB instance asynchronously.          |
 | `to_json()`                                             | `dict`           | Converts the knowledge graph to a JSON serializable dictionary. |
 | `interlink(kbs: List[KnowledgeGraph], ...)`             | `KnowledgeGraph` | Merges multiple `KnowledgeGraph` objects into a single one.     |
 
 ### Merging `KnowledgeGraph`s
 
-You can merge multiple `KnowledgeGraph` objects using the static `KnowledgeGraph.interlink` method.
+You can merge multiple `KnowledgeGraph` objects using the `perseus_client.interlink` function.
+
+```python
+import perseus_client
+
+try:
+    # Build two graphs in a single call
+    knowledge_graphs = perseus_client.build_graph(
+        file_paths=["path/to/document1.txt", "path/to/document2.txt"]
+    )
+
+    # Interlink them
+    if len(knowledge_graphs) >= 2:
+        merged_graph = perseus_client.interlink(kbs=knowledge_graphs)
+        print(f"🎉 Graphs merged successfully with {len(merged_graph.entities)} entities and {len(merged_graph.relations)} relations!")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+```
+
+## ⚡ Advanced Usage: Asynchronous Client
+
+For long-running asynchronous applications or when you need explicit control over the client's lifecycle, you can use `PerseusClient` as an asynchronous context manager. This ensures connections are managed optimally and closed precisely when you're done.
 
 ```python
 import asyncio
@@ -136,18 +158,14 @@ from perseus_client.models import KnowledgeGraph
 async def main():
     async with PerseusClient() as client:
         try:
-            # Build two graphs
-            graphs: List[KnowledgeGraph] = await client.build_graph_async(
-                file_paths=["path/to/document1.txt", "path/to/document2.txt"]
+            graphs: List[KnowledgeGraph] = await client.build.build_graph_async(
+                file_paths=["path/to/your/async_document.txt"],
+                ontology_path="path/to/your/ontology.ttl",
             )
-
-            # Interlink them using the static method
-            if len(graphs) >= 2:
-                merged_graph = KnowledgeGraph.interlink(kbs=graphs)
-                print(f"🎉 Graphs merged successfully with {len(merged_graph.entities)} entities and {len(merged_graph.relations)} relations!")
-
+            for graph in graphs:
+                print(f"⚡ Async Graph built successfully with {len(graph.entities)} entities and {len(graph.relations)} relations!")
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f"An async error occurred: {e}")
 
 if __name__ == "__main__":
     asyncio.run(main())

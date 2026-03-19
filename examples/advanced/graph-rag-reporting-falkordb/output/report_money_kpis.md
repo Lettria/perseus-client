@@ -1,66 +1,53 @@
-# Report on money kpis### **L'Oréal 2024 Financial Performance Report**
+# Report on money kpis# L'Oréal 2024 Financial Performance Report
 
-This report summarizes the key financial indicators and money-related KPIs for L'Oréal, based on the 2024 Annual Report data.
+This report summarizes the key financial indicators and monetary KPIs for L'Oréal, based on the 2024 Annual Report data.
 
----
+## 1. Global Financial Overview
+L'Oréal maintains its position as the world's No. 1 beauty company with strong growth across all key financial metrics, characterized by high profitability and a significant tax contribution.
 
-#### **1. Group Financial Overview**
-L'Oréal maintains its position as the world leader in beauty, showing solid growth across revenue, operating income, and net profit.
-
-| KPI | Value | Growth / Change |
+| KPI | Value | Growth / Share |
 | :--- | :--- | :--- |
 | **Total Revenue** | 43.48 billion € | +5.1% (Comparable) |
 | **Operating Income** | 8.69 billion € | +6.7% |
-| **Operating Margin** | 20.0% | — |
-| **Net Profit Per Share** | 12.66 € | +4.8% |
+| **Operating Margin** | 20% | — |
+| **Net Profit per Share** | 12.66 € | +4.8% |
 | **Taxes Paid** | 2.8 billion € | — |
-| **Proposed Dividend** | 7.00 € | +6.1% |
 
----
+## 2. Revenue Segmentation
+The company demonstrates a well-balanced revenue stream across various geographical zones and a strong digital presence.
 
-#### **2. Growth Drivers: E-commerce and Innovation**
-Strategic investments in digital sales and Research & Innovation (R&I) continue to be primary drivers of value creation.
+### Geographical Breakdown
+*   **Europe:** 33%
+*   **North America:** 27%
+*   **North Asia:** 24%
+*   **SAPMENA-SSA:** 9%
+*   **Latin America:** 8%
 
-*   **E-commerce:** Generated **12.3 billion €** in revenue, representing **28.2%** of the total group turnover. The segment grew by **7.8%**.
-*   **R&I Investment:** The group invests over **1 billion € annually** in Research & Innovation to maintain its competitive edge and fuel "The Wager of Innovation" (Le pari de l’innovation).
+### E-commerce Performance
+E-commerce continues to be a vital growth driver, now representing over a quarter of total sales.
+*   **E-commerce Revenue:** 12.3 billion €
+*   **Growth:** +7.8%
+*   **Share of Total Sales:** 28.2%
 
----
+## 3. Divisional Growth
+All divisions reported positive growth, with Dermatological Beauty significantly outperforming the group average.
 
-#### **3. Revenue Breakdown by Geography**
-The group's revenue is distributed across a multipolar model, with Europe remaining the largest contributor.
-
-| Region | Share of Revenue |
-| :--- | :--- |
-| **Europe** | 33% |
-| **North America** | 27% |
-| **North Asia** | 24% |
-| **SAPMENA-SSA** | 9% |
-| **Latin America** | 8% |
-
----
-
-#### **4. Divisional Performance**
-All four divisions recorded positive growth, with Dermatological Beauty leading in terms of percentage increase.
-
-| Division | Growth Rate | Key Insights |
+| Division | Growth Rate | Market Position / Note |
 | :--- | :--- | :--- |
-| **Beauté Dermatologique** | +9.8% | Fastest growing division. |
-| **Produits Grand Public** | +5.4% | Includes brands like L'Oréal Paris and Garnier. |
-| **Produits Professionnels** | +5.3% | Driven by brands like Kérastase and Redken. |
-| **Luxe** | +2.7% | Market leader in fine perfumery. |
+| **Dermatological Beauty** | +9.8% | Highest growth rate |
+| **Consumer Products** | +5.4% | Includes brands like L'Oréal Paris, Garnier |
+| **Professional Products** | +5.3% | Includes Kérastase, Redken |
+| **Luxe** | +2.7% | Leader in fine perfumery |
 
----
+## 4. Strategic Investments & Shareholder Value
+L'Oréal maintains a high level of investment in innovation and social initiatives while increasing returns to shareholders.
 
-#### **5. Social and Philanthropic Financial Commitments**
-L'Oréal integrates financial resources into social impact and inclusive business practices.
+*   **Research & Innovation (R&I):** Over 1 billion € invested annually.
+*   **Dividends:** A proposed dividend of **7.00 € per share**, representing a **+6.1% increase**.
+*   **Social Investment:** **70 million €** allocated to the *L’Oréal Fund for Women* since 2020.
+*   **Strategic Expansion:** Recent capital allocations include acquisitions or licensing agreements with **Galderma, Miu Miu, Dr.G, Amouage, and Jacquemus**.
 
-*   **Fonds L’Oréal pour les Femmes:** **70 million €** allocated since 2020 to support women's causes.
-*   **Inclusive Sourcing:** The "Achats Inclusifs" program now includes **over 750 suppliers**.
-*   **Vulnerable People Employed:** Through various programs, the company has enabled the employment of **106,000 individuals** from vulnerable communities.
-
----
-
-#### **6. Corporate Governance Metrics**
-Financial stability is supported by a structured board and executive oversight.
-*   **Executive Committee:** 19 members managing the group's multipolar and agile model.
-*   **Board of Directors:** Features an **independence rate of 50%** and **43% female representation**, ensuring balanced strategic decision-making.
+## 5. Efficiency and Value Creation
+L'Oréal’s "Multipolar and Agile" model focuses on local opportunity seizure and operational efficiency through initiatives like:
+*   **Inclusive Sourcing:** Engaging over 750 suppliers.
+*   **Automation:** Deployment of automated fulfillment centers (e.g., Suzhou, China) to optimize the supply chain.

@@ -1,13 +1,13 @@
 # Entity-Linked Graph
 
-This example demonstrates how to build multiple knowledge graphs and then merge them into a single, unified graph using the `KnowledgeGraph.interlink()` method.
+This example demonstrates how to build multiple knowledge graphs and then merge them into a single, unified graph using the `perseus_client.interlink()` method.
 
 It showcases:
 
 1.  Building two separate `KnowledgeGraph` objects from `person1.txt` and `person2.txt`.
 2.  Applying a shared `ontology.ttl` to both graphs.
 3.  Injects shared metadata into all graphs, such as `source: interlink_graphs_example`.
-4.  **Calling `KnowledgeGraph.interlink()`** to deduplicate entities based on their `rdfs:label` and merge the two graphs.
+4.  **Calling `perseus_client.interlink()`** to deduplicate entities based on their `rdfs:label` and merge the two graphs.
 5.  **Saving the final, unified graph directly to Neo4j**.
 
 ## How to run
@@ -72,14 +72,14 @@ However, you can prevent merging based on specific properties by using the `immu
 
     ```python
     # Before
-    merged_kg = KnowledgeGraph.interlink(
+    merged_kg = perseus_client.interlink(
         kbs=knowledge_graphs,
         merge_properties_on_conflict=True,
         # immutable_properties=["hasJobTitle"]
     )
 
     # After
-    merged_kg = KnowledgeGraph.interlink(
+    merged_kg = perseus_client.interlink(
         kbs=knowledge_graphs,
         merge_properties_on_conflict=True,
         immutable_properties=["hasJobTitle"]

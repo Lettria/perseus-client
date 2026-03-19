@@ -2,7 +2,7 @@ import logging
 import sys
 import os
 from typing import Dict, Any
-from perseus_client.client import PerseusClient
+import perseus_client
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -21,23 +21,20 @@ def main(file_path: str):
             "custom_tag": "example-metadata",
         }
 
-        with PerseusClient() as client:
-            logger.info("Building graph with metadata...")
-            # The build_graph method now returns a list of KnowledgeGraph objects
-            knowledge_graphs = client.build.build_graph(
-                file_paths=[file_path],
-                metadata=custom_metadata,
-            )
+        logger.info("Building graph with metadata...")
+        knowledge_graphs = perseus_client.build_graph(
+            file_paths=[file_path],
+            metadata=custom_metadata,
+        )
 
-            if knowledge_graphs:
-                kg = knowledge_graphs[0]
-                logger.info("Graph built successfully. Saving to Neo4j...")
-                # The KnowledgeGraph object has a method to save to Neo4j
-                kg.save_to_neo4j()
-                logger.info(
-                    "Graph with metadata saved to Neo4j. "
-                    "You can now inspect the nodes and relationships in your Neo4j browser."
-                )
+        if knowledge_graphs:
+            kg = knowledge_graphs[0]
+            logger.info("Graph built successfully. Saving to Neo4j...")
+            kg.save_to_neo4j()
+            logger.info(
+                "Graph with metadata saved to Neo4j. "
+                "You can now inspect the nodes and relationships in your Neo4j browser."
+            )
 
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}")

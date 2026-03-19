@@ -7,7 +7,7 @@ from perseus_client.services.falkordb_service import (
     FalkorDBService,
     FALKORDB_AVAILABLE,
 )
-from perseus_client.models import KnowledgeGraph, Entity, Relation
+from perseus_client.models import KnowledgeGraph, Entity, Relation, LiteralValue
 from perseus_client.exceptions import ConfigurationException
 
 logger = logging.getLogger(__name__)
@@ -144,6 +144,40 @@ def test_empty_knowledge_graph(mock_execute):
     service.save_to_falkordb(kg)
     mock_execute.assert_not_called()
 
+
+@pytest.mark.asyncio
+@patch(
+    "perseus_client.services.falkordb_service.FalkorDBService.execute_cql_string_async"
+)
+async def test_save_to_falkordb_async_strip_prefixes(mock_execute):
+    """
+    Test that the strip_prefixes parameter is correctly passed to the CQL service.
+    """
+    # Arrange
+    service = FalkorDBService(asyncio.get_event_loop())
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.com/e1",
+                types=["Test"],
+                properties={"p1": LiteralValue(value="v1")},
+            )
+        ]
+    )
+    # Mock the cql_service directly to inspect its arguments
+    service.cql_service = MagicMock()
+
+    # Act
+    await service.save_to_falkordb_async(kg, strip_prefixes=False)
+
+    # Assert
+    service.cql_service.to_cql.assert_called_once_with(kg, strip_prefixes=False)
+
+    # Act again with strip_prefixes=True
+    await service.save_to_falkordb_async(kg, strip_prefixes=True)
+
+    # Assert
+    service.cql_service.to_cql.assert_called_with(kg, strip_prefixes=True)
 
 
 

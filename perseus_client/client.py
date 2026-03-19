@@ -307,3 +307,47 @@ class PerseusClient:
             refresh_graph=refresh_graph,
             metadata=metadata,
         )
+
+    def interlink(
+        self,
+        kbs: List[KnowledgeGraph],
+        interlinking_key_uris: List[str] = [
+            "http://www.w3.org/2000/01/rdf-schema#label"
+        ],
+        immutable_properties: Optional[List[str]] = None,
+        merge_properties_on_conflict: bool = False,
+    ) -> KnowledgeGraph:
+        """
+        Synchronously merges multiple KnowledgeGraph objects into a single one.
+        """
+        self._ensure_active()
+        if not self._loop:
+            raise ConfigurationException("Event loop not initialized.")
+        return self._loop.run_until_complete(
+            self.interlink_async(
+                kbs,
+                interlinking_key_uris,
+                immutable_properties,
+                merge_properties_on_conflict,
+            )
+        )
+
+    async def interlink_async(
+        self,
+        kbs: List[KnowledgeGraph],
+        interlinking_key_uris: List[str] = [
+            "http://www.w3.org/2000/01/rdf-schema#label"
+        ],
+        immutable_properties: Optional[List[str]] = None,
+        merge_properties_on_conflict: bool = False,
+    ) -> KnowledgeGraph:
+        """
+        Asynchronously merges multiple KnowledgeGraph objects into a single one.
+        """
+        self._ensure_active()
+        return await self.build.interlink_async(
+            kbs=kbs,
+            interlinking_key_uris=interlinking_key_uris,
+            immutable_properties=immutable_properties,
+            merge_properties_on_conflict=merge_properties_on_conflict,
+        )

@@ -182,6 +182,9 @@ class BuildService:
             # Create an empty graph but still attach content if available
             kg = KnowledgeGraph(cql_content=cql_content)
 
+        # kg.ttl_content = self._ttl.to_ttl(kg)
+        # kg.cql_content = self._cql.to_cql(kg)
+
         # Inject services into the created KnowledgeGraph instance
         logger.debug("Injecting services into KnowledgeGraph instance.")
         kg._ttl_service = self._ttl
@@ -241,3 +244,36 @@ class BuildService:
 
         logger.info("All files processed.")
         return results
+
+    async def interlink_async(
+        self,
+        kbs: List[KnowledgeGraph],
+        interlinking_key_uris: List[str],
+        immutable_properties: Optional[List[str]],
+        merge_properties_on_conflict: bool,
+    ) -> KnowledgeGraph:
+        """
+        Asynchronously merges multiple KnowledgeGraph objects into a single one.
+        """
+        if not kbs:
+            return KnowledgeGraph()
+
+        # Call the graph service's interlink method
+        merged_kg = self._interlink.interlink(
+            kbs,
+            interlinking_key_uris,
+            immutable_properties,
+            merge_properties_on_conflict,
+        )
+
+        # Inject services into the newly created graph
+        merged_kg._ttl_service = self._ttl
+        merged_kg._cql_service = self._cql
+        merged_kg._neo4j_service = self._neo4j
+        merged_kg._falkordb_service = self._falkordb
+        merged_kg._graph_service = self._graph
+        merged_kg._interlink_service = self._interlink
+        merged_kg.ttl_content = merged_kg.to_ttl()
+        merged_kg.cql_content = merged_kg.to_cql()
+
+        return merged_kg

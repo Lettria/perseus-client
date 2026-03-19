@@ -1,7 +1,7 @@
 import logging
-import sys
 import os
-from perseus_client.client import PerseusClient
+import perseus_client
+import sys
 from simple_graph_retriever.client import GraphRetrievalClient
 from utils import wait_for_embedder
 
@@ -24,36 +24,32 @@ def main(file_path: str):
         wait_for_embedder()
         logging.info("Services are ready.")
 
-        with PerseusClient() as client:
-            logging.info(f"Building knowledge graph from: {file_path}")
+        logging.info(f"Building knowledge graph from: {file_path}")
 
-            # The build_graph method returns a list of KnowledgeGraph objects
-            knowledge_graphs = client.build.build_graph(file_paths=[file_path])
+        knowledge_graphs = perseus_client.build_graph(file_paths=[file_path])
 
-            if not knowledge_graphs:
-                logging.error(
-                    "Graph building process did not return any knowledge graphs."
-                )
-                sys.exit(1)
+        if not knowledge_graphs:
+            logging.error("Graph building process did not return any knowledge graphs.")
+            sys.exit(1)
 
-            kg = knowledge_graphs[0]
-            logging.info("Graph building complete.")
+        kg = knowledge_graphs[0]
+        logging.info("Graph building complete.")
 
-            # Save the TTL content locally for inspection
-            if kg.ttl_content:
-                with open(output_ttl_path, "w", encoding="utf-8") as f:
-                    f.write(kg.ttl_content)
-                logging.info(f"TTL output saved to {output_ttl_path}")
+        # Save the TTL content locally for inspection
+        if kg.ttl_content:
+            with open(output_ttl_path, "w", encoding="utf-8") as f:
+                f.write(kg.ttl_content)
+            logging.info(f"TTL output saved to {output_ttl_path}")
 
-            # Load the graph into FalkorDB
-            logging.info("Loading graph into FalkorDB...")
-            kg.save_to_falkordb()
-            logging.info("Graph successfully loaded into FalkorDB.")
+        # Load the graph into FalkorDB
+        logging.info("Loading graph into FalkorDB...")
+        kg.save_to_falkordb()
+        logging.info("Graph successfully loaded into FalkorDB.")
 
-            # Index the graph for retrieval
-            logging.info("Indexing graph for retrieval...")
-            GraphRetrievalClient().index()
-            logging.info("Graph indexing complete.")
+        # Index the graph for retrieval
+        logging.info("Indexing graph for retrieval...")
+        GraphRetrievalClient().index()
+        logging.info("Graph indexing complete.")
 
     except Exception as e:
         logging.error(

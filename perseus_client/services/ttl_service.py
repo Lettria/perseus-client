@@ -39,7 +39,9 @@ class TTLService:
             The modified Turtle content as a string.
         """
         if not RDFLIB_AVAILABLE:
-            logger.error("rdflib is not installed, which is required for TTL manipulation.")
+            logger.error(
+                "rdflib is not installed, which is required for TTL manipulation."
+            )
             raise ImportError(
                 "The 'rdflib' library is not installed. "
                 "Please run `pip install perseus-client[rdf]` to use this feature."
@@ -105,8 +107,10 @@ class TTLService:
 
         class_uris = {str(o) for s, p, o in g if p == RDF.type}
         individual_uris = {str(s) for s, p, o in g} - class_uris
-        logger.debug(f"Identified {len(individual_uris)} individuals and {len(class_uris)} classes.")
-        
+        logger.debug(
+            f"Identified {len(individual_uris)} individuals and {len(class_uris)} classes."
+        )
+
         for uri in individual_uris:
             entities[uri] = Entity(uri=uri)
 
@@ -130,28 +134,34 @@ class TTLService:
                     )
             elif isinstance(o, Literal):
                 entities[subject_uri].properties[predicate_uri] = LiteralValue(
-                    value=o.value,
+                    value=str(o),
                     datatype=str(o.datatype) if o.datatype else None,
                 )
 
         document = Document(id=str(uuid.uuid4()), content=ttl_content, metadata={})
-        
+
         kg = KnowledgeGraph(
             entities=list(entities.values()),
             relations=relations,
             documents=[document],
             namespaces=namespaces,
         )
-        logger.info(f"Successfully created KnowledgeGraph with {len(kg.entities)} entities and {len(kg.relations)} relations.")
+        logger.info(
+            f"Successfully created KnowledgeGraph with {len(kg.entities)} entities and {len(kg.relations)} relations."
+        )
         return kg
 
     def to_ttl(self, kg: KnowledgeGraph) -> str:
         """
         Serializes the KnowledgeGraph to a high-fidelity Turtle (TTL) string.
         """
-        logger.debug(f"Serializing KnowledgeGraph with {len(kg.entities)} entities to TTL format.")
+        logger.debug(
+            f"Serializing KnowledgeGraph with {len(kg.entities)} entities to TTL format."
+        )
         if not RDFLIB_AVAILABLE:
-            logger.error("rdflib is not installed, which is required for TTL serialization.")
+            logger.error(
+                "rdflib is not installed, which is required for TTL serialization."
+            )
             raise ImportError(
                 "rdflib is required for TTL serialization. Please run `pip install perseus-client[rdf]`."
             )
@@ -196,7 +206,9 @@ class TTLService:
             g.add((source, predicate, target))
 
         serialized_ttl = g.serialize(format="turtle")
-        logger.debug(f"Successfully serialized KnowledgeGraph to TTL string ({len(serialized_ttl)} bytes).")
+        logger.debug(
+            f"Successfully serialized KnowledgeGraph to TTL string ({len(serialized_ttl)} bytes)."
+        )
         return serialized_ttl
 
     def save_ttl(self, kg: KnowledgeGraph, file_path: str):

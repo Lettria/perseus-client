@@ -1,8 +1,7 @@
 import logging
 import sys
 import os
-import asyncio
-from perseus_client.client import PerseusClient
+import perseus_client
 from dotenv import load_dotenv
 
 # Configure logging and load environment variables
@@ -25,33 +24,35 @@ def main(file_path: str):
     output_ttl_path = os.path.join("output", f"{file_stem}.ttl")
 
     try:
-        with PerseusClient() as client:
-            logging.info(f"Processing file: {file_path} with ontology: {ontology_path}")
+        logging.info(f"Processing file: {file_path} with ontology: {ontology_path}")
 
-            # The build_graph method now returns a list of KnowledgeGraph objects
-            knowledge_graphs = client.build.build_graph(
-                file_paths=[file_path], ontology_path=ontology_path
-            )
+        knowledge_graphs = perseus_client.build_graph(
+            file_paths=[file_path], ontology_path=ontology_path
+        )
 
-            if not knowledge_graphs:
-                logging.error(
-                    "Graph building process did not return any knowledge graphs."
-                )
-                return
+        if not knowledge_graphs:
+            logging.error("Graph building process did not return any knowledge graphs.")
+            return
 
-            kg = knowledge_graphs[0]
-            logging.info("Graph building complete.")
+        kg = knowledge_graphs[0]
+        logging.info("Graph building complete.")
 
-            # Save the TTL content locally
-            if kg.ttl_content:
-                with open(output_ttl_path, "w", encoding="utf-8") as f:
-                    f.write(kg.ttl_content)
-                logging.info(f"TTL output saved to {output_ttl_path}")
+        # Save the TTL content locally
+        if kg.ttl_content:
+            with open(output_ttl_path, "w", encoding="utf-8") as f:
+                f.write(kg.ttl_content)
+            logging.info(f"TTL output saved to {output_ttl_path}")
+        # Save the CQL content locally
+        if kg.cql_content:
+            output_cql_path = os.path.join("output", f"{file_stem}.cql")
+            with open(output_cql_path, "w", encoding="utf-8") as f:
+                f.write(kg.cql_content)
+            logging.info(f"CQL output saved to {output_cql_path}")
 
-            # Load the graph into Neo4j
-            logging.info("Loading graph into Neo4j...")
-            kg.save_to_neo4j()
-            logging.info("Graph successfully loaded into Neo4j.")
+        # Load the graph into Neo4j
+        logging.info("Loading graph into Neo4j...")
+        kg.save_to_neo4j()
+        logging.info("Graph successfully loaded into Neo4j.")
 
     except Exception as e:
         logging.error(f"An unexpected error occurred: {e}", exc_info=True)
