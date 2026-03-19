@@ -25,7 +25,7 @@ def main(file_path: str):
             logging.info(f"Building knowledge graph from: {file_path}")
             
             # The build_graph method returns a list of KnowledgeGraph objects
-            knowledge_graphs = client.build_graph(file_path=[file_path])
+            knowledge_graphs = client.build.build_graph(file_paths=[file_path])
 
             if not knowledge_graphs:
                 logging.error("Graph building process did not return any knowledge graphs.")

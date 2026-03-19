@@ -11,8 +11,8 @@ async def main():
     """
     async with PerseusClient() as client:
         # Build a graph from a sample text file using the provided ontology
-        graphs = await client.build_graph_async(
-            file_path=["./assets/sample.txt"],
+        graphs = await client.build.build_graph_async(
+            file_paths=["./assets/sample.txt"],
             ontology_path="./assets/ontology.ttl",
         )
         if not graphs:

@@ -81,7 +81,7 @@ async def main():
     async with PerseusClient() as client:
         try:
             graphs: List[KnowledgeGraph] = await client.build_graph_async(
-                file_path=["path/to/your/document.txt"],
+                file_paths=["path/to/your/document.txt"],
             )
             for graph in graphs:
                 print(f"🎉 Graph built successfully with {len(graph.entities)} entities and {len(graph.relations)} relations!")
@@ -138,7 +138,7 @@ async def main():
         try:
             # Build two graphs
             graphs: List[KnowledgeGraph] = await client.build_graph_async(
-                file_path=["path/to/document1.txt", "path/to/document2.txt"]
+                file_paths=["path/to/document1.txt", "path/to/document2.txt"]
             )
 
             # Interlink them using the static method
@@ -159,7 +159,7 @@ if __name__ == "__main__":
 
 ```python
 def build_graph(
-    file_path: List[str],
+    file_paths: List[str],
     ontology_path: Optional[str] = None,
     refresh_graph: bool = False,
     metadata: Optional[Dict[str, Any]] = None,
@@ -170,7 +170,7 @@ Processes one or more files by uploading them, optionally with an ontology, runn
 
 | Parameter       | Type                       | Description                                                     | Default |
 | --------------- | -------------------------- | --------------------------------------------------------------- | ------- |
-| `file_path`     | `List[str]`                | A list of file paths to process.                                |         |
+| `file_paths`     | `List[str]`                | A list of file paths to process.                                |         |
 | `ontology_path` | `Optional[str]`            | The path to the ontology file to use.                           | `None`  |
 | `refresh_graph` | `bool`                     | Whether to force a new job to be created (refresh the graph).   | `False` |
 | `metadata`      | `Optional[Dict[str, Any]]` | A dictionary of metadata to add to all nodes and relationships. | `None`  |

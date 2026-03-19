@@ -29,8 +29,8 @@ def main(file_path: str):
             logging.info(f"Processing file: {file_path} with ontology: {ontology_path}")
 
             # The build_graph method now returns a list of KnowledgeGraph objects
-            knowledge_graphs = client.build_graph(
-                file_path=[file_path], ontology_path=ontology_path
+            knowledge_graphs = client.build.build_graph(
+                file_paths=[file_path], ontology_path=ontology_path
             )
 
             if not knowledge_graphs:

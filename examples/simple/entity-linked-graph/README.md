@@ -6,8 +6,9 @@ It showcases:
 
 1.  Building two separate `KnowledgeGraph` objects from `person1.txt` and `person2.txt`.
 2.  Applying a shared `ontology.ttl` to both graphs.
-3.  **Calling `KnowledgeGraph.interlink()`** to deduplicate entities based on their `rdfs:label` and merge the two graphs.
-4.  **Saving the final, unified graph directly to Neo4j**.
+3.  Injects shared metadata into all graphs, such as `source: interlink_graphs_example`.
+4.  **Calling `KnowledgeGraph.interlink()`** to deduplicate entities based on their `rdfs:label` and merge the two graphs.
+5.  **Saving the final, unified graph directly to Neo4j**.
 
 ## How to run
 

@@ -18,8 +18,8 @@ def main(
     """
     try:
         with PerseusClient() as client:
-            knowledge_graphs = client.build_graph(
-                file_path=file_paths,
+            knowledge_graphs = client.build.build_graph(
+                file_paths=file_paths,
                 ontology_path=ontology_path,
                 metadata={"source": "interlink_graphs_example"},
             )

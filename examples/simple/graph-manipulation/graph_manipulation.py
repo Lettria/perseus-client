@@ -20,8 +20,8 @@ def main(file_path: str):
         with PerseusClient() as client:
             # 1. Build the initial KnowledgeGraph from a file using the SDK
             logger.info(f"Building initial graph from file: {file_path}")
-            knowledge_graphs = client.build_graph(
-                file_path=[file_path], metadata={"source": "graph_manipulation_example"}
+            knowledge_graphs = client.build.build_graph(
+                file_paths=[file_path], metadata={"source": "graph_manipulation_example"}
             )
             if not knowledge_graphs:
                 logger.error("Failed to build graph from the file.")

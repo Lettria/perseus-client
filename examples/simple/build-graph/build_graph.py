@@ -24,8 +24,8 @@ def main(file_path: str):
         with PerseusClient() as client:
             logger.info("Building graph with metadata...")
             # The build_graph method now returns a list of KnowledgeGraph objects
-            knowledge_graphs = client.build_graph(
-                file_path=[file_path],
+            knowledge_graphs = client.build.build_graph(
+                file_paths=[file_path],
                 metadata=custom_metadata,
             )
 
