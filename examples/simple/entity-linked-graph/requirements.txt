@@ -1,1 +1,1 @@
-perseus-client[neo4j]==1.0.0-rc.12
+perseus-client[neo4j]==1.0.0-rc.13
