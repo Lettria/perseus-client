@@ -31,9 +31,11 @@ def main(file_path: str):
             kg = knowledge_graphs[0]
             logger.info("Graph built successfully. Saving to Neo4j...")
             kg.save_to_neo4j()
+            kg.save_ttl("./output/graph.ttl")
+            kg.save_cql("./output/graph.cql")
             logger.info(
                 "Graph with metadata saved to Neo4j. "
-                "You can now inspect the nodes and relationships in your Neo4j browser."
+                f"You can now inspect the nodes and relationships in your Neo4j browser at http://localhost:7474/browser/ (credentials available in your .env file)."
             )
 
     except Exception as e:

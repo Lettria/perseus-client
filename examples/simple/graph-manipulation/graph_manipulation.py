@@ -13,8 +13,6 @@ def main(file_path: str):
     Main function to build a graph, manipulate it, and serialize the results.
     """
     # Define output directory
-    output_dir = "output"
-    os.makedirs(output_dir, exist_ok=True)
 
     try:
         # 1. Build the initial KnowledgeGraph from a file using the SDK
@@ -33,19 +31,8 @@ def main(file_path: str):
         )
 
         # 2. Save the original, unmodified graph content from the API
-        original_ttl_path = os.path.join(
-            output_dir, "output_graph_original.ttl"
-        )
-        with open(original_ttl_path, "w", encoding="utf-8") as f:
-            f.write(kg.ttl_content if kg.ttl_content else "")
-        logger.info(f"Original TTL content from API saved to {original_ttl_path}")
-
-        original_cql_path = os.path.join(
-            output_dir, "output_graph_original.cql"
-        )
-        with open(original_cql_path, "w", encoding="utf-8") as f:
-            f.write(kg.cql_content if kg.cql_content else "")
-        logger.info(f"Original CQL content from API saved to {original_cql_path}")
+        kg.save_ttl("./output/original_graph.ttl")
+        kg.save_cql("./output/original_graph.cql", strip_prefixes=True)
 
         # 3. Manipulate the KnowledgeGraph object
         logger.info("Manipulating the Graph...")
@@ -100,9 +87,9 @@ def main(file_path: str):
         )
 
         # 4. Serialize the modified graph to TTL and CQL using the new methods
-        kg.save_ttl(os.path.join(output_dir, "output_graph_modified.ttl"))
+        kg.save_ttl("./output/modified_graph.ttl")
         kg.save_cql(
-            os.path.join(output_dir, "output_graph_modified.cql"),
+            "./output/modified_graph.cql",
             strip_prefixes=True,
         )
 
@@ -114,6 +101,7 @@ def main(file_path: str):
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}", exc_info=True)
         sys.exit(1)
+
 
 if __name__ == "__main__":
     asset_path = "assets/sample.txt"

@@ -32,11 +32,8 @@ def main(
             merge_properties_on_conflict=True,
             # immutable_properties=["hasJobTitle"]
         )
-
-        with open("./output/merged_graph.ttl", "w") as f:
-            f.write(merged_kg.ttl_content if merged_kg.ttl_content else "")
-        with open("./output/merged_graph.cql", "w") as f:
-            f.write(merged_kg.cql_content if merged_kg.cql_content else "")
+        merged_kg.save_ttl("./output/merged_graph.ttl")
+        merged_kg.save_cql("./output/merged_graph.cql")
 
         # 3. Save the single, merged graph to Neo4j
         merged_kg.save_to_neo4j(strip_prefixes=True)

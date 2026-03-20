@@ -21,7 +21,7 @@ class FalkorDBService:
     def __init__(self, loop: asyncio.AbstractEventLoop, timeout: int = 120):
         if not FALKORDB_AVAILABLE:
             logger.warning(
-                "FalkorDBService initialized but FalkorDB library is missing."
+                "FalkorDBService initialized but 'falkordb' library is missing."
             )
         self._loop = loop
         self.cql_service = CQLService()
@@ -47,9 +47,8 @@ class FalkorDBService:
             start_time = time.time()
             while time.time() - start_time < self.timeout:
                 try:
-                    if (
-                        not getattr(settings, "falkordb_host", None)
-                        or not getattr(settings, "falkordb_port", None)
+                    if not getattr(settings, "falkordb_host", None) or not getattr(
+                        settings, "falkordb_port", None
                     ):
                         raise ConfigurationException(
                             "FalkorDB configuration is incomplete (Host or Port missing). Please check your settings."
@@ -173,8 +172,6 @@ class FalkorDBService:
             )
         finally:
             logger.info("FalkorDB operation finished.")
-
-    
 
     def save_to_falkordb(self, kg: KnowledgeGraph, strip_prefixes: bool = True):
         """
