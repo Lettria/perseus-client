@@ -10,14 +10,14 @@ This example demonstrates how to use the Perseus Client to build a knowledge gra
     ```
 
 2.  **Set up your environment:**
-    Create a `.env` file in this directory by copying the template, and then add your `PERSEUS_API_KEY`.
+    Copy the `template.env` file to `.env` and fill in the required environment variables.
+
     ```bash
     cp template.env .env
     ```
-    Your `.env` file should look like this:
-    ```env
-    PERSEUS_API_KEY="YOUR_API_KEY"
-    ```
+
+    You will need to fill in the following variables in your new `.env` file:
+    - `PERSEUS_API_KEY`
 
 ## Usage
 

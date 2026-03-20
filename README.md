@@ -48,9 +48,7 @@ pip install "perseus-client[falkordb]==1.0.0-rc.13"
 
 ## 🚀 Quick Start
 
-To start using the SDK, you will need an API key from Lettria.
-
-To create an API key, please visit our app [here](https://app.perseus.lettria.net/).
+To start using the SDK, you’ll need an API key from Lettria, which you can create by visiting our app [here](https://app.perseus.lettria.net/).
 
 ### Configuration
 
@@ -188,7 +186,7 @@ Processes one or more files by uploading them, optionally with an ontology, runn
 
 | Parameter       | Type                       | Description                                                     | Default |
 | --------------- | -------------------------- | --------------------------------------------------------------- | ------- |
-| `file_paths`     | `List[str]`                | A list of file paths to process.                                |         |
+| `file_paths`    | `List[str]`                | A list of file paths to process.                                |         |
 | `ontology_path` | `Optional[str]`            | The path to the ontology file to use.                           | `None`  |
 | `refresh_graph` | `bool`                     | Whether to force a new job to be created (refresh the graph).   | `False` |
 | `metadata`      | `Optional[Dict[str, Any]]` | A dictionary of metadata to add to all nodes and relationships. | `None`  |
@@ -207,12 +205,12 @@ def interlink(
 
 Merges multiple `KnowledgeGraph` objects into a single one based on a linking key. Entities are deduplicated and their properties are combined. By default, entities of different types will not be merged, even if they share the same linking key. If `immutable_properties` are specified, entities with conflicting values for these properties will also not be merged, resulting in separate entities in the final graph.
 
-| Parameter                      | Type                  | Description                                                                                                                                                              | Default                                            |
-| ------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
-| `kbs`                          | `List[KnowledgeGraph]`| A list of `KnowledgeGraph` objects to merge.                                                                                                                             |                                                    |
-| `interlinking_key_uris`        | `List[str]`           | The URI of the property to use for linking entities (e.g., `rdfs:label`).                                                                                                  | `["http://www.w3.org/2000/01/rdf-schema#label"]` |
-| `immutable_properties`         | `Optional[List[str]]` | A list of property URIs (e.g., `"http://purl.org/dc/elements/1.1/title"` or `"hasJobTitle"`) that, if their values conflict between entities, will prevent those entities from being merged. Instead, separate entities will be retained. | `None`                                             |
-| `merge_properties_on_conflict` | `bool`                | If `True`, merges properties when a conflict occurs. Otherwise, keeps the first one.                                                                                     | `False`                                            |
+| Parameter                      | Type                   | Description                                                                                                                                                                                                                               | Default                                          |
+| ------------------------------ | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `kbs`                          | `List[KnowledgeGraph]` | A list of `KnowledgeGraph` objects to merge.                                                                                                                                                                                              |                                                  |
+| `interlinking_key_uris`        | `List[str]`            | The URI of the property to use for linking entities (e.g., `rdfs:label`).                                                                                                                                                                 | `["http://www.w3.org/2000/01/rdf-schema#label"]` |
+| `immutable_properties`         | `Optional[List[str]]`  | A list of property URIs (e.g., `"http://purl.org/dc/elements/1.1/title"` or `"hasJobTitle"`) that, if their values conflict between entities, will prevent those entities from being merged. Instead, separate entities will be retained. | `None`                                           |
+| `merge_properties_on_conflict` | `bool`                 | If `True`, merges properties when a conflict occurs. Otherwise, keeps the first one.                                                                                                                                                      | `False`                                          |
 
 ## 📂 Examples
 

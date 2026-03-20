@@ -11,19 +11,19 @@ This example demonstrates how to build a knowledge graph from a text file, add c
     ```
 
 2.  **Set up your environment:**
-    Create a `.env` file in this directory and add your `PERSEUS_API_KEY`. You can also configure your Neo4j connection details here if they are different from the defaults in the `docker-compose.yaml`.
+    Copy the `template.env` file to `.env` and fill in the required environment variables.
 
-    ```env
-    PERSEUS_API_KEY="YOUR_API_KEY"
-    NEO4J_URI="bolt://localhost:7687"
-    NEO4J_USER="neo4j"
-    NEO4J_PASSWORD="j4oenj4oen"
+    ```bash
+    cp template.env .env
     ```
 
+    You will need to fill in the following variables in your new `.env` file:
+    - `PERSEUS_API_KEY`
+
 3.  **Start Neo4j:**
-    A `docker-compose.yaml` file is provided to easily start a Neo4j instance.
+    A `docker compose.yaml` file is provided to easily start a Neo4j instance.
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
 
 ## Usage

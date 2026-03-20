@@ -17,10 +17,14 @@ This example demonstrates basic ontology operations using the Perseus Client:
     ```
 
 2.  **Set up your environment:**
-    Create a `.env` file in this directory with your `PERSEUS_API_KEY`.
-    ```env
-    PERSEUS_API_KEY="YOUR_API_KEY"
+    Copy the `template.env` file to `.env` and fill in the required environment variables.
+
+    ```bash
+    cp template.env .env
     ```
+
+    You will need to fill in the following variables in your new `.env` file:
+    - `PERSEUS_API_KEY`
 
 ### Usage
 

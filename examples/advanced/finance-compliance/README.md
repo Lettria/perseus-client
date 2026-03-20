@@ -61,7 +61,7 @@ Execute the scripts in order, providing the path to the documents you want to pr
 When you're done, stop and remove the Docker services:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## Expected Compliance Results

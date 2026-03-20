@@ -19,19 +19,19 @@ This example demonstrates the end-to-end process of:
     ```
 
 2.  **Set up your environment:**
-    Create a `.env` file in this directory and add your `PERSEUS_API_KEY`. You can also configure your Neo4j connection details here if they are different from the defaults in the `docker-compose.yaml`.
+    Copy the `template.env` file to `.env` and fill in the required environment variables.
 
-    ```env
-    PERSEUS_API_KEY="YOUR_API_KEY"
-    NEO4J_URI="bolt://localhost:7687"
-    NEO4J_USER="neo4j"
-    NEO4J_PASSWORD="j4oenj4oen"
+    ```bash
+    cp template.env .env
     ```
 
+    You will need to fill in the following variables in your new `.env` file:
+    - `PERSEUS_API_KEY`
+
 3.  **Start Neo4j:**
-    A `docker-compose.yaml` file is provided to easily start a Neo4j instance.
+    A `docker compose.yaml` file is provided to easily start a Neo4j instance.
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
 
 ### Usage
@@ -45,6 +45,7 @@ python graph_manipulation.py
 ## Expected output
 
 The script will:
+
 - Connect to the Perseus API to build a graph from `assets/sample.txt`.
 - Create an `output` directory within the example folder.
 - Save the initial graph to `output/output_graph_original.ttl`.
