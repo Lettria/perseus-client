@@ -75,19 +75,11 @@ This example shows how to build a graph from a text file.
 ```python
 import perseus_client
 
-# This will automatically use the configuration from your environment variables.
-try:
-    # Build a graph from a document
-    knowledge_graphs = perseus_client.build_graph(
-        file_paths=["path/to/your/document.txt"],
-    )
-
-    # Print the result
-    for graph in knowledge_graphs:
-        print(f"🎉 Graph built successfully with {len(graph.entities)} entities and {len(graph.relations)} relations!")
-
-except Exception as e:
-    print(f"An error occurred: {e}")
+knowledge_graphs = perseus_client.build_graph(
+    file_paths=["path/to/your/document.txt"],
+)
+for graph in knowledge_graphs:
+    print(f"🎉 Graph built successfully with {len(graph.entities)} entities and {len(graph.relations)} relations!")
 ```
 
 ### The `KnowledgeGraph` Object
