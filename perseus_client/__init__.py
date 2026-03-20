@@ -38,6 +38,13 @@ def _get_client() -> PerseusClient:
     return _client
 
 
+async def _get_client_async() -> PerseusClient:
+    global _client
+    if _client is None:
+        _client = PerseusClient()
+    return await _client.__aenter__()
+
+
 def build_graph(
     file_paths: List[str],
     ontology_path: Optional[str] = None,
@@ -64,7 +71,6 @@ def interlink(
         immutable_properties=immutable_properties,
         merge_properties_on_conflict=merge_properties_on_conflict,
     )
-
 
 
 def upload_file(file_path: str) -> File:
@@ -112,9 +118,7 @@ def find_latest_succeeded_job(
     return _get_client().job.find_latest_succeeded_job(file_id, ontology_id)
 
 
-def find_latest_job(
-    file_id: str, ontology_id: Optional[str] = None
-) -> Optional[Job]:
+def find_latest_job(file_id: str, ontology_id: Optional[str] = None) -> Optional[Job]:
     return _get_client().job.find_latest_job(file_id, ontology_id)
 
 
@@ -158,9 +162,156 @@ def wait_for_ontology_upload(
     )
 
 
+async def build_graph_async(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+) -> List[KnowledgeGraph]:
+    client = await _get_client_async()
+    return await client.build_graph_async(
+        file_paths=file_paths,
+        ontology_path=ontology_path,
+        refresh_graph=refresh_graph,
+        metadata=metadata,
+    )
+
+
+async def interlink_async(
+    kbs: List[KnowledgeGraph],
+    interlinking_key_uris: List[str] = ["http://www.w3.org/2000/01/rdf-schema#label"],
+    immutable_properties: Optional[List[str]] = None,
+    merge_properties_on_conflict: bool = False,
+) -> KnowledgeGraph:
+    client = await _get_client_async()
+    return await client.interlink_async(
+        kbs=kbs,
+        interlinking_key_uris=interlinking_key_uris,
+        immutable_properties=immutable_properties,
+        merge_properties_on_conflict=merge_properties_on_conflict,
+    )
+
+
+async def upload_file_async(file_path: str) -> File:
+    client = await _get_client_async()
+    return await client.file.upload_file_async(file_path)
+
+
+async def find_files_async(
+    ids: Optional[List[str]] = None,
+    source_hashes: Optional[List[str]] = None,
+) -> list[File]:
+    client = await _get_client_async()
+    return await client.file.find_files_async(ids, source_hashes)
+
+
+async def find_file_async(id: str) -> Optional[File]:
+    client = await _get_client_async()
+    return await client.file.find_file_async(id)
+
+
+async def delete_file_async(file_id: str) -> None:
+    client = await _get_client_async()
+    return await client.file.delete_file_async(file_id)
+
+
+async def wait_for_file_upload_async(
+    file_id: str,
+    polling_interval: float = 0.5,
+    timeout: int = 3600,
+) -> File:
+    client = await _get_client_async()
+    return await client.file.wait_for_file_upload_async(
+        file_id, polling_interval, timeout
+    )
+
+
+async def submit_job_async(file_id: str, ontology_id: Optional[str] = None) -> Job:
+    client = await _get_client_async()
+    return await client.job.submit_job_async(file_id, ontology_id)
+
+
+async def find_jobs_async(ids: List[str]) -> List[Job]:
+    client = await _get_client_async()
+    return await client.job.find_jobs_async(ids)
+
+
+async def find_job_async(id: str) -> Optional[Job]:
+    client = await _get_client_async()
+    return await client.job.find_job_async(id)
+
+
+async def find_latest_succeeded_job_async(
+    file_id: str, ontology_id: Optional[str] = None
+) -> Optional[Job]:
+    client = await _get_client_async()
+    return await client.job.find_latest_succeeded_job_async(file_id, ontology_id)
+
+
+async def find_latest_job_async(
+    file_id: str, ontology_id: Optional[str] = None
+) -> Optional[Job]:
+    client = await _get_client_async()
+    return await client.job.find_latest_job_async(file_id, ontology_id)
+
+
+async def download_job_output_async(
+    job_id: str, output_path: Optional[str] = None
+) -> str:
+    client = await _get_client_async()
+    return await client.job.download_job_output_async(job_id, output_path)
+
+
+async def run_job_async(
+    job_id: str,
+    polling_interval: int = 5,
+    timeout: int = 3600,
+) -> Job:
+    client = await _get_client_async()
+    return await client.job.run_job_async(job_id, polling_interval, timeout)
+
+
+async def upload_ontology_async(ontology_path: str) -> Ontology:
+    client = await _get_client_async()
+    return await client.ontology.upload_ontology_async(ontology_path)
+
+
+async def find_ontologies_async(
+    ids: Optional[list[str]] = None, source_hashes: Optional[list[str]] = None
+) -> list[Ontology]:
+    client = await _get_client_async()
+    return await client.ontology.find_ontologies_async(ids, source_hashes)
+
+
+async def find_ontology_async(id: str) -> Optional[Ontology]:
+    client = await _get_client_async()
+    return await client.ontology.find_ontology_async(id)
+
+
+async def delete_ontology_async(ontology_id: str) -> None:
+    client = await _get_client_async()
+    return await client.ontology.delete_ontology_async(ontology_id)
+
+
+async def wait_for_ontology_upload_async(
+    ontology_id: str,
+    polling_interval: float = 0.5,
+    timeout: int = 3600,
+) -> Ontology:
+    client = await _get_client_async()
+    return await client.ontology.wait_for_ontology_upload_async(
+        ontology_id, polling_interval, timeout
+    )
+
+
 def close():
     if _client is not None:
         _client.close()
+
+
+async def close_async():
+    if _client is not None:
+        await _client.__aexit__(None, None, None)
 
 
 __all__ = [
@@ -193,4 +344,24 @@ __all__ = [
     "delete_ontology",
     "wait_for_ontology_upload",
     "close",
+    "close_async",
+    "build_graph_async",
+    "interlink_async",
+    "upload_file_async",
+    "find_files_async",
+    "find_file_async",
+    "delete_file_async",
+    "wait_for_file_upload_async",
+    "submit_job_async",
+    "find_jobs_async",
+    "find_job_async",
+    "find_latest_succeeded_job_async",
+    "find_latest_job_async",
+    "download_job_output_async",
+    "run_job_async",
+    "upload_ontology_async",
+    "find_ontologies_async",
+    "find_ontology_async",
+    "delete_ontology_async",
+    "wait_for_ontology_upload_async",
 ]

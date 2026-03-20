@@ -36,3 +36,26 @@ async def test_build_graph_async(client: PerseusClient):
             refresh_graph=False,
             metadata=metadata,
         )
+
+
+@pytest.mark.asyncio
+async def test_interlink_async(client: PerseusClient):
+    """
+    Test the interlink_async method.
+    """
+    kbs = [KnowledgeGraph()]
+    
+    mock_build_service = MagicMock(spec=BuildService)
+    mock_build_service.interlink_async = AsyncMock(return_value=KnowledgeGraph())
+
+    with patch('perseus_client.client.PerseusClient.build', new_callable=PropertyMock) as mock_build_property:
+        mock_build_property.return_value = mock_build_service
+        
+        await client.interlink_async(kbs=kbs)
+        
+        mock_build_service.interlink_async.assert_called_once_with(
+            kbs=kbs,
+            interlinking_key_uris=["http://www.w3.org/2000/01/rdf-schema#label"],
+            immutable_properties=None,
+            merge_properties_on_conflict=False,
+        )

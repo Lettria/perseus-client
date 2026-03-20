@@ -1,0 +1,41 @@
+@prefix action: <http://example.org/action/> .
+@prefix animal: <http://example.org/animal/> .
+@prefix data: <http://example.org/data/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix pmeta: <https://lettria.com/perseus/metadata#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema1: <http://schema.org/> .
+
+data:fa0813c1-54b2-410d-89ff-c1e731b06dac a animal:Fox ;
+    rdfs:label "Freddy" ;
+    action:jumpsOver data:09cde200-c2b1-4e3f-a128-76d61bffa816 ;
+    schema1:color "brown" ;
+    schema1:description "quick" ;
+    schema1:homeLocation data:571784ec-05ca-4f94-a191-741680d4d6d2 ;
+    schema1:name "Freddy" ;
+    foaf:knows data:09cde200-c2b1-4e3f-a128-76d61bffa816 ;
+    pmeta:custom_tag "example-metadata" ;
+    pmeta:processing_date "2026-03-10" ;
+    pmeta:source_file "sample.txt" ;
+    pmeta:version "1.0" .
+
+data:09cde200-c2b1-4e3f-a128-76d61bffa816 a animal:Dog ;
+    rdfs:label "Max" ;
+    schema1:description "lazy" ;
+    schema1:homeLocation data:571784ec-05ca-4f94-a191-741680d4d6d2 ;
+    schema1:name "Max" ;
+    foaf:knows data:fa0813c1-54b2-410d-89ff-c1e731b06dac ;
+    pmeta:custom_tag "example-metadata" ;
+    pmeta:processing_date "2026-03-10" ;
+    pmeta:source_file "sample.txt" ;
+    pmeta:version "1.0" .
+
+data:571784ec-05ca-4f94-a191-741680d4d6d2 a geo:Forest ;
+    rdfs:label "a forest" ;
+    schema1:description "beautiful" ;
+    pmeta:custom_tag "example-metadata" ;
+    pmeta:processing_date "2026-03-10" ;
+    pmeta:source_file "sample.txt" ;
+    pmeta:version "1.0" .
+
