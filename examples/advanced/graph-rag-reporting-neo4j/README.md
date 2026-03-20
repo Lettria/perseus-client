@@ -23,7 +23,7 @@ The process is divided into three main scripts:
 
   You will need to fill in the following variables in your new `.env` file:
   - `PERSEUS_API_KEY`
-  - `GOOGLE_API_KEY`
+  - `GEMINI_API_KEY`
 
 ### 2. Install Dependencies & Start Services
 
@@ -39,6 +39,8 @@ docker compose up -d
 Execute the scripts in order.
 
 1.  **Convert the PDF to Markdown:**
+
+    > **Note:** The example already includes the converted Markdown file (`LOREAL_Rapport_Annuel_2024.md`) in the `assets` folder. You can skip this step if you want to use the provided file.
 
     ```bash
     python pdf_to_markdown.py assets/LOREAL_Rapport_Annuel_2024.pdf

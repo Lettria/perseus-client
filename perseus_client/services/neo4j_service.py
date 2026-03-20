@@ -24,7 +24,7 @@ class Neo4jService:
         timeout: int = 120,
     ):
         if not NEO4J_AVAILABLE:
-            logger.warning("Neo4jService initialized but 'neo4j' library is missing.")
+            logger.info("Neo4jService initialized but 'neo4j' library is missing.")
         self._loop = loop
         self.cql_service = CQLService()
         self.timeout = timeout

@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class FalkorDBService:
     def __init__(self, loop: asyncio.AbstractEventLoop, timeout: int = 120):
         if not FALKORDB_AVAILABLE:
-            logger.warning(
+            logger.info(
                 "FalkorDBService initialized but 'falkordb' library is missing."
             )
         self._loop = loop
