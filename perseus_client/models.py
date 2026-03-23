@@ -133,6 +133,16 @@ class KnowledgeGraph(BaseModel):
             )
         return self._cql_service.to_cql(self, strip_prefixes)
 
+    def to_cypher_statements(self) -> List[str]:
+        """
+        Parses the CQL content and returns a list of individual Cypher statements.
+        """
+        if not self.cql_content:
+            return []
+        
+        statements = [s.strip() for s in self.cql_content.split(';') if s.strip()]
+        return statements
+
     def to_rdflib(self) -> "Graph":
         if not self._rdflib_service:
             raise RuntimeError(
