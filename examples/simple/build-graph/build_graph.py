@@ -30,6 +30,8 @@ async def main(file_path: str):
             knowledge_graphs = await client.build_graph_async(
                 file_paths=[file_path],
                 metadata=custom_metadata,
+                refresh_graph=True,
+                ontology_path="./assets/ontology.ttl",
             )
 
             if knowledge_graphs:

@@ -21,11 +21,6 @@ def main(
             ontology_path=ontology_path,
             metadata={"source": "interlink_graphs_example"},
         )
-
-        if not knowledge_graphs or len(knowledge_graphs) < 2:
-            logger.error("Failed to build at least two graphs for interlinking.")
-            return
-
         # 2. Interlink the knowledge graphs
         merged_kg = perseus_client.interlink(
             kbs=knowledge_graphs,

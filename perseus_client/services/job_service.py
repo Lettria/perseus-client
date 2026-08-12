@@ -111,7 +111,7 @@ class JobService(BaseService):
         )
         payload: Dict[str, Any] = {"fileId": file_id, "status": JobStatus.SUCCEEDED}
         if ontology_id:
-            payload["ontologyId"] = ontology_id
+            payload["ontologyIds"] = [ontology_id]
         response = await self._request(
             "POST",
             "/api/v0/job/find",
@@ -143,7 +143,7 @@ class JobService(BaseService):
         )
         payload: Dict[str, Any] = {"fileId": file_id}
         if ontology_id:
-            payload["ontologyId"] = ontology_id
+            payload["ontologyIds"] = [ontology_id]
         response = await self._request(
             "POST",
             "/api/v0/job/find",
