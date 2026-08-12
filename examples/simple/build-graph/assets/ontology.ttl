@@ -1,0 +1,206 @@
+@prefix ont: <http://example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+#################################################################
+#    Ontology Metadata & Annotation Properties
+#################################################################
+
+<http://example.org/ontology> a owl:Ontology ;
+    rdfs:comment "Ontology for the use case: data and metadata."@en ;
+    owl:versionInfo "1.0.0-refactored" .
+
+#################################################################
+#    Classes
+#################################################################
+
+ont:Abstract a owl:Class ;
+    rdfs:label "Abstract Entity"@en ;
+    rdfs:comment "Non-material entities existing conceptually, informationally, or socially, without physical form."@en ;
+    rdfs:subClassOf owl:Thing .
+
+ont:Agent a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "Entities capable of intentional action and decision-making, including persons and organizations."@en ;
+    rdfs:subClassOf owl:Thing .
+
+ont:Animal a owl:Class ;
+    rdfs:label "Animal"@en ;
+    rdfs:comment "A living organism that feeds on organic matter, typically having specialized sense organs and nervous system and able to respond rapidly to stimuli."@en ;
+    rdfs:subClassOf ont:Organism .
+
+ont:Data a owl:Class ;
+    rdfs:label "Data"@en ;
+    rdfs:comment "Factual information, especially figures and statistics, used for reference or analysis."@en ;
+    rdfs:subClassOf ont:InformationContent .
+
+ont:DataProvenance a owl:Class ;
+    rdfs:label "Data Provenance"@en ;
+    rdfs:comment ""@en ;
+    rdfs:subClassOf ont:Metadata .
+
+ont:Dog a owl:Class ;
+    rdfs:label "Dog"@en ;
+    rdfs:comment "A domesticated canine animal, representing a type of entity that can exist within a dataset."@en ;
+    rdfs:subClassOf ont:Animal ;
+    owl:disjointWith ont:Fox .
+
+ont:File a owl:Class ;
+    rdfs:label "File"@en ;
+    rdfs:comment "A collection of data stored as a single unit on a computer system, serving as an input for processing."@en ;
+    rdfs:subClassOf ont:InformationContent ;
+    owl:disjointWith ont:Software .
+
+ont:Fox a owl:Class ;
+    rdfs:label "Fox"@en ;
+    rdfs:comment "A carnivorous mammal of the dog family, representing a type of entity that can exist within a dataset."@en ;
+    rdfs:subClassOf ont:Animal .
+
+ont:Graph a owl:Class ;
+    rdfs:label "Graph"@en ;
+    rdfs:comment ""@en ;
+    rdfs:subClassOf ont:Model .
+
+ont:GraphComponent a owl:Class ;
+    rdfs:label "Graph Component"@en ;
+    rdfs:comment "A fundamental constituent part of a graph model."@en ;
+    rdfs:subClassOf ont:Abstract .
+
+ont:InformationContent a owl:Class ;
+    rdfs:label "Information Content"@en ;
+    rdfs:comment "An abstract entity whose primary nature is informational, representing knowledge, instructions, or data encoded in a medium-independent form."@en ;
+    rdfs:subClassOf ont:Abstract .
+
+ont:Location a owl:Class ;
+    rdfs:label "Location"@en ;
+    rdfs:comment "A specific place or position, representing a geographical or spatial context for data."@en ;
+    rdfs:subClassOf ont:SpatialRegion .
+
+ont:Material a owl:Class ;
+    rdfs:label "Material"@en ;
+    rdfs:comment "Physical things with clear boundaries and material substance, including objects, artifacts, and natural entities."@en ;
+    rdfs:subClassOf owl:Thing .
+
+ont:Metadata a owl:Class ;
+    rdfs:label "Metadata"@en ;
+    rdfs:comment ""@en ;
+    rdfs:subClassOf ont:Data .
+
+ont:Model a owl:Class ;
+    rdfs:label "Model"@en ;
+    rdfs:comment "A simplified representation of a system or phenomenon, often used for analysis, simulation, or prediction."@en ;
+    rdfs:subClassOf ont:Abstract .
+
+ont:Node a owl:Class ;
+    rdfs:label "Node"@en ;
+    rdfs:comment ""@en ;
+    rdfs:subClassOf ont:GraphComponent ;
+    owl:disjointWith ont:Relationship .
+
+ont:Organism a owl:Class ;
+    rdfs:label "Organism"@en ;
+    rdfs:comment "An individual living being, such as an animal, plant, fungus, or micro-organism."@en ;
+    rdfs:subClassOf ont:Material .
+
+ont:Process a owl:Class ;
+    rdfs:label "Process"@en ;
+    rdfs:comment "Occurrences that unfold over time, including events, activities, and transformations."@en ;
+    rdfs:subClassOf owl:Thing .
+
+ont:Quality a owl:Class ;
+    rdfs:label "Quality"@en ;
+    rdfs:comment "Properties, attributes, or characteristics that describe other entities."@en ;
+    rdfs:subClassOf owl:Thing .
+
+ont:Relationship a owl:Class ;
+    rdfs:label "Relationship"@en ;
+    rdfs:comment ""@en ;
+    rdfs:subClassOf ont:GraphComponent .
+
+ont:Software a owl:Class ;
+    rdfs:label "Software"@en ;
+    rdfs:comment "A program or set of instructions that performs a specific task on a computer, such as processing data."@en ;
+    rdfs:subClassOf ont:InformationContent .
+
+ont:SpatialRegion a owl:Class ;
+    rdfs:label "Spatial Region"@en ;
+    rdfs:comment "Places, locations, and spatial extents in physical or conceptual space."@en ;
+    rdfs:subClassOf owl:Thing .
+
+ont:TemporalRegion a owl:Class ;
+    rdfs:label "Temporal Region"@en ;
+    rdfs:comment "Time intervals, periods, and temporal extents."@en ;
+    rdfs:subClassOf owl:Thing .
+
+owl:Thing rdfs:comment "The most general type, representing any entity, concept, or event in existence."@en .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+ont:contains a owl:AsymmetricProperty, owl:IrreflexiveProperty, owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "contains"@en ;
+    rdfs:comment "Represents the inclusion of one component as a constituent part of a larger whole."@en ;
+    rdfs:domain ont:Graph ;
+    rdfs:range ont:GraphComponent .
+
+ont:enables a owl:AsymmetricProperty, owl:IrreflexiveProperty, owl:ObjectProperty ;
+    rdfs:label "enables"@en ;
+    rdfs:comment "Represents a causal link where one concept or component makes another possible or functional."@en ;
+    rdfs:domain ont:Metadata ;
+    rdfs:range ont:DataProvenance .
+
+ont:generates a owl:AsymmetricProperty, owl:IrreflexiveProperty, owl:ObjectProperty ;
+    rdfs:label "generates"@en ;
+    rdfs:comment "Represents the act of creating or producing a new data structure or output."@en ;
+    rdfs:domain ont:Software ;
+    rdfs:range ont:Graph .
+
+ont:isAugmentedWith a owl:ObjectProperty ;
+    rdfs:label "is augmented with"@en ;
+    rdfs:comment "Represents the act of enhancing or supplementing a data element with additional information."@en ;
+    rdfs:domain ont:GraphComponent ;
+    rdfs:range ont:Metadata .
+
+ont:isFriendOf a owl:IrreflexiveProperty, owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "is friend of"@en ;
+    rdfs:comment "Represents a mutual and positive social bond."@en ;
+    rdfs:domain ont:Animal ;
+    rdfs:range ont:Animal .
+
+ont:livesIn a owl:ObjectProperty ;
+    rdfs:label "lives in"@en ;
+    rdfs:comment "Represents the state of residing or being an inhabitant of a particular place."@en ;
+    rdfs:domain ont:Organism ;
+    rdfs:range ont:Location .
+
+ont:processes a owl:ObjectProperty ;
+    rdfs:label "processes"@en ;
+    rdfs:comment "Represents the act of performing a series of operations on data to transform or analyze it."@en ;
+    rdfs:domain ont:Software ;
+    rdfs:range ont:File .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+ont:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:comment "A free-text, narrative summary of an entity."@en ;
+    rdfs:domain ont:Location ;
+    rdfs:range xsd:token .
+
+#################################################################
+#    Annotation Properties
+#################################################################
+
+skos:altLabel a owl:AnnotationProperty .
+
+#################################################################
+#    OWL Axioms
+#################################################################
+
+[] a owl:AllDisjointClasses ;
+    owl:members (ont:Abstract ont:Agent ont:Material ont:Process ont:Quality ont:SpatialRegion ont:TemporalRegion) .
+
