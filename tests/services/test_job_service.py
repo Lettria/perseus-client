@@ -210,7 +210,7 @@ async def test_find_latest_job_async_no_job(
         "POST",
         f"{client.api_host}/api/v0/job/find",
         params={"limit": 1, "orderBy": "createdAt", "orderDirection": "DESC"},
-        json={"fileId": file_id, "ontologyId": ontology_id},
+        json={"fileId": file_id, "ontologyIds": [ontology_id]},
     )
 
 
@@ -289,7 +289,6 @@ async def test_download_job_output_async_missing_urls(client: PerseusClient):
 
         mock_get_urls.assert_called_once_with(job_id)
         mock_download.assert_not_called()
-
 
 
 @pytest.mark.asyncio
