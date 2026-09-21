@@ -210,7 +210,7 @@ async def test_find_latest_job_async_no_job(
         "POST",
         f"{client.api_host}/api/v0/job/find",
         params={"limit": 1, "orderBy": "createdAt", "orderDirection": "DESC"},
-        json={"fileId": file_id, "ontologyIds": [ontology_id]},
+        json={"fileId": file_id, "type": "t2g", "ontologyIds": [ontology_id]},
     )
 
 
