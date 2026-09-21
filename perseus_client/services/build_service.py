@@ -15,7 +15,6 @@ from .graph_service import GraphService
 from .interlink_service import InterlinkService
 from .rdflib_service import RDFLibService
 
-
 logger = logging.getLogger(__name__)
 
 

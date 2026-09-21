@@ -88,7 +88,7 @@ class CQLService:
                     return f"`{PREDICATE_MAP[uri]}`"
                 for prefix, ns_uri in kg.namespaces.items():
                     if uri.startswith(ns_uri):
-                        local_name = uri[len(ns_uri):]
+                        local_name = uri[len(ns_uri) :]
                         return f"`{local_name}`"
                 local_name = uri.split("/")[-1].split("#")[-1]
                 sanitized_name = local_name.replace(" ", "_").replace("-", "_")
@@ -101,6 +101,55 @@ class CQLService:
                 local_name = uri.split("/")[-1].split("#")[-1]
                 return f"`{local_name}`"
 
+        def _coerce_literal(literal: LiteralValue) -> Any:
+            """
+            Coerces a literal's lexical value to a native Python type based on its datatype.
+            """
+            XSD = "http://www.w3.org/2001/XMLSchema#"
+            BOOLEAN_LEXICAL = {"true": True, "false": False, "1": True, "0": False}
+
+            value = literal.value
+            datatype = literal.datatype
+
+            if datatype is None or not isinstance(value, str):
+                return value
+
+            lexical = value.strip()
+
+            integer_types = {
+                f"{XSD}integer",
+                f"{XSD}int",
+                f"{XSD}long",
+                f"{XSD}short",
+                f"{XSD}byte",
+                f"{XSD}nonNegativeInteger",
+                f"{XSD}positiveInteger",
+                f"{XSD}unsignedLong",
+                f"{XSD}unsignedInt",
+                f"{XSD}unsignedShort",
+                f"{XSD}unsignedByte",
+                f"{XSD}nonPositiveInteger",
+                f"{XSD}negativeInteger",
+            }
+            decimal_types = {f"{XSD}decimal", f"{XSD}double", f"{XSD}float"}
+
+            if datatype == f"{XSD}boolean":
+                return BOOLEAN_LEXICAL.get(lexical.lower(), value)
+
+            if datatype in integer_types:
+                try:
+                    return int(lexical)
+                except ValueError:
+                    return value
+
+            if datatype in decimal_types:
+                try:
+                    return float(lexical)
+                except ValueError:
+                    return value
+
+            return value
+
         # Helper to format properties for a Cypher map
         def _properties_to_cql_map(properties: Dict[str, LiteralValue]) -> str:
             if not properties:
@@ -111,26 +160,28 @@ class CQLService:
             def _format_value(value: Any) -> str:
                 if value is None:
                     return "null"
+                # bool is a subclass of int, so this check must come first.
+                if isinstance(value, bool):
+                    return str(value).lower()
                 if isinstance(value, (date, datetime)):
                     return f"'{value.isoformat()}'"
                 if isinstance(value, str):
                     escaped_value = value.replace("\\", "\\\\").replace("'", "\\'")
                     return f"'{escaped_value}'"
-                elif isinstance(value, bool):
-                    return str(value).lower()
-                else:  # Numbers, etc.
-                    return str(value)
+                # For numbers (int, float) and other types
+                return str(value)
 
             for k_uri, v_obj in properties.items():
                 key = _uri_to_cql_identifier(k_uri)
+                coerced_value = _coerce_literal(v_obj)
 
-                if isinstance(v_obj.value, list):
+                if isinstance(coerced_value, list):
                     # Format as a Cypher list
-                    list_items = [_format_value(item) for item in v_obj.value]
+                    list_items = [_format_value(item) for item in coerced_value]
                     props.append(f"{key}: [{', '.join(list_items)}]")
                 else:
                     # Format as a single value
-                    props.append(f"{key}: {_format_value(v_obj.value)}")
+                    props.append(f"{key}: {_format_value(coerced_value)}")
 
             return "{" + ", ".join(props) + "}"
 

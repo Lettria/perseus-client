@@ -141,7 +141,10 @@ class JobService(BaseService):
         logger.debug(
             f"Finding latest job for file_id: {file_id}, ontology_id: {ontology_id}"
         )
-        payload: Dict[str, Any] = {"fileId": file_id}
+        payload: Dict[str, Any] = {
+            "fileId": file_id,
+            "type": "t2g",
+        }
         if ontology_id:
             payload["ontologyIds"] = [ontology_id]
         response = await self._request(
