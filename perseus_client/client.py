@@ -42,15 +42,17 @@ class PerseusClient:
     API endpoints. It requires the `PERSEUS_API_KEY` environment variable to be set.
     """
 
-    def __init__(self, api_host: Optional[str] = None):
+    def __init__(self, api_host: Optional[str] = None, base_uri: Optional[str] = None):
         """
         Initializes the PerseusClient.
         Args:
             api_host: The API host to connect to. Defaults to the value of the
                       `PERSEUS_API_HOST` environment variable, or the default staging URL.
+            base_uri: The base URI to use for rebasing entity and relation IRIs.
         """
         self.settings = settings
         self.api_host = api_host or self.settings.perseus_api_host
+        self.base_uri = base_uri
         self._perseus_api_key = self.settings.perseus_api_key
         logger.debug(f"PerseusClient initialized for API host: {self.api_host}")
 
@@ -258,6 +260,7 @@ class PerseusClient:
         ontology_path: Optional[str] = None,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
     ) -> List[KnowledgeGraph]:
         """
         Synchronously processes one or more files by uploading them, optionally with an ontology,
@@ -267,6 +270,7 @@ class PerseusClient:
             ontology_path: The path to the ontology file to use for all files.
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
+            base_uri: The base URI to use for rebasing entity and relation IRIs.
         Returns:
             A list of KnowledgeGraph objects.
         """
@@ -279,6 +283,7 @@ class PerseusClient:
                 ontology_path,
                 refresh_graph,
                 metadata,
+                base_uri,
             )
         )
 
@@ -288,6 +293,7 @@ class PerseusClient:
         ontology_path: Optional[str] = None,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
     ) -> List[KnowledgeGraph]:
         """
         Asynchronously processes one or more files by uploading them, optionally with an ontology,
@@ -297,15 +303,18 @@ class PerseusClient:
             ontology_path: The path to the ontology file to use for all files.
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
+            base_uri: The base URI to use for rebasing entity and relation IRIs.
         Returns:
             A list of KnowledgeGraph objects.
         """
         self._ensure_active()
+        final_base_uri = base_uri if base_uri is not None else self.base_uri
         return await self.build.build_graph_async(
             file_paths=file_paths,
             ontology_path=ontology_path,
             refresh_graph=refresh_graph,
             metadata=metadata,
+            base_uri=final_base_uri,
         )
 
     def interlink(

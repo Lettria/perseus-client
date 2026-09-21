@@ -13,6 +13,7 @@ from unittest.mock import AsyncMock, MagicMock, patch, PropertyMock
 from perseus_client.models import KnowledgeGraph
 from perseus_client.services.build_service import BuildService
 
+
 @pytest.mark.asyncio
 async def test_build_graph_async(client: PerseusClient):
     """
@@ -21,20 +22,25 @@ async def test_build_graph_async(client: PerseusClient):
     file_path = ["test.txt"]
     ontology_path = "test.ttl"
     metadata = {"test": "test"}
-    
+
     mock_build_service = MagicMock(spec=BuildService)
     mock_build_service.build_graph_async = AsyncMock(return_value=[KnowledgeGraph()])
 
-    with patch('perseus_client.client.PerseusClient.build', new_callable=PropertyMock) as mock_build_property:
+    with patch(
+        "perseus_client.client.PerseusClient.build", new_callable=PropertyMock
+    ) as mock_build_property:
         mock_build_property.return_value = mock_build_service
-        
-        await client.build_graph_async(file_paths=file_path, ontology_path=ontology_path, metadata=metadata)
-        
+
+        await client.build_graph_async(
+            file_paths=file_path, ontology_path=ontology_path, metadata=metadata
+        )
+
         mock_build_service.build_graph_async.assert_called_once_with(
             file_paths=file_path,
             ontology_path=ontology_path,
             refresh_graph=False,
             metadata=metadata,
+            base_uri=None,
         )
 
 
@@ -44,15 +50,17 @@ async def test_interlink_async(client: PerseusClient):
     Test the interlink_async method.
     """
     kbs = [KnowledgeGraph()]
-    
+
     mock_build_service = MagicMock(spec=BuildService)
     mock_build_service.interlink_async = AsyncMock(return_value=KnowledgeGraph())
 
-    with patch('perseus_client.client.PerseusClient.build', new_callable=PropertyMock) as mock_build_property:
+    with patch(
+        "perseus_client.client.PerseusClient.build", new_callable=PropertyMock
+    ) as mock_build_property:
         mock_build_property.return_value = mock_build_service
-        
+
         await client.interlink_async(kbs=kbs)
-        
+
         mock_build_service.interlink_async.assert_called_once_with(
             kbs=kbs,
             interlinking_key_uris=["http://www.w3.org/2000/01/rdf-schema#label"],

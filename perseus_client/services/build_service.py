@@ -49,6 +49,7 @@ class BuildService:
         ontology_path: Optional[str] = None,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
     ) -> List[KnowledgeGraph]:
         """
         Synchronously processes one or more files by uploading them, optionally with an ontology,
@@ -58,6 +59,7 @@ class BuildService:
             ontology_path: The path to the ontology file to use for all files.
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
+            base_uri: The base URI to use for rebasing entity and relation IRIs.
         Returns:
             A list of KnowledgeGraph objects.
         """
@@ -67,6 +69,7 @@ class BuildService:
                 ontology_path,
                 refresh_graph,
                 metadata,
+                base_uri,
             )
         )
 
@@ -76,6 +79,7 @@ class BuildService:
         ontology_id: Optional[str] = None,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
     ) -> KnowledgeGraph:
         """
         Processes a single file to build a KnowledgeGraph with resilient job handling.
@@ -181,6 +185,28 @@ class BuildService:
             # Create an empty graph but still attach content if available
             kg = KnowledgeGraph(cql_content=cql_content)
 
+        if base_uri:
+            logger.debug(f"Rebasing knowledge graph to base URI: {base_uri}")
+            PLACEHOLDER = "http://example.org/data/"
+
+            def rebase(uri: str) -> str:
+                if uri and uri.startswith(PLACEHOLDER):
+                    return base_uri + uri[len(PLACEHOLDER) :]
+                return uri
+
+            uri_map = {e.uri: rebase(e.uri) for e in kg.entities}
+
+            for entity in kg.entities:
+                entity.uri = uri_map.get(entity.uri, entity.uri)
+
+            for relation in kg.relations:
+                relation.source_uri = uri_map.get(
+                    relation.source_uri, relation.source_uri
+                )
+                relation.target_uri = uri_map.get(
+                    relation.target_uri, relation.target_uri
+                )
+
         kg.ttl_content = self._ttl.to_ttl(kg)
         kg.cql_content = self._cql.to_cql(kg)
 
@@ -202,6 +228,7 @@ class BuildService:
         ontology_path: Optional[str] = None,
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
     ) -> List[KnowledgeGraph]:
         """
         Processes one or more files by uploading them, optionally with an ontology,
@@ -211,6 +238,7 @@ class BuildService:
             ontology_path: The path to the ontology file to use for all files.
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
+            base_uri: The base URI to use for rebasing entity and relation IRIs.
         Returns:
             A list of KnowledgeGraph objects.
         """
@@ -232,6 +260,7 @@ class BuildService:
                 ontology_id=created_ontology_id,
                 refresh_graph=refresh_graph,
                 metadata=metadata,
+                base_uri=base_uri,
             )
             tasks.append(task)
 
