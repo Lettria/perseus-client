@@ -84,7 +84,7 @@ for graph in knowledge_graphs:
 
 ### The `KnowledgeGraph` Object
 
-The `build_graph_async` method returns a `KnowledgeGraph` object, which holds the structured data of your graph.
+Both `build_graph` and `build_graph_async` methods return a `List[KnowledgeGraph]` (one graph per input file), which holds the structured data of your graphs.
 
 #### Properties
 
