@@ -150,6 +150,11 @@ class CQLService:
 
             return value
 
+        # Helper to escape strings for Cypher
+        def _escape_cypher_string(value: str) -> str:
+            """Escape backslashes and single quotes for use in Cypher strings."""
+            return value.replace("\\", "\\\\").replace("'", "\\'")
+
         # Helper to format properties for a Cypher map
         def _properties_to_cql_map(properties: Dict[str, LiteralValue]) -> str:
             if not properties:
@@ -166,8 +171,7 @@ class CQLService:
                 if isinstance(value, (date, datetime)):
                     return f"'{value.isoformat()}'"
                 if isinstance(value, str):
-                    escaped_value = value.replace("\\", "\\\\").replace("'", "\\'")
-                    return f"'{escaped_value}'"
+                    return f"'{_escape_cypher_string(value)}'"
                 # For numbers (int, float) and other types
                 return str(value)
 
@@ -196,7 +200,8 @@ class CQLService:
             props_map = _properties_to_cql_map(entity.properties)
 
             # Combine MERGE and SET into a single statement for atomicity
-            merge_clause = f"MERGE (n:{labels} {{uri: '{entity.uri}'}})"
+            escaped_uri = _escape_cypher_string(entity.uri)
+            merge_clause = f"MERGE (n:{labels} {{uri: '{escaped_uri}'}})"
             set_clause = f"SET n += {props_map}"
 
             if entity.properties:
@@ -210,9 +215,11 @@ class CQLService:
             props_map = _properties_to_cql_map(relation.properties)
 
             # Efficiently MERGE source and target nodes first to avoid cartesian products
+            escaped_source_uri = _escape_cypher_string(relation.source_uri)
+            escaped_target_uri = _escape_cypher_string(relation.target_uri)
             match_clause = (
-                f"MATCH (source_node {{uri: '{relation.source_uri}'}})\n"
-                f"MATCH (target_node {{uri: '{relation.target_uri}'}})"
+                f"MATCH (source_node {{uri: '{escaped_source_uri}'}})\n"
+                f"MATCH (target_node {{uri: '{escaped_target_uri}'}})"
             )
 
             merge_clause = f"MERGE (source_node)-[r:{rel_type}]->(target_node)"

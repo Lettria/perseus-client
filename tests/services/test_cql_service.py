@@ -70,3 +70,116 @@ def test_save_cql(cql_service, sample_kg):
         cql_service.save_cql(sample_kg, file_path)
         mocked_file.assert_called_once_with(file_path, "w", encoding="utf-8")
         mocked_file().write.assert_called_once_with(cql_content)
+
+
+def test_uri_escaping_single_quote(cql_service):
+    """Test that URIs with single quotes are properly escaped."""
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org/john's-diner",
+                types=["http://example.org/Restaurant"],
+                properties={"http://example.org/name": LiteralValue(value="John's Diner")},
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+
+    # URI should be escaped
+    assert "uri: 'http://example.org/john\\'s-diner'" in cql
+    # Property value should also be escaped
+    assert "name`: 'John\\'s Diner'" in cql
+    # Make sure the quote is escaped with backslash
+    assert "john's-diner" not in cql  # Unescaped version should not appear
+
+
+def test_uri_escaping_backslash(cql_service):
+    """Test that URIs with backslashes are properly escaped."""
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org/path\\with\\backslash",
+                types=["http://example.org/Resource"],
+                properties={},
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+
+    # Backslashes should be escaped
+    assert "uri: 'http://example.org/path\\\\with\\\\backslash'" in cql
+
+
+def test_uri_escaping_in_relations(cql_service):
+    """Test that URIs in relations are properly escaped."""
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(uri="http://example.org/alice's-account", types=["http://example.org/Account"]),
+            Entity(uri="http://example.org/bob's-account", types=["http://example.org/Account"]),
+        ],
+        relations=[
+            Relation(
+                source_uri="http://example.org/alice's-account",
+                target_uri="http://example.org/bob's-account",
+                predicate="http://example.org/follows",
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+
+    # Both source and target URIs should be escaped in MATCH clauses
+    assert "uri: 'http://example.org/alice\\'s-account'" in cql
+    assert "uri: 'http://example.org/bob\\'s-account'" in cql
+    # Unescaped versions should not appear
+    assert "alice's-account'}" not in cql
+    assert "bob's-account'}" not in cql
+
+
+def test_property_value_escaping(cql_service):
+    """Test that property values with special characters are properly escaped."""
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org/entity1",
+                types=["http://example.org/Resource"],
+                properties={
+                    "http://example.org/quote": LiteralValue(value="It's a test"),
+                    "http://example.org/backslash": LiteralValue(value="C:\\path\\to\\file"),
+                    "http://example.org/both": LiteralValue(value="Path: C:\\user's\\folder"),
+                },
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+
+    # Property values should be escaped
+    assert "quote`: 'It\\'s a test'" in cql
+    assert "backslash`: 'C:\\\\path\\\\to\\\\file'" in cql
+    assert "both`: 'Path: C:\\\\user\\'s\\\\folder'" in cql
+
+
+def test_ttl_to_cql_with_special_characters_integration(cql_service):
+    """Integration test: TTL parsing through CQL generation with special characters.
+
+    This reproduces the example from issue #12 where URIs with single quotes
+    need to be properly escaped in the generated Cypher output.
+    """
+    from perseus_client.services.ttl_service import TTLService
+
+    ttl_content = """
+@prefix ex: <http://example.org/> .
+<http://example.org/john's-diner> a ex:Restaurant ;
+    ex:name "John's Diner" .
+"""
+
+    ttl_service = TTLService()
+    kg = ttl_service.parse_ttl_to_knowledge_graph(ttl_content)
+    cypher = cql_service.to_cql(kg)
+
+    # URI should be escaped in MERGE statement
+    assert "uri: 'http://example.org/john\\'s-diner'" in cypher
+    # Property value should be escaped
+    assert "name`: 'John\\'s Diner'" in cypher
+    # Unescaped versions should NOT appear
+    assert "john's-diner'}" not in cypher
+    assert "John's Diner'}" not in cypher
