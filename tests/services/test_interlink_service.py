@@ -358,3 +358,128 @@ def test_interlink_merge_both_entities_have_no_types(interlink_service):
     )
     merged_kg = interlink_service.interlink([kg1, kg2], interlinking_key_uris=["rdfs:label"])
     assert len(merged_kg.entities) == 1
+
+
+def test_interlink_does_not_mutate_input_graphs(interlink_service):
+    """Test that interlink() does not mutate the input KnowledgeGraph objects.
+
+    Reproduces the issue from #14 where interlink() modified the input graphs
+    when merge_properties_on_conflict=True.
+    """
+    def person(uri, job):
+        entity = Entity(uri=uri, types=["http://example.org#Person"])
+        entity.properties = {
+            "http://www.w3.org/2000/01/rdf-schema#label": LiteralValue(value="Alice"),
+            "http://example.org#jobTitle": LiteralValue(value=job),
+        }
+        return entity
+
+    kg_a = KnowledgeGraph(entities=[person("http://example.org#alice-1", "Engineer")])
+    kg_b = KnowledgeGraph(entities=[person("http://example.org#alice-2", "Manager")])
+
+    # Store original value
+    original_job_a = kg_a.entities[0].properties["http://example.org#jobTitle"].value
+
+    # Call interlink with merge_properties_on_conflict=True
+    merged_graph = interlink_service.interlink(
+        kbs=[kg_a, kg_b],
+        merge_properties_on_conflict=True
+    )
+
+    # Check that kg_a was NOT mutated
+    assert kg_a.entities[0].properties["http://example.org#jobTitle"].value == original_job_a
+    assert kg_a.entities[0].properties["http://example.org#jobTitle"].value == "Engineer"
+
+    # Check that kg_b was NOT mutated
+    assert kg_b.entities[0].properties["http://example.org#jobTitle"].value == "Manager"
+
+    # Check that the merged graph has the combined values
+    assert len(merged_graph.entities) == 1
+    merged_job_value = merged_graph.entities[0].properties["http://example.org#jobTitle"].value
+    assert isinstance(merged_job_value, list)
+    assert "Engineer" in merged_job_value
+    assert "Manager" in merged_job_value
+
+
+def test_interlink_does_not_mutate_on_type_mismatch(interlink_service):
+    """Test that interlink() does not mutate input graphs when types don't match."""
+    kg_a = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org#entity-1",
+                types=["http://example.org#Person"],
+                properties={"http://www.w3.org/2000/01/rdf-schema#label": LiteralValue(value="Alice")},
+            )
+        ]
+    )
+    kg_b = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org#entity-2",
+                types=["http://example.org#Company"],
+                properties={"http://www.w3.org/2000/01/rdf-schema#label": LiteralValue(value="Alice")},
+            )
+        ]
+    )
+
+    # Store original values
+    original_type_a = kg_a.entities[0].types[:]
+    original_type_b = kg_b.entities[0].types[:]
+
+    # Call interlink (should not merge due to type mismatch)
+    merged_graph = interlink_service.interlink(
+        kbs=[kg_a, kg_b],
+        merge_different_entity_types=False
+    )
+
+    # Check that input graphs were NOT mutated
+    assert kg_a.entities[0].types == original_type_a
+    assert kg_b.entities[0].types == original_type_b
+
+    # Both entities should be in the merged graph separately
+    assert len(merged_graph.entities) == 2
+
+
+def test_interlink_does_not_mutate_on_conflict(interlink_service):
+    """Test that interlink() does not mutate input graphs when there's an immutable property conflict."""
+    kg_a = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org#entity-1",
+                types=["http://example.org#Person"],
+                properties={
+                    "http://www.w3.org/2000/01/rdf-schema#label": LiteralValue(value="Alice"),
+                    "http://example.org#name": LiteralValue(value="Alice Smith"),
+                },
+            )
+        ]
+    )
+    kg_b = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org#entity-2",
+                types=["http://example.org#Person"],
+                properties={
+                    "http://www.w3.org/2000/01/rdf-schema#label": LiteralValue(value="Alice"),
+                    "http://example.org#name": LiteralValue(value="Alice Jones"),
+                },
+            )
+        ]
+    )
+
+    # Store original values
+    original_name_a = kg_a.entities[0].properties["http://example.org#name"].value
+    original_name_b = kg_b.entities[0].properties["http://example.org#name"].value
+
+    # Call interlink with "name" as immutable property (should not merge due to conflict)
+    merged_graph = interlink_service.interlink(
+        kbs=[kg_a, kg_b],
+        immutable_properties=["name"]
+    )
+
+    # Check that input graphs were NOT mutated
+    assert kg_a.entities[0].properties["http://example.org#name"].value == original_name_a
+    assert kg_b.entities[0].properties["http://example.org#name"].value == original_name_b
+
+    # Both entities should be in the merged graph separately due to conflict
+    assert len(merged_graph.entities) == 2
