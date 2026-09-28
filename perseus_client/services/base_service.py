@@ -46,14 +46,19 @@ class BaseService:
                 # Handle errors (4xx or 5xx)
                 try:
                     error_body = await response.json()
-                    error_message = (
-                        str(error_body.get("message"))
-                        if isinstance(error_body, dict)
-                        else str(error_body)
-                    )
+                    if isinstance(error_body, dict):
+                        # Try common error message keys
+                        error_message = (
+                            error_body.get("message") or
+                            error_body.get("error") or
+                            error_body.get("detail") or
+                            str(error_body)
+                        )
+                    else:
+                        error_message = str(error_body)
                 except Exception:
                     error_body = await response.text()
-                    error_message = error_body
+                    error_message = error_body or f"HTTP {response.status}"
 
                 log_message = f"API Error: {method.upper()} {url} -> {response.status} {error_message}"
 
