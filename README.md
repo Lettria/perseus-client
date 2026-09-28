@@ -176,6 +176,8 @@ def build_graph(
 
 Processes one or more files by uploading them, optionally with an ontology, running jobs, and returning `KnowledgeGraph` objects synchronously.
 
+**Note:** Input file size limits for text-to-graph generation vary by workspace plan. If your files exceed the limit, you'll receive an error message indicating your plan's specific limit. Upgrade to a paid plan to increase these limits.
+
 | Parameter       | Type                       | Description                                                     | Default |
 | --------------- | -------------------------- | --------------------------------------------------------------- | ------- |
 | `file_paths`    | `List[str]`                | A list of file paths to process.                                |         |
