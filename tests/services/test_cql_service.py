@@ -50,16 +50,18 @@ def test_add_metadata_to_cql(cql_service):
 
 def test_to_cql_with_strip_prefixes(cql_service, sample_kg):
     cql = cql_service.to_cql(sample_kg, strip_prefixes=True)
-    assert "MERGE (n:`foaf:Person` {uri: 'ex:Person1'})" in cql
+    # Now uses uuid (extracted from URI) instead of uri
+    assert "MERGE (n:`foaf:Person` {uuid: 'Person1'})" in cql
     assert "SET n += {`rdfs:label`: 'John Doe', `ex:age`: 30, `ex:isStudent`: false, `ex:birthDate`: '1994-02-01', `ex:hobbies`: ['reading', 'coding']}" in cql
-    assert "MATCH (source_node {uri: 'ex:Person1'})" in cql
-    assert "MATCH (target_node {uri: 'ex:Person1'})" in cql
+    assert "MATCH (source_node {uuid: 'Person1'})" in cql
+    assert "MATCH (target_node {uuid: 'Person1'})" in cql
     assert "MERGE (source_node)-[r:`foaf:knows`]->(target_node)" in cql
     assert "SET r += {`ex:since`: '2022-01-01T12:00:00'}" in cql
 
 def test_to_cql_without_strip_prefixes(cql_service, sample_kg):
     cql = cql_service.to_cql(sample_kg, strip_prefixes=False)
-    assert "MERGE (n:`foaf:Person` {uri: 'ex:Person1'})" in cql
+    # Now uses uuid (extracted from URI) instead of uri
+    assert "MERGE (n:`foaf:Person` {uuid: 'Person1'})" in cql
     assert "SET n += {`rdfs:label`: 'John Doe', `ex:age`: 30, `ex:isStudent`: false, `ex:birthDate`: '1994-02-01', `ex:hobbies`: ['reading', 'coding']}" in cql
     assert "MERGE (source_node)-[r:`foaf:knows`]->(target_node)" in cql
 
@@ -70,3 +72,65 @@ def test_save_cql(cql_service, sample_kg):
         cql_service.save_cql(sample_kg, file_path)
         mocked_file.assert_called_once_with(file_path, "w", encoding="utf-8")
         mocked_file().write.assert_called_once_with(cql_content)
+
+
+def test_uuid_extraction_from_full_uri(cql_service):
+    """Test that UUIDs are correctly extracted from full URIs and used as merge keys.
+
+    Reproduces issue #15 where SDK should use uuid (like the server) instead of uri.
+    """
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org/data/c5d7d866-4af5-5361-bf45-69ac9f845cd1",
+                types=["http://example.org/Company"],
+                properties={},
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+
+    # Should use uuid as merge key, matching server behavior
+    # Label gets stripped to just 'Company' by default
+    assert "MERGE (n:`Company` {uuid: 'c5d7d866-4af5-5361-bf45-69ac9f845cd1'})" in cql
+    # Should NOT use uri as merge key
+    assert "{uri:" not in cql
+
+
+def test_uuid_extraction_from_prefixed_uri(cql_service):
+    """Test that UUIDs are correctly extracted from prefixed URIs."""
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="ex:alice-123",
+                types=["ex:Person"],
+                properties={},
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+    
+    # Should extract 'alice-123' as the uuid
+    assert "MERGE (n:`ex:Person` {uuid: 'alice-123'})" in cql
+
+
+def test_uuid_in_relations(cql_service):
+    """Test that relations use uuid to match nodes."""
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(uri="http://example.org/data/alice-uuid", types=["http://example.org/Person"]),
+            Entity(uri="http://example.org/data/bob-uuid", types=["http://example.org/Person"]),
+        ],
+        relations=[
+            Relation(
+                source_uri="http://example.org/data/alice-uuid",
+                target_uri="http://example.org/data/bob-uuid",
+                predicate="http://example.org/knows",
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+    
+    # Relations should match nodes by uuid
+    assert "MATCH (source_node {uuid: 'alice-uuid'})" in cql
+    assert "MATCH (target_node {uuid: 'bob-uuid'})" in cql
