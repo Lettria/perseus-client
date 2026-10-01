@@ -137,7 +137,7 @@ class InterlinkService:
                                 f"Skipping merge for entity '{entity.uri}' into '{existing_entity.uri}' "
                                 f"due to different entity types. Existing: {existing_entity.types}, New: {entity.types}."
                             )
-                            merged_kg.entities.append(entity)
+                            merged_kg.entities.append(entity.model_copy(deep=True))
                             continue
 
                     has_conflict = False
@@ -165,7 +165,7 @@ class InterlinkService:
                             )
 
                     if has_conflict:
-                        merged_kg.entities.append(entity)
+                        merged_kg.entities.append(entity.model_copy(deep=True))
                         continue
 
                     logger.debug(
@@ -212,8 +212,10 @@ class InterlinkService:
                         if type_uri not in existing_entity.types:
                             existing_entity.types.append(type_uri)
                 else:
-                    entity_map[key_value] = entity
-                    merged_kg.entities.append(entity)
+                    # Deep copy the entity to avoid mutating the input graphs
+                    entity_copy = entity.model_copy(deep=True)
+                    entity_map[key_value] = entity_copy
+                    merged_kg.entities.append(entity_copy)
 
         # 2. Iterate through all relations and relink them
         for kg in kbs:

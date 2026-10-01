@@ -1,7 +1,7 @@
 import pytest
 from datetime import date, datetime
 from unittest.mock import mock_open, patch
-from perseus_client.services.cql_service import CQLService
+from perseus_client.services.cql_service import CQLService, split_cypher_statements
 from perseus_client.models import KnowledgeGraph, Entity, Relation, LiteralValue
 
 @pytest.fixture
@@ -178,3 +178,86 @@ def test_uuid_escaping_in_relations(cql_service):
     # Unescaped versions should not appear
     assert "alice's-account'}" not in cql
     assert "bob's-account'}" not in cql
+def test_split_cypher_statements_simple():
+    """Test splitting simple Cypher statements."""
+    cql = "MERGE (n:Person {uri: 'ex:1'});MERGE (n:Person {uri: 'ex:2'});"
+    statements = split_cypher_statements(cql)
+    assert len(statements) == 2
+    assert statements[0] == "MERGE (n:Person {uri: 'ex:1'})"
+    assert statements[1] == "MERGE (n:Person {uri: 'ex:2'})"
+
+
+def test_split_cypher_statements_with_semicolon_in_value():
+    """Test that semicolons inside quoted strings are not treated as terminators."""
+    cql = (
+        "MERGE (n:Person {uri: 'https://example.org/alice'})\n"
+        "SET n += {name: 'Smith; John'};\n"
+        "MERGE (n:Person {uri: 'https://example.org/bob'});\n"
+        "MERGE (n:Person {uri: 'https://example.org/carol'});"
+    )
+    statements = split_cypher_statements(cql)
+
+    assert len(statements) == 3
+    # First statement should contain the semicolon in the value
+    assert "name: 'Smith; John'" in statements[0]
+    assert "alice" in statements[0]
+    assert "bob" in statements[1]
+    assert "carol" in statements[2]
+
+
+def test_split_cypher_statements_with_escaped_quotes():
+    """Test that escaped quotes inside strings are handled correctly."""
+    cql = "MERGE (n:Person {name: 'O\\'Brien; PhD'});MERGE (m:Person {name: 'Smith'});"
+    statements = split_cypher_statements(cql)
+
+    assert len(statements) == 2
+    assert "O\\'Brien; PhD" in statements[0]
+    assert "Smith" in statements[1]
+
+
+def test_split_cypher_statements_multiline():
+    """Test splitting multiline Cypher statements."""
+    cql = """MERGE (n:Person {uri: 'ex:1'})
+SET n += {name: 'Alice; Test'};
+MATCH (a {uri: 'ex:1'}) MATCH (b {uri: 'ex:2'})
+MERGE (a)-[r:KNOWS]->(b);"""
+
+    statements = split_cypher_statements(cql)
+
+    assert len(statements) == 2
+    assert "Alice; Test" in statements[0]
+    assert "MATCH (a" in statements[1]
+
+
+def test_add_metadata_to_cql_with_semicolon_in_value(cql_service):
+    """Test that add_metadata_to_cql handles semicolons in property values correctly."""
+    cql = (
+        "MERGE (n:Person {uri: 'https://example.org/alice'})\n"
+        "SET n += {name: 'Smith; John'};"
+    )
+    metadata = {"source": "test.txt"}
+    modified_cql = cql_service.add_metadata_to_cql(cql, metadata)
+
+    # Should have exactly one statement
+    statements = split_cypher_statements(modified_cql)
+    assert len(statements) == 1
+    # The semicolon in the value should still be there
+    assert "Smith; John" in modified_cql
+    # Metadata should be added
+    assert "source: 'test.txt'" in modified_cql
+
+
+def test_knowledge_graph_to_cypher_statements_with_semicolon():
+    """Test KnowledgeGraph.to_cypher_statements() with semicolons in values."""
+    cql_content = (
+        "MERGE (n:Person {uri: 'https://example.org/alice'})\n"
+        "SET n += {name: 'Smith; John'};\n"
+        "MERGE (n:Person {uri: 'https://example.org/bob'});"
+    )
+
+    kg = KnowledgeGraph(cql_content=cql_content)
+    statements = kg.to_cypher_statements()
+
+    assert len(statements) == 2
+    assert "Smith; John" in statements[0]
+    assert "bob" in statements[1]

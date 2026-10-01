@@ -84,7 +84,7 @@ for graph in knowledge_graphs:
 
 ### The `KnowledgeGraph` Object
 
-The `build_graph_async` method returns a `KnowledgeGraph` object, which holds the structured data of your graph.
+Both `build_graph` and `build_graph_async` methods return a `List[KnowledgeGraph]` (one graph per input file), which holds the structured data of your graphs.
 
 #### Properties
 
@@ -175,6 +175,8 @@ def build_graph(
 ```
 
 Processes one or more files by uploading them, optionally with an ontology, running jobs, and returning `KnowledgeGraph` objects synchronously.
+
+**Note:** Input file size limits for text-to-graph generation vary by workspace plan. If your files exceed the limit, you'll receive an error message indicating your plan's specific limit. Upgrade to a paid plan to increase these limits.
 
 | Parameter       | Type                       | Description                                                     | Default |
 | --------------- | -------------------------- | --------------------------------------------------------------- | ------- |

@@ -1,8 +1,59 @@
-from typing import Dict, Any
+from typing import Dict, Any, List
 import re
 from datetime import date, datetime
 from ..models import KnowledgeGraph, LiteralValue
 import logging
+
+
+def split_cypher_statements(cql_query: str) -> List[str]:
+    """
+    Split a Cypher query into individual statements, respecting quoted strings.
+
+    Semicolons inside single-quoted strings are not treated as statement terminators.
+
+    Args:
+        cql_query: The CQL query string containing one or more statements.
+
+    Returns:
+        A list of individual Cypher statements.
+    """
+    statements = []
+    current_statement = []
+    in_string = False
+    escaped = False
+
+    for i, char in enumerate(cql_query):
+        if escaped:
+            current_statement.append(char)
+            escaped = False
+            continue
+
+        if char == '\\':
+            current_statement.append(char)
+            escaped = True
+            continue
+
+        if char == "'":
+            in_string = not in_string
+            current_statement.append(char)
+            continue
+
+        if char == ';' and not in_string:
+            # End of statement
+            stmt = ''.join(current_statement).strip()
+            if stmt:
+                statements.append(stmt)
+            current_statement = []
+            continue
+
+        current_statement.append(char)
+
+    # Add the last statement if there is one
+    stmt = ''.join(current_statement).strip()
+    if stmt:
+        statements.append(stmt)
+
+    return statements
 
 
 class CQLService:
@@ -26,7 +77,7 @@ class CQLService:
             f"{key}: '{value}'" for key, value in metadata.items()
         )
 
-        for line in cql_query.split(";"):
+        for line in split_cypher_statements(cql_query):
             line = line.strip()
             if not line:
                 continue
