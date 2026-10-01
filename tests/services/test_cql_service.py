@@ -134,3 +134,47 @@ def test_uuid_in_relations(cql_service):
     # Relations should match nodes by uuid
     assert "MATCH (source_node {uuid: 'alice-uuid'})" in cql
     assert "MATCH (target_node {uuid: 'bob-uuid'})" in cql
+
+
+def test_uuid_escaping_single_quote(cql_service):
+    """Test that UUIDs with single quotes are properly escaped."""
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(
+                uri="http://example.org/john's-diner",
+                types=["http://example.org/Restaurant"],
+                properties={},
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+    
+    # UUID should be escaped
+    assert "uuid: 'john\\'s-diner'" in cql
+    # Unescaped version should not appear
+    assert "john's-diner'}" not in cql
+
+
+def test_uuid_escaping_in_relations(cql_service):
+    """Test that UUIDs with special characters in relations are properly escaped."""
+    kg = KnowledgeGraph(
+        entities=[
+            Entity(uri="http://example.org/alice's-account", types=["http://example.org/Account"]),
+            Entity(uri="http://example.org/bob's-account", types=["http://example.org/Account"]),
+        ],
+        relations=[
+            Relation(
+                source_uri="http://example.org/alice's-account",
+                target_uri="http://example.org/bob's-account",
+                predicate="http://example.org/follows",
+            )
+        ]
+    )
+    cql = cql_service.to_cql(kg)
+    
+    # Both source and target UUIDs should be escaped in MATCH clauses
+    assert "uuid: 'alice\\'s-account'" in cql
+    assert "uuid: 'bob\\'s-account'" in cql
+    # Unescaped versions should not appear
+    assert "alice's-account'}" not in cql
+    assert "bob's-account'}" not in cql

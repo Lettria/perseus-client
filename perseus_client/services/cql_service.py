@@ -161,6 +161,11 @@ class CQLService:
             else:
                 return uri
 
+        # Helper to escape strings for Cypher
+        def _escape_cypher_string(value: str) -> str:
+            """Escape backslashes and single quotes for use in Cypher strings."""
+            return value.replace("\\", "\\\\").replace("'", "\\'")
+
         # Helper to format properties for a Cypher map
         def _properties_to_cql_map(properties: Dict[str, LiteralValue]) -> str:
             if not properties:
@@ -177,8 +182,7 @@ class CQLService:
                 if isinstance(value, (date, datetime)):
                     return f"'{value.isoformat()}'"
                 if isinstance(value, str):
-                    escaped_value = value.replace("\\", "\\\\").replace("'", "\\'")
-                    return f"'{escaped_value}'"
+                    return f"'{_escape_cypher_string(value)}'"
                 # For numbers (int, float) and other types
                 return str(value)
 
@@ -208,8 +212,9 @@ class CQLService:
 
             # Extract UUID from URI to use as merge key (matching server behavior)
             uuid = _extract_uuid(entity.uri)
+            escaped_uuid = _escape_cypher_string(uuid)
             # Combine MERGE and SET into a single statement for atomicity
-            merge_clause = f"MERGE (n:{labels} {{uuid: '{uuid}'}})"
+            merge_clause = f"MERGE (n:{labels} {{uuid: '{escaped_uuid}'}})"
             set_clause = f"SET n += {props_map}"
 
             if entity.properties:
@@ -225,11 +230,13 @@ class CQLService:
             # Extract UUIDs from URIs to match nodes (matching server behavior)
             source_uuid = _extract_uuid(relation.source_uri)
             target_uuid = _extract_uuid(relation.target_uri)
+            escaped_source_uuid = _escape_cypher_string(source_uuid)
+            escaped_target_uuid = _escape_cypher_string(target_uuid)
 
             # Efficiently MERGE source and target nodes first to avoid cartesian products
             match_clause = (
-                f"MATCH (source_node {{uuid: '{source_uuid}'}})\n"
-                f"MATCH (target_node {{uuid: '{target_uuid}'}})"
+                f"MATCH (source_node {{uuid: '{escaped_source_uuid}'}})\n"
+                f"MATCH (target_node {{uuid: '{escaped_target_uuid}'}})"
             )
 
             merge_clause = f"MERGE (source_node)-[r:{rel_type}]->(target_node)"
