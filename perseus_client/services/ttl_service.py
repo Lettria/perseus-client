@@ -2,13 +2,8 @@ from typing import Dict, Any, List, Optional, TYPE_CHECKING
 import logging
 import uuid
 
-try:
-    from rdflib import Graph, URIRef, Literal, BNode
-    from rdflib.namespace import Namespace, RDF, RDFS
-
-    RDFLIB_AVAILABLE = True
-except ImportError:
-    RDFLIB_AVAILABLE = False
+from rdflib import Graph, URIRef, Literal, BNode
+from rdflib.namespace import Namespace, RDF, RDFS
 
 from ..models import KnowledgeGraph, Entity, Relation, Document, LiteralValue
 
@@ -19,13 +14,6 @@ class TTLService:
     """
     A service for manipulating RDF Turtle (TTL) files.
     """
-
-    def __init__(self):
-        if not RDFLIB_AVAILABLE:
-            logger.warning(
-                "TTLService initialized but 'rdflib' library is missing. "
-                "Please run `pip install perseus-client[rdf]` to use this feature."
-            )
 
     def add_metadata_to_ttl(self, ttl_content: str, metadata: Dict[str, Any]) -> str:
         """
@@ -38,15 +26,6 @@ class TTLService:
         Returns:
             The modified Turtle content as a string.
         """
-        if not RDFLIB_AVAILABLE:
-            logger.error(
-                "rdflib is not installed, which is required for TTL manipulation."
-            )
-            raise ImportError(
-                "The 'rdflib' library is not installed. "
-                "Please run `pip install perseus-client[rdf]` to use this feature."
-            )
-
         logger.debug("Parsing TTL content to add metadata.")
         g = Graph()
         try:
@@ -83,13 +62,6 @@ class TTLService:
         Returns:
             A KnowledgeGraph object populated with rich data representing only individuals.
         """
-        if not RDFLIB_AVAILABLE:
-            logger.error("rdflib is not installed, which is required for parsing TTL.")
-            raise ImportError(
-                "The 'rdflib' library is not installed. "
-                "Please run `pip install perseus-client[rdf]` to use this feature."
-            )
-
         logger.debug("Parsing TTL content into a KnowledgeGraph object.")
         g = Graph()
         try:
@@ -158,14 +130,6 @@ class TTLService:
         logger.debug(
             f"Serializing KnowledgeGraph with {len(kg.entities)} entities to TTL format."
         )
-        if not RDFLIB_AVAILABLE:
-            logger.error(
-                "rdflib is not installed, which is required for TTL serialization."
-            )
-            raise ImportError(
-                "rdflib is required for TTL serialization. Please run `pip install perseus-client[rdf]`."
-            )
-
         g = Graph()
         for prefix, uri in kg.namespaces.items():
             g.bind(prefix, Namespace(uri))
