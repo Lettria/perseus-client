@@ -139,9 +139,9 @@ class KnowledgeGraph(BaseModel):
         """
         if not self.cql_content:
             return []
-        
-        statements = [s.strip() for s in self.cql_content.split(';') if s.strip()]
-        return statements
+
+        from .services.cql_service import split_cypher_statements
+        return split_cypher_statements(self.cql_content)
 
     def to_rdflib(self) -> "Graph":
         if not self._rdflib_service:
