@@ -1,5 +1,8 @@
-from typing import Any, Optional, Callable, Awaitable, List, Union, Coroutine
+from contextlib import asynccontextmanager
+from typing import Any, AsyncIterator, Optional
 import aiohttp
+import certifi
+import ssl
 from ..exceptions import APIException, ConfigurationException
 import logging
 from perseus_client.config import settings
@@ -14,10 +17,27 @@ class BaseService:
         session: aiohttp.ClientSession,
         api_host: str,
         loop: asyncio.AbstractEventLoop,
+        transfer_session: Optional[aiohttp.ClientSession] = None,
     ):
         self._session = session
         self.api_host = api_host
         self._loop = loop
+        # Session without the API headers, for presigned-URL uploads and downloads.
+        self._transfer_session = transfer_session
+
+    @asynccontextmanager
+    async def _transfer(self) -> AsyncIterator[aiohttp.ClientSession]:
+        """
+        Yields the shared transfer session, or a short-lived one if the service was
+        created without it.
+        """
+        if self._transfer_session is not None:
+            yield self._transfer_session
+            return
+        ssl_context = ssl.create_default_context(cafile=certifi.where())
+        connector = aiohttp.TCPConnector(ssl=ssl_context)
+        async with aiohttp.ClientSession(connector=connector) as session:
+            yield session
 
     async def _request(
         self,
@@ -75,15 +95,3 @@ class BaseService:
         except aiohttp.ClientError as e:
             logger.error(f"Client request failed: {e}", exc_info=True)
             raise APIException(status_code=500, message=str(e)) from e
-
-
-    async def _wait_for_tasks(
-        self,
-        tasks: List[Coroutine],
-        descriptions: List[str]
-    ):
-        """
-        Waits for multiple asyncio tasks to complete.
-        """
-        return await asyncio.gather(*tasks)
-

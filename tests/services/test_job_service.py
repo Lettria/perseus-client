@@ -328,19 +328,3 @@ async def test_find_job_api_error(client: PerseusClient, mock_aiohttp_session_in
 
     with pytest.raises(APIException):
         await client.job.find_job_async(job_id)
-
-
-@pytest.mark.asyncio
-async def test_wait_for_tasks(client: PerseusClient):
-    """
-    Test the _wait_for_tasks method.
-    """
-
-    async def dummy_task(i):
-        return i
-
-    tasks = [dummy_task(i) for i in range(3)]
-    descriptions = [f"Task {i}" for i in range(3)]
-
-    results = await client.job._wait_for_tasks(tasks, descriptions)
-    assert results == [0, 1, 2]

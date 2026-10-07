@@ -28,6 +28,8 @@ def test_build_graph(mock_get_client):
         ontology_path=ontology_path,
         metadata=metadata,
         refresh_graph=True,
+        max_concurrency=10,
+        return_exceptions=False,
     )
 
 
@@ -295,6 +297,8 @@ async def test_build_graph_async(mock_perseus_client):
         ontology_path=ontology_path,
         metadata=metadata,
         refresh_graph=True,
+        max_concurrency=10,
+        return_exceptions=False,
     )
 
 

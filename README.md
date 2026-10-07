@@ -191,7 +191,9 @@ def build_graph(
     ontology_path: Optional[str] = None,
     refresh_graph: bool = False,
     metadata: Optional[Dict[str, Any]] = None,
-) -> List[KnowledgeGraph]:
+    max_concurrency: int = 10,
+    return_exceptions: bool = False,
+) -> List[Union[KnowledgeGraph, BaseException]]:
 ```
 
 Processes one or more files by uploading them, optionally with an ontology, running jobs, and returning `KnowledgeGraph` objects synchronously.
@@ -204,6 +206,18 @@ Processes one or more files by uploading them, optionally with an ontology, runn
 | `ontology_path` | `Optional[str]`            | The path to the ontology file to use.                           | `None`  |
 | `refresh_graph` | `bool`                     | Whether to force a new job to be created (refresh the graph).   | `False` |
 | `metadata`      | `Optional[Dict[str, Any]]` | A dictionary of metadata to add to all nodes and relationships. | `None`  |
+| `max_concurrency` | `int`                    | The maximum number of files processed at the same time (upload, job and download). Must be at least 1. | `10` |
+| `return_exceptions` | `bool`                 | If `False`, the first failure cancels the remaining files and is raised. If `True`, every file is processed and the list holds a `KnowledgeGraph` or the exception for each file. | `False` |
+
+Results are returned in the same order as `file_paths`. Each job's timeout (one hour) starts when the file gets a concurrency slot, and includes any time the job spends queued on the server.
+
+To keep the graphs that succeeded when some files fail, use `return_exceptions=True`:
+
+```python
+results = client.build_graph(file_paths=paths, return_exceptions=True)
+graphs = [r for r in results if isinstance(r, KnowledgeGraph)]
+failed = [(p, r) for p, r in zip(paths, results) if isinstance(r, BaseException)]
+```
 
 ### `KnowledgeGraph.interlink`
 

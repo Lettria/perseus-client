@@ -29,7 +29,7 @@ from .exceptions import ConfigurationException
 from .services.file_service import FileService
 from .services.job_service import JobService
 from .services.ontology_service import OntologyService
-from .services.build_service import BuildService
+from .services.build_service import BuildService, DEFAULT_MAX_CONCURRENCY
 from .config import settings
 
 logger = logging.getLogger(__name__)
@@ -76,6 +76,7 @@ class PerseusClient:
 
         self._session: Optional[aiohttp.ClientSession] = None
         self._connector: Optional[aiohttp.TCPConnector] = None
+        self._transfer_session: Optional[aiohttp.ClientSession] = None
         self._file: Optional[FileService] = None
         self._job: Optional[JobService] = None
         self._ontology: Optional[OntologyService] = None
@@ -133,10 +134,20 @@ class PerseusClient:
         self._session = aiohttp.ClientSession(
             headers=self._get_headers(), connector=self._connector
         )
+        # Presigned URLs must not receive the API's Authorization header.
+        self._transfer_session = aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(ssl=ssl_context)
+        )
         self._loop = asyncio.get_running_loop()
-        self._file = FileService(self._session, self.api_host, self._loop)
-        self._job = JobService(self._session, self.api_host, self._loop)
-        self._ontology = OntologyService(self._session, self.api_host, self._loop)
+        self._file = FileService(
+            self._session, self.api_host, self._loop, self._transfer_session
+        )
+        self._job = JobService(
+            self._session, self.api_host, self._loop, self._transfer_session
+        )
+        self._ontology = OntologyService(
+            self._session, self.api_host, self._loop, self._transfer_session
+        )
         self._neo4j = Neo4jService(self._loop)
         self._falkordb = FalkorDBService(self._loop)
         self._cql = CQLService()
@@ -164,8 +175,11 @@ class PerseusClient:
             await self._session.close()
         if self._connector:
             await self._connector.close()
+        if self._transfer_session:
+            await self._transfer_session.close()
         self._session = None
         self._connector = None
+        self._transfer_session = None
 
     def __enter__(self):
         """
@@ -300,7 +314,9 @@ class PerseusClient:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
-    ) -> List[KnowledgeGraph]:
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: bool = False,
+    ) -> List[Union[KnowledgeGraph, BaseException]]:
         """
         Synchronously processes one or more files by uploading them, optionally with an ontology,
         running jobs, and returning KnowledgeGraph objects.
@@ -310,8 +326,13 @@ class PerseusClient:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
+            max_concurrency: The maximum number of files processed at the same time
+                (upload, job and download). Must be at least 1.
+            return_exceptions: If False, the first failure cancels the remaining files
+                and is re-raised. If True, every file is processed and the result list
+                holds either a KnowledgeGraph or the exception for each input.
         Returns:
-            A list of KnowledgeGraph objects.
+            A list with one entry per input file, in input order.
         """
         opened = self._ensure_active()
         try:
@@ -324,6 +345,8 @@ class PerseusClient:
                     refresh_graph,
                     metadata,
                     base_uri,
+                    max_concurrency,
+                    return_exceptions,
                 )
             )
         finally:
@@ -337,7 +360,9 @@ class PerseusClient:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
-    ) -> List[KnowledgeGraph]:
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: bool = False,
+    ) -> List[Union[KnowledgeGraph, BaseException]]:
         """
         Asynchronously processes one or more files by uploading them, optionally with an ontology,
         running jobs, and returning KnowledgeGraph objects.
@@ -350,8 +375,13 @@ class PerseusClient:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
+            max_concurrency: The maximum number of files processed at the same time
+                (upload, job and download). Must be at least 1.
+            return_exceptions: If False, the first failure cancels the remaining files
+                and is re-raised. If True, every file is processed and the result list
+                holds either a KnowledgeGraph or the exception for each input.
         Returns:
-            A list of KnowledgeGraph objects.
+            A list with one entry per input file, in input order.
         """
         await self._ensure_active_async()
         final_base_uri = base_uri if base_uri is not None else self.base_uri
@@ -361,6 +391,8 @@ class PerseusClient:
             refresh_graph=refresh_graph,
             metadata=metadata,
             base_uri=final_base_uri,
+            max_concurrency=max_concurrency,
+            return_exceptions=return_exceptions,
         )
 
     def interlink(
