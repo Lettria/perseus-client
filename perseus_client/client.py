@@ -40,6 +40,18 @@ class PerseusClient:
     A client for interacting with the Perseus API.
     This client handles authentication and provides methods for accessing the various
     API endpoints. It requires the `PERSEUS_API_KEY` environment variable to be set.
+
+    Session lifecycle:
+        - `build_graph` / `interlink` called on a client that isn't active open a
+          session for the duration of the call and close it afterwards.
+        - The service properties (`file`, `job`, `ontology`, ...) cannot know when the
+          caller is done, so the session they open stays open. Use
+          `with PerseusClient() as client:` or call `client.close()` explicitly.
+        - In async code, prefer `async with PerseusClient() as client:`. The service
+          properties cannot activate the client from inside a running event loop.
+        - Services hold the session they were created with. Access them through the
+          client (`client.file.<method>`) each time rather than storing `client.file`
+          across a `close()`.
     """
 
     def __init__(self, api_host: Optional[str] = None, base_uri: Optional[str] = None):
@@ -80,9 +92,37 @@ class PerseusClient:
     def _is_active(self):
         return self._session and not self._session.closed
 
-    def _ensure_active(self):
-        if not self._is_active():
+    def _ensure_active(self) -> bool:
+        """
+        Activates the client synchronously if needed.
+        Returns True if this call opened the session.
+        """
+        if self._is_active():
+            return False
+        try:
+            asyncio.get_running_loop()
+        except RuntimeError:
+            # No loop running: synchronous usage, safe to create our own loop.
             self.__enter__()
+            return True
+        raise ConfigurationException(
+            "PerseusClient is not active. In async code, use "
+            "`async with PerseusClient() as client:` before accessing services."
+        )
+
+    async def _ensure_active_async(self):
+        """
+        Activates the client in the running event loop if needed.
+        """
+        running_loop = asyncio.get_running_loop()
+        if self._is_active():
+            if self._loop is not running_loop:
+                raise ConfigurationException(
+                    "This PerseusClient's session is bound to a different event loop. "
+                    "Create a new client inside the current loop."
+                )
+            return
+        await self.__aenter__()
 
     async def __aenter__(self):
         if self._is_active():
@@ -93,7 +133,7 @@ class PerseusClient:
         self._session = aiohttp.ClientSession(
             headers=self._get_headers(), connector=self._connector
         )
-        self._loop = asyncio.get_event_loop()  # Get the running loop
+        self._loop = asyncio.get_running_loop()
         self._file = FileService(self._session, self.api_host, self._loop)
         self._job = JobService(self._session, self.api_host, self._loop)
         self._ontology = OntologyService(self._session, self.api_host, self._loop)
@@ -151,9 +191,8 @@ class PerseusClient:
         logger.debug("Closing event loop for synchronous client usage.")
         self._loop.run_until_complete(self.__aexit__(exc_type, exc_val, exc_tb))
         self._loop.close()
-        asyncio.set_event_loop(
-            asyncio.new_event_loop()
-        )  # Clean up the event loop for synchronous use
+        # __enter__ installs a fresh loop on next activation
+        asyncio.set_event_loop(None)
         self._session = None
         self._connector = None
         self._loop = None
@@ -274,18 +313,22 @@ class PerseusClient:
         Returns:
             A list of KnowledgeGraph objects.
         """
-        self._ensure_active()
-        if not self._loop:
-            raise ConfigurationException("Event loop not initialized.")
-        return self._loop.run_until_complete(
-            self.build_graph_async(
-                file_paths,
-                ontology_path,
-                refresh_graph,
-                metadata,
-                base_uri,
+        opened = self._ensure_active()
+        try:
+            if not self._loop:
+                raise ConfigurationException("Event loop not initialized.")
+            return self._loop.run_until_complete(
+                self.build_graph_async(
+                    file_paths,
+                    ontology_path,
+                    refresh_graph,
+                    metadata,
+                    base_uri,
+                )
             )
-        )
+        finally:
+            if opened:
+                self.close()
 
     async def build_graph_async(
         self,
@@ -298,6 +341,9 @@ class PerseusClient:
         """
         Asynchronously processes one or more files by uploading them, optionally with an ontology,
         running jobs, and returning KnowledgeGraph objects.
+
+        Prefer `async with PerseusClient() as client:`. If the client isn't active, a
+        session is opened in the running loop and stays open until `close()` is called.
         Args:
             file_paths: A list of file paths to process.
             ontology_path: The path to the ontology file to use for all files.
@@ -307,7 +353,7 @@ class PerseusClient:
         Returns:
             A list of KnowledgeGraph objects.
         """
-        self._ensure_active()
+        await self._ensure_active_async()
         final_base_uri = base_uri if base_uri is not None else self.base_uri
         return await self.build.build_graph_async(
             file_paths=file_paths,
@@ -329,17 +375,21 @@ class PerseusClient:
         """
         Synchronously merges multiple KnowledgeGraph objects into a single one.
         """
-        self._ensure_active()
-        if not self._loop:
-            raise ConfigurationException("Event loop not initialized.")
-        return self._loop.run_until_complete(
-            self.interlink_async(
-                kbs,
-                interlinking_key_uris,
-                immutable_properties,
-                merge_properties_on_conflict,
+        opened = self._ensure_active()
+        try:
+            if not self._loop:
+                raise ConfigurationException("Event loop not initialized.")
+            return self._loop.run_until_complete(
+                self.interlink_async(
+                    kbs,
+                    interlinking_key_uris,
+                    immutable_properties,
+                    merge_properties_on_conflict,
+                )
             )
-        )
+        finally:
+            if opened:
+                self.close()
 
     async def interlink_async(
         self,
@@ -352,8 +402,11 @@ class PerseusClient:
     ) -> KnowledgeGraph:
         """
         Asynchronously merges multiple KnowledgeGraph objects into a single one.
+
+        Prefer `async with PerseusClient() as client:`. If the client isn't active, a
+        session is opened in the running loop and stays open until `close()` is called.
         """
-        self._ensure_active()
+        await self._ensure_active_async()
         return await self.build.interlink_async(
             kbs=kbs,
             interlinking_key_uris=interlinking_key_uris,

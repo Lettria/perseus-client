@@ -64,7 +64,8 @@ def client(mock_token, mock_api_url, mock_aiohttp_session_instance, mock_event_l
         client_instance._loop = mock_event_loop
         
         # Patch _ensure_active to do nothing, as services are manually initialized
-        client_instance._ensure_active = MagicMock()
+        client_instance._ensure_active = MagicMock(return_value=False)
+        client_instance._ensure_active_async = AsyncMock()
 
         # Manually initialize services as __aenter__ is not called in this test context
         client_instance._file = FileService(client_instance._session, client_instance.api_host, client_instance._loop)
