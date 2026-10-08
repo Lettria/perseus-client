@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, Optional, Any, List, Union
+from typing import Dict, Optional, Any, List, Union, Literal, overload
 import aiohttp
 import certifi
 import ssl
@@ -307,6 +307,32 @@ class PerseusClient:
             raise ConfigurationException("Build service not initialized.")
         return self._build
 
+    @overload
+    def build_graph(
+        self,
+        file_paths: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: Literal[False] = False,
+    ) -> List[KnowledgeGraph]: ...
+
+    @overload
+    def build_graph(
+        self,
+        file_paths: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: Literal[True] = ...,
+    ) -> List[Union[KnowledgeGraph, BaseException]]: ...
+
     def build_graph(
         self,
         file_paths: List[str],
@@ -356,6 +382,32 @@ class PerseusClient:
         finally:
             if opened:
                 self.close()
+
+    @overload
+    async def build_graph_async(
+        self,
+        file_paths: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: Literal[False] = False,
+    ) -> List[KnowledgeGraph]: ...
+
+    @overload
+    async def build_graph_async(
+        self,
+        file_paths: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: Literal[True] = ...,
+    ) -> List[Union[KnowledgeGraph, BaseException]]: ...
 
     async def build_graph_async(
         self,

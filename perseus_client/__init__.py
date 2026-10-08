@@ -6,7 +6,7 @@ Perseus client for Python
 """
 import logging
 from .config import settings, Settings
-from typing import List, Optional, Dict, Any, Union
+from typing import List, Optional, Dict, Any, Union, Literal, overload
 
 logging.basicConfig(level=settings.loglevel)
 
@@ -40,6 +40,30 @@ def _get_client() -> PerseusClient:
             atexit.register(close)
             _atexit_registered = True
     return _client
+
+
+@overload
+def build_graph(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: Literal[False] = False,
+) -> List[KnowledgeGraph]: ...
+
+
+@overload
+def build_graph(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: Literal[True] = ...,
+) -> List[Union[KnowledgeGraph, BaseException]]: ...
 
 
 def build_graph(
@@ -163,6 +187,30 @@ def wait_for_ontology_upload(
     return _get_client().ontology.wait_for_ontology_upload(
         ontology_id, polling_interval, timeout
     )
+
+
+@overload
+async def build_graph_async(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: Literal[False] = False,
+) -> List[KnowledgeGraph]: ...
+
+
+@overload
+async def build_graph_async(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: Literal[True] = ...,
+) -> List[Union[KnowledgeGraph, BaseException]]: ...
 
 
 async def build_graph_async(
