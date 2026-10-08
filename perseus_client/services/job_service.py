@@ -133,6 +133,8 @@ class JobService(BaseService):
         payload: Dict[str, Any] = {"fileId": file_id, "status": JobStatus.SUCCEEDED}
         if ontology_id:
             payload["ontologyIds"] = [ontology_id]
+        else:
+            payload["ontologyId"] = None
         response = await self._request(
             "POST",
             "/api/v0/job/find",
@@ -168,6 +170,8 @@ class JobService(BaseService):
         }
         if ontology_id:
             payload["ontologyIds"] = [ontology_id]
+        else:
+            payload["ontologyId"] = None
         response = await self._request(
             "POST",
             "/api/v0/job/find",
