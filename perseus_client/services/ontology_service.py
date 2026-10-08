@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 
 
 class OntologyService(BaseService):
-    def __init__(self, session, api_host, loop):
-        super().__init__(session, api_host, loop)
+    def __init__(self, session, api_host, loop, transfer_session=None):
+        super().__init__(session, api_host, loop, transfer_session)
 
     def create_ontology(self, name: str, source_hash: str) -> Dict:
         return self._loop.run_until_complete(
@@ -147,9 +147,7 @@ class OntologyService(BaseService):
 
             if upload_url:
                 logger.debug(f"Ontology created with ID: {ontology_obj.id}. Now uploading content to pre-signed URL.")
-                ssl_context = ssl.create_default_context(cafile=certifi.where())
-                connector = aiohttp.TCPConnector(ssl=ssl_context)
-                async with aiohttp.ClientSession(connector=connector) as s3_session:
+                async with self._transfer() as s3_session:
                     async with s3_session.put(
                         upload_url, data=ontology_content
                     ) as resp:

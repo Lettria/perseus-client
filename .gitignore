@@ -7,6 +7,7 @@ __pycache__/
 poetry.lock
 build_graph_sync*
 build_graph_async*
+!examples/simple/build-graph/build_graph_async.py
 find_files
 examples/advanced/finance-compliance/*.ipynb
 venv/

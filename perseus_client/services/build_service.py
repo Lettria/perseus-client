@@ -1,7 +1,9 @@
+import asyncio
 import logging
+import shutil
 import tempfile
 import os
-from typing import Dict, Optional, Any, List
+from typing import Dict, Optional, Any, List, Union, Literal, overload
 
 from ..models import KnowledgeGraph, FileStatus, JobStatus, OntologyStatus
 
@@ -19,6 +21,8 @@ from .interlink_service import InterlinkService
 from .rdflib_service import RDFLibService
 
 logger = logging.getLogger(__name__)
+
+DEFAULT_MAX_CONCURRENCY = 10
 
 
 class BuildService:
@@ -46,6 +50,7 @@ class BuildService:
         self._interlink = interlink_service
         self._rdflib = rdflib_service
 
+    @overload
     def build_graph(
         self,
         file_paths: List[str],
@@ -54,20 +59,38 @@ class BuildService:
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
         project_id = _NOT_PROVIDED,
-    ) -> List[KnowledgeGraph]:
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: Literal[False] = False,
+    ) -> List[KnowledgeGraph]: ...
+
+    @overload
+    def build_graph(
+        self,
+        file_paths: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: Literal[True] = ...,
+    ) -> List[Union[KnowledgeGraph, BaseException]]: ...
+
+    def build_graph(
+        self,
+        file_paths: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: bool = False,
+    ) -> List[Union[KnowledgeGraph, BaseException]]:
         """
         Synchronously processes one or more files by uploading them, optionally with an ontology,
         running jobs, and returning KnowledgeGraph objects.
-        Args:
-            file_paths: A list of file paths to process.
-            ontology_path: The path to the ontology file to use for all files.
-            refresh_graph: Whether to force new jobs to be created (refresh the graph).
-            metadata: A dictionary of metadata to add to all nodes and relationships.
-            base_uri: The base URI to use for rebasing entity and relation IRIs.
-            project_id: The project ID to assign to jobs. Pass explicit None to unassign.
-                       If not provided, job's project assignment remains unchanged.
-        Returns:
-            A list of KnowledgeGraph objects.
+        See `build_graph_async` for the arguments.
         """
         return self._job._loop.run_until_complete(
             self.build_graph_async(
@@ -77,6 +100,8 @@ class BuildService:
                 metadata,
                 base_uri,
                 project_id,
+                max_concurrency,
+                return_exceptions,
             )
         )
 
@@ -146,57 +171,60 @@ class BuildService:
 
         # Create a temporary directory for job outputs
         output_dir = tempfile.mkdtemp(prefix="perseus-client-")
-        output_path = os.path.join(output_dir, f"{completed_job.id}_output")
-        logger.debug(f"Downloading job output to temporary path: {output_path}")
+        try:
+            output_path = os.path.join(output_dir, f"{completed_job.id}_output")
+            logger.debug(f"Downloading job output to temporary path: {output_path}")
 
-        await self._job.download_job_output_async(completed_job.id, output_path)
+            await self._job.download_job_output_async(completed_job.id, output_path)
 
-        cql_file_path = f"{output_path}.cql"
-        ttl_file_path = f"{output_path}.ttl"
+            cql_file_path = f"{output_path}.cql"
+            ttl_file_path = f"{output_path}.ttl"
 
-        cql_content: Optional[str] = None
-        ttl_content: Optional[str] = None
+            cql_content: Optional[str] = None
+            ttl_content: Optional[str] = None
 
-        if metadata:
-            logger.debug(f"Applying metadata: {metadata}")
-            if os.path.exists(ttl_file_path):
-                with open(ttl_file_path, "r", encoding="utf-8") as f:
-                    ttl_content = f.read()
-                modified_ttl = self._ttl.add_metadata_to_ttl(ttl_content, metadata)
-                with open(ttl_file_path, "w", encoding="utf-8") as f:
-                    f.write(modified_ttl)
-                ttl_content = modified_ttl
-                logger.debug("Successfully applied metadata to TTL content.")
+            if metadata:
+                logger.debug(f"Applying metadata: {metadata}")
+                if os.path.exists(ttl_file_path):
+                    with open(ttl_file_path, "r", encoding="utf-8") as f:
+                        ttl_content = f.read()
+                    modified_ttl = self._ttl.add_metadata_to_ttl(ttl_content, metadata)
+                    with open(ttl_file_path, "w", encoding="utf-8") as f:
+                        f.write(modified_ttl)
+                    ttl_content = modified_ttl
+                    logger.debug("Successfully applied metadata to TTL content.")
 
-            if os.path.exists(cql_file_path):
+                if os.path.exists(cql_file_path):
+                    with open(cql_file_path, "r", encoding="utf-8") as f:
+                        cql_content = f.read()
+                    cql_content = self._cql.add_metadata_to_cql(cql_content, metadata)
+                    with open(cql_file_path, "w", encoding="utf-8") as f:
+                        f.write(cql_content)
+                    logger.debug("Successfully applied metadata to CQL content.")
+
+            if os.path.exists(cql_file_path) and cql_content is None:
                 with open(cql_file_path, "r", encoding="utf-8") as f:
                     cql_content = f.read()
-                cql_content = self._cql.add_metadata_to_cql(cql_content, metadata)
-                with open(cql_file_path, "w", encoding="utf-8") as f:
-                    f.write(cql_content)
-                logger.debug("Successfully applied metadata to CQL content.")
 
-        if os.path.exists(cql_file_path) and cql_content is None:
-            with open(cql_file_path, "r", encoding="utf-8") as f:
-                cql_content = f.read()
+            if os.path.exists(ttl_file_path):
+                logger.debug(
+                    f"TTL file found at {ttl_file_path}, parsing to KnowledgeGraph."
+                )
+                if ttl_content is None:
+                    with open(ttl_file_path, "r", encoding="utf-8") as f:
+                        ttl_content = f.read()
 
-        if os.path.exists(ttl_file_path):
-            logger.debug(
-                f"TTL file found at {ttl_file_path}, parsing to KnowledgeGraph."
-            )
-            if ttl_content is None:
-                with open(ttl_file_path, "r", encoding="utf-8") as f:
-                    ttl_content = f.read()
-
-            kg = self._ttl.parse_ttl_to_knowledge_graph(ttl_content)
-            kg.ttl_content = ttl_content
-            kg.cql_content = cql_content
-        else:
-            logger.warning(
-                f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph."
-            )
-            # Create an empty graph but still attach content if available
-            kg = KnowledgeGraph(cql_content=cql_content)
+                kg = self._ttl.parse_ttl_to_knowledge_graph(ttl_content)
+                kg.ttl_content = ttl_content
+                kg.cql_content = cql_content
+            else:
+                logger.warning(
+                    f"TTL file not found at {ttl_file_path}. Returning empty KnowledgeGraph."
+                )
+                # Create an empty graph but still attach content if available
+                kg = KnowledgeGraph(cql_content=cql_content)
+        finally:
+            shutil.rmtree(output_dir, ignore_errors=True)
 
         if base_uri:
             logger.debug(f"Rebasing knowledge graph to base URI: {base_uri}")
@@ -235,6 +263,7 @@ class BuildService:
 
         return kg
 
+    @overload
     async def build_graph_async(
         self,
         file_paths: List[str],
@@ -243,7 +272,34 @@ class BuildService:
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
         project_id = _NOT_PROVIDED,
-    ) -> List[KnowledgeGraph]:
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: Literal[False] = False,
+    ) -> List[KnowledgeGraph]: ...
+
+    @overload
+    async def build_graph_async(
+        self,
+        file_paths: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: Literal[True] = ...,
+    ) -> List[Union[KnowledgeGraph, BaseException]]: ...
+
+    async def build_graph_async(
+        self,
+        file_paths: List[str],
+        ontology_path: Optional[str] = None,
+        refresh_graph: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+        base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: bool = False,
+    ) -> List[Union[KnowledgeGraph, BaseException]]:
         """
         Processes one or more files by uploading them, optionally with an ontology,
         running jobs, and returning KnowledgeGraph objects.
@@ -255,9 +311,17 @@ class BuildService:
             base_uri: The base URI to use for rebasing entity and relation IRIs.
             project_id: The project ID to assign to jobs. Pass explicit None to unassign.
                        If not provided, job's project assignment remains unchanged.
+            max_concurrency: The maximum number of files processed at the same time
+                (upload, job and download). Must be at least 1.
+            return_exceptions: If False, the first failure cancels the remaining files
+                and is re-raised. If True, every file is processed and the result list
+                holds either a KnowledgeGraph or the exception for each input.
         Returns:
-            A list of KnowledgeGraph objects.
+            A list with one entry per input file, in input order.
         """
+        if max_concurrency < 1:
+            raise ValueError("max_concurrency must be at least 1.")
+
         created_ontology_id = None
         if ontology_path:
             logger.debug(f"Using ontology from path: {ontology_path}")
@@ -269,23 +333,33 @@ class BuildService:
             created_ontology_id = created_ontology.id
             logger.debug(f"Using ontology_id: {created_ontology_id}")
 
-        tasks = []
-        for path in file_paths:
-            task = self._build_single_graph_async(
-                file_path=path,
-                ontology_id=created_ontology_id,
-                refresh_graph=refresh_graph,
-                metadata=metadata,
-                base_uri=base_uri,
-                project_id=project_id,
-            )
-            tasks.append(task)
+        semaphore = asyncio.Semaphore(max_concurrency)
 
-        logger.debug(f"Processing {len(tasks)} file(s)...")
+        async def bounded(path: str) -> KnowledgeGraph:
+            async with semaphore:
+                return await self._build_single_graph_async(
+                    file_path=path,
+                    ontology_id=created_ontology_id,
+                    refresh_graph=refresh_graph,
+                    metadata=metadata,
+                    base_uri=base_uri,
+                    project_id=project_id,
+                )
 
-        results = await self._job._wait_for_tasks(
-            tasks, [os.path.basename(p) for p in file_paths]
+        logger.debug(
+            f"Processing {len(file_paths)} file(s), {max_concurrency} at a time..."
         )
+
+        tasks = [asyncio.ensure_future(bounded(path)) for path in file_paths]
+        try:
+            results = await asyncio.gather(*tasks, return_exceptions=return_exceptions)
+        except BaseException:
+            # gather doesn't cancel the other tasks on failure (asyncio.TaskGroup
+            # would, but requires Python 3.11).
+            for task in tasks:
+                task.cancel()
+            await asyncio.gather(*tasks, return_exceptions=True)
+            raise
 
         logger.info("All files processed.")
         return results

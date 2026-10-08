@@ -30,6 +30,8 @@ def test_build_graph(mock_get_client):
         metadata=metadata,
         refresh_graph=True,
         project_id=_NOT_PROVIDED,
+        max_concurrency=10,
+        return_exceptions=False,
     )
 
 
@@ -298,6 +300,8 @@ async def test_build_graph_async(mock_perseus_client):
         metadata=metadata,
         refresh_graph=True,
         project_id=_NOT_PROVIDED,
+        max_concurrency=10,
+        return_exceptions=False,
     )
 
 

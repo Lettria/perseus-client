@@ -42,6 +42,8 @@ async def test_build_graph_async(client: PerseusClient):
             metadata=metadata,
             base_uri=None,
             project_id=_NOT_PROVIDED,
+            max_concurrency=10,
+            return_exceptions=False,
         )
 
 
@@ -79,13 +81,21 @@ import aiohttp
 from perseus_client.exceptions import ConfigurationException
 
 
+class _Sessions(list):
+    """API sessions; transfer (presigned-URL) sessions are kept in `.transfer`."""
+
+    def __init__(self):
+        super().__init__()
+        self.transfer = []
+
+
 @pytest.fixture
 def lifecycle_env():
     """
     Patches settings, aiohttp.ClientSession/TCPConnector and BuildService async
-    methods. Yields the list of created mock sessions.
+    methods. Yields the created API sessions (transfer sessions in `.transfer`).
     """
-    sessions = []
+    sessions = _Sessions()
     real_session_cls = aiohttp.ClientSession
     real_connector_cls = aiohttp.TCPConnector
 
@@ -97,7 +107,11 @@ def lifecycle_env():
             session.closed = True
 
         session.close = AsyncMock(side_effect=close)
-        sessions.append(session)
+        session.init_kwargs = kwargs
+        if "headers" in kwargs:
+            sessions.append(session)
+        else:
+            sessions.transfer.append(session)
         return session
 
     def make_connector(*args, **kwargs):
@@ -148,6 +162,7 @@ async def test_property_in_running_loop_on_inactive_client_raises(lifecycle_env)
     with pytest.raises(ConfigurationException):
         client.build
     assert lifecycle_env == []
+    assert lifecycle_env.transfer == []
 
 
 def test_client_awaited_from_different_loop_raises(lifecycle_env):
@@ -237,3 +252,68 @@ def test_module_level_build_graph_reuses_single_session(lifecycle_env):
         lifecycle_env[0].close.assert_not_awaited()
         sdk.close()
         lifecycle_env[0].close.assert_awaited_once()
+
+
+# --- Shared transfer session (issue #30) -------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_presigned_transfers_share_one_session_without_auth(lifecycle_env, tmp_path):
+    from types import SimpleNamespace
+    from perseus_client.services.file_service import FileService
+    from perseus_client.services.job_service import JobService
+
+    created = [SimpleNamespace(id=f"file{i}") for i in range(3)]
+    create_file = AsyncMock(
+        side_effect=[{"file": f, "upload_url": f"https://s3.test/{f.id}"} for f in created]
+    )
+    download_urls = AsyncMock(
+        return_value={
+            "ttlFileDownloadUrl": "https://s3.test/out.ttl",
+            "cqlFileDownloadUrl": "https://s3.test/out.cql",
+        }
+    )
+
+    with patch.object(FileService, "create_file_async", create_file), patch.object(
+        JobService, "_get_download_urls_async", download_urls
+    ):
+        async with PerseusClient() as client:
+            assert len(lifecycle_env.transfer) == 1
+            transfer = lifecycle_env.transfer[0]
+            assert "headers" not in transfer.init_kwargs
+
+            def make_download_response(*args, **kwargs):
+                response = MagicMock()
+                response.raise_for_status = MagicMock()
+                response.content.read = AsyncMock(side_effect=[b"data", b""])
+                cm = MagicMock()
+                cm.__aenter__ = AsyncMock(return_value=response)
+                cm.__aexit__ = AsyncMock(return_value=None)
+                return cm
+
+            transfer.get = AsyncMock(side_effect=make_download_response)
+
+            def make_upload_response(*args, **kwargs):
+                cm = MagicMock()
+                cm.__aenter__ = AsyncMock(return_value=MagicMock())
+                cm.__aexit__ = AsyncMock(return_value=None)
+                return cm
+
+            transfer.put = MagicMock(side_effect=make_upload_response)
+
+            for i in range(3):
+                path = tmp_path / f"doc{i}.txt"
+                path.write_bytes(f"content {i}".encode())
+                await client.file.upload_file_async(str(path))
+                await client.job.download_job_output_async(
+                    f"job{i}", str(tmp_path / f"out{i}")
+                )
+
+            assert transfer.put.call_count == 3
+            assert transfer.get.await_count == 6
+            # Only the API session and the transfer session were ever created.
+            assert len(lifecycle_env) == 1
+            assert len(lifecycle_env.transfer) == 1
+            transfer.close.assert_not_awaited()
+
+        transfer.close.assert_awaited_once()
