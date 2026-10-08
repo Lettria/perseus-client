@@ -29,7 +29,7 @@ from .exceptions import ConfigurationException
 from .services.file_service import FileService
 from .services.job_service import JobService
 from .services.ontology_service import OntologyService
-from .services.build_service import BuildService, DEFAULT_MAX_CONCURRENCY
+from .services.build_service import BuildService, _NOT_PROVIDED, DEFAULT_MAX_CONCURRENCY
 from .config import settings
 
 logger = logging.getLogger(__name__)
@@ -314,6 +314,7 @@ class PerseusClient:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
         max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
         return_exceptions: bool = False,
     ) -> List[Union[KnowledgeGraph, BaseException]]:
@@ -326,6 +327,8 @@ class PerseusClient:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
+            project_id: The project ID to assign to jobs. Pass explicit None to unassign.
+                       If not provided, job's project assignment remains unchanged.
             max_concurrency: The maximum number of files processed at the same time
                 (upload, job and download). Must be at least 1.
             return_exceptions: If False, the first failure cancels the remaining files
@@ -345,6 +348,22 @@ class PerseusClient:
                     refresh_graph,
                     metadata,
                     base_uri,
+                    project_id,
+                    max_concurrency,
+                    return_exceptions,
+                    project_id,
+                    max_concurrency,
+                    return_exceptions,
+                    project_id,
+                    max_concurrency,
+                    return_exceptions,
+                    project_id,
+                    max_concurrency,
+                    return_exceptions,
+                    project_id,
+                    max_concurrency,
+                    return_exceptions,
+                    project_id,
                     max_concurrency,
                     return_exceptions,
                 )
@@ -360,6 +379,7 @@ class PerseusClient:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
         max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
         return_exceptions: bool = False,
     ) -> List[Union[KnowledgeGraph, BaseException]]:
@@ -375,6 +395,8 @@ class PerseusClient:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
+            project_id: The project ID to assign to jobs. Pass explicit None to unassign.
+                       If not provided, job's project assignment remains unchanged.
             max_concurrency: The maximum number of files processed at the same time
                 (upload, job and download). Must be at least 1.
             return_exceptions: If False, the first failure cancels the remaining files
@@ -391,6 +413,7 @@ class PerseusClient:
             refresh_graph=refresh_graph,
             metadata=metadata,
             base_uri=final_base_uri,
+            project_id=project_id,
             max_concurrency=max_concurrency,
             return_exceptions=return_exceptions,
         )

@@ -6,6 +6,9 @@ import os
 from typing import Dict, Optional, Any, List, Union
 
 from ..models import KnowledgeGraph, FileStatus, JobStatus, OntologyStatus
+
+# Sentinel to distinguish between "not provided" and "explicitly None"
+_NOT_PROVIDED = object()
 from .file_service import FileService
 from .job_service import JobService
 from .ontology_service import OntologyService
@@ -54,6 +57,7 @@ class BuildService:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
         max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
         return_exceptions: bool = False,
     ) -> List[Union[KnowledgeGraph, BaseException]]:
@@ -62,6 +66,7 @@ class BuildService:
         running jobs, and returning KnowledgeGraph objects.
         See `build_graph_async` for the arguments.
         """
+        """
         return self._job._loop.run_until_complete(
             self.build_graph_async(
                 file_paths,
@@ -69,6 +74,7 @@ class BuildService:
                 refresh_graph,
                 metadata,
                 base_uri,
+                project_id,
                 max_concurrency,
                 return_exceptions,
             )
@@ -81,6 +87,7 @@ class BuildService:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
     ) -> KnowledgeGraph:
         """
         Processes a single file to build a KnowledgeGraph with resilient job handling.
@@ -128,6 +135,11 @@ class BuildService:
             job_to_run = await self._job.submit_job_async(
                 file_id=created_file.id, ontology_id=ontology_id
             )
+
+        # Update project assignment if project_id was explicitly provided
+        if project_id is not _NOT_PROVIDED:
+            logger.debug(f"Updating job {job_to_run.id} project to: {project_id}")
+            await self._job.update_job_project_async(job_to_run.id, project_id)
 
         # Wait for the job (either new or pre-existing) to complete
         completed_job = await self._job.run_job_async(job_id=job_to_run.id)
@@ -233,6 +245,7 @@ class BuildService:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
         max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
         return_exceptions: bool = False,
     ) -> List[Union[KnowledgeGraph, BaseException]]:
@@ -245,11 +258,10 @@ class BuildService:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
-            max_concurrency: The maximum number of files processed at the same time
-                (upload, job and download). Must be at least 1.
-            return_exceptions: If False, the first failure cancels the remaining files
-                and is re-raised. If True, every file is processed and the result list
-                holds either a KnowledgeGraph or the exception for each input.
+        project_id = _NOT_PROVIDED,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+        return_exceptions: bool = False,
+    ) -> List[Union[KnowledgeGraph, BaseException]]:
         Returns:
             A list with one entry per input file, in input order.
         """
@@ -277,6 +289,7 @@ class BuildService:
                     refresh_graph=refresh_graph,
                     metadata=metadata,
                     base_uri=base_uri,
+                    project_id=project_id,
                 )
 
         logger.debug(

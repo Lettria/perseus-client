@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import patch, MagicMock, AsyncMock
 import perseus_client
 from perseus_client.models import KnowledgeGraph, File, Job, Ontology
+from perseus_client.services.build_service import _NOT_PROVIDED
 
 
 @patch("perseus_client._get_client")
@@ -28,6 +29,7 @@ def test_build_graph(mock_get_client):
         ontology_path=ontology_path,
         metadata=metadata,
         refresh_graph=True,
+        project_id=_NOT_PROVIDED,
         max_concurrency=10,
         return_exceptions=False,
     )
@@ -297,6 +299,7 @@ async def test_build_graph_async(mock_perseus_client):
         ontology_path=ontology_path,
         metadata=metadata,
         refresh_graph=True,
+        project_id=_NOT_PROVIDED,
         max_concurrency=10,
         return_exceptions=False,
     )
