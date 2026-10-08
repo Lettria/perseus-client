@@ -258,10 +258,13 @@ class BuildService:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
-        project_id = _NOT_PROVIDED,
-        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
-        return_exceptions: bool = False,
-    ) -> List[Union[KnowledgeGraph, BaseException]]:
+            project_id: The project ID to assign to jobs. Pass explicit None to unassign.
+                       If not provided, job's project assignment remains unchanged.
+            max_concurrency: The maximum number of files processed at the same time
+                (upload, job and download). Must be at least 1.
+            return_exceptions: If False, the first failure cancels the remaining files
+                and is re-raised. If True, every file is processed and the result list
+                holds either a KnowledgeGraph or the exception for each input.
         Returns:
             A list with one entry per input file, in input order.
         """
