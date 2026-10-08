@@ -1,0 +1,5 @@
+Ada Lovelace was an English mathematician born in London in 1815.
+She worked with Charles Babbage on the Analytical Engine.
+Ada wrote the first algorithm intended to be carried out by a machine.
+Charles Babbage was a mathematician and inventor.
+He designed the Difference Engine and the Analytical Engine.

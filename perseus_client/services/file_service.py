@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 
 
 class FileService(BaseService):
-    def __init__(self, session, api_host, loop):
-        super().__init__(session, api_host, loop)
+    def __init__(self, session, api_host, loop, transfer_session=None):
+        super().__init__(session, api_host, loop, transfer_session)
 
     def create_file(self, name: str, source_hash: str) -> Dict:
         return self._loop.run_until_complete(self.create_file_async(name, source_hash))
@@ -147,9 +147,7 @@ class FileService(BaseService):
             # If there is an upload_url, it means the file is new and needs to be uploaded.
             if upload_url:
                 logger.debug(f"File created with ID: {file_obj.id}. Now uploading content to pre-signed URL.")
-                ssl_context = ssl.create_default_context(cafile=certifi.where())
-                connector = aiohttp.TCPConnector(ssl=ssl_context)
-                async with aiohttp.ClientSession(connector=connector) as s3_session:
+                async with self._transfer() as s3_session:
                     async with s3_session.put(upload_url, data=file_content) as resp:
                         resp.raise_for_status()
                 logger.debug(f"Successfully uploaded content for file: {file_obj.id}")

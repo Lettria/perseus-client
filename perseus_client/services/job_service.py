@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 class JobService(BaseService):
-    def __init__(self, session, api_host, loop):
-        super().__init__(session, api_host, loop)
+    def __init__(self, session, api_host, loop, transfer_session=None):
+        super().__init__(session, api_host, loop, transfer_session)
 
     def submit_job(self, file_id: str, ontology_id: Optional[str] = None) -> Job:
         return self._loop.run_until_complete(
@@ -206,10 +206,7 @@ class JobService(BaseService):
 
         try:
             download_urls = await self._get_download_urls_async(job_id)
-            ssl_context = ssl.create_default_context(cafile=certifi.where())
-            connector = aiohttp.TCPConnector(ssl=ssl_context)
-
-            async with aiohttp.ClientSession(connector=connector) as download_session:
+            async with self._transfer() as download_session:
                 # Download TTL file
                 if download_urls.get("ttlFileDownloadUrl"):
                     ttl_output_path = f"{output_path}.ttl"
@@ -298,6 +295,9 @@ class JobService(BaseService):
     ) -> Job:
         """
         Asynchronously waits for a job to complete by polling its status.
+
+        `timeout` is a wall-clock limit in seconds, measured from when this call
+        starts. It includes any time the job spends queued on the server.
         """
         logger.info(f"Waiting for job {job_id} to complete.")
         start_time = time()

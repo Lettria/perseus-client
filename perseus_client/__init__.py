@@ -6,11 +6,12 @@ Perseus client for Python
 """
 import logging
 from .config import settings, Settings
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union, Literal, overload
 
 logging.basicConfig(level=settings.loglevel)
 
 from .client import PerseusClient
+from .services.build_service import DEFAULT_MAX_CONCURRENCY
 from .exceptions import PerseusException
 from .models import (
     File,
@@ -41,19 +42,47 @@ def _get_client() -> PerseusClient:
     return _client
 
 
+@overload
 def build_graph(
     file_paths: List[str],
     ontology_path: Optional[str] = None,
     refresh_graph: bool = False,
     metadata: Optional[Dict[str, Any]] = None,
     project_id = _NOT_PROVIDED,
-) -> List[KnowledgeGraph]:
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: Literal[False] = False,
+) -> List[KnowledgeGraph]: ...
+
+
+@overload
+def build_graph(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: Literal[True] = ...,
+) -> List[Union[KnowledgeGraph, BaseException]]: ...
+
+
+def build_graph(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: bool = False,
+) -> List[Union[KnowledgeGraph, BaseException]]:
     return _get_client().build_graph(
         file_paths=file_paths,
         ontology_path=ontology_path,
         refresh_graph=refresh_graph,
         metadata=metadata,
         project_id=project_id,
+        max_concurrency=max_concurrency,
+        return_exceptions=return_exceptions
     )
 
 
@@ -160,13 +189,39 @@ def wait_for_ontology_upload(
     )
 
 
+@overload
 async def build_graph_async(
     file_paths: List[str],
     ontology_path: Optional[str] = None,
     refresh_graph: bool = False,
     metadata: Optional[Dict[str, Any]] = None,
     project_id = _NOT_PROVIDED,
-) -> List[KnowledgeGraph]:
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: Literal[False] = False,
+) -> List[KnowledgeGraph]: ...
+
+
+@overload
+async def build_graph_async(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: Literal[True] = ...,
+) -> List[Union[KnowledgeGraph, BaseException]]: ...
+
+
+async def build_graph_async(
+    file_paths: List[str],
+    ontology_path: Optional[str] = None,
+    refresh_graph: bool = False,
+    metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
+    max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
+    return_exceptions: bool = False,
+) -> List[Union[KnowledgeGraph, BaseException]]:
     async with PerseusClient() as client:
         return await client.build_graph_async(
             file_paths=file_paths,
@@ -174,6 +229,8 @@ async def build_graph_async(
             refresh_graph=refresh_graph,
             metadata=metadata,
             project_id=project_id,
+            max_concurrency=max_concurrency,
+            return_exceptions=return_exceptions
         )
 
 
