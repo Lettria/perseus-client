@@ -82,6 +82,33 @@ for graph in knowledge_graphs:
     print(f"🎉 Graph built successfully with {len(graph.entities)} entities and {len(graph.relations)} relations!")
 ```
 
+#### Organizing Jobs with Projects
+
+You can assign jobs to projects for better organization:
+
+```python
+import perseus_client
+
+# Assign job to a project
+knowledge_graphs = perseus_client.build_graph(
+    file_paths=["path/to/your/document.txt"],
+    project_id="your-project-id",
+)
+
+# Explicitly remove project assignment
+knowledge_graphs = perseus_client.build_graph(
+    file_paths=["path/to/your/document.txt"],
+    project_id=None,
+)
+
+# Don't change project assignment (default)
+knowledge_graphs = perseus_client.build_graph(
+    file_paths=["path/to/your/document.txt"],
+)
+```
+
+**Getting your Project ID:** Currently, you can find your project ID in the URL when viewing a project in the Perseus app. For example, in the URL `https://app.perseus.lettria.net/app/w/.../p/51b5764b-0f84-4aa6-8930-0acea7914617`, the project ID is the UUID after `/p/`. A "Copy Project ID" button will be added to the UI soon for easier access.
+
 ### The `KnowledgeGraph` Object
 
 Both `build_graph` and `build_graph_async` methods return a `List[KnowledgeGraph]` (one graph per input file), which holds the structured data of your graphs.
@@ -191,6 +218,7 @@ def build_graph(
     ontology_path: Optional[str] = None,
     refresh_graph: bool = False,
     metadata: Optional[Dict[str, Any]] = None,
+    project_id: Optional[str] = None,
 ) -> List[KnowledgeGraph]:
 ```
 
@@ -204,6 +232,7 @@ Processes one or more files by uploading them, optionally with an ontology, runn
 | `ontology_path` | `Optional[str]`            | The path to the ontology file to use.                           | `None`  |
 | `refresh_graph` | `bool`                     | Whether to force a new job to be created (refresh the graph).   | `False` |
 | `metadata`      | `Optional[Dict[str, Any]]` | A dictionary of metadata to add to all nodes and relationships. | `None`  |
+| `project_id`    | `Optional[str]`            | The project ID to assign jobs to. Pass explicit `None` to unassign from any project. If not provided, the job's project assignment remains unchanged. | Not set |
 
 ### `KnowledgeGraph.interlink`
 

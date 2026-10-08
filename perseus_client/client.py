@@ -29,7 +29,7 @@ from .exceptions import ConfigurationException
 from .services.file_service import FileService
 from .services.job_service import JobService
 from .services.ontology_service import OntologyService
-from .services.build_service import BuildService
+from .services.build_service import BuildService, _NOT_PROVIDED
 from .config import settings
 
 logger = logging.getLogger(__name__)
@@ -300,6 +300,7 @@ class PerseusClient:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
     ) -> List[KnowledgeGraph]:
         """
         Synchronously processes one or more files by uploading them, optionally with an ontology,
@@ -310,6 +311,8 @@ class PerseusClient:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
+            project_id: The project ID to assign to jobs. Pass explicit None to unassign.
+                       If not provided, job's project assignment remains unchanged.
         Returns:
             A list of KnowledgeGraph objects.
         """
@@ -324,6 +327,7 @@ class PerseusClient:
                     refresh_graph,
                     metadata,
                     base_uri,
+                    project_id,
                 )
             )
         finally:
@@ -337,6 +341,7 @@ class PerseusClient:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
     ) -> List[KnowledgeGraph]:
         """
         Asynchronously processes one or more files by uploading them, optionally with an ontology,
@@ -350,6 +355,8 @@ class PerseusClient:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
+            project_id: The project ID to assign to jobs. Pass explicit None to unassign.
+                       If not provided, job's project assignment remains unchanged.
         Returns:
             A list of KnowledgeGraph objects.
         """
@@ -361,6 +368,7 @@ class PerseusClient:
             refresh_graph=refresh_graph,
             metadata=metadata,
             base_uri=final_base_uri,
+            project_id=project_id,
         )
 
     def interlink(

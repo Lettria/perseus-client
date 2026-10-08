@@ -21,6 +21,7 @@ from .models import (
     OntologyStatus,
     KnowledgeGraph,
 )
+from .services.build_service import _NOT_PROVIDED
 
 import atexit
 
@@ -45,12 +46,14 @@ def build_graph(
     ontology_path: Optional[str] = None,
     refresh_graph: bool = False,
     metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
 ) -> List[KnowledgeGraph]:
     return _get_client().build_graph(
         file_paths=file_paths,
         ontology_path=ontology_path,
         refresh_graph=refresh_graph,
         metadata=metadata,
+        project_id=project_id,
     )
 
 
@@ -162,6 +165,7 @@ async def build_graph_async(
     ontology_path: Optional[str] = None,
     refresh_graph: bool = False,
     metadata: Optional[Dict[str, Any]] = None,
+    project_id = _NOT_PROVIDED,
 ) -> List[KnowledgeGraph]:
     async with PerseusClient() as client:
         return await client.build_graph_async(
@@ -169,6 +173,7 @@ async def build_graph_async(
             ontology_path=ontology_path,
             refresh_graph=refresh_graph,
             metadata=metadata,
+            project_id=project_id,
         )
 
 
