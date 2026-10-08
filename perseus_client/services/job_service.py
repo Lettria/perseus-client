@@ -60,6 +60,11 @@ class JobService(BaseService):
             self.run_job_async(job_id, polling_interval, timeout)
         )
 
+    def update_job_project(self, job_id: str, project_id: Optional[str]) -> None:
+        return self._loop.run_until_complete(
+            self.update_job_project_async(job_id, project_id)
+        )
+
     async def submit_job_async(
         self, file_id: str, ontology_id: Optional[str] = None
     ) -> Job:
@@ -78,6 +83,24 @@ class JobService(BaseService):
         job = Job(id=job_data["id"], status=job_data["status"])
         logger.debug(f"Successfully submitted job with ID: {job.id}")
         return job
+
+    async def update_job_project_async(
+        self, job_id: str, project_id: Optional[str]
+    ) -> None:
+        """
+        Asynchronously updates the project ID for an existing job.
+
+        Args:
+            job_id: The ID of the job to update.
+            project_id: The project ID to assign, or None to remove project assignment.
+        """
+        logger.debug(f"Updating job {job_id} project to: {project_id}")
+        await self._request(
+            "PATCH",
+            f"/api/v0/job/{job_id}/project",
+            json={"projectId": project_id},
+        )
+        logger.debug(f"Successfully updated project for job {job_id}")
 
     async def find_jobs_async(self, ids: List[str]) -> List[Job]:
         """

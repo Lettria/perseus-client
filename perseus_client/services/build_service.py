@@ -4,6 +4,9 @@ import os
 from typing import Dict, Optional, Any, List
 
 from ..models import KnowledgeGraph, FileStatus, JobStatus, OntologyStatus
+
+# Sentinel to distinguish between "not provided" and "explicitly None"
+_NOT_PROVIDED = object()
 from .file_service import FileService
 from .job_service import JobService
 from .ontology_service import OntologyService
@@ -50,6 +53,7 @@ class BuildService:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
     ) -> List[KnowledgeGraph]:
         """
         Synchronously processes one or more files by uploading them, optionally with an ontology,
@@ -60,6 +64,8 @@ class BuildService:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
+            project_id: The project ID to assign to jobs. Pass explicit None to unassign.
+                       If not provided, job's project assignment remains unchanged.
         Returns:
             A list of KnowledgeGraph objects.
         """
@@ -70,6 +76,7 @@ class BuildService:
                 refresh_graph,
                 metadata,
                 base_uri,
+                project_id,
             )
         )
 
@@ -80,6 +87,7 @@ class BuildService:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
     ) -> KnowledgeGraph:
         """
         Processes a single file to build a KnowledgeGraph with resilient job handling.
@@ -127,6 +135,11 @@ class BuildService:
             job_to_run = await self._job.submit_job_async(
                 file_id=created_file.id, ontology_id=ontology_id
             )
+
+        # Update project assignment if project_id was explicitly provided
+        if project_id is not _NOT_PROVIDED:
+            logger.debug(f"Updating job {job_to_run.id} project to: {project_id}")
+            await self._job.update_job_project_async(job_to_run.id, project_id)
 
         # Wait for the job (either new or pre-existing) to complete
         completed_job = await self._job.run_job_async(job_id=job_to_run.id)
@@ -229,6 +242,7 @@ class BuildService:
         refresh_graph: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         base_uri: Optional[str] = None,
+        project_id = _NOT_PROVIDED,
     ) -> List[KnowledgeGraph]:
         """
         Processes one or more files by uploading them, optionally with an ontology,
@@ -239,6 +253,8 @@ class BuildService:
             refresh_graph: Whether to force new jobs to be created (refresh the graph).
             metadata: A dictionary of metadata to add to all nodes and relationships.
             base_uri: The base URI to use for rebasing entity and relation IRIs.
+            project_id: The project ID to assign to jobs. Pass explicit None to unassign.
+                       If not provided, job's project assignment remains unchanged.
         Returns:
             A list of KnowledgeGraph objects.
         """
@@ -261,6 +277,7 @@ class BuildService:
                 refresh_graph=refresh_graph,
                 metadata=metadata,
                 base_uri=base_uri,
+                project_id=project_id,
             )
             tasks.append(task)
 
