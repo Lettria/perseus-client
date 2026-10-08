@@ -351,21 +351,6 @@ class PerseusClient:
                     project_id,
                     max_concurrency,
                     return_exceptions,
-                    project_id,
-                    max_concurrency,
-                    return_exceptions,
-                    project_id,
-                    max_concurrency,
-                    return_exceptions,
-                    project_id,
-                    max_concurrency,
-                    return_exceptions,
-                    project_id,
-                    max_concurrency,
-                    return_exceptions,
-                    project_id,
-                    max_concurrency,
-                    return_exceptions,
                 )
             )
         finally:
