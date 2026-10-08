@@ -161,6 +161,26 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+`async with` is the recommended async pattern. Awaiting `client.build_graph_async(...)` or `client.interlink_async(...)` on a client that isn't active also works, but the session stays open until you call `client.close()`. The service properties (`client.file`, `client.job`, …) can't activate the client inside a running event loop, so use `async with` before accessing them.
+
+### Client lifecycle with `PerseusClient`
+
+When you create a `PerseusClient` yourself:
+
+- `client.build_graph(...)` and `client.interlink(...)` open a session for the call and close it when they return, unless the client is already active.
+- The service properties (`client.file`, `client.job`, `client.ontology`, …) open a session that stays open. Use `with PerseusClient() as client:` or call `client.close()` when you're done.
+- Services keep the session they were created with. Use `client.file.<method>(...)` each time instead of storing `client.file` and reusing it after `close()`.
+
+```python
+from perseus_client import PerseusClient
+
+with PerseusClient() as client:
+    graphs = client.build_graph(file_paths=["doc1.txt", "doc2.txt"])
+    files = client.file.find_files()
+```
+
+The module-level functions (`perseus_client.build_graph(...)`, …) share a single client whose session is closed automatically when the interpreter exits.
+
 ## 📚 API Reference
 
 ### `client.build_graph`

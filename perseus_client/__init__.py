@@ -32,6 +32,8 @@ def _get_client() -> PerseusClient:
     global _client, _atexit_registered
     if _client is None:
         _client = PerseusClient()
+        # Keep the shared session open across calls; atexit closes it.
+        _client.__enter__()
         if not _atexit_registered:
             atexit.register(close)
             _atexit_registered = True
