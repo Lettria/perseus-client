@@ -66,7 +66,6 @@ class BuildService:
         running jobs, and returning KnowledgeGraph objects.
         See `build_graph_async` for the arguments.
         """
-        """
         return self._job._loop.run_until_complete(
             self.build_graph_async(
                 file_paths,
