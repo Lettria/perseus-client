@@ -37,13 +37,13 @@ Lettria's Perseus service is designed to solve this problem. It transforms your 
 
 ```bash
 # For both Neo4j and FalkorDB support
-pip install "perseus-client[all]==1.0.0-rc.24"
+pip install "perseus-client[all]==1.0.0-rc.23"
 
 # For Neo4j support
-pip install "perseus-client[neo4j]==1.0.0-rc.24"
+pip install "perseus-client[neo4j]==1.0.0-rc.23"
 
 # For FalkorDB support
-pip install "perseus-client[falkordb]==1.0.0-rc.24"
+pip install "perseus-client[falkordb]==1.0.0-rc.23"
 ```
 
 ## 🚀 Quick Start
@@ -228,15 +228,15 @@ Processes one or more files by uploading them, optionally with an ontology, runn
 
 **Note:** Input file size limits for text-to-graph generation vary by workspace plan. If your files exceed the limit, you will receive an error message indicating your plan's specific limit. Upgrade to a paid plan to increase these limits.
 
-| Parameter       | Type                       | Description                                                     | Default |
-| --------------- | -------------------------- | --------------------------------------------------------------- | ------- |
-| `file_paths`    | `List[str]`                | A list of file paths to process.                                |         |
-| `ontology_path` | `Optional[str]`            | The path to the ontology file to use.                           | `None`  |
-| `refresh_graph` | `bool`                     | Whether to force a new job to be created (refresh the graph).   | `False` |
-| `metadata`      | `Optional[Dict[str, Any]]` | A dictionary of metadata to add to all nodes and relationships. | `None`  |
-| `project_id`    | `Optional[str]`            | The project ID to assign jobs to. Pass explicit `None` to unassign from any project. If not provided, the job's project assignment remains unchanged. | Not set |
-| `max_concurrency` | `int`                    | The maximum number of files processed at the same time (upload, job and download). Must be at least 1. | `10` |
-| `return_exceptions` | `bool`                 | If `False`, the first failure cancels the remaining files and is raised. If `True`, every file is processed and the list holds a `KnowledgeGraph` or the exception for each file. | `False` |
+| Parameter           | Type                       | Description                                                                                                                                                                       | Default |
+| ------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `file_paths`        | `List[str]`                | A list of file paths to process.                                                                                                                                                  |         |
+| `ontology_path`     | `Optional[str]`            | The path to the ontology file to use.                                                                                                                                             | `None`  |
+| `refresh_graph`     | `bool`                     | Whether to force a new job to be created (refresh the graph).                                                                                                                     | `False` |
+| `metadata`          | `Optional[Dict[str, Any]]` | A dictionary of metadata to add to all nodes and relationships.                                                                                                                   | `None`  |
+| `project_id`        | `Optional[str]`            | The project ID to assign jobs to. Pass explicit `None` to unassign from any project. If not provided, the job's project assignment remains unchanged.                             | Not set |
+| `max_concurrency`   | `int`                      | The maximum number of files processed at the same time (upload, job and download). Must be at least 1.                                                                            | `10`    |
+| `return_exceptions` | `bool`                     | If `False`, the first failure cancels the remaining files and is raised. If `True`, every file is processed and the list holds a `KnowledgeGraph` or the exception for each file. | `False` |
 
 Results are returned in the same order as `file_paths`. Each job's timeout (one hour) starts when the file gets a concurrency slot, and includes any time the job spends queued on the server.
 
