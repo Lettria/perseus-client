@@ -84,7 +84,7 @@ for graph in knowledge_graphs:
 
 #### Organizing Jobs with Projects
 
-You can assign jobs to projects for better organization:
+You can assign jobs to projects for better organization
 
 ```python
 import perseus_client
