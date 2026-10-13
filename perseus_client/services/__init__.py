@@ -9,4 +9,6 @@ from .job_service import JobService
 from .neo4j_service import Neo4jService
 from .ontology_service import OntologyService
 from .rdflib_service import RDFLibService
+from .spanner_graph_service import SpannerGraphService
+from .spgl_service import SPGLService
 from .ttl_service import TTLService

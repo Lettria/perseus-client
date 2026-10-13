@@ -17,6 +17,8 @@ if TYPE_CHECKING:
     from .services.cql_service import CQLService
     from .services.neo4j_service import Neo4jService
     from .services.falkordb_service import FalkorDBService
+    from .services.spgl_service import SPGLService
+    from .services.spanner_graph_service import SpannerGraphService
     from .services.graph_service import GraphService
     from .services.interlink_service import InterlinkService
     from .services.rdflib_service import RDFLibService
@@ -74,6 +76,10 @@ class KnowledgeGraph(BaseModel):
     _cql_service: Optional["CQLService"] = PrivateAttr(default=None)
     _neo4j_service: Optional["Neo4jService"] = PrivateAttr(default=None)
     _falkordb_service: Optional["FalkorDBService"] = PrivateAttr(default=None)
+    _spgl_service: Optional["SPGLService"] = PrivateAttr(default=None)
+    _spanner_graph_service: Optional["SpannerGraphService"] = PrivateAttr(
+        default=None
+    )
     _graph_service: Optional["GraphService"] = PrivateAttr(default=None)
     _interlink_service: Optional["InterlinkService"] = PrivateAttr(default=None)
     _rdflib_service: Optional["RDFLibService"] = PrivateAttr(default=None)
@@ -84,6 +90,8 @@ class KnowledgeGraph(BaseModel):
         cql_service: Optional["CQLService"] = None,
         neo4j_service: Optional["Neo4jService"] = None,
         falkordb_service: Optional["FalkorDBService"] = None,
+        spgl_service: Optional["SPGLService"] = None,
+        spanner_graph_service: Optional["SpannerGraphService"] = None,
         graph_service: Optional["GraphService"] = None,
         interlink_service: Optional["InterlinkService"] = None,
         rdflib_service: Optional["RDFLibService"] = None,
@@ -94,6 +102,8 @@ class KnowledgeGraph(BaseModel):
         self._cql_service = cql_service
         self._neo4j_service = neo4j_service
         self._falkordb_service = falkordb_service
+        self._spgl_service = spgl_service
+        self._spanner_graph_service = spanner_graph_service
         self._graph_service = graph_service
         self._interlink_service = interlink_service
         self._rdflib_service = rdflib_service
@@ -101,6 +111,7 @@ class KnowledgeGraph(BaseModel):
             f"KnowledgeGraph initialized with services: "
             f"ttl={bool(ttl_service)}, cql={bool(cql_service)}, "
             f"neo4j={bool(neo4j_service)}, falkordb={bool(falkordb_service)}, "
+            f"spgl={bool(spgl_service)}, spanner_graph={bool(spanner_graph_service)}, "
             f"graph={bool(graph_service)}, interlink={bool(interlink_service)}, "
             f"rdflib={bool(rdflib_service)}"
         )
@@ -132,6 +143,20 @@ class KnowledgeGraph(BaseModel):
                 "CQLService not available on this KnowledgeGraph instance."
             )
         return self._cql_service.to_cql(self, strip_prefixes)
+
+    def save_spgl(self, file_path: str, strip_prefixes: bool = True):
+        if not self._spgl_service:
+            raise RuntimeError(
+                "SPGLService not available on this KnowledgeGraph instance."
+            )
+        self._spgl_service.save_spgl(self, file_path, strip_prefixes)
+
+    def to_spgl(self, strip_prefixes: bool = True) -> str:
+        if not self._spgl_service:
+            raise RuntimeError(
+                "SPGLService not available on this KnowledgeGraph instance."
+            )
+        return self._spgl_service.to_spgl(self, strip_prefixes)
 
     def to_cypher_statements(self) -> List[str]:
         """
@@ -178,6 +203,22 @@ class KnowledgeGraph(BaseModel):
             )
         await self._falkordb_service.save_to_falkordb_async(self, strip_prefixes)
 
+    def save_to_spanner_graph(self, strip_prefixes: bool = True):
+        if not self._spanner_graph_service:
+            raise RuntimeError(
+                "SpannerGraphService not available on this KnowledgeGraph instance."
+            )
+        self._spanner_graph_service.save_to_spanner_graph(self, strip_prefixes)
+
+    async def save_to_spanner_graph_async(self, strip_prefixes: bool = True):
+        if not self._spanner_graph_service:
+            raise RuntimeError(
+                "SpannerGraphService not available on this KnowledgeGraph instance."
+            )
+        await self._spanner_graph_service.save_to_spanner_graph_async(
+            self, strip_prefixes
+        )
+
     @staticmethod
     def interlink(
         kbs: List["KnowledgeGraph"],
@@ -209,6 +250,8 @@ class KnowledgeGraph(BaseModel):
         merged_kg._cql_service = first_kg._cql_service
         merged_kg._neo4j_service = first_kg._neo4j_service
         merged_kg._falkordb_service = first_kg._falkordb_service
+        merged_kg._spgl_service = first_kg._spgl_service
+        merged_kg._spanner_graph_service = first_kg._spanner_graph_service
         merged_kg._graph_service = first_kg._graph_service
         merged_kg._interlink_service = first_kg._interlink_service
         merged_kg.ttl_content = merged_kg.to_ttl()
@@ -224,6 +267,8 @@ class KnowledgeGraph(BaseModel):
                 "_cql_service",
                 "_neo4j_service",
                 "_falkordb_service",
+                "_spgl_service",
+                "_spanner_graph_service",
                 "_graph_service",
                 "_interlink_service",
             }
