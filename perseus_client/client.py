@@ -10,6 +10,8 @@ from .services.ttl_service import TTLService
 from .services.neo4j_service import Neo4jService
 from .services.falkordb_service import FalkorDBService
 from .services.cql_service import CQLService
+from .services.spgl_service import SPGLService
+from .services.spanner_graph_service import SpannerGraphService
 from .services.graph_service import GraphService
 from .services.interlink_service import InterlinkService
 from .services.rdflib_service import RDFLibService
@@ -83,6 +85,8 @@ class PerseusClient:
         self._neo4j: Optional[Neo4jService] = None
         self._falkordb: Optional[FalkorDBService] = None
         self._cql: Optional[CQLService] = None
+        self._spanner_graph: Optional[SpannerGraphService] = None
+        self._spgl: Optional[SPGLService] = None
         self._ttl: Optional[TTLService] = None
         self._graph: Optional[GraphService] = None
         self._interlink: Optional[InterlinkService] = None
@@ -151,6 +155,8 @@ class PerseusClient:
         self._neo4j = Neo4jService(self._loop)
         self._falkordb = FalkorDBService(self._loop)
         self._cql = CQLService()
+        self._spanner_graph = SpannerGraphService(self._loop)
+        self._spgl = SPGLService()
         self._ttl = TTLService()
         self._graph = GraphService()
         self._interlink = InterlinkService()
@@ -166,6 +172,8 @@ class PerseusClient:
             self._graph,
             self._interlink,
             self._rdflib,
+            self._spgl,
+            self._spanner_graph,
         )
         return self
 
@@ -177,6 +185,8 @@ class PerseusClient:
             await self._connector.close()
         if self._transfer_session:
             await self._transfer_session.close()
+        if self._spanner_graph:
+            self._spanner_graph.close()
         self._session = None
         self._connector = None
         self._transfer_session = None
@@ -264,6 +274,20 @@ class PerseusClient:
         if not self._falkordb:
             raise ConfigurationException("FalkorDB service not initialized.")
         return self._falkordb
+
+    @property
+    def spanner_graph(self) -> SpannerGraphService:
+        self._ensure_active()
+        if not self._spanner_graph:
+            raise ConfigurationException("Spanner Graph service not initialized.")
+        return self._spanner_graph
+
+    @property
+    def spgl(self) -> SPGLService:
+        self._ensure_active()
+        if not self._spgl:
+            raise ConfigurationException("SPGL service not initialized.")
+        return self._spgl
 
     @property
     def cql(self) -> CQLService:

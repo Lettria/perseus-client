@@ -32,7 +32,8 @@ dependencies = [
 [project.optional-dependencies]
 neo4j = ["neo4j"]
 falkordb = ["falkordb"]
-all = ["neo4j", "falkordb"]
+spanner = ["google-cloud-spanner"]
+all = ["neo4j", "falkordb", "google-cloud-spanner"]
 test = [
     "pytest",
     "pytest-cov",

@@ -5,6 +5,100 @@ from ..models import KnowledgeGraph, LiteralValue
 import logging
 
 
+# Special mapping for common RDF properties to cleaner graph properties
+PREDICATE_MAP = {
+    "http://www.w3.org/2000/01/rdf-schema#label": "label",
+    "http://xmlns.com/foaf/0.1/name": "name",
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "type",
+}
+
+XSD = "http://www.w3.org/2001/XMLSchema#"
+BOOLEAN_LEXICAL = {"true": True, "false": False, "1": True, "0": False}
+INTEGER_TYPES = {
+    f"{XSD}integer",
+    f"{XSD}int",
+    f"{XSD}long",
+    f"{XSD}short",
+    f"{XSD}byte",
+    f"{XSD}nonNegativeInteger",
+    f"{XSD}positiveInteger",
+    f"{XSD}unsignedLong",
+    f"{XSD}unsignedInt",
+    f"{XSD}unsignedShort",
+    f"{XSD}unsignedByte",
+    f"{XSD}nonPositiveInteger",
+    f"{XSD}negativeInteger",
+}
+DECIMAL_TYPES = {f"{XSD}decimal", f"{XSD}double", f"{XSD}float"}
+
+
+def uri_to_identifier(
+    uri: str, namespaces: Dict[str, str], strip_prefixes: bool = True
+) -> str:
+    """
+    Converts a URI to a clean, simple graph identifier (label, relation type or property key).
+
+    Args:
+        uri: The URI to convert.
+        namespaces: The prefix -> namespace URI mapping of the graph.
+        strip_prefixes: If True, drops the namespace prefix (e.g., `Person`, `label`).
+                        If False, keeps it (e.g., `dbo_Person`, `rdfs_label`).
+    """
+    if strip_prefixes:
+        if uri in PREDICATE_MAP:
+            return PREDICATE_MAP[uri]
+        for prefix, ns_uri in namespaces.items():
+            if uri.startswith(ns_uri):
+                return uri[len(ns_uri) :]
+        local_name = uri.split("/")[-1].split("#")[-1]
+        return local_name.replace(" ", "_").replace("-", "_")
+    for prefix, ns_uri in namespaces.items():
+        if uri.startswith(ns_uri):
+            return f"{prefix}_{uri[len(ns_uri) :]}"
+    return uri.split("/")[-1].split("#")[-1]
+
+
+def coerce_literal(literal: LiteralValue) -> Any:
+    """
+    Coerces a literal's lexical value to a native Python type based on its datatype.
+    """
+    value = literal.value
+    datatype = literal.datatype
+
+    if datatype is None or not isinstance(value, str):
+        return value
+
+    lexical = value.strip()
+
+    if datatype == f"{XSD}boolean":
+        return BOOLEAN_LEXICAL.get(lexical.lower(), value)
+
+    if datatype in INTEGER_TYPES:
+        try:
+            return int(lexical)
+        except ValueError:
+            return value
+
+    if datatype in DECIMAL_TYPES:
+        try:
+            return float(lexical)
+        except ValueError:
+            return value
+
+    return value
+
+
+def extract_uuid(uri: str) -> str:
+    """Extract UUID from URI (last segment after final / or :)."""
+    # Handle both full URIs (http://example.org/data/uuid) and prefixed URIs (ex:Person1)
+    if "/" in uri:
+        return uri.rstrip("/").split("/")[-1]
+    elif ":" in uri:
+        return uri.split(":")[-1]
+    else:
+        return uri
+
+
 def split_cypher_statements(cql_query: str) -> List[str]:
     """
     Split a Cypher query into individual statements, respecting quoted strings.
@@ -125,92 +219,12 @@ class CQLService:
         """
         cql_statements = []
 
-        # Special mapping for common RDF properties to cleaner Neo4j properties
-        PREDICATE_MAP = {
-            "http://www.w3.org/2000/01/rdf-schema#label": "label",
-            "http://xmlns.com/foaf/0.1/name": "name",
-            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "type",
-        }
-
         # Helper to convert a URI to a clean, simple, and safe CQL identifier
         def _uri_to_cql_identifier(uri: str) -> str:
-            if strip_prefixes:
-                if uri in PREDICATE_MAP:
-                    return f"`{PREDICATE_MAP[uri]}`"
-                for prefix, ns_uri in kg.namespaces.items():
-                    if uri.startswith(ns_uri):
-                        local_name = uri[len(ns_uri) :]
-                        return f"`{local_name}`"
-                local_name = uri.split("/")[-1].split("#")[-1]
-                sanitized_name = local_name.replace(" ", "_").replace("-", "_")
-                return f"`{sanitized_name}`"
-            else:
-                for prefix, ns_uri in kg.namespaces.items():
-                    if uri.startswith(ns_uri):
-                        local_name = uri[len(ns_uri) :]
-                        return f"`{prefix}_{local_name}`"
-                local_name = uri.split("/")[-1].split("#")[-1]
-                return f"`{local_name}`"
+            return f"`{uri_to_identifier(uri, kg.namespaces, strip_prefixes)}`"
 
-        def _coerce_literal(literal: LiteralValue) -> Any:
-            """
-            Coerces a literal's lexical value to a native Python type based on its datatype.
-            """
-            XSD = "http://www.w3.org/2001/XMLSchema#"
-            BOOLEAN_LEXICAL = {"true": True, "false": False, "1": True, "0": False}
-
-            value = literal.value
-            datatype = literal.datatype
-
-            if datatype is None or not isinstance(value, str):
-                return value
-
-            lexical = value.strip()
-
-            integer_types = {
-                f"{XSD}integer",
-                f"{XSD}int",
-                f"{XSD}long",
-                f"{XSD}short",
-                f"{XSD}byte",
-                f"{XSD}nonNegativeInteger",
-                f"{XSD}positiveInteger",
-                f"{XSD}unsignedLong",
-                f"{XSD}unsignedInt",
-                f"{XSD}unsignedShort",
-                f"{XSD}unsignedByte",
-                f"{XSD}nonPositiveInteger",
-                f"{XSD}negativeInteger",
-            }
-            decimal_types = {f"{XSD}decimal", f"{XSD}double", f"{XSD}float"}
-
-            if datatype == f"{XSD}boolean":
-                return BOOLEAN_LEXICAL.get(lexical.lower(), value)
-
-            if datatype in integer_types:
-                try:
-                    return int(lexical)
-                except ValueError:
-                    return value
-
-            if datatype in decimal_types:
-                try:
-                    return float(lexical)
-                except ValueError:
-                    return value
-
-            return value
-
-        # Helper to extract UUID from URI
-        def _extract_uuid(uri: str) -> str:
-            """Extract UUID from URI (last segment after final / or :)."""
-            # Handle both full URIs (http://example.org/data/uuid) and prefixed URIs (ex:Person1)
-            if '/' in uri:
-                return uri.rstrip('/').split('/')[-1]
-            elif ':' in uri:
-                return uri.split(':')[-1]
-            else:
-                return uri
+        _coerce_literal = coerce_literal
+        _extract_uuid = extract_uuid
 
         # Helper to escape strings for Cypher
         def _escape_cypher_string(value: str) -> str:

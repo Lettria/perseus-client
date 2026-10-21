@@ -4,6 +4,7 @@
 """
 Configuration for the Perseus client.
 """
+
 import sys
 from typing import Optional
 from pydantic import ValidationError
@@ -32,6 +33,13 @@ class Settings(BaseSettings):
     falkordb_username: str = ""
     falkordb_password: str = ""
     falkordb_graph_name: str = "perseus_graph"
+    spanner_project_id: str = ""
+    spanner_instance_id: str = ""
+    spanner_database_id: str = ""
+    spanner_graph_name: str = "PerseusGraph"
+    spanner_table_prefix: str = "Perseus"
+    spanner_emulator_host: str = ""
+    spanner_auto_create_schema: bool = True
     loglevel: str = "INFO"
 
     model_config = SettingsConfigDict(

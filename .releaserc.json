@@ -56,6 +56,20 @@
             "countMatches": true
           },
           {
+            "files": ["README.md"],
+            "from": "pip install \"perseus-client\\[spanner\\]==.*\"",
+            "to": "pip install \"perseus-client[spanner]==${nextRelease.version}\"",
+            "results": [
+              {
+                "file": "README.md",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
             "files": ["examples/**/*.txt"],
             "from": "perseus-client==.*",
             "to": "perseus-client==${nextRelease.version}",
@@ -71,6 +85,12 @@
             "files": ["examples/**/*.txt"],
             "from": "perseus-client\\[falkordb\\]==.*",
             "to": "perseus-client[falkordb]==${nextRelease.version}",
+            "countMatches": true
+          },
+          {
+            "files": ["examples/**/*.txt"],
+            "from": "perseus-client\\[neo4j,spanner\\]==.*",
+            "to": "perseus-client[neo4j,spanner]==${nextRelease.version}",
             "countMatches": true
           }
         ]

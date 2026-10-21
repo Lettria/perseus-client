@@ -16,6 +16,8 @@ from .ttl_service import TTLService
 from .cql_service import CQLService
 from .neo4j_service import Neo4jService
 from .falkordb_service import FalkorDBService
+from .spgl_service import SPGLService
+from .spanner_graph_service import SpannerGraphService
 from .graph_service import GraphService
 from .interlink_service import InterlinkService
 from .rdflib_service import RDFLibService
@@ -38,6 +40,8 @@ class BuildService:
         graph_service: GraphService,
         interlink_service: InterlinkService,
         rdflib_service: RDFLibService,
+        spgl_service: Optional[SPGLService] = None,
+        spanner_graph_service: Optional[SpannerGraphService] = None,
     ):
         self._file = file_service
         self._job = job_service
@@ -49,6 +53,8 @@ class BuildService:
         self._graph = graph_service
         self._interlink = interlink_service
         self._rdflib = rdflib_service
+        self._spgl = spgl_service
+        self._spanner_graph = spanner_graph_service
 
     @overload
     def build_graph(
@@ -257,6 +263,8 @@ class BuildService:
         kg._cql_service = self._cql
         kg._neo4j_service = self._neo4j
         kg._falkordb_service = self._falkordb
+        kg._spgl_service = self._spgl
+        kg._spanner_graph_service = self._spanner_graph
         kg._graph_service = self._graph
         kg._interlink_service = self._interlink
         kg._rdflib_service = self._rdflib
@@ -390,6 +398,8 @@ class BuildService:
         merged_kg._cql_service = self._cql
         merged_kg._neo4j_service = self._neo4j
         merged_kg._falkordb_service = self._falkordb
+        merged_kg._spgl_service = self._spgl
+        merged_kg._spanner_graph_service = self._spanner_graph
         merged_kg._graph_service = self._graph
         merged_kg._interlink_service = self._interlink
         merged_kg.ttl_content = merged_kg.to_ttl()

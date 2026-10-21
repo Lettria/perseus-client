@@ -8,12 +8,28 @@ from perseus_client.services.ontology_service import OntologyService
 from perseus_client.services.neo4j_service import Neo4jService
 from perseus_client.services.falkordb_service import FalkorDBService
 from perseus_client.services.cql_service import CQLService
+from perseus_client.services.spgl_service import SPGLService
+from perseus_client.services.spanner_graph_service import SpannerGraphService
 from perseus_client.services.ttl_service import TTLService
 from perseus_client.services.graph_service import GraphService
 from perseus_client.services.interlink_service import InterlinkService
 from perseus_client.services.rdflib_service import RDFLibService
 import aiohttp
 import asyncio
+import os
+
+
+def pytest_collection_modifyitems(config, items):
+    """
+    Skips the tests marked `spanner` when SPANNER_EMULATOR_HOST isn't set:
+    they need a running Spanner emulator.
+    """
+    if os.environ.get("SPANNER_EMULATOR_HOST"):
+        return
+    skip_spanner = pytest.mark.skip(reason="SPANNER_EMULATOR_HOST isn't set")
+    for item in items:
+        if "spanner" in item.keywords:
+            item.add_marker(skip_spanner)
 
 @pytest.fixture
 def mock_token():
@@ -74,6 +90,8 @@ def client(mock_token, mock_api_url, mock_aiohttp_session_instance, mock_event_l
         client_instance._neo4j = Neo4jService(client_instance._loop)
         client_instance._falkordb = FalkorDBService(client_instance._loop)
         client_instance._cql = CQLService()
+        client_instance._spanner_graph = SpannerGraphService(client_instance._loop)
+        client_instance._spgl = SPGLService()
         client_instance._ttl = TTLService()
         client_instance._graph = GraphService()
         client_instance._interlink = InterlinkService()
