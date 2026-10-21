@@ -9,6 +9,12 @@ services:
       - NEO4J_PLUGINS=["apoc"]
     volumes:
       - neo4j_data:/data
+  # Cloud Spanner emulator (in-memory, supports Spanner Graph), used by build_graph_spanner.py
+  spanner:
+    image: gcr.io/cloud-spanner-emulator/emulator:latest
+    ports:
+      - "9010:9010"
+      - "9020:9020"
 
 volumes:
   neo4j_data:

@@ -31,12 +31,13 @@ Lettria's Perseus service is designed to solve this problem. It transforms your 
 - **Data Validation**: Robust data modeling with `pydantic`.
 - **Neo4j Integration**: Directly save your graph data to a Neo4j instance.
 - **FalkorDB Integration**: Directly save your graph data to a FalkorDB instance.
+- **Spanner Graph Integration**: Directly save your graph data to Google Cloud Spanner Graph.
 - **Flexible Configuration**: Configure via environment variables or directly in code.
 
 ## 📦 Installation
 
 ```bash
-# For both Neo4j and FalkorDB support
+# For Neo4j, FalkorDB and Spanner Graph support
 pip install "perseus-client[all]==1.0.0-rc.24"
 
 # For Neo4j support
@@ -44,6 +45,9 @@ pip install "perseus-client[neo4j]==1.0.0-rc.24"
 
 # For FalkorDB support
 pip install "perseus-client[falkordb]==1.0.0-rc.24"
+
+# For Spanner Graph support
+pip install "perseus-client[spanner]==1.0.0-rc.24"
 ```
 
 ## 🚀 Quick Start
@@ -54,19 +58,28 @@ To start using the SDK, you’ll need an API key from Lettria, which you can cre
 
 The SDK can be configured via environment variables. The `PerseusClient` will automatically load them. You can place them in a `.env` file in your project root.
 
-| Variable              | Description                                | Required |
-| --------------------- | ------------------------------------------ | -------- |
-| `PERSEUS_API_KEY`     | Your unique API key for the Lettria API.   | Yes      |
-| `LOGLEVEL`            | The log level for the client.              | No       |
-| `NEO4J_URI`           | The URI for your Neo4j database instance.  | No       |
-| `NEO4J_USER`          | The username for your Neo4j database.      | No       |
-| `NEO4J_PASSWORD`      | The password for your Neo4j database.      | No       |
-| `FALKORDB_HOST`       | The host for your FalkorDB instance.       | No       |
-| `FALKORDB_PORT`       | The port for your FalkorDB (default 6379). | No       |
-| `FALKORDB_GRAPH_NAME` | The name of the graph key to use.          | No       |
-| `FALKORDB_PASSWORD`   | The password for your FalkorDB instance.   | No       |
+| Variable                     | Description                                                                          | Required |
+| ---------------------------- | ------------------------------------------------------------------------------------ | -------- |
+| `PERSEUS_API_KEY`            | Your unique API key for the Lettria API.                                             | Yes      |
+| `LOGLEVEL`                   | The log level for the client.                                                        | No       |
+| `NEO4J_URI`                  | The URI for your Neo4j database instance.                                            | No       |
+| `NEO4J_USER`                 | The username for your Neo4j database.                                                | No       |
+| `NEO4J_PASSWORD`             | The password for your Neo4j database.                                                | No       |
+| `FALKORDB_HOST`              | The host for your FalkorDB instance.                                                 | No       |
+| `FALKORDB_PORT`              | The port for your FalkorDB (default 6379).                                           | No       |
+| `FALKORDB_GRAPH_NAME`        | The name of the graph key to use.                                                    | No       |
+| `FALKORDB_PASSWORD`          | The password for your FalkorDB instance.                                             | No       |
+| `SPANNER_PROJECT_ID`         | The Google Cloud project of your Spanner instance.                                   | No       |
+| `SPANNER_INSTANCE_ID`        | The Spanner instance to use.                                                         | No       |
+| `SPANNER_DATABASE_ID`        | The Spanner database to use.                                                         | No       |
+| `SPANNER_GRAPH_NAME`         | The property graph name (default `PerseusGraph`).                                    | No       |
+| `SPANNER_TABLE_PREFIX`       | The prefix of the node and edge tables (default `Perseus`).                          | No       |
+| `SPANNER_AUTO_CREATE_SCHEMA` | Create the database and graph schema if missing (default `true`).                    | No       |
+| `SPANNER_EMULATOR_HOST`      | The host of a Spanner emulator, e.g. `localhost:9010`. Leave unset for real Spanner. | No       |
 
 By default, the log level is set to `INFO`. You can change it by setting the `LOGLEVEL` environment variable to `DEBUG`, `WARNING`, `ERROR`, or `CRITICAL`.
+
+Spanner Graph uses [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials), and the Spanner instance must already exist (Spanner Graph requires the Enterprise or Enterprise Plus edition). On the first save, the database, the `PerseusNode` and `PerseusEdge` tables and the `PerseusGraph` property graph are created if missing (default names). Set `SPANNER_AUTO_CREATE_SCHEMA=false` if the application isn't allowed to change the schema, and create it beforehand with `client.spanner_graph.ensure_schema()`.
 
 ### Example: Build a Graph
 
@@ -127,18 +140,22 @@ Both `build_graph` and `build_graph_async` methods return a `List[KnowledgeGraph
 
 The `KnowledgeGraph` object also has several built-in methods to save or convert the data to different formats and databases.
 
-| Method                                                  | Return Type      | Description                                                     |
-| ------------------------------------------------------- | ---------------- | --------------------------------------------------------------- |
-| `save_ttl(file_path: str)`                              | `None`           | Saves the graph to a TTL file.                                  |
-| `to_ttl()`                                              | `str`            | Returns the graph as a TTL string.                              |
-| `save_cql(file_path: str, strip_prefixes: bool = True)` | `None`           | Saves the graph to a CQL file.                                  |
-| `to_cql(strip_prefixes: bool = True)`                   | `str`            | Returns the graph as a CQL string.                              |
-| `save_to_neo4j(strip_prefixes: bool = True)`            | `None`           | Saves the graph to a Neo4j instance synchronously.              |
-| `save_to_neo4j_async(strip_prefixes: bool = True)`      | `None`           | Saves the graph to a Neo4j instance asynchronously.             |
-| `save_to_falkordb(strip_prefixes: bool = True)`         | `None`           | Saves the graph to a FalkorDB instance synchronously.           |
-| `save_to_falkordb_async(strip_prefixes: bool = True)`   | `None`           | Saves the graph to a FalkorDB instance asynchronously.          |
-| `to_json()`                                             | `dict`           | Converts the knowledge graph to a JSON serializable dictionary. |
-| `interlink(kbs: List[KnowledgeGraph], ...)`             | `KnowledgeGraph` | Merges multiple `KnowledgeGraph` objects into a single one.     |
+| Method                                                     | Return Type      | Description                                                     |
+| ---------------------------------------------------------- | ---------------- | --------------------------------------------------------------- |
+| `save_ttl(file_path: str)`                                 | `None`           | Saves the graph to a TTL file.                                  |
+| `to_ttl()`                                                 | `str`            | Returns the graph as a TTL string.                              |
+| `save_cql(file_path: str, strip_prefixes: bool = True)`    | `None`           | Saves the graph to a CQL file.                                  |
+| `to_cql(strip_prefixes: bool = True)`                      | `str`            | Returns the graph as a CQL string.                              |
+| `save_spgl(file_path: str, strip_prefixes: bool = True)`   | `None`           | Saves the graph to a Spanner Graph SQL (SPGL) file.             |
+| `to_spgl(strip_prefixes: bool = True)`                     | `str`            | Returns the graph as a Spanner Graph SQL (SPGL) string.         |
+| `save_to_neo4j(strip_prefixes: bool = True)`               | `None`           | Saves the graph to a Neo4j instance synchronously.              |
+| `save_to_neo4j_async(strip_prefixes: bool = True)`         | `None`           | Saves the graph to a Neo4j instance asynchronously.             |
+| `save_to_falkordb(strip_prefixes: bool = True)`            | `None`           | Saves the graph to a FalkorDB instance synchronously.           |
+| `save_to_falkordb_async(strip_prefixes: bool = True)`      | `None`           | Saves the graph to a FalkorDB instance asynchronously.          |
+| `save_to_spanner_graph(strip_prefixes: bool = True)`       | `None`           | Saves the graph to Spanner Graph synchronously.                 |
+| `save_to_spanner_graph_async(strip_prefixes: bool = True)` | `None`           | Saves the graph to Spanner Graph asynchronously.                |
+| `to_json()`                                                | `dict`           | Converts the knowledge graph to a JSON serializable dictionary. |
+| `interlink(kbs: List[KnowledgeGraph], ...)`                | `KnowledgeGraph` | Merges multiple `KnowledgeGraph` objects into a single one.     |
 
 ### Merging `KnowledgeGraph`s
 

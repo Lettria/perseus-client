@@ -1,6 +1,6 @@
 # Build Graph
 
-This example demonstrates how to build a knowledge graph from a text file, add custom metadata to all nodes and relationships, and save the resulting graph to a Neo4j database.
+This example demonstrates how to build a knowledge graph from a text file, add custom metadata to all nodes and relationships, and save the resulting graph to a Neo4j database. The same is shown for Google Cloud Spanner Graph in [Spanner Graph](#spanner-graph).
 
 ## Setup
 
@@ -21,7 +21,7 @@ This example demonstrates how to build a knowledge graph from a text file, add c
     - `PERSEUS_API_KEY`
 
 3.  **Start Neo4j:**
-    A `docker compose.yaml` file is provided to easily start a Neo4j instance.
+    A `docker-compose.yaml` file is provided to easily start a Neo4j instance (it also starts the Spanner emulator, see [Spanner Graph](#spanner-graph)).
     ```bash
     docker compose up -d
     ```
@@ -44,17 +44,22 @@ The script will:
 
 After the script finishes, you can connect to your Neo4j instance (e.g., via the Neo4j Browser at `http://localhost:7474`) to see the graph with the added metadata.
 
+## Spanner Graph
+
+`build_graph_spanner.py` (in the table below) saves the graph to Spanner Graph instead of Neo4j. It uses the Spanner emulator from `docker-compose.yaml` (`docker compose up -d spanner`), already configured by the `SPANNER_*` variables of `template.env`; the schema is created on the first save. To use a real Spanner instance, remove `SPANNER_EMULATOR_HOST` from `.env` and set your project, instance and database IDs.
+
 ## Variants: ways to call `build_graph`
 
-Each script below shows one way to use `build_graph`. They only need `PERSEUS_API_KEY` (no Neo4j) and save their graphs to `output/`.
+Each script below shows one way to use `build_graph`. They only need `PERSEUS_API_KEY` (no Neo4j; `build_graph_spanner.py` needs the Spanner emulator) and save their graphs to `output/`.
 
-| Script                       | Shows                                                                                       |
-| ---------------------------- | ------------------------------------------------------------------------------------------- |
-| `build_graph_module.py`      | The module-level `perseus_client.build_graph(...)`. No client to create or close.           |
-| `build_graph_with_client.py` | `with PerseusClient() as client:`, reusing one connection for several calls.                |
-| `build_graph_async.py`       | `async with PerseusClient() as client:` and `await client.build_graph_async(...)`.          |
-| `build_concurrent_graphs.py` | Many files with a concurrency limit: `build_graph(..., max_concurrency=N)`.                 |
+| Script                       | Shows                                                                                               |
+| ---------------------------- | --------------------------------------------------------------------------------------------------- |
+| `build_graph_module.py`      | The module-level `perseus_client.build_graph(...)`. No client to create or close.                   |
+| `build_graph_with_client.py` | `with PerseusClient() as client:`, reusing one connection for several calls.                        |
+| `build_graph_async.py`       | `async with PerseusClient() as client:` and `await client.build_graph_async(...)`.                  |
+| `build_concurrent_graphs.py` | Many files with a concurrency limit: `build_graph(..., max_concurrency=N)`.                         |
 | `build_graph_errors.py`      | Failure handling: `try` / `except` (default), and `return_exceptions=True` to keep partial results. |
+| `build_graph_spanner.py`     | Saving to Spanner Graph with `save_to_spanner_graph_async()`, and writing `output/graph.spgl`.      |
 
 ```bash
 python build_graph_module.py [path/to/file.txt]
@@ -62,6 +67,7 @@ python build_graph_with_client.py [path/to/file.txt]
 python build_graph_async.py [path/to/file1.txt path/to/file2.txt ...]
 python build_concurrent_graphs.py [--max-concurrency N] [file_or_directory ...]   # default: assets/, 2 at a time
 python build_graph_errors.py
+python build_graph_spanner.py [path/to/file.txt]
 ```
 
 `build_graph_errors.py` deliberately includes a file that doesn't exist, so one file in its batch fails.

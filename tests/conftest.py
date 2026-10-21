@@ -16,6 +16,20 @@ from perseus_client.services.interlink_service import InterlinkService
 from perseus_client.services.rdflib_service import RDFLibService
 import aiohttp
 import asyncio
+import os
+
+
+def pytest_collection_modifyitems(config, items):
+    """
+    Skips the tests marked `spanner` when SPANNER_EMULATOR_HOST isn't set:
+    they need a running Spanner emulator.
+    """
+    if os.environ.get("SPANNER_EMULATOR_HOST"):
+        return
+    skip_spanner = pytest.mark.skip(reason="SPANNER_EMULATOR_HOST isn't set")
+    for item in items:
+        if "spanner" in item.keywords:
+            item.add_marker(skip_spanner)
 
 @pytest.fixture
 def mock_token():

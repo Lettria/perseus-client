@@ -6,6 +6,7 @@ from perseus_client.services.spanner_graph_service import (
     SpannerGraphService,
     SPANNER_AVAILABLE,
     BATCH_SIZE,
+    _StatementError,
 )
 from perseus_client.models import KnowledgeGraph, Entity, Relation, LiteralValue
 from perseus_client.exceptions import ConfigurationException, PerseusException
@@ -63,8 +64,35 @@ def test_execute_batch_raises_on_failed_statement():
     status = MagicMock(code=3, message="bad statement")
     transaction.batch_update.return_value = (status, [1])
 
-    with pytest.raises(PerseusException, match="(?s)second.*bad statement"):
+    with pytest.raises(_StatementError) as error:
         SpannerGraphService._execute_batch(transaction, ["first", "second"])
+    assert error.value.index == 1
+    assert error.value.message == "bad statement"
+
+
+@pytest.mark.asyncio
+@pytest.mark.skipif(not SPANNER_AVAILABLE, reason="google-cloud-spanner not installed")
+async def test_execute_spgl_string_async_skips_failed_statement(caplog):
+    """
+    Like Neo4j and FalkorDB, a failing statement is logged and the others are still run:
+    the batch is run again without it.
+    """
+    service = SpannerGraphService(asyncio.get_event_loop())
+    database = MagicMock()
+    service._database = database  # Skip connecting to Spanner
+    batches = []
+
+    def run_in_transaction(func, batch):
+        batches.append(list(batch))
+        if "bad" in batch:
+            raise _StatementError(batch.index("bad"), "bad statement")
+
+    database.run_in_transaction.side_effect = run_in_transaction
+
+    await service.execute_spgl_string_async("first;\nbad;\nlast;")
+
+    assert batches == [["first", "bad", "last"], ["first", "last"]]
+    assert "bad statement" in caplog.text
 
 
 @pytest.mark.asyncio
@@ -123,11 +151,23 @@ def test_empty_knowledge_graph(mock_execute):
 )
 async def test_save_to_spanner_graph_async_raises(mock_execute):
     """
-    Unlike FalkorDB, a failed save is not silent.
+    Like Neo4j and FalkorDB, the async save raises connection errors.
     """
     service = SpannerGraphService(asyncio.get_event_loop())
     with pytest.raises(PerseusException):
         await service.save_to_spanner_graph_async(_sample_kg())
+
+
+def test_save_to_spanner_graph_logs_error(caplog):
+    """
+    Like Neo4j and FalkorDB, the sync save only logs errors.
+    """
+    loop = MagicMock()
+    loop.run_until_complete.side_effect = PerseusException("boom")
+    service = SpannerGraphService(loop)
+    with patch.object(service, "save_to_spanner_graph_async", new_callable=MagicMock):
+        service.save_to_spanner_graph(_sample_kg())
+    assert "Failed to save to Spanner Graph: boom" in caplog.text
 
 
 def test_close():

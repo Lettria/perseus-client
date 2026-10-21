@@ -1,1 +1,1 @@
-perseus-client[neo4j]==1.0.0-rc.24
+perseus-client[neo4j,spanner]==1.0.0-rc.24

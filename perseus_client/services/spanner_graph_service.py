@@ -21,6 +21,15 @@ logger = logging.getLogger(__name__)
 BATCH_SIZE = 500
 
 
+class _StatementError(Exception):
+    """A statement of a batch failed: `index` is its position in the batch."""
+
+    def __init__(self, index: int, message: str):
+        super().__init__(message)
+        self.index = index
+        self.message = message
+
+
 class SpannerGraphService:
     def __init__(self, loop: asyncio.AbstractEventLoop, timeout: int = 120):
         if not SPANNER_AVAILABLE:
@@ -182,8 +191,8 @@ class SpannerGraphService:
         """
         Asynchronously executes a string containing Spanner Graph statements (SPGL) against Spanner.
 
-        Statements run in order, in transactions of BATCH_SIZE statements. Unlike FalkorDB,
-        a failing statement is not skipped: its transaction is rolled back and the error is raised.
+        Statements run in order, in transactions of BATCH_SIZE statements. Like Neo4j and
+        FalkorDB, a failing statement is logged and skipped, the other statements are saved.
 
         Args:
             spgl_query (str): The string containing SPGL statements.
@@ -208,12 +217,26 @@ class SpannerGraphService:
         statements = split_spgl_statements(spgl_query)
         logger.debug(f"Executing {len(statements)} SPGL statements against Spanner.")
         try:
-            for i in range(0, len(statements), BATCH_SIZE):
-                await asyncio.to_thread(
-                    database.run_in_transaction,
-                    self._execute_batch,
-                    statements[i : i + BATCH_SIZE],
-                )
+            start = 0
+            while start < len(statements):
+                batch = statements[start : start + BATCH_SIZE]
+                try:
+                    await asyncio.to_thread(
+                        database.run_in_transaction, self._execute_batch, batch
+                    )
+                    start += len(batch)
+                except _StatementError as e:
+                    # Spanner can't commit a transaction once a statement failed, so the batch
+                    # was rolled back: it is run again without the failing statement.
+                    logger.error(
+                        f"Error executing statement:\n{batch[e.index]}\nError: {e.message}"
+                    )
+                    del statements[start + e.index]
+        except Exception as e:
+            logger.error(
+                f"An unexpected error occurred during the Spanner session: {e}",
+                exc_info=True,
+            )
         finally:
             logger.info("Spanner Graph operation finished.")
 
@@ -222,19 +245,20 @@ class SpannerGraphService:
         status, row_counts = transaction.batch_update(statements)
         if status.code != 0:
             # Raising rolls back the transaction
-            raise PerseusException(
-                f"Error executing statement:\n{statements[len(row_counts)]}\nError: {status.message}"
-            )
+            raise _StatementError(len(row_counts), status.message)
 
     def save_to_spanner_graph(self, kg: KnowledgeGraph, strip_prefixes: bool = True):
         """
         Synchronously saves the KnowledgeGraph to Spanner Graph.
         """
         logger.debug("Attempting to save KnowledgeGraph to Spanner Graph.")
-        self._loop.run_until_complete(
-            self.save_to_spanner_graph_async(kg, strip_prefixes)
-        )
-        logger.info("Successfully saved KnowledgeGraph to Spanner Graph.")
+        try:
+            self._loop.run_until_complete(
+                self.save_to_spanner_graph_async(kg, strip_prefixes)
+            )
+            logger.info("Successfully saved KnowledgeGraph to Spanner Graph.")
+        except Exception as e:
+            logger.error(f"Failed to save to Spanner Graph: {e}", exc_info=True)
 
     async def save_to_spanner_graph_async(
         self, kg: KnowledgeGraph, strip_prefixes: bool = True
