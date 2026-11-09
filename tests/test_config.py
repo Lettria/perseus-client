@@ -25,6 +25,9 @@ def test_settings_initialization_defaults():
     """
     Test that Settings initializes with default values when no env vars or args are provided.
     """
-    config = Settings()
+    # Settings reads .env directly off disk regardless of os.environ, so a
+    # local, gitignored .env file (e.g. for running examples against a real
+    # API) would otherwise leak its values into this "defaults" test.
+    config = Settings(_env_file=None)
     assert config.perseus_api_host == "https://oath.perseus.lettria.net"
     assert config.perseus_api_key == ""

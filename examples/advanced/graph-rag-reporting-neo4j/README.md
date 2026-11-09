@@ -9,6 +9,7 @@ The process is divided into three main scripts:
 1.  **`pdf_to_markdown.py`**: Converts a PDF document into a Markdown file using an LLM. This makes the text content easily accessible for graph extraction.
 2.  **`index.py`**: This is the core indexing script. It takes the Markdown file, uses the Perseus Client to build a rich knowledge graph, loads this graph into Neo4j, and then indexes the graph's content for efficient retrieval.
 3.  **`report.py`**: This script takes a user's question, retrieves the most relevant sub-graph from Neo4j, and then passes this context to an LLM to generate a comprehensive and accurate report.
+4.  **`rag_app.py`**: A small Flask web app that exposes the same report generation as an interactive chat page, so you can have a multi-turn conversation over the graph instead of a single one-off question.
 
 ## How to Run
 
@@ -56,6 +57,12 @@ Execute the scripts in order.
     ```bash
     python report.py "What are the main activities of L'Oréal?"
     ```
+
+4.  **Or chat with the Graph instead:**
+    ```bash
+    python rag_app.py
+    ```
+    Then open [http://localhost:5050](http://localhost:5050) in your browser. Each message triggers a fresh graph retrieval for that question, and the full conversation (tagged `user`/`ai`) is sent back to the LLM on every turn so it keeps track of context across messages.
 
 ### 4. Cleaning Up
 

@@ -9,13 +9,13 @@ from simple_graph_retriever.client import GraphRetrievalClient
 from simple_graph_retriever.models import RetrievalConfig
 from google import genai
 from google.genai import types as genai_types
-from utils import wait_for_embedder
+from utils import make_tei_embed_fn, wait_for_embedder
 
 
 def main(script_input: str):
     wait_for_embedder()
     genai_client = genai.Client()
-    retrieval_client = GraphRetrievalClient()
+    retrieval_client = GraphRetrievalClient(embed_fn=make_tei_embed_fn())
     data = retrieval_client.retrieve_graph(
         query=script_input,
         config=RetrievalConfig(
@@ -29,14 +29,6 @@ def main(script_input: str):
         print("No data found.")
         return
 
-    print(
-        "Nodes found:",
-        len(data.nodes),
-    )
-    print(
-        "Relationships found:",
-        len(data.relationships),
-    )
     report_prompt = f"""
         Provide a report summarizing the following information about {script_input}:
         {data.to_markdown()}

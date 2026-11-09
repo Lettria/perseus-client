@@ -9,13 +9,24 @@ from simple_graph_retriever.client import GraphRetrievalClient
 from simple_graph_retriever.models import RetrievalConfig
 from google import genai
 from google.genai import types as genai_types
-from utils import wait_for_embedder
+from utils import make_tei_embed_fn, wait_for_embedder
 
 
 def main(script_input: str):
     wait_for_embedder()
     genai_client = genai.Client()
-    retrieval_client = GraphRetrievalClient()
+
+    def llm_fn(prompt: str) -> str:
+        response = genai_client.models.generate_content(
+            model="gemini-3-flash-preview", contents=prompt
+        )
+        return response.text or ""
+
+    # Passing llm_fn here also activates NL2Cypher by default inside
+    # retrieve_graph(): the generated Cypher is logged at INFO level and,
+    # in the default "seed_nodes" mode, its matches are merged into the
+    # returned subgraph alongside the vector-search results.
+    retrieval_client = GraphRetrievalClient(embed_fn=make_tei_embed_fn(), llm_fn=llm_fn)
     data = retrieval_client.retrieve_graph(
         query=script_input,
         config=RetrievalConfig(
@@ -28,15 +39,6 @@ def main(script_input: str):
     if not data:
         print("No data found.")
         return
-
-    print(
-        "Nodes found:",
-        len(data.nodes),
-    )
-    print(
-        "Relationships found:",
-        len(data.relationships),
-    )
     report_prompt = f"""
         Provide a report summarizing the following information about {script_input}:
         {data.to_markdown()}

@@ -79,7 +79,9 @@
     [
       "semantic-release-pypi",
       {
-        "repoUrl": "https://upload.pypi.org/legacy/"
+        "repoUrl": "https://upload.pypi.org/legacy/",
+        "envDir": false,
+        "installDeps": false
       }
     ],
     [

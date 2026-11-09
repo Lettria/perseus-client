@@ -41,7 +41,27 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install wheel setuptools build
+          # semantic-release-pypi is configured in .releaserc.json with
+          # envDir:false/installDeps:false, so its prepare (build) and
+          # publish (twine upload) steps run against THIS environment
+          # instead of auto-creating a .venv and pip-installing its own
+          # bundled requirements.txt (which hard-pins packaging~=24.0 — a
+          # pin that silently overrides anything installed here, since
+          # that isolated venv is put first on PATH regardless).
+          # - tomlkit: used by semantic-release-pypi's set_version.py to bump
+          #   the version in pyproject.toml.
+          # - twine (6.x/7.x) validates distribution metadata via the
+          #   `packaging` library (packaging.metadata.Metadata.from_raw), not
+          #   pkginfo. `packaging` only recognizes "Metadata-Version: 2.5"
+          #   (what newer hatchling emits) starting at 26.0, but twine's own
+          #   requirement floor is looser (>=24.0/>=26.1), and pip's default
+          #   "only-if-needed" upgrade strategy leaves an already-satisfying,
+          #   older `packaging` (pulled in transitively by setuptools/build)
+          #   alone. So `packaging` must be force-upgraded explicitly, or
+          #   "twine upload" fails with "InvalidDistribution: '2.5' is not a
+          #   valid metadata version".
+          pip install wheel setuptools build tomlkit
+          pip install --upgrade twine "packaging>=26.0"
           npm install -g semantic-release semantic-release-pypi @semantic-release/github @semantic-release/git semantic-release-replace-plugin
       - name: Clean dist directory
         run: rm -rf dist/

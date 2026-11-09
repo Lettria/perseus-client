@@ -3,7 +3,7 @@ import os
 import sys
 import perseus_client
 from simple_graph_retriever.client import GraphRetrievalClient
-from utils import wait_for_embedder
+from utils import make_tei_embed_fn, wait_for_embedder
 
 # Configure logging
 logging.basicConfig(
@@ -48,7 +48,7 @@ def main(file_path: str):
 
         # Index the graph for retrieval
         logging.info("Indexing graph for retrieval...")
-        GraphRetrievalClient().index()
+        GraphRetrievalClient(embed_fn=make_tei_embed_fn()).index()
         logging.info("Graph indexing complete.")
 
     except Exception as e:
