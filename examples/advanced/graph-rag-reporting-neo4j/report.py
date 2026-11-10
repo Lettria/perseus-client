@@ -9,11 +9,10 @@ from simple_graph_retriever.client import GraphRetrievalClient
 from simple_graph_retriever.models import RetrievalConfig
 from google import genai
 from google.genai import types as genai_types
-from utils import make_tei_embed_fn, wait_for_embedder
+from utils import make_gemini_embed_fn
 
 
 def main(script_input: str):
-    wait_for_embedder()
     genai_client = genai.Client()
 
     def llm_fn(prompt: str) -> str:
@@ -26,7 +25,9 @@ def main(script_input: str):
     # retrieve_graph(): the generated Cypher is logged at INFO level and,
     # in the default "seed_nodes" mode, its matches are merged into the
     # returned subgraph alongside the vector-search results.
-    retrieval_client = GraphRetrievalClient(embed_fn=make_tei_embed_fn(), llm_fn=llm_fn)
+    retrieval_client = GraphRetrievalClient(
+        vector_size=3072, embed_fn=make_gemini_embed_fn(genai_client), llm_fn=llm_fn
+    )
     data = retrieval_client.retrieve_graph(
         query=script_input,
         config=RetrievalConfig(

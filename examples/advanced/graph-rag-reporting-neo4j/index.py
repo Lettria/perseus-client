@@ -2,8 +2,9 @@ import logging
 import os
 import sys
 import perseus_client
+from google import genai
 from simple_graph_retriever.client import GraphRetrievalClient
-from utils import make_tei_embed_fn, wait_for_embedder
+from utils import make_gemini_embed_fn
 
 # Configure logging
 logging.basicConfig(
@@ -20,10 +21,6 @@ def main(file_path: str):
     output_ttl_path = os.path.join("output", f"{file_stem}.ttl")
 
     try:
-        logging.info("Waiting for services to become available...")
-        wait_for_embedder()
-        logging.info("Services are ready.")
-
         logging.info(f"Building knowledge graph from: {file_path}")
 
         knowledge_graphs = perseus_client.build_graph(file_paths=[file_path])
@@ -48,7 +45,9 @@ def main(file_path: str):
 
         # Index the graph for retrieval
         logging.info("Indexing graph for retrieval...")
-        GraphRetrievalClient(embed_fn=make_tei_embed_fn()).index()
+        GraphRetrievalClient(
+            vector_size=3072, embed_fn=make_gemini_embed_fn(genai.Client())
+        ).index()
         logging.info("Graph indexing complete.")
 
     except Exception as e:

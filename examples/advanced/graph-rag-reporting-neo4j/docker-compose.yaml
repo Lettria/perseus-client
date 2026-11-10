@@ -26,18 +26,6 @@ services:
       - qdrant_data:/qdrant/storage
     restart: unless-stopped
 
-  # Text Embeddings Inference (TEI)
-  tei_embedder:
-    image: ghcr.io/huggingface/text-embeddings-inference:cpu-latest
-    ports:
-      - "8080:80"
-    environment:
-      - MODEL_ID=BAAI/bge-small-en-v1.5
-      - REVISION=main
-    networks:
-      - main_local
-    restart: unless-stopped
-
 networks:
   main_local:
     driver: bridge

@@ -33,8 +33,6 @@ pip install -r requirements.txt
 docker compose up -d
 ```
 
-> **Note:** The embedder service may take a few minutes to boot on the first run as it needs to download the embedding model.
-
 ### 3. Run the Full Workflow
 
 Execute the scripts in order.

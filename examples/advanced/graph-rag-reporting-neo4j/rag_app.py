@@ -24,7 +24,7 @@ from simple_graph_retriever.client import GraphRetrievalClient
 from simple_graph_retriever.models import RetrievalConfig
 from google import genai
 from google.genai import types as genai_types
-from utils import make_tei_embed_fn, wait_for_embedder
+from utils import make_gemini_embed_fn
 
 MODEL_NAME = "gemini-3-flash-preview"
 
@@ -82,13 +82,12 @@ def llm_fn(prompt: str) -> str:
 
 
 def get_retrieval_client() -> GraphRetrievalClient:
-    """Lazily builds the retrieval client so the embedder is only waited on
-    once a chat request actually comes in, not at import time."""
+    """Lazily builds the retrieval client on first chat request rather than
+    at import time."""
     global retrieval_client
     if retrieval_client is None:
-        wait_for_embedder()
         retrieval_client = GraphRetrievalClient(
-            embed_fn=make_tei_embed_fn(), llm_fn=llm_fn
+            vector_size=3072, embed_fn=make_gemini_embed_fn(genai_client), llm_fn=llm_fn
         )
     return retrieval_client
 

@@ -427,7 +427,7 @@ data:de421643-e8d5-4cbf-b3de-5b1a0e518360 a myonto:Organization ;
     myonto:hasFacilityIn data:f12647a0-5e56-44a1-94c8-fa0e6f8618f4 ;
     myonto:hasFund data:c5e07e26-6c10-491d-b375-48138a3629b1 ;
     myonto:hasInitiative data:a608821b-4c92-43b6-8133-7a4e9d141530 ;
-    myonto:hasPrinciple "Intégrité" ;
+    myonto:hasPrinciple "Courage" ;
     myonto:hasProgram data:884212a5-3e17-4873-ba01-eb345b808e58 ;
     myonto:hasStakeholder data:0bf7d4fa-f5be-4a38-84e0-18d0155013f7,
         data:4b18e75d-57b3-4a47-b157-799340ec6c3e,
