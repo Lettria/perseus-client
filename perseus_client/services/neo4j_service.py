@@ -4,7 +4,7 @@ import time
 from perseus_client.config import settings
 from perseus_client.exceptions import ConfigurationException, PerseusException
 from ..models import KnowledgeGraph
-from .cql_service import CQLService
+from .cql_service import CQLService, split_cypher_statements
 
 try:
     from neo4j import GraphDatabase
@@ -148,7 +148,7 @@ class Neo4jService:
 
         try:
             with driver.session() as session:
-                statements = [s.strip() for s in cql_query.split(";") if s.strip()]
+                statements = split_cypher_statements(cql_query)
                 logger.debug(
                     f"Executing {len(statements)} CQL statements against Neo4j."
                 )
