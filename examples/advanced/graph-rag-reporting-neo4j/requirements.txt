@@ -1,4 +1,4 @@
-perseus-client[neo4j]==1.0.0-rc.25
+perseus-client[neo4j]==1.0.0-rc.26
 simple_graph_retriever[neo4j]==1.0.0-rc26
 google-genai==1.41.0
 flask==3.1.1
